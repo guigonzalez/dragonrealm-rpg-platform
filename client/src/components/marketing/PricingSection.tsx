@@ -132,7 +132,7 @@ export default function PricingSection() {
                 </li>
               </ul>
               
-              <Button className="w-full py-3 magic-button">
+              <Button className="w-full py-3 magic-button" disabled>
                 {t("landing.pricingSection.standardPlan.button")}
               </Button>
             </div>
