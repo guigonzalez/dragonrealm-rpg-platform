@@ -7,24 +7,26 @@ import CampaignManager from "@/components/campaign/CampaignManager";
 import { Campaign } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function CampaignManagementPage() {
   const params = useParams<{ id?: string }>();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const campaignId = params.id ? parseInt(params.id) : undefined;
   
   // Validate the campaign ID if provided
   useEffect(() => {
     if (params.id && isNaN(campaignId!)) {
       toast({
-        title: "Invalid campaign ID",
-        description: "The campaign ID must be a number.",
+        title: t("campaign.errors.invalidIdTitle"),
+        description: t("campaign.errors.invalidIdDescription"),
         variant: "destructive",
       });
       setLocation("/dashboard");
     }
-  }, [params.id, campaignId, toast, setLocation]);
+  }, [params.id, campaignId, toast, setLocation, t]);
   
   // Fetch campaign data if editing an existing campaign
   const { 
@@ -32,7 +34,7 @@ export default function CampaignManagementPage() {
     isLoading, 
     error 
   } = useQuery<Campaign>({
-    queryKey: campaignId ? [`/api/campaigns/${campaignId}`] : null,
+    queryKey: campaignId ? [`/api/campaigns/${campaignId}`] : [''],
     enabled: !!campaignId,
   });
   
@@ -40,13 +42,13 @@ export default function CampaignManagementPage() {
   useEffect(() => {
     if (error) {
       toast({
-        title: "Error loading campaign",
-        description: "Failed to load campaign data. Please try again.",
+        title: t("campaign.errors.loadErrorTitle"),
+        description: t("campaign.errors.loadErrorDescription"),
         variant: "destructive",
       });
       setLocation("/dashboard");
     }
-  }, [error, toast, setLocation]);
+  }, [error, toast, setLocation, t]);
   
   // If we're trying to edit a campaign and it's still loading
   if (campaignId && isLoading) {

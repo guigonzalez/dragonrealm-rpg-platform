@@ -8,6 +8,7 @@ import { Campaign, CampaignLocation, SessionNote, insertCampaignSchema, insertCa
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useTranslation } from "react-i18next";
 import {
   Form,
   FormControl,
@@ -90,6 +91,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
   const { user } = useAuth();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("world");
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
   const [noteDialogOpen, setNoteDialogOpen] = useState(false);
@@ -131,7 +133,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
     data: locations = [], 
     isLoading: locationsLoading 
   } = useQuery<CampaignLocation[]>({
-    queryKey: campaign ? [`/api/campaigns/${campaign.id}/locations`] : null,
+    queryKey: campaign ? [`/api/campaigns/${campaign.id}/locations`] : [''],
     enabled: !!campaign,
   });
   
@@ -140,7 +142,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
     data: sessionNotes = [], 
     isLoading: notesLoading 
   } = useQuery<SessionNote[]>({
-    queryKey: campaign ? [`/api/campaigns/${campaign.id}/session-notes`] : null,
+    queryKey: campaign ? [`/api/campaigns/${campaign.id}/session-notes`] : [''],
     enabled: !!campaign,
   });
   
@@ -377,28 +379,48 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
   
   // Campaign form submit handler
   const onCampaignSubmit = (data: CampaignFormValues) => {
+    // Converter valores nulos para string vazia para resolver o problema de tipagem
+    const cleanData = removeNullValues(data);
+    
     if (campaign) {
-      updateCampaignMutation.mutate(data);
+      updateCampaignMutation.mutate(cleanData);
     } else {
-      createCampaignMutation.mutate(data);
+      createCampaignMutation.mutate(cleanData);
     }
   };
   
+  // Função auxiliar para remover valores nulos (resolver o problema de tipagem)
+  const removeNullValues = (obj: Record<string, any>): Record<string, any> => {
+    const newObj = { ...obj };
+    Object.keys(newObj).forEach(key => {
+      if (newObj[key] === null) {
+        newObj[key] = '';
+      }
+    });
+    return newObj;
+  };
+
   // Location form submit handler
   const onLocationSubmit = (data: LocationFormValues) => {
+    // Converter valores nulos para string vazia para resolver o problema de tipagem do TextareaProps/InputProps
+    const cleanData = removeNullValues(data);
+    
     if (editingLocationId !== null) {
-      updateLocationMutation.mutate({ id: editingLocationId, data });
+      updateLocationMutation.mutate({ id: editingLocationId, data: cleanData });
     } else {
-      createLocationMutation.mutate(data);
+      createLocationMutation.mutate(cleanData);
     }
   };
   
   // Session note form submit handler
   const onNoteSubmit = (data: SessionNoteFormValues) => {
+    // Converter valores nulos para string vazia para resolver o problema de tipagem
+    const cleanData = removeNullValues(data);
+    
     if (editingNoteId !== null) {
-      updateNoteMutation.mutate({ id: editingNoteId, data });
+      updateNoteMutation.mutate({ id: editingNoteId, data: cleanData });
     } else {
-      createNoteMutation.mutate(data);
+      createNoteMutation.mutate(cleanData);
     }
   };
   
@@ -450,10 +472,10 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
           <h1 className="font-lora font-bold text-3xl text-primary mb-2">
-            {campaign ? "Manage Campaign" : "Create Campaign"}
+            {campaign ? t("campaign.manageCampaign") : t("campaign.createCampaign")}
           </h1>
           <p className="text-secondary">
-            {campaign ? "Edit your campaign details and manage world elements" : "Create a new campaign for your adventures"}
+            {campaign ? t("campaign.editCampaignDetails") : t("campaign.createNewCampaign")}
           </p>
         </div>
         <Button
@@ -461,7 +483,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
           onClick={() => setLocation('/dashboard')}
           className="mt-4 md:mt-0"
         >
-          Back to Dashboard
+          {t("dashboard.backToDashboard")}
         </Button>
       </div>
       
@@ -469,9 +491,9 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
         <form onSubmit={campaignForm.handleSubmit(onCampaignSubmit)}>
           <Card className="border-t-4 border-t-primary mb-8">
             <CardHeader>
-              <CardTitle className="font-lora text-2xl">Campaign Details</CardTitle>
+              <CardTitle className="font-lora text-2xl">{t("campaign.campaignDetails")}</CardTitle>
               <CardDescription>
-                {campaign ? "Update your campaign information" : "Enter basic information about your new campaign"}
+                {campaign ? t("campaign.updateCampaignInfo") : t("campaign.enterCampaignInfo")}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -480,9 +502,9 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Campaign Name</FormLabel>
+                    <FormLabel>{t("campaign.campaignName")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter campaign name" {...field} />
+                      <Input placeholder={t("campaign.enterCampaignName")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -494,10 +516,10 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>{t("campaign.description")}</FormLabel>
                     <FormControl>
                       <Textarea 
-                        placeholder="Describe your campaign setting and theme" 
+                        placeholder={t("campaign.describeCampaign")} 
                         className="min-h-[100px]"
                         {...field} 
                       />
@@ -514,9 +536,9 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                 disabled={createCampaignMutation.isPending || updateCampaignMutation.isPending}
               >
                 {campaign ? (
-                  updateCampaignMutation.isPending ? "Saving..." : "Save Campaign"
+                  updateCampaignMutation.isPending ? t("common.saving") : t("campaign.saveCampaign")
                 ) : (
-                  createCampaignMutation.isPending ? "Creating..." : "Create Campaign"
+                  createCampaignMutation.isPending ? t("common.creating") : t("campaign.createCampaign")
                 )}
               </Button>
             </CardFooter>
@@ -529,18 +551,18 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
           <TabsList className="grid grid-cols-2 md:w-[400px] mb-6">
             <TabsTrigger value="world" className="font-lora">
               <Map className="h-4 w-4 mr-2" />
-              World Building
+              {t("location.worldBuilding")}
             </TabsTrigger>
             <TabsTrigger value="sessions" className="font-lora">
               <BookOpen className="h-4 w-4 mr-2" />
-              Session Notes
+              {t("sessionNote.sessionNotes")}
             </TabsTrigger>
           </TabsList>
           
           {/* World Building Tab */}
           <TabsContent value="world" className="space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="font-lora text-2xl text-primary">Locations</h2>
+              <h2 className="font-lora text-2xl text-primary">{t("location.locations")}</h2>
               <Dialog open={locationDialogOpen} onOpenChange={setLocationDialogOpen}>
                 <DialogTrigger asChild>
                   <Button className="magic-button" onClick={() => {
@@ -553,13 +575,13 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                     });
                   }}>
                     <Plus className="mr-2 h-4 w-4" />
-                    Add Location
+                    {t("location.createLocation")}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[550px]">
                   <DialogHeader>
                     <DialogTitle>
-                      {editingLocationId !== null ? "Edit Location" : "Add New Location"}
+                      {editingLocationId !== null ? t("location.editLocation") : t("location.createLocation")}
                     </DialogTitle>
                     <DialogDescription>
                       {editingLocationId !== null 
@@ -732,7 +754,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
           {/* Session Notes Tab */}
           <TabsContent value="sessions" className="space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="font-lora text-2xl text-primary">Session Notes</h2>
+              <h2 className="font-lora text-2xl text-primary">{t("sessionNote.sessionNotes")}</h2>
               <Dialog open={noteDialogOpen} onOpenChange={setNoteDialogOpen}>
                 <DialogTrigger asChild>
                   <Button className="magic-button" onClick={() => {
@@ -744,13 +766,13 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                     });
                   }}>
                     <Plus className="mr-2 h-4 w-4" />
-                    Add Session Note
+                    {t("sessionNote.createSessionNote")}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[550px]">
                   <DialogHeader>
                     <DialogTitle>
-                      {editingNoteId !== null ? "Edit Session Note" : "Add New Session Note"}
+                      {editingNoteId !== null ? t("sessionNote.editSessionNote") : t("sessionNote.createSessionNote")}
                     </DialogTitle>
                     <DialogDescription>
                       {editingNoteId !== null 

@@ -19,7 +19,9 @@
     "logout": "Sair",
     "home": "Início",
     "dashboard": "Painel",
-    "language": "Idioma"
+    "language": "Idioma",
+    "saving": "Salvando...",
+    "creating": "Criando..."
   },
   "auth": {
     "login": "Entrar",
@@ -46,6 +48,7 @@
     "welcomeBack": "Bem-vindo de volta",
     "welcome": "Bem-vindo, {{name}}",
     "subtitle": "Gerencie seus personagens e campanhas",
+    "backToDashboard": "Voltar ao Painel",
     "buttons": {
       "newCharacter": "Novo Personagem",
       "newCampaign": "Nova Campanha"
@@ -77,6 +80,14 @@
     "sessionNotes": "Notas de Sessão",
     "manageCampaign": "Gerenciar Campanha",
     "noDescription": "Nenhuma descrição fornecida.",
+    "editCampaignDetails": "Edite os detalhes da sua campanha e gerencie elementos do mundo",
+    "createNewCampaign": "Crie uma nova campanha para suas aventuras",
+    "updateCampaignInfo": "Atualize as informações da sua campanha",
+    "enterCampaignInfo": "Insira informações básicas sobre sua nova campanha",
+    "enterCampaignName": "Digite o nome da campanha",
+    "description": "Descrição",
+    "describeCampaign": "Descreva o cenário e tema da sua campanha",
+    "saveCampaign": "Salvar Campanha",
     "buttons": {
       "manage": "Gerenciar",
       "npcs": "NPCs",
@@ -86,6 +97,12 @@
       "title": "Nenhuma Campanha Ainda",
       "description": "Crie sua primeira campanha para começar sua história.",
       "button": "Criar Campanha"
+    },
+    "errors": {
+      "invalidIdTitle": "ID de campanha inválido",
+      "invalidIdDescription": "O ID da campanha deve ser um número.",
+      "loadErrorTitle": "Erro ao carregar campanha",
+      "loadErrorDescription": "Falha ao carregar dados da campanha. Por favor, tente novamente."
     }
   },
   "character": {
@@ -170,7 +187,8 @@
     "locationName": "Nome do Local",
     "locationDetails": "Detalhes do Local",
     "description": "Descrição",
-    "notes": "Anotações"
+    "notes": "Anotações",
+    "worldBuilding": "Construção de Mundo"
   },
   "sessionNote": {
     "sessionNotes": "Notas de Sessão",
