@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 48 100% 94%;
+    --foreground: 22 76% 12%;
+    
+    --card: 48 100% 94%;
+    --card-foreground: 22 76% 12%;
+    
+    --popover: 48 100% 97%;
+    --popover-foreground: 22 76% 12%;
+    
+    --primary: 282 67% 38%;
+    --primary-foreground: 48 100% 94%;
+    
+    --secondary: 25 24% 47%;
+    --secondary-foreground: 48 100% 94%;
+    
+    --muted: 25 24% 90%;
+    --muted-foreground: 22 76% 30%;
+    
+    --accent: 36 100% 50%;
+    --accent-foreground: 22 76% 12%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 48 100% 94%;
+    
+    --border: 25 24% 70%;
+    --input: 25 24% 80%;
+    --ring: 282 67% 38%;
+    
+    --radius: 0.5rem;
+  }
+  
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    font-family: 'Open Sans', sans-serif;
+    @apply bg-background text-foreground;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lora', serif;
+  }
+  
+  .parchment {
+    background-image: url('https://images.unsplash.com/photo-1587203810833-41948ba2f8e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+    background-size: cover;
+    background-blend-mode: overlay;
+  }
+  
+  .scroll-container {
+    background-image: url('https://images.unsplash.com/photo-1607364045906-30e9f66e7d44?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+  }
+  
+  .magic-button {
+    transition: all 0.3s ease;
+  }
+  
+  .magic-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(123, 31, 162, 0.4);
+  }
+}
