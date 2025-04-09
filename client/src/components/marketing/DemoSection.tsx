@@ -72,6 +72,13 @@ export default function DemoSection() {
                 <div className="lg:col-span-1">
                   <div className="parchment bg-secondary/5 rounded-lg p-4 border border-secondary/30 shadow">
                     <div className="text-center mb-4">
+                      <div className="mx-auto w-32 h-32 mb-3">
+                        <img 
+                          src="/assets/thordak-ironfist.png" 
+                          alt="Thordak Ironfist" 
+                          className="rounded-full border-4 border-secondary/30 shadow-lg object-cover w-full h-full"
+                        />
+                      </div>
                       <h3 className="font-lora font-bold text-2xl text-primary">{t('landing.demoSection.characterSheet.characterName')}</h3>
                       <p className="font-opensans text-sm text-foreground/70">{t('landing.demoSection.characterSheet.characterRaceClass')}</p>
                     </div>
