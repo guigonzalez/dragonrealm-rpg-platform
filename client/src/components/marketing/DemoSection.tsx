@@ -241,19 +241,19 @@ export default function DemoSection() {
                         <ul className="bg-white rounded-lg p-3 border border-secondary/30 shadow-sm space-y-2">
                           <li className="font-opensans text-sm flex items-center">
                             <div className="w-6 h-6 bg-primary rounded-full mr-2"></div>
-                            <span>{t('landing.demoSection.campaignManager.player1')}</span>
+                            <span>{t('landing.demoSection.campaignManager.playersList.player1')}</span>
                           </li>
                           <li className="font-opensans text-sm flex items-center">
                             <div className="w-6 h-6 bg-accent rounded-full mr-2"></div>
-                            <span>{t('landing.demoSection.campaignManager.player2')}</span>
+                            <span>{t('landing.demoSection.campaignManager.playersList.player2')}</span>
                           </li>
                           <li className="font-opensans text-sm flex items-center">
                             <div className="w-6 h-6 bg-green-600 rounded-full mr-2"></div>
-                            <span>{t('landing.demoSection.campaignManager.player3')}</span>
+                            <span>{t('landing.demoSection.campaignManager.playersList.player3')}</span>
                           </li>
                           <li className="font-opensans text-sm flex items-center opacity-50">
                             <div className="w-6 h-6 bg-gray-400 rounded-full mr-2 flex items-center justify-center text-white text-xs">+</div>
-                            <span>{t('landing.demoSection.campaignManager.invitePlayer')}</span>
+                            <span>{t('landing.demoSection.campaignManager.playersList.invitePlayer')}</span>
                           </li>
                         </ul>
                       </div>
@@ -263,22 +263,22 @@ export default function DemoSection() {
                         <ul className="bg-white rounded-lg p-3 border border-secondary/30 shadow-sm space-y-2">
                           <li className="font-opensans text-sm">
                             <a href="#" className="text-primary hover:underline flex items-center">
-                              <i className="ri-map-fill mr-1"></i> {t('landing.demoSection.campaignManager.worldMap')}
+                              <i className="ri-map-fill mr-1"></i> {t('landing.demoSection.campaignManager.linksList.worldMap')}
                             </a>
                           </li>
                           <li className="font-opensans text-sm">
                             <a href="#" className="text-primary hover:underline flex items-center">
-                              <i className="ri-user-star-fill mr-1"></i> {t('landing.demoSection.campaignManager.npcs')}
+                              <i className="ri-user-star-fill mr-1"></i> {t('landing.demoSection.campaignManager.linksList.npcs')}
                             </a>
                           </li>
                           <li className="font-opensans text-sm">
                             <a href="#" className="text-primary hover:underline flex items-center">
-                              <i className="ri-sword-fill mr-1"></i> {t('landing.demoSection.campaignManager.encounters')}
+                              <i className="ri-sword-fill mr-1"></i> {t('landing.demoSection.campaignManager.linksList.encounters')}
                             </a>
                           </li>
                           <li className="font-opensans text-sm">
                             <a href="#" className="text-primary hover:underline flex items-center">
-                              <i className="ri-book-fill mr-1"></i> {t('landing.demoSection.campaignManager.sessionNotes')}
+                              <i className="ri-book-fill mr-1"></i> {t('landing.demoSection.campaignManager.linksList.sessionNotes')}
                             </a>
                           </li>
                         </ul>
