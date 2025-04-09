@@ -305,6 +305,64 @@
           "evernightForest_desc": "A dense, magical forest where it's always twilight, inhabited by fey creatures.",
           "havenVillage": "Haven Village",
           "havenVillage_desc": "A small settlement at the base of Frost Spire, the last safe haven before the wilderness."
+        },
+        "location1": {
+          "name": "Frost Spire Mountain"
+        },
+        "location2": {
+          "name": "Evernight Forest"
+        },
+        "location3": {
+          "name": "Haven Village"
+        }
+      },
+      "encounterBuilder": {
+        "settings": "Settings", 
+        "basicSetup": "Basic Setup",
+        "encounterName": "Encounter Name",
+        "location": "Location",
+        "difficulty": "Difficulty",
+        "difficulties": {
+          "easy": "Easy",
+          "medium": "Medium",
+          "hard": "Hard",
+          "deadly": "Deadly"
+        },
+        "partyLevel": "Party Level",
+        "partySize": "Party Size",
+        "encounterType": "Encounter Type",
+        "types": {
+          "combat": "Combat",
+          "social": "Social",
+          "puzzleTrap": "Puzzle/Trap",
+          "mixed": "Mixed"
+        },
+        "monstersAndCreatures": "Monsters & Creatures",
+        "filter": "Filter by name, CR, type...",
+        "addCreature": "Add Creature",
+        "cr": "CR",
+        "hp": "HP",
+        "ac": "AC",
+        "abilities": "Abilities",
+        "snowCamouflage": "Snow Camouflage",
+        "snowCamouflageDesc": "Advantage on Dexterity (Stealth) checks made to hide in snowy terrain.",
+        "keenSenses": "Keen Hearing & Smell",
+        "keenSensesDesc": "Advantage on Wisdom (Perception) checks that rely on hearing or smell.",
+        "actions": "Actions",
+        "bite": "Bite",
+        "biteDesc": "Melee attack: +6 to hit, reach 5 ft., one target. 10 (2d6 + 3) piercing damage.",
+        "coldBreath": "Cold Breath",
+        "coldBreathDesc": "15 ft. cone, recharge 5-6. DC 12 Dex save or take 18 (4d8) cold damage, half on save.",
+        "quantity": "Quantity",
+        "encounterSummary": "Encounter Summary",
+        "totalXP": "Total XP",
+        "difficultyLevel": "Difficulty",
+        "saveEncounter": "Save Encounter",
+        "creatures": {
+          "winterWolf": "Winter Wolf",
+          "winterWolfType": "Large monstrosity, neutral evil",
+          "iceMephit": "Ice Mephit",
+          "iceMephitType": "Small elemental, neutral evil"
         }
       }
     },

@@ -351,6 +351,64 @@
           "evernightForest_desc": "Uma floresta densa e mágica onde é sempre crepúsculo, habitada por criaturas feéricas.",
           "havenVillage": "Vila Refúgio",
           "havenVillage_desc": "Um pequeno assentamento na base do Pico Gelado, o último refúgio seguro antes da natureza selvagem."
+        },
+        "location1": {
+          "name": "Montanha Pico Gelado"
+        },
+        "location2": {
+          "name": "Floresta Noite Eterna"
+        },
+        "location3": {
+          "name": "Vila Refúgio"
+        }
+      },
+      "encounterBuilder": {
+        "settings": "Configurações", 
+        "basicSetup": "Configuração Básica",
+        "encounterName": "Nome do Encontro",
+        "location": "Localização",
+        "difficulty": "Dificuldade",
+        "difficulties": {
+          "easy": "Fácil",
+          "medium": "Médio",
+          "hard": "Difícil",
+          "deadly": "Mortal"
+        },
+        "partyLevel": "Nível do Grupo",
+        "partySize": "Tamanho do Grupo",
+        "encounterType": "Tipo de Encontro",
+        "types": {
+          "combat": "Combate",
+          "social": "Social",
+          "puzzleTrap": "Puzzle/Armadilha",
+          "mixed": "Misto"
+        },
+        "monstersAndCreatures": "Monstros e Criaturas",
+        "filter": "Filtrar por nome, ND, tipo...",
+        "addCreature": "Adicionar Criatura",
+        "cr": "ND",
+        "hp": "PV",
+        "ac": "CA",
+        "abilities": "Habilidades",
+        "snowCamouflage": "Camuflagem na Neve",
+        "snowCamouflageDesc": "Vantagem em testes de Destreza (Furtividade) para se esconder em terreno nevado.",
+        "keenSenses": "Audição e Olfato Aguçados",
+        "keenSensesDesc": "Vantagem em testes de Sabedoria (Percepção) que dependem de audição ou olfato.",
+        "actions": "Ações",
+        "bite": "Mordida",
+        "biteDesc": "Ataque corpo a corpo: +6 para acertar, alcance 1,5 m, um alvo. 10 (2d6 + 3) de dano perfurante.",
+        "coldBreath": "Sopro Gélido",
+        "coldBreathDesc": "Cone de 4,5 m, recarga 5-6. CD 12 de Des ou 18 (4d8) de dano de frio, metade com sucesso.",
+        "quantity": "Quantidade",
+        "encounterSummary": "Resumo do Encontro",
+        "totalXP": "XP Total",
+        "difficultyLevel": "Nível de Dificuldade",
+        "saveEncounter": "Salvar Encontro",
+        "creatures": {
+          "winterWolf": "Lobo do Inverno",
+          "winterWolfType": "Monstruosidade grande, mal neutro",
+          "iceMephit": "Méfite de Gelo",
+          "iceMephitType": "Elemental pequeno, mal neutro"
         }
       }
     },
