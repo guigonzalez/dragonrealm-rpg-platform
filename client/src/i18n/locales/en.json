@@ -19,7 +19,16 @@
     "logout": "Logout",
     "home": "Home",
     "dashboard": "Dashboard",
-    "language": "Language"
+    "language": "Language",
+    "saving": "Saving...",
+    "creating": "Creating...",
+    "confirm": "Confirm",
+    "confirmDelete": "Confirm Deletion",
+    "confirmDeleteMessage": "Are you sure you want to delete this item? This action cannot be undone.",
+    "confirmDeleteCharacter": "Are you sure you want to delete this character? This action cannot be undone.",
+    "confirmDeleteCampaign": "Are you sure you want to delete this campaign and all related data? This action cannot be undone.",
+    "deleteSuccess": "Successfully deleted",
+    "deleteError": "Error during deletion"
   },
   "auth": {
     "login": "Login",
@@ -43,7 +52,17 @@
     "createCharacter": "Create Character",
     "recentActivity": "Recent Activity",
     "quickAccess": "Quick Access",
-    "welcomeBack": "Welcome back"
+    "welcomeBack": "Welcome back",
+    "welcome": "Welcome to DragonRealm",
+    "subtitle": "Your digital companion for D&D adventures",
+    "buttons": {
+      "newCharacter": "New Character",
+      "newCampaign": "New Campaign"
+    },
+    "tabs": {
+      "characters": "Characters",
+      "campaigns": "Campaigns"
+    }
   },
   "campaign": {
     "campaigns": "Campaigns",
@@ -59,7 +78,12 @@
     "npcs": "NPCs",
     "encounters": "Encounters",
     "sessionNotes": "Session Notes",
-    "manageCampaign": "Manage Campaign"
+    "manageCampaign": "Manage Campaign",
+    "empty": {
+      "title": "No Campaigns Yet",
+      "description": "Create your first campaign to begin your journey as a Dungeon Master",
+      "button": "Create Campaign"
+    }
   },
   "character": {
     "characters": "Characters",
@@ -95,7 +119,12 @@
     "ideals": "Ideals",
     "bonds": "Bonds",
     "flaws": "Flaws",
-    "notes": "Notes"
+    "notes": "Notes",
+    "empty": {
+      "title": "No Characters Yet",
+      "description": "Create your first character to begin your adventure",
+      "button": "Create Character"
+    }
   },
   "npc": {
     "npcs": "NPCs",

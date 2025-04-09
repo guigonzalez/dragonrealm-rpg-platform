@@ -5,7 +5,6 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 // Import translations
 import enTranslation from './locales/en.json';
 import ptBRTranslation from './locales/pt-BR.json';
-import esTranslation from './locales/es.json';
 
 const resources = {
   en: {
@@ -13,9 +12,6 @@ const resources = {
   },
   'pt-BR': {
     translation: ptBRTranslation
-  },
-  es: {
-    translation: esTranslation
   }
 };
 
@@ -47,8 +43,7 @@ export default i18n;
 // Helper for language selector
 export const availableLanguages = [
   { code: 'en', name: 'English' },
-  { code: 'pt-BR', name: 'Português (BR)' },
-  { code: 'es', name: 'Español' }
+  { code: 'pt-BR', name: 'Português (BR)' }
 ];
 
 // Helper to change language
