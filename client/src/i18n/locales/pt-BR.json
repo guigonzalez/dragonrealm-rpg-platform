@@ -240,6 +240,96 @@
     "feature3Description": "Acompanhe estatísticas, inventário e habilidades com fichas de personagem interativas",
     "testimonialsTitle": "O que Nossos Usuários Dizem",
     "ctaTitle": "Pronto para Melhorar sua Experiência de D&D?",
-    "ctaSubtitle": "Junte-se a milhares de jogadores e mestres usando o DragonRealm"
+    "ctaSubtitle": "Junte-se a milhares de jogadores e mestres usando o DragonRealm",
+    "howItWorksSection": {
+      "title": "Como o DragonRealm Funciona",
+      "step1Title": "Crie Sua Conta",
+      "step1Description": "Cadastre-se e configure seu perfil em poucos cliques",
+      "step2Title": "Construa Seus Personagens",
+      "step2Description": "Crie fichas de personagem detalhadas seguindo as regras do D&D 5e",
+      "step3Title": "Projete Sua Campanha",
+      "step3Description": "Desenvolva seu mundo com locais, NPCs e encontros",
+      "step4Title": "Gerencie Seu Jogo",
+      "step4Description": "Conduza sessões com ferramentas interativas e mantenha o controle de tudo"
+    },
+    "demoSection": {
+      "title": "Experimente o DragonRealm",
+      "subtitle": "Veja de perto nossas poderosas ferramentas projetadas para aprimorar suas campanhas de D&D",
+      "tabs": {
+        "characterSheet": "Ficha de Personagem",
+        "campaignManager": "Gerenciador de Campanha",
+        "npcCreator": "Criador de NPCs",
+        "encounterBuilder": "Construtor de Encontros"
+      }
+    },
+    "pricingSection": {
+      "title": "Escolha Seu Plano de Aventura",
+      "subtitle": "Selecione o plano perfeito para sua jornada de D&D, de aventureiros solo a campanhas massivas",
+      "freePlan": {
+        "title": "Aventureiro",
+        "description": "Para jogadores solo",
+        "price": "R$0",
+        "period": "/mês",
+        "features": {
+          "characterSheet": "1 ficha de personagem",
+          "characterBuilder": "Construtor básico de personagem",
+          "diceRoller": "Rolador de dados e ferramentas básicas",
+          "campaignManagement": "Gerenciamento de campanha",
+          "npcCreator": "Criador de NPCs"
+        },
+        "button": "Começar Gratuitamente"
+      },
+      "standardPlan": {
+        "title": "Mestre de Jogo",
+        "description": "Para mestres de jogo",
+        "price": "R$49,90",
+        "period": "/mês",
+        "popular": "POPULAR",
+        "features": {
+          "characterSheets": "5 fichas de personagem",
+          "characterBuilder": "Construtor avançado de personagem",
+          "campaignManagement": "Gerenciamento de campanha",
+          "npcCreator": "Criador de NPCs e banco de dados",
+          "encounterBuilder": "Construtor de encontros"
+        },
+        "button": "Escolher Plano"
+      },
+      "premiumPlan": {
+        "title": "Lendário",
+        "description": "Para campanhas sérias",
+        "price": "R$99,90",
+        "period": "/mês",
+        "features": {
+          "unlimitedCharacters": "Personagens ilimitados",
+          "unlimitedCampaigns": "Campanhas ilimitadas",
+          "advancedTools": "Ferramentas avançadas de campanha",
+          "customContent": "Criação de conteúdo personalizado",
+          "prioritySupport": "Suporte prioritário"
+        },
+        "button": "Escolher Plano"
+      }
+    },
+    "footer": {
+      "description": "Melhorando sua experiência de D&D com ferramentas digitais poderosas para Mestres de Jogo e Jogadores",
+      "product": "Produto",
+      "features": "Recursos",
+      "pricing": "Preços",
+      "testimonials": "Depoimentos",
+      "company": "Empresa",
+      "about": "Sobre Nós",
+      "contact": "Contato",
+      "careers": "Carreiras",
+      "blog": "Blog",
+      "resources": "Recursos",
+      "documentation": "Documentação",
+      "tutorials": "Tutoriais",
+      "support": "Suporte",
+      "community": "Comunidade",
+      "legal": "Legal",
+      "terms": "Termos de Serviço",
+      "privacy": "Política de Privacidade",
+      "cookies": "Política de Cookies",
+      "copyright": "© 2025 DragonRealm. Todos os direitos reservados."
+    }
   }
 }

@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 export default function HowItWorksSection() {
+  const { t } = useTranslation();
   return (
     <section id="how-it-works" className="py-16 bg-secondary/10">
       <div className="container mx-auto px-6">
@@ -11,7 +13,7 @@ export default function HowItWorksSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          How DragonRealm Works
+          {t('landing.howItWorksSection.title')}
         </motion.h2>
         
         <div className="flex flex-col md:flex-row gap-8 items-center">
@@ -33,8 +35,8 @@ export default function HowItWorksSection() {
                 >
                   <div className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">1</div>
                   <div>
-                    <h3 className="font-lora font-semibold text-xl text-primary">Create an Account</h3>
-                    <p className="font-opensans text-foreground mt-2">Sign up with your email or use OAuth with Google or Discord to get started.</p>
+                    <h3 className="font-lora font-semibold text-xl text-primary">{t('landing.howItWorksSection.step1Title')}</h3>
+                    <p className="font-opensans text-foreground mt-2">{t('landing.howItWorksSection.step1Description')}</p>
                   </div>
                 </motion.div>
                 
@@ -47,8 +49,8 @@ export default function HowItWorksSection() {
                 >
                   <div className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">2</div>
                   <div>
-                    <h3 className="font-lora font-semibold text-xl text-primary">Build Your Campaign or Character</h3>
-                    <p className="font-opensans text-foreground mt-2">Game Masters can create campaigns, while players can build characters following D&D 5e rules.</p>
+                    <h3 className="font-lora font-semibold text-xl text-primary">{t('landing.howItWorksSection.step2Title')}</h3>
+                    <p className="font-opensans text-foreground mt-2">{t('landing.howItWorksSection.step2Description')}</p>
                   </div>
                 </motion.div>
                 
@@ -61,8 +63,8 @@ export default function HowItWorksSection() {
                 >
                   <div className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">3</div>
                   <div>
-                    <h3 className="font-lora font-semibold text-xl text-primary">Invite Players & Collaborate</h3>
-                    <p className="font-opensans text-foreground mt-2">Share your campaign with players or join existing campaigns with character sheets.</p>
+                    <h3 className="font-lora font-semibold text-xl text-primary">{t('landing.howItWorksSection.step3Title')}</h3>
+                    <p className="font-opensans text-foreground mt-2">{t('landing.howItWorksSection.step3Description')}</p>
                   </div>
                 </motion.div>
                 
@@ -75,8 +77,8 @@ export default function HowItWorksSection() {
                 >
                   <div className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">4</div>
                   <div>
-                    <h3 className="font-lora font-semibold text-xl text-primary">Play & Track Progress</h3>
-                    <p className="font-opensans text-foreground mt-2">Use the app during your sessions to manage encounters, track character stats, and record notes.</p>
+                    <h3 className="font-lora font-semibold text-xl text-primary">{t('landing.howItWorksSection.step4Title')}</h3>
+                    <p className="font-opensans text-foreground mt-2">{t('landing.howItWorksSection.step4Description')}</p>
                   </div>
                 </motion.div>
               </div>

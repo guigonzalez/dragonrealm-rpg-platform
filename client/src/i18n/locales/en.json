@@ -194,6 +194,96 @@
     "feature3Description": "Track stats, inventory, and abilities with interactive character sheets",
     "testimonialsTitle": "What Our Users Say",
     "ctaTitle": "Ready to Enhance Your D&D Experience?",
-    "ctaSubtitle": "Join thousands of players and DMs using DragonRealm"
+    "ctaSubtitle": "Join thousands of players and DMs using DragonRealm",
+    "howItWorksSection": {
+      "title": "How DragonRealm Works",
+      "step1Title": "Create Your Account",
+      "step1Description": "Sign up and set up your profile in just a few clicks",
+      "step2Title": "Build Your Characters",
+      "step2Description": "Create detailed character sheets following D&D 5e rules",
+      "step3Title": "Design Your Campaign",
+      "step3Description": "Craft your world with locations, NPCs, and encounters",
+      "step4Title": "Manage Your Game",
+      "step4Description": "Run sessions with interactive tools and keep track of everything"
+    },
+    "demoSection": {
+      "title": "Experience DragonRealm",
+      "subtitle": "Take a closer look at our powerful tools designed to enhance your D&D campaigns",
+      "tabs": {
+        "characterSheet": "Character Sheet",
+        "campaignManager": "Campaign Manager",
+        "npcCreator": "NPC Creator",
+        "encounterBuilder": "Encounter Builder"
+      }
+    },
+    "pricingSection": {
+      "title": "Choose Your Adventure Plan",
+      "subtitle": "Select the perfect plan for your D&D journey, from solo adventurers to massive campaigns",
+      "freePlan": {
+        "title": "Adventurer",
+        "description": "For solo players",
+        "price": "$0",
+        "period": "/month",
+        "features": {
+          "characterSheet": "1 character sheet",
+          "characterBuilder": "Basic character builder",
+          "diceRoller": "Dice roller & basic tools",
+          "campaignManagement": "Campaign management",
+          "npcCreator": "NPC creator"
+        },
+        "button": "Get Started Free"
+      },
+      "standardPlan": {
+        "title": "Dungeon Master",
+        "description": "For game masters",
+        "price": "$9.99",
+        "period": "/month",
+        "popular": "POPULAR",
+        "features": {
+          "characterSheets": "5 character sheets",
+          "characterBuilder": "Advanced character builder",
+          "campaignManagement": "Campaign management",
+          "npcCreator": "NPC creator & database",
+          "encounterBuilder": "Encounter builder"
+        },
+        "button": "Choose Plan"
+      },
+      "premiumPlan": {
+        "title": "Legendary",
+        "description": "For serious campaigns",
+        "price": "$19.99",
+        "period": "/month",
+        "features": {
+          "unlimitedCharacters": "Unlimited characters",
+          "unlimitedCampaigns": "Unlimited campaigns",
+          "advancedTools": "Advanced campaign tools",
+          "customContent": "Custom content creation",
+          "prioritySupport": "Priority support"
+        },
+        "button": "Choose Plan"
+      }
+    },
+    "footer": {
+      "description": "Enhancing your D&D experience with powerful digital tools for Game Masters and Players",
+      "product": "Product",
+      "features": "Features",
+      "pricing": "Pricing",
+      "testimonials": "Testimonials",
+      "company": "Company",
+      "about": "About Us",
+      "contact": "Contact",
+      "careers": "Careers",
+      "blog": "Blog",
+      "resources": "Resources",
+      "documentation": "Documentation",
+      "tutorials": "Tutorials",
+      "support": "Support",
+      "community": "Community",
+      "legal": "Legal",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy",
+      "cookies": "Cookie Policy",
+      "copyright": "© 2025 DragonRealm. All rights reserved."
+    }
   }
 }

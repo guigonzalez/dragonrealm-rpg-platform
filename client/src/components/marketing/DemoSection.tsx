@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { useTranslation } from "react-i18next";
 
 export default function DemoSection() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("character-sheet");
 
   return (
@@ -15,7 +17,7 @@ export default function DemoSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          Experience DragonRealm
+          {t('landing.demoSection.title')}
         </motion.h2>
         <motion.p 
           className="font-opensans text-center text-foreground max-w-2xl mx-auto mb-12"
@@ -24,7 +26,7 @@ export default function DemoSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          Take a closer look at our powerful tools designed to enhance your D&D campaigns.
+          {t('landing.demoSection.subtitle')}
         </motion.p>
         
         <motion.div 
@@ -41,25 +43,25 @@ export default function DemoSection() {
                   value="character-sheet" 
                   className={`text-white font-opensans font-medium px-4 py-2 rounded-t-lg focus:outline-none transition-colors hover:bg-primary/80 data-[state=active]:bg-primary/90 data-[state=active]:text-white data-[state=inactive]:text-white/70`}
                 >
-                  Character Sheet
+                  {t('landing.demoSection.tabs.characterSheet')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="campaign-manager" 
                   className={`text-white font-opensans font-medium px-4 py-2 rounded-t-lg focus:outline-none transition-colors hover:bg-primary/80 data-[state=active]:bg-primary/90 data-[state=active]:text-white data-[state=inactive]:text-white/70`}
                 >
-                  Campaign Manager
+                  {t('landing.demoSection.tabs.campaignManager')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="npc-creator" 
                   className={`text-white font-opensans font-medium px-4 py-2 rounded-t-lg focus:outline-none transition-colors hover:bg-primary/80 data-[state=active]:bg-primary/90 data-[state=active]:text-white data-[state=inactive]:text-white/70`}
                 >
-                  NPC Creator
+                  {t('landing.demoSection.tabs.npcCreator')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="encounter-builder" 
                   className={`text-white font-opensans font-medium px-4 py-2 rounded-t-lg focus:outline-none transition-colors hover:bg-primary/80 data-[state=active]:bg-primary/90 data-[state=active]:text-white data-[state=inactive]:text-white/70`}
                 >
-                  Encounter Builder
+                  {t('landing.demoSection.tabs.encounterBuilder')}
                 </TabsTrigger>
               </TabsList>
             </div>
