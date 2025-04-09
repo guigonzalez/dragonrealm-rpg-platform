@@ -1,32 +1,5 @@
 import { motion } from "framer-motion";
-
-const features = [
-  {
-    icon: <i className="ri-sword-fill text-2xl text-primary"></i>,
-    title: "Character Creation",
-    description: "Create and customize your D&D 5e characters following the official rules with our step-by-step wizard."
-  },
-  {
-    icon: <i className="ri-map-pin-fill text-2xl text-primary"></i>,
-    title: "Campaign Management",
-    description: "Build immersive worlds, manage NPCs, create encounters, and track your campaign's progress."
-  },
-  {
-    icon: <i className="ri-file-paper-2-fill text-2xl text-primary"></i>,
-    title: "Interactive Character Sheets",
-    description: "Manage character stats, inventory, spells, and abilities with real-time tracking and updates."
-  },
-  {
-    icon: <i className="ri-user-star-fill text-2xl text-primary"></i>,
-    title: "NPC Creation",
-    description: "Quickly generate and manage non-player characters with customizable templates and backstories."
-  },
-  {
-    icon: <i className="ri-book-fill text-2xl text-primary"></i>,
-    title: "Session Notes",
-    description: "Keep track of your adventures with structured session notes, player achievements, and quest logs."
-  }
-];
+import { useTranslation } from "react-i18next";
 
 const container = {
   hidden: { opacity: 0 },
@@ -44,6 +17,35 @@ const item = {
 };
 
 export default function FeaturesSection() {
+  const { t } = useTranslation();
+  
+  const features = [
+    {
+      icon: <i className="ri-sword-fill text-2xl text-primary"></i>,
+      title: t('landing.feature2Title'),
+      description: t('landing.feature2Description')
+    },
+    {
+      icon: <i className="ri-map-pin-fill text-2xl text-primary"></i>,
+      title: t('landing.feature1Title'),
+      description: t('landing.feature1Description')
+    },
+    {
+      icon: <i className="ri-file-paper-2-fill text-2xl text-primary"></i>,
+      title: t('landing.feature3Title'),
+      description: t('landing.feature3Description')
+    },
+    {
+      icon: <i className="ri-user-star-fill text-2xl text-primary"></i>,
+      title: t('npc.createNpc'),
+      description: t('npc.npcDetails')
+    },
+    {
+      icon: <i className="ri-book-fill text-2xl text-primary"></i>,
+      title: t('sessionNote.sessionNotes'),
+      description: t('sessionNote.content')
+    }
+  ];
   return (
     <section id="features" className="bg-white py-16">
       <div className="container mx-auto px-6">
@@ -54,7 +56,7 @@ export default function FeaturesSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          Powerful Tools for Players & Game Masters
+          {t('landing.featuresTitle')}
         </motion.h2>
         
         <motion.div 
