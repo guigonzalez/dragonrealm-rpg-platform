@@ -43,7 +43,23 @@
     "createCharacter": "Criar Personagem",
     "recentActivity": "Atividade Recente",
     "quickAccess": "Acesso Rápido",
-    "welcomeBack": "Bem-vindo de volta"
+    "welcomeBack": "Bem-vindo de volta",
+    "welcome": "Bem-vindo, {{name}}",
+    "subtitle": "Gerencie seus personagens e campanhas",
+    "buttons": {
+      "newCharacter": "Novo Personagem",
+      "newCampaign": "Nova Campanha"
+    },
+    "tabs": {
+      "characters": "Personagens",
+      "campaigns": "Campanhas"
+    },
+    "errors": {
+      "charactersTitle": "Erro ao carregar personagens",
+      "charactersDescription": "Falha ao carregar seus personagens. Por favor, tente novamente.",
+      "campaignsTitle": "Erro ao carregar campanhas",
+      "campaignsDescription": "Falha ao carregar suas campanhas. Por favor, tente novamente."
+    }
   },
   "campaign": {
     "campaigns": "Campanhas",
@@ -59,7 +75,18 @@
     "npcs": "NPCs",
     "encounters": "Encontros",
     "sessionNotes": "Notas de Sessão",
-    "manageCampaign": "Gerenciar Campanha"
+    "manageCampaign": "Gerenciar Campanha",
+    "noDescription": "Nenhuma descrição fornecida.",
+    "buttons": {
+      "manage": "Gerenciar",
+      "npcs": "NPCs",
+      "encounters": "Encontros"
+    },
+    "empty": {
+      "title": "Nenhuma Campanha Ainda",
+      "description": "Crie sua primeira campanha para começar sua história.",
+      "button": "Criar Campanha"
+    }
   },
   "character": {
     "characters": "Personagens",
@@ -69,6 +96,12 @@
     "characterName": "Nome do Personagem",
     "characterDetails": "Detalhes do Personagem",
     "characterSheet": "Ficha de Personagem",
+    "viewSheet": "Ver Ficha de Personagem",
+    "empty": {
+      "title": "Nenhum Personagem Ainda",
+      "description": "Crie seu primeiro personagem para começar sua aventura.",
+      "button": "Criar Personagem"
+    },
     "level": "Nível",
     "race": "Raça",
     "class": "Classe",

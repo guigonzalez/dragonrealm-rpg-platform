@@ -11,10 +11,12 @@ import { Character, Campaign } from "@shared/schema";
 import { Plus, BookOpen, Swords, Scroll, Loader2 } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("characters");
   
   // Fetch user's characters
@@ -41,20 +43,20 @@ export default function DashboardPage() {
   useEffect(() => {
     if (charactersError) {
       toast({
-        title: "Error loading characters",
-        description: "Failed to load your characters. Please try again.",
+        title: t("dashboard.errors.charactersTitle"),
+        description: t("dashboard.errors.charactersDescription"),
         variant: "destructive",
       });
     }
     
     if (campaignsError) {
       toast({
-        title: "Error loading campaigns",
-        description: "Failed to load your campaigns. Please try again.",
+        title: t("dashboard.errors.campaignsTitle"),
+        description: t("dashboard.errors.campaignsDescription"),
         variant: "destructive",
       });
     }
-  }, [charactersError, campaignsError, toast]);
+  }, [charactersError, campaignsError, toast, t]);
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -63,20 +65,20 @@ export default function DashboardPage() {
         <div className="container mx-auto px-6 py-12">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <div>
-              <h1 className="font-lora font-bold text-3xl text-primary mb-2">Welcome, {user?.displayName || user?.username}</h1>
-              <p className="text-secondary">Manage your characters and campaigns</p>
+              <h1 className="font-lora font-bold text-3xl text-primary mb-2">{t("dashboard.welcome", { name: user?.displayName || user?.username })}</h1>
+              <p className="text-secondary">{t("dashboard.subtitle")}</p>
             </div>
             <div className="flex space-x-3 mt-4 md:mt-0">
               <Link href="/character-creation">
                 <Button className="magic-button flex items-center">
                   <Plus className="mr-2 h-4 w-4" />
-                  New Character
+                  {t("dashboard.buttons.newCharacter")}
                 </Button>
               </Link>
               <Link href="/campaign-management">
                 <Button variant="outline" className="flex items-center">
                   <Plus className="mr-2 h-4 w-4" />
-                  New Campaign
+                  {t("dashboard.buttons.newCampaign")}
                 </Button>
               </Link>
             </div>
@@ -84,8 +86,8 @@ export default function DashboardPage() {
           
           <Tabs defaultValue="characters" value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full md:w-[400px] grid-cols-2">
-              <TabsTrigger value="characters" className="font-lora">Characters</TabsTrigger>
-              <TabsTrigger value="campaigns" className="font-lora">Campaigns</TabsTrigger>
+              <TabsTrigger value="characters" className="font-lora">{t("dashboard.tabs.characters")}</TabsTrigger>
+              <TabsTrigger value="campaigns" className="font-lora">{t("dashboard.tabs.campaigns")}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="characters" className="mt-6">
@@ -122,13 +124,13 @@ export default function DashboardPage() {
                         
                         {character.background && (
                           <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
-                            <span className="font-semibold">Background:</span> {character.background}
+                            <span className="font-semibold">{t("character.background")}:</span> {character.background}
                           </p>
                         )}
                       </CardContent>
                       <CardFooter>
                         <Link href={`/character-sheet/${character.id}`}>
-                          <Button className="w-full">View Character Sheet</Button>
+                          <Button className="w-full">{t("character.viewSheet")}</Button>
                         </Link>
                       </CardFooter>
                     </Card>
@@ -138,10 +140,10 @@ export default function DashboardPage() {
                 <Card className="bg-muted/40">
                   <CardContent className="flex flex-col items-center justify-center p-12 text-center">
                     <Swords className="h-12 w-12 text-primary/40 mb-4" />
-                    <h3 className="font-lora text-xl font-semibold mb-2">No Characters Yet</h3>
-                    <p className="text-muted-foreground mb-6">Create your first character to begin your adventure.</p>
+                    <h3 className="font-lora text-xl font-semibold mb-2">{t("character.empty.title")}</h3>
+                    <p className="text-muted-foreground mb-6">{t("character.empty.description")}</p>
                     <Link href="/character-creation">
-                      <Button className="magic-button">Create Character</Button>
+                      <Button className="magic-button">{t("character.empty.button")}</Button>
                     </Link>
                   </CardContent>
                 </Card>
@@ -166,22 +168,22 @@ export default function DashboardPage() {
                       </CardHeader>
                       <CardContent>
                         <p className="text-sm text-muted-foreground line-clamp-3">
-                          {campaign.description || "No description provided."}
+                          {campaign.description || t("campaign.noDescription")}
                         </p>
                       </CardContent>
                       <CardFooter className="flex justify-between">
                         <Link href={`/campaign-management/${campaign.id}`}>
                           <Button variant="outline" className="flex items-center">
                             <BookOpen className="mr-2 h-4 w-4" />
-                            Manage
+                            {t("campaign.buttons.manage")}
                           </Button>
                         </Link>
                         <div className="flex space-x-2">
                           <Link href={`/npc-creator/${campaign.id}`}>
-                            <Button variant="ghost" size="sm" className="h-9 px-2">NPCs</Button>
+                            <Button variant="ghost" size="sm" className="h-9 px-2">{t("campaign.buttons.npcs")}</Button>
                           </Link>
                           <Link href={`/encounter-builder/${campaign.id}`}>
-                            <Button variant="ghost" size="sm" className="h-9 px-2">Encounters</Button>
+                            <Button variant="ghost" size="sm" className="h-9 px-2">{t("campaign.buttons.encounters")}</Button>
                           </Link>
                         </div>
                       </CardFooter>
@@ -192,10 +194,10 @@ export default function DashboardPage() {
                 <Card className="bg-muted/40">
                   <CardContent className="flex flex-col items-center justify-center p-12 text-center">
                     <Scroll className="h-12 w-12 text-primary/40 mb-4" />
-                    <h3 className="font-lora text-xl font-semibold mb-2">No Campaigns Yet</h3>
-                    <p className="text-muted-foreground mb-6">Create your first campaign to begin your story.</p>
+                    <h3 className="font-lora text-xl font-semibold mb-2">{t("campaign.empty.title")}</h3>
+                    <p className="text-muted-foreground mb-6">{t("campaign.empty.description")}</p>
                     <Link href="/campaign-management">
-                      <Button className="magic-button">Create Campaign</Button>
+                      <Button className="magic-button">{t("campaign.empty.button")}</Button>
                     </Link>
                   </CardContent>
                 </Card>
