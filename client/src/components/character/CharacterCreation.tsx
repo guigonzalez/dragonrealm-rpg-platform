@@ -219,9 +219,18 @@ export default function CharacterCreation() {
   
   // Form submission handler
   const onSubmit = (data: CharacterFormValues) => {
-    // Ensure arrays are up to date
-    updateFormArrays();
-    createMutation.mutate(data);
+    // Create a new object with the form data and the current array values
+    const formDataWithArrays: CharacterFormValues = {
+      ...data,
+      savingThrows,
+      skills,
+      equipment,
+      spells,
+      features
+    };
+    
+    // Now submit the complete data
+    createMutation.mutate(formDataWithArrays);
   };
   
   // Roll dice for ability scores
@@ -288,8 +297,7 @@ export default function CharacterCreation() {
   
   // Tab navigation
   const goToNextTab = () => {
-    updateFormArrays();
-    
+    // No need to update form arrays as they will be included when we submit
     if (currentTab === "basics") setCurrentTab("abilities");
     else if (currentTab === "abilities") setCurrentTab("equipment");
     else if (currentTab === "equipment") setCurrentTab("features");
