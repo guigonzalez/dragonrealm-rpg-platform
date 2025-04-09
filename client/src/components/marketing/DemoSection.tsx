@@ -233,52 +233,52 @@ export default function DemoSection() {
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                 <div className="lg:col-span-1">
                   <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/30 shadow">
-                    <h3 className="font-lora font-semibold text-xl text-primary mb-4">Campaign: Frost Spire Saga</h3>
+                    <h3 className="font-lora font-semibold text-xl text-primary mb-4">{t('landing.demoSection.campaignManager.title')}: {t('landing.demoSection.campaignManager.campaignName')}</h3>
                     
                     <div className="space-y-4">
                       <div>
-                        <h4 className="font-lora font-semibold text-md text-primary mb-2">Players</h4>
+                        <h4 className="font-lora font-semibold text-md text-primary mb-2">{t('landing.demoSection.campaignManager.players')}</h4>
                         <ul className="bg-white rounded-lg p-3 border border-secondary/30 shadow-sm space-y-2">
                           <li className="font-opensans text-sm flex items-center">
                             <div className="w-6 h-6 bg-primary rounded-full mr-2"></div>
-                            <span>Jessica - Elven Ranger</span>
+                            <span>{t('landing.demoSection.campaignManager.player1')}</span>
                           </li>
                           <li className="font-opensans text-sm flex items-center">
                             <div className="w-6 h-6 bg-accent rounded-full mr-2"></div>
-                            <span>Michael - Human Wizard</span>
+                            <span>{t('landing.demoSection.campaignManager.player2')}</span>
                           </li>
                           <li className="font-opensans text-sm flex items-center">
                             <div className="w-6 h-6 bg-green-600 rounded-full mr-2"></div>
-                            <span>Thordak - Dwarven Paladin</span>
+                            <span>{t('landing.demoSection.campaignManager.player3')}</span>
                           </li>
                           <li className="font-opensans text-sm flex items-center opacity-50">
                             <div className="w-6 h-6 bg-gray-400 rounded-full mr-2 flex items-center justify-center text-white text-xs">+</div>
-                            <span>Invite Player</span>
+                            <span>{t('landing.demoSection.campaignManager.invitePlayer')}</span>
                           </li>
                         </ul>
                       </div>
                       
                       <div>
-                        <h4 className="font-lora font-semibold text-md text-primary mb-2">Campaign Links</h4>
+                        <h4 className="font-lora font-semibold text-md text-primary mb-2">{t('landing.demoSection.campaignManager.campaignLinks')}</h4>
                         <ul className="bg-white rounded-lg p-3 border border-secondary/30 shadow-sm space-y-2">
                           <li className="font-opensans text-sm">
                             <a href="#" className="text-primary hover:underline flex items-center">
-                              <i className="ri-map-fill mr-1"></i> World Map
+                              <i className="ri-map-fill mr-1"></i> {t('landing.demoSection.campaignManager.worldMap')}
                             </a>
                           </li>
                           <li className="font-opensans text-sm">
                             <a href="#" className="text-primary hover:underline flex items-center">
-                              <i className="ri-user-star-fill mr-1"></i> NPCs
+                              <i className="ri-user-star-fill mr-1"></i> {t('landing.demoSection.campaignManager.npcs')}
                             </a>
                           </li>
                           <li className="font-opensans text-sm">
                             <a href="#" className="text-primary hover:underline flex items-center">
-                              <i className="ri-sword-fill mr-1"></i> Encounters
+                              <i className="ri-sword-fill mr-1"></i> {t('landing.demoSection.campaignManager.encounters')}
                             </a>
                           </li>
                           <li className="font-opensans text-sm">
                             <a href="#" className="text-primary hover:underline flex items-center">
-                              <i className="ri-book-fill mr-1"></i> Session Notes
+                              <i className="ri-book-fill mr-1"></i> {t('landing.demoSection.campaignManager.sessionNotes')}
                             </a>
                           </li>
                         </ul>
@@ -290,13 +290,13 @@ export default function DemoSection() {
                 <div className="lg:col-span-3">
                   <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/30 shadow">
                     <div className="flex justify-between mb-4">
-                      <h3 className="font-lora font-semibold text-xl text-primary">World Building</h3>
+                      <h3 className="font-lora font-semibold text-xl text-primary">{t('landing.demoSection.campaignManager.worldBuilding')}</h3>
                       <div className="flex space-x-2">
                         <button className="text-sm bg-white text-primary border border-primary px-3 py-1 rounded">
-                          <i className="ri-save-line mr-1"></i> Save
+                          <i className="ri-save-line mr-1"></i> {t('landing.demoSection.campaignManager.save')}
                         </button>
                         <button className="text-sm bg-primary text-white px-3 py-1 rounded magic-button">
-                          <i className="ri-add-line mr-1"></i> Add Location
+                          <i className="ri-add-line mr-1"></i> {t('landing.demoSection.campaignManager.addLocation')}
                         </button>
                       </div>
                     </div>
@@ -304,44 +304,44 @@ export default function DemoSection() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="bg-white rounded-lg p-4 border border-secondary/30 shadow-sm">
                         <img src="https://images.unsplash.com/photo-1596825205280-5d1bec35f0a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Frost Spire Mountain" className="w-full h-40 object-cover rounded-md mb-3" />
-                        <h4 className="font-lora font-semibold text-lg text-primary mb-1">Frost Spire Mountain</h4>
+                        <h4 className="font-lora font-semibold text-lg text-primary mb-1">{t('landing.demoSection.campaignManager.location1.name')}</h4>
                         <p className="font-opensans text-sm text-foreground mb-3">
-                          A treacherous mountain peak shrouded in eternal winter, home to the ancient white dragon Rimefang.
+                          {t('landing.demoSection.campaignManager.location1.description')}
                         </p>
                         <div className="flex justify-between text-xs text-foreground/70">
-                          <span>Created: 05/15/2023</span>
-                          <button className="text-primary hover:underline">Edit</button>
+                          <span>{t('landing.demoSection.campaignManager.created')}: 05/15/2023</span>
+                          <button className="text-primary hover:underline">{t('landing.demoSection.campaignManager.edit')}</button>
                         </div>
                       </div>
                       
                       <div className="bg-white rounded-lg p-4 border border-secondary/30 shadow-sm">
                         <img src="https://images.unsplash.com/photo-1486825586573-7131f7991bdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Evernight Forest" className="w-full h-40 object-cover rounded-md mb-3" />
-                        <h4 className="font-lora font-semibold text-lg text-primary mb-1">Evernight Forest</h4>
+                        <h4 className="font-lora font-semibold text-lg text-primary mb-1">{t('landing.demoSection.campaignManager.location2.name')}</h4>
                         <p className="font-opensans text-sm text-foreground mb-3">
-                          A dense forest where sunlight never penetrates the canopy, inhabited by fey creatures and ancient treants.
+                          {t('landing.demoSection.campaignManager.location2.description')}
                         </p>
                         <div className="flex justify-between text-xs text-foreground/70">
-                          <span>Created: 05/10/2023</span>
-                          <button className="text-primary hover:underline">Edit</button>
+                          <span>{t('landing.demoSection.campaignManager.created')}: 05/10/2023</span>
+                          <button className="text-primary hover:underline">{t('landing.demoSection.campaignManager.edit')}</button>
                         </div>
                       </div>
                       
                       <div className="bg-white rounded-lg p-4 border border-secondary/30 shadow-sm">
                         <img src="https://images.unsplash.com/photo-1519120944692-1a8d8cfc107f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Haven Village" className="w-full h-40 object-cover rounded-md mb-3" />
-                        <h4 className="font-lora font-semibold text-lg text-primary mb-1">Haven Village</h4>
+                        <h4 className="font-lora font-semibold text-lg text-primary mb-1">{t('landing.demoSection.campaignManager.location3.name')}</h4>
                         <p className="font-opensans text-sm text-foreground mb-3">
-                          A small settlement at the base of Frost Spire, where villagers live in fear of the dragon's occasional raids.
+                          {t('landing.demoSection.campaignManager.location3.description')}
                         </p>
                         <div className="flex justify-between text-xs text-foreground/70">
-                          <span>Created: 05/05/2023</span>
-                          <button className="text-primary hover:underline">Edit</button>
+                          <span>{t('landing.demoSection.campaignManager.created')}: 05/05/2023</span>
+                          <button className="text-primary hover:underline">{t('landing.demoSection.campaignManager.edit')}</button>
                         </div>
                       </div>
                       
                       <div className="bg-white/50 rounded-lg p-4 border border-dashed border-secondary/50 shadow-sm flex flex-col items-center justify-center h-full">
                         <i className="ri-add-circle-line text-4xl text-secondary/50 mb-2"></i>
                         <p className="font-opensans text-sm text-foreground/70 text-center">
-                          Add a new location to your campaign world
+                          {t('landing.demoSection.campaignManager.addLocationHint')}
                         </p>
                       </div>
                     </div>
@@ -355,60 +355,60 @@ export default function DemoSection() {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-1">
                   <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/30 shadow h-full">
-                    <h3 className="font-lora font-semibold text-xl text-primary mb-4">NPC Creator</h3>
+                    <h3 className="font-lora font-semibold text-xl text-primary mb-4">{t('landing.demoSection.npcCreator.title')}</h3>
                     
                     <div className="space-y-4">
                       <div className="bg-white rounded-lg p-4 border border-secondary/30 shadow-sm">
-                        <h4 className="font-lora font-semibold text-md text-primary mb-3">Basic Information</h4>
+                        <h4 className="font-lora font-semibold text-md text-primary mb-3">{t('landing.demoSection.npcCreator.basicInformation')}</h4>
                         
                         <div className="space-y-3">
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Name</label>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.npcCreator.name')}</label>
                             <input type="text" value="Grimwald the Sage" className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50" />
                           </div>
                           
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Race</label>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.npcCreator.race')}</label>
                             <select className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
-                              <option>Human</option>
-                              <option>Elf</option>
-                              <option>Dwarf</option>
-                              <option>Halfling</option>
-                              <option selected>Gnome</option>
-                              <option>Half-Elf</option>
-                              <option>Half-Orc</option>
-                              <option>Tiefling</option>
+                              <option>{t('landing.demoSection.npcCreator.races.human')}</option>
+                              <option>{t('landing.demoSection.npcCreator.races.elf')}</option>
+                              <option>{t('landing.demoSection.npcCreator.races.dwarf')}</option>
+                              <option>{t('landing.demoSection.npcCreator.races.halfling')}</option>
+                              <option selected>{t('landing.demoSection.npcCreator.races.gnome')}</option>
+                              <option>{t('landing.demoSection.npcCreator.races.halfElf')}</option>
+                              <option>{t('landing.demoSection.npcCreator.races.halfOrc')}</option>
+                              <option>{t('landing.demoSection.npcCreator.races.tiefling')}</option>
                             </select>
                           </div>
                           
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Occupation</label>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.npcCreator.occupation')}</label>
                             <input type="text" value="Wizard Librarian" className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50" />
                           </div>
                           
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Location</label>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.npcCreator.location')}</label>
                             <select className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
-                              <option selected>Haven Village</option>
-                              <option>Frost Spire Mountain</option>
-                              <option>Evernight Forest</option>
+                              <option selected>{t('landing.demoSection.campaignManager.location3.name')}</option>
+                              <option>{t('landing.demoSection.campaignManager.location1.name')}</option>
+                              <option>{t('landing.demoSection.campaignManager.location2.name')}</option>
                             </select>
                           </div>
                         </div>
                       </div>
                       
                       <div className="bg-white rounded-lg p-4 border border-secondary/30 shadow-sm">
-                        <h4 className="font-lora font-semibold text-md text-primary mb-3">Appearance</h4>
+                        <h4 className="font-lora font-semibold text-md text-primary mb-3">{t('landing.demoSection.npcCreator.appearance')}</h4>
                         
                         <div className="space-y-3">
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Age</label>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.npcCreator.age')}</label>
                             <input type="text" value="237" className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50" />
                           </div>
                           
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Distinctive Features</label>
-                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20">White beard that reaches his knees, spectacles with crystal lenses that magnify his eyes, and a slight hunch from decades of reading ancient tomes.</textarea>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.npcCreator.distinctiveFeatures')}</label>
+                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20">{t('landing.demoSection.npcCreator.featuresExample')}</textarea>
                           </div>
                         </div>
                       </div>
@@ -419,56 +419,56 @@ export default function DemoSection() {
                 <div className="lg:col-span-2">
                   <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/30 shadow">
                     <div className="flex justify-between mb-4">
-                      <h3 className="font-lora font-semibold text-xl text-primary">NPC Details</h3>
+                      <h3 className="font-lora font-semibold text-xl text-primary">{t('landing.demoSection.npcCreator.details')}</h3>
                       <div className="flex space-x-2">
                         <button className="text-sm bg-white text-primary border border-primary px-3 py-1 rounded">
-                          <i className="ri-save-line mr-1"></i> Save Draft
+                          <i className="ri-save-line mr-1"></i> {t('landing.demoSection.npcCreator.saveDraft')}
                         </button>
                         <button className="text-sm bg-primary text-white px-3 py-1 rounded magic-button">
-                          <i className="ri-check-line mr-1"></i> Create NPC
+                          <i className="ri-check-line mr-1"></i> {t('landing.demoSection.npcCreator.createNpc')}
                         </button>
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="bg-white rounded-lg p-4 border border-secondary/30 shadow-sm">
-                        <h4 className="font-lora font-semibold text-md text-primary mb-3">Personality</h4>
+                        <h4 className="font-lora font-semibold text-md text-primary mb-3">{t('landing.demoSection.npcCreator.personality')}</h4>
                         
                         <div className="space-y-3">
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Traits</label>
-                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20">Absent-minded but brilliant. Often speaks in riddles and ancient proverbs. Becomes extremely focused when discussing magical theory.</textarea>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.npcCreator.traits')}</label>
+                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20" defaultValue={t('landing.demoSection.npcCreator.traitsExample')}></textarea>
                           </div>
                           
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Ideals</label>
-                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20">Knowledge should be preserved and shared with those worthy of it. The greatest power comes from understanding, not brute force.</textarea>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.npcCreator.ideals')}</label>
+                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20" defaultValue={t('landing.demoSection.npcCreator.idealsExample')}></textarea>
                           </div>
                           
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Voice</label>
-                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20">High-pitched and slightly raspy. Tends to clear his throat before making important points. Occasionally breaks into ancient languages mid-sentence.</textarea>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.npcCreator.voice')}</label>
+                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20" defaultValue={t('landing.demoSection.npcCreator.voiceExample')}></textarea>
                           </div>
                         </div>
                       </div>
                       
                       <div className="bg-white rounded-lg p-4 border border-secondary/30 shadow-sm">
-                        <h4 className="font-lora font-semibold text-md text-primary mb-3">Role in Campaign</h4>
+                        <h4 className="font-lora font-semibold text-md text-primary mb-3">{t('landing.demoSection.npcCreator.roleInCampaign')}</h4>
                         
                         <div className="space-y-3">
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Knowledge & Abilities</label>
-                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20">Expert in ancient history and magical artifacts. Can identify most magical items. Knows spells up to 5th level, specializing in divination.</textarea>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.npcCreator.abilities')}</label>
+                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20" defaultValue={t('landing.demoSection.npcCreator.abilitiesExample')}></textarea>
                           </div>
                           
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Plot Hooks</label>
-                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20">Recently discovered references to a magical artifact that could weaken Rimefang the dragon. Has been receiving threatening messages from an unknown source warning him to stop his research.</textarea>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.npcCreator.plotHooks')}</label>
+                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20" defaultValue={t('landing.demoSection.npcCreator.plotHooksExample')}></textarea>
                           </div>
                           
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Relationship to Players</label>
-                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20">Potential mentor to any arcane spellcasters in the party. Will offer information and guidance in exchange for rare books or magical components.</textarea>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.npcCreator.relationshipToPlayers')}</label>
+                            <textarea className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 h-20" defaultValue={t('landing.demoSection.npcCreator.relationshipExample')}></textarea>
                           </div>
                         </div>
                       </div>
@@ -483,39 +483,39 @@ export default function DemoSection() {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-1">
                   <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/30 shadow">
-                    <h3 className="font-lora font-semibold text-xl text-primary mb-4">Encounter Settings</h3>
+                    <h3 className="font-lora font-semibold text-xl text-primary mb-4">{t('landing.demoSection.encounterBuilder.settings')}</h3>
                     
                     <div className="space-y-4">
                       <div className="bg-white rounded-lg p-4 border border-secondary/30 shadow-sm">
-                        <h4 className="font-lora font-semibold text-md text-primary mb-3">Basic Setup</h4>
+                        <h4 className="font-lora font-semibold text-md text-primary mb-3">{t('landing.demoSection.encounterBuilder.basicSetup')}</h4>
                         
                         <div className="space-y-3">
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Encounter Name</label>
-                            <input type="text" value="Frost Wolf Ambush" className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50" />
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.encounterBuilder.encounterName')}</label>
+                            <input type="text" defaultValue="Frost Wolf Ambush" className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50" />
                           </div>
                           
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Location</label>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.encounterBuilder.location')}</label>
                             <select className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
-                              <option>Haven Village</option>
-                              <option selected>Frost Spire Mountain</option>
-                              <option>Evernight Forest</option>
+                              <option>{t('landing.demoSection.campaignManager.location3.name')}</option>
+                              <option selected>{t('landing.demoSection.campaignManager.location1.name')}</option>
+                              <option>{t('landing.demoSection.campaignManager.location2.name')}</option>
                             </select>
                           </div>
                           
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Difficulty</label>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.encounterBuilder.difficulty')}</label>
                             <select className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
-                              <option>Easy</option>
-                              <option selected>Medium</option>
-                              <option>Hard</option>
-                              <option>Deadly</option>
+                              <option>{t('landing.demoSection.encounterBuilder.difficulties.easy')}</option>
+                              <option selected>{t('landing.demoSection.encounterBuilder.difficulties.medium')}</option>
+                              <option>{t('landing.demoSection.encounterBuilder.difficulties.hard')}</option>
+                              <option>{t('landing.demoSection.encounterBuilder.difficulties.deadly')}</option>
                             </select>
                           </div>
                           
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Party Level (Average)</label>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.encounterBuilder.partyLevel')}</label>
                             <select className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
                               <option>3</option>
                               <option>4</option>
@@ -525,7 +525,7 @@ export default function DemoSection() {
                           </div>
                           
                           <div>
-                            <label className="font-opensans text-sm text-foreground block mb-1">Party Size</label>
+                            <label className="font-opensans text-sm text-foreground block mb-1">{t('landing.demoSection.encounterBuilder.partySize')}</label>
                             <select className="w-full px-3 py-2 border border-secondary/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
                               <option>2</option>
                               <option selected>3</option>
@@ -537,24 +537,24 @@ export default function DemoSection() {
                       </div>
                       
                       <div className="bg-white rounded-lg p-4 border border-secondary/30 shadow-sm">
-                        <h4 className="font-lora font-semibold text-md text-primary mb-3">Encounter Type</h4>
+                        <h4 className="font-lora font-semibold text-md text-primary mb-3">{t('landing.demoSection.encounterBuilder.encounterType')}</h4>
                         
                         <div className="space-y-2">
                           <div className="flex items-center">
-                            <input type="radio" id="combat" name="encounter-type" checked className="text-primary focus:ring-primary" />
-                            <label htmlFor="combat" className="font-opensans text-sm text-foreground ml-2">Combat</label>
+                            <input type="radio" id="combat" name="encounter-type" defaultChecked className="text-primary focus:ring-primary" />
+                            <label htmlFor="combat" className="font-opensans text-sm text-foreground ml-2">{t('landing.demoSection.encounterBuilder.types.combat')}</label>
                           </div>
                           <div className="flex items-center">
                             <input type="radio" id="social" name="encounter-type" className="text-primary focus:ring-primary" />
-                            <label htmlFor="social" className="font-opensans text-sm text-foreground ml-2">Social</label>
+                            <label htmlFor="social" className="font-opensans text-sm text-foreground ml-2">{t('landing.demoSection.encounterBuilder.types.social')}</label>
                           </div>
                           <div className="flex items-center">
                             <input type="radio" id="puzzle" name="encounter-type" className="text-primary focus:ring-primary" />
-                            <label htmlFor="puzzle" className="font-opensans text-sm text-foreground ml-2">Puzzle/Trap</label>
+                            <label htmlFor="puzzle" className="font-opensans text-sm text-foreground ml-2">{t('landing.demoSection.encounterBuilder.types.puzzleTrap')}</label>
                           </div>
                           <div className="flex items-center">
                             <input type="radio" id="mixed" name="encounter-type" className="text-primary focus:ring-primary" />
-                            <label htmlFor="mixed" className="font-opensans text-sm text-foreground ml-2">Mixed</label>
+                            <label htmlFor="mixed" className="font-opensans text-sm text-foreground ml-2">{t('landing.demoSection.encounterBuilder.types.mixed')}</label>
                           </div>
                         </div>
                       </div>
@@ -565,13 +565,13 @@ export default function DemoSection() {
                 <div className="lg:col-span-2">
                   <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/30 shadow">
                     <div className="flex justify-between mb-4">
-                      <h3 className="font-lora font-semibold text-xl text-primary">Monsters & Creatures</h3>
+                      <h3 className="font-lora font-semibold text-xl text-primary">{t('landing.demoSection.encounterBuilder.monstersAndCreatures')}</h3>
                       <div className="flex space-x-2">
                         <button className="text-sm bg-white text-primary border border-primary px-3 py-1 rounded">
-                          <i className="ri-filter-line mr-1"></i> Filter
+                          <i className="ri-filter-line mr-1"></i> {t('landing.demoSection.encounterBuilder.filter')}
                         </button>
                         <button className="text-sm bg-primary text-white px-3 py-1 rounded magic-button">
-                          <i className="ri-add-line mr-1"></i> Add Creature
+                          <i className="ri-add-line mr-1"></i> {t('landing.demoSection.encounterBuilder.addCreature')}
                         </button>
                       </div>
                     </div>
@@ -581,21 +581,21 @@ export default function DemoSection() {
                         <div className="flex items-center mb-2 md:mb-0">
                           <img src="https://images.unsplash.com/photo-1551975036-b8935e64e531?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Winter Wolf" className="w-12 h-12 object-cover rounded-md mr-3" />
                           <div>
-                            <h4 className="font-lora font-semibold text-lg text-primary">Winter Wolf</h4>
-                            <p className="font-opensans text-xs text-foreground/70">Large monstrosity, neutral evil</p>
+                            <h4 className="font-lora font-semibold text-lg text-primary">{t('landing.demoSection.encounterBuilder.creatures.winterWolf')}</h4>
+                            <p className="font-opensans text-xs text-foreground/70">{t('landing.demoSection.encounterBuilder.creatures.winterWolfType')}</p>
                           </div>
                         </div>
                         <div className="flex space-x-2">
                           <div className="text-center">
-                            <span className="font-opensans text-xs text-foreground/70 block">CR</span>
+                            <span className="font-opensans text-xs text-foreground/70 block">{t('landing.demoSection.encounterBuilder.cr')}</span>
                             <span className="font-opensans font-semibold text-primary">3</span>
                           </div>
                           <div className="text-center ml-3">
-                            <span className="font-opensans text-xs text-foreground/70 block">HP</span>
+                            <span className="font-opensans text-xs text-foreground/70 block">{t('landing.demoSection.encounterBuilder.hp')}</span>
                             <span className="font-opensans font-semibold text-primary">75</span>
                           </div>
                           <div className="text-center ml-3">
-                            <span className="font-opensans text-xs text-foreground/70 block">AC</span>
+                            <span className="font-opensans text-xs text-foreground/70 block">{t('landing.demoSection.encounterBuilder.ac')}</span>
                             <span className="font-opensans font-semibold text-primary">13</span>
                           </div>
                           <div className="flex space-x-1 items-center ml-4">
@@ -611,29 +611,29 @@ export default function DemoSection() {
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <h5 className="font-lora font-semibold text-sm text-primary mb-1">Abilities</h5>
+                          <h5 className="font-lora font-semibold text-sm text-primary mb-1">{t('landing.demoSection.encounterBuilder.abilities')}</h5>
                           <p className="font-opensans text-xs text-foreground mb-2">
-                            <span className="font-semibold">Snow Camouflage:</span> Advantage on Dexterity (Stealth) checks in snowy terrain.
+                            <span className="font-semibold">{t('landing.demoSection.encounterBuilder.snowCamouflage')}:</span> {t('landing.demoSection.encounterBuilder.snowCamouflageDesc')}
                           </p>
                           <p className="font-opensans text-xs text-foreground">
-                            <span className="font-semibold">Keen Hearing and Smell:</span> Advantage on Wisdom (Perception) checks that rely on hearing or smell.
+                            <span className="font-semibold">{t('landing.demoSection.encounterBuilder.keenSenses')}:</span> {t('landing.demoSection.encounterBuilder.keenSensesDesc')}
                           </p>
                         </div>
                         
                         <div>
-                          <h5 className="font-lora font-semibold text-sm text-primary mb-1">Actions</h5>
+                          <h5 className="font-lora font-semibold text-sm text-primary mb-1">{t('landing.demoSection.encounterBuilder.actions')}</h5>
                           <p className="font-opensans text-xs text-foreground mb-2">
-                            <span className="font-semibold">Bite:</span> +6 to hit, 10 (2d6 + 3) piercing damage. If target is a creature, it must succeed on a DC 14 Strength saving throw or be knocked prone.
+                            <span className="font-semibold">{t('landing.demoSection.encounterBuilder.bite')}:</span> {t('landing.demoSection.encounterBuilder.biteDesc')}
                           </p>
                           <p className="font-opensans text-xs text-foreground">
-                            <span className="font-semibold">Cold Breath (Recharge 5-6):</span> 15 ft. cone, DC 12 Dexterity save, 18 (4d8) cold damage on a failed save, or half on success.
+                            <span className="font-semibold">{t('landing.demoSection.encounterBuilder.coldBreath')}:</span> {t('landing.demoSection.encounterBuilder.coldBreathDesc')}
                           </p>
                         </div>
                       </div>
                       
                       <div className="mt-3 border-t border-secondary/20 pt-3">
                         <div className="flex items-center justify-between">
-                          <span className="font-opensans text-sm">Quantity:</span>
+                          <span className="font-opensans text-sm">{t('landing.demoSection.encounterBuilder.quantity')}</span>
                           <div className="flex items-center">
                             <button className="w-6 h-6 rounded bg-secondary/20 flex items-center justify-center text-foreground">-</button>
                             <span className="font-opensans font-semibold text-primary mx-3">3</span>
@@ -648,21 +648,21 @@ export default function DemoSection() {
                         <div className="flex items-center mb-2 md:mb-0">
                           <img src="https://images.unsplash.com/photo-1602491673980-73aa38de027b?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Ice Mephit" className="w-12 h-12 object-cover rounded-md mr-3" />
                           <div>
-                            <h4 className="font-lora font-semibold text-lg text-primary">Ice Mephit</h4>
-                            <p className="font-opensans text-xs text-foreground/70">Small elemental, neutral evil</p>
+                            <h4 className="font-lora font-semibold text-lg text-primary">{t('landing.demoSection.encounterBuilder.creatures.iceMephit')}</h4>
+                            <p className="font-opensans text-xs text-foreground/70">{t('landing.demoSection.encounterBuilder.creatures.iceMephitType')}</p>
                           </div>
                         </div>
                         <div className="flex space-x-2">
                           <div className="text-center">
-                            <span className="font-opensans text-xs text-foreground/70 block">CR</span>
+                            <span className="font-opensans text-xs text-foreground/70 block">{t('landing.demoSection.encounterBuilder.cr')}</span>
                             <span className="font-opensans font-semibold text-primary">1/2</span>
                           </div>
                           <div className="text-center ml-3">
-                            <span className="font-opensans text-xs text-foreground/70 block">HP</span>
+                            <span className="font-opensans text-xs text-foreground/70 block">{t('landing.demoSection.encounterBuilder.hp')}</span>
                             <span className="font-opensans font-semibold text-primary">21</span>
                           </div>
                           <div className="text-center ml-3">
-                            <span className="font-opensans text-xs text-foreground/70 block">AC</span>
+                            <span className="font-opensans text-xs text-foreground/70 block">{t('landing.demoSection.encounterBuilder.ac')}</span>
                             <span className="font-opensans font-semibold text-primary">11</span>
                           </div>
                           <div className="flex space-x-1 items-center ml-4">
@@ -678,7 +678,7 @@ export default function DemoSection() {
                       
                       <div className="mt-3 border-t border-secondary/20 pt-3">
                         <div className="flex items-center justify-between">
-                          <span className="font-opensans text-sm">Quantity:</span>
+                          <span className="font-opensans text-sm">{t('landing.demoSection.encounterBuilder.quantity')}</span>
                           <div className="flex items-center">
                             <button className="w-6 h-6 rounded bg-secondary/20 flex items-center justify-center text-foreground">-</button>
                             <span className="font-opensans font-semibold text-primary mx-3">4</span>
@@ -690,16 +690,16 @@ export default function DemoSection() {
                     
                     <div className="flex justify-between items-center bg-white rounded-lg p-4 border border-secondary/30 shadow-sm">
                       <div>
-                        <h4 className="font-lora font-semibold text-md text-primary mb-1">Encounter Summary</h4>
+                        <h4 className="font-lora font-semibold text-md text-primary mb-1">{t('landing.demoSection.encounterBuilder.encounterSummary')}</h4>
                         <p className="font-opensans text-sm text-foreground">
-                          <span className="font-semibold">Total XP:</span> 2,000 XP
+                          <span className="font-semibold">{t('landing.demoSection.encounterBuilder.totalXP')}:</span> 2,000 XP
                         </p>
                         <p className="font-opensans text-sm text-foreground">
-                          <span className="font-semibold">Difficulty:</span> Medium for 3 Level 5 players
+                          <span className="font-semibold">{t('landing.demoSection.encounterBuilder.difficultyLevel')}:</span> {t('landing.demoSection.encounterBuilder.difficulties.medium')} for 3 Level 5 players
                         </p>
                       </div>
                       <button className="text-sm bg-primary text-white px-4 py-2 rounded magic-button">
-                        <i className="ri-save-line mr-1"></i> Save Encounter
+                        <i className="ri-save-line mr-1"></i> {t('landing.demoSection.encounterBuilder.saveEncounter')}
                       </button>
                     </div>
                   </div>
