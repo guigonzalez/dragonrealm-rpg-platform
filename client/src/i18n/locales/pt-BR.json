@@ -448,6 +448,7 @@
         "price": "R$49,90",
         "period": "/mês",
         "popular": "POPULAR",
+        "comingSoon": "EM BREVE",
         "features": {
           "unlimitedCharSheets": "Fichas de personagem ilimitadas",
           "advancedBuilder": "Construtor avançado de personagem",

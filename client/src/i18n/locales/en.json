@@ -436,6 +436,7 @@
         "price": "$9.99",
         "period": "/month",
         "popular": "POPULAR",
+        "comingSoon": "COMING SOON",
         "features": {
           "unlimitedCharSheets": "Unlimited character sheets",
           "advancedBuilder": "Advanced character builder",
