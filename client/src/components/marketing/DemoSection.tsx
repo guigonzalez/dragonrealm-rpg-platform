@@ -315,7 +315,7 @@ export default function DemoSection() {
                       </div>
                       
                       <div className="bg-white rounded-lg p-4 border border-secondary/30 shadow-sm">
-                        <img src="https://images.unsplash.com/photo-1486825586573-7131f7991bdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Evernight Forest" className="w-full h-40 object-cover rounded-md mb-3" />
+                        <img src="/assets/evernight-forest.png" alt="Evernight Forest" className="w-full h-40 object-cover rounded-md mb-3" />
                         <h4 className="font-lora font-semibold text-lg text-primary mb-1">{t('landing.demoSection.campaignManager.location2.name')}</h4>
                         <p className="font-opensans text-sm text-foreground mb-3">
                           {t('landing.demoSection.campaignManager.location2.description')}
