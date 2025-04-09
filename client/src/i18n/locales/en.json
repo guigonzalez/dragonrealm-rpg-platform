@@ -309,14 +309,20 @@
           "havenVillage_desc": "A small settlement at the base of Frost Spire, the last safe haven before the wilderness."
         },
         "location1": {
-          "name": "Frost Spire Mountain"
+          "name": "Frost Spire Mountain",
+          "description": "The tallest peak in the region, home to ancient dwarven ruins and frost giants."
         },
         "location2": {
-          "name": "Evernight Forest"
+          "name": "Evernight Forest",
+          "description": "A dense, magical forest where it's always twilight, inhabited by fey creatures."
         },
         "location3": {
-          "name": "Haven Village"
-        }
+          "name": "Haven Village",
+          "description": "A small settlement at the base of Frost Spire, the last safe haven before the wilderness."
+        },
+        "created": "Created on",
+        "edit": "Edit",
+        "addLocationHint": "Add a new location to your campaign"
       },
       "encounterBuilder": {
         "settings": "Settings", 
@@ -366,6 +372,45 @@
           "iceMephit": "Ice Mephit",
           "iceMephitType": "Small elemental, neutral evil"
         }
+      },
+      "npcCreator": {
+        "title": "NPC Creator",
+        "basicInformation": "Basic Information",
+        "name": "Name",
+        "race": "Race",
+        "races": {
+          "human": "Human",
+          "elf": "Elf",
+          "dwarf": "Dwarf",
+          "halfling": "Halfling",
+          "gnome": "Gnome",
+          "halfElf": "Half-Elf",
+          "halfOrc": "Half-Orc",
+          "tiefling": "Tiefling"
+        },
+        "occupation": "Occupation",
+        "location": "Location",
+        "appearance": "Appearance",
+        "age": "Age",
+        "distinctiveFeatures": "Distinctive Features",
+        "featuresExample": "Small stature even for a gnome, disheveled white hair, thick silver beard, bright blue eyes that always seem curious.",
+        "details": "NPC Details",
+        "saveDraft": "Save Draft",
+        "createNpc": "Create NPC",
+        "personality": "Personality",
+        "traits": "Traits",
+        "traitsExample": "Extremely curious, has a constant fascination with new knowledge, speaks quickly when excited about a topic, is absent-minded and easily forgets social conventions.",
+        "ideals": "Ideals",
+        "idealsExample": "Knowledge (believes learning is the most precious good), Neutrality (considers moral judgments too simplistic), Preservation (protects ancient knowledge at all costs).",
+        "voice": "Voice and Mannerisms",
+        "voiceExample": "High-pitched and rapid voice, frequently uses arcane terms in everyday conversations, repeats words when excited, has the habit of adjusting non-existent glasses.",
+        "roleInCampaign": "Role in Campaign",
+        "abilities": "Abilities",
+        "abilitiesExample": "Exceptional arcane knowledge (specialist in ancient artifacts), rune reading, ability to cast some cantrips and 1st level spells, eidetic memory for texts and books.",
+        "plotHooks": "Plot Hooks",
+        "plotHooksExample": "Recently discovered forbidden texts about a lost artifact, is being pursued by cultists who want to steal his knowledge, heard rumors about an ancient elven library in the mountains.",
+        "relationshipToPlayers": "Relationship to Players",
+        "relationshipExample": "Potential ally who can provide information about artifacts and magical items, source of quests related to rare books and lost knowledge, could become a mentor for wizard characters."
       }
     },
     "pricingSection": {
