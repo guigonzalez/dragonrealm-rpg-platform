@@ -101,8 +101,6 @@ export default function PricingSection() {
             viewport={{ once: true }}
             variants={cardVariants}
           >
-            <div className="absolute top-0 right-0 bg-accent text-white text-xs font-opensans font-semibold px-3 py-1 rounded-bl-lg">{t("landing.pricingSection.standardPlan.popular")}</div>
-            
             <div className="absolute top-0 left-0 bg-red-600 text-white text-xs font-opensans font-semibold px-3 py-1 rounded-br-lg">{t("landing.pricingSection.standardPlan.comingSoon")}</div>
             
             <div className="bg-primary/10 p-6 text-center border-b border-primary/20">
