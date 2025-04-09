@@ -8,7 +8,7 @@ export default function DemoSection() {
   const [activeTab, setActiveTab] = useState("character-sheet");
 
   return (
-    <section className="py-16 bg-white">
+    <section id="demo-section" className="py-16 bg-white">
       <div className="container mx-auto px-6">
         <motion.h2 
           className="font-lora font-bold text-3xl md:text-4xl text-center text-primary mb-4"

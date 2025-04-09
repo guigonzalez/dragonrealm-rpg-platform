@@ -26,8 +26,9 @@ export default function Footer() {
             <h3 className="font-lora font-semibold text-lg mb-4">{t("landing.footer.product")}</h3>
             <ul className="font-opensans space-y-2">
               <li><a href="#features" className="text-white/80 hover:text-accent">{t("landing.footer.features")}</a></li>
+              <li><a href="#how-it-works" className="text-white/80 hover:text-accent">{t("landing.howItWorks")}</a></li>
               <li><a href="#pricing" className="text-white/80 hover:text-accent">{t("landing.footer.pricing")}</a></li>
-              <li><a href="#demo" className="text-white/80 hover:text-accent">{t("landing.footer.demo")}</a></li>
+              <li><a href="#demo-section" className="text-white/80 hover:text-accent">{t("landing.footer.demo")}</a></li>
             </ul>
           </div>
           
