@@ -422,11 +422,11 @@
         "price": "$0",
         "period": "/month",
         "features": {
-          "characterSheet": "1 character sheet",
+          "characterSheet": "character sheets",
           "characterBuilder": "Basic character builder",
           "diceRoller": "Dice roller & basic tools",
           "campaignManagement": "Campaign management",
-          "npcCreator": "NPC creator"
+          "npcCreator": "NPC creator per campaign"
         },
         "button": "Get Started Free"
       },
@@ -437,25 +437,10 @@
         "period": "/month",
         "popular": "POPULAR",
         "features": {
-          "characterSheets": "5 character sheets",
-          "characterBuilder": "Advanced character builder",
-          "campaignManagement": "Campaign management",
-          "npcCreator": "NPC creator & database",
-          "encounterBuilder": "Encounter builder"
-        },
-        "button": "Choose Plan"
-      },
-      "premiumPlan": {
-        "title": "Legendary",
-        "description": "For serious campaigns",
-        "price": "$19.99",
-        "period": "/month",
-        "features": {
-          "unlimitedCharacters": "Unlimited characters",
-          "unlimitedCampaigns": "Unlimited campaigns",
-          "advancedTools": "Advanced campaign tools",
-          "customContent": "Custom content creation",
-          "prioritySupport": "Priority support"
+          "unlimitedCharSheets": "Unlimited character sheets",
+          "advancedBuilder": "Advanced character builder",
+          "unlimitedCampaigns": "Unlimited Campaign management",
+          "npcCreator": "NPC creator & Game database"
         },
         "button": "Choose Plan"
       }

@@ -21,12 +21,19 @@
     "dashboard": "Painel",
     "language": "Idioma",
     "saving": "Salvando...",
-    "creating": "Criando..."
+    "creating": "Criando...",
+    "confirm": "Confirmar",
+    "confirmDelete": "Confirmar Exclusão",
+    "confirmDeleteMessage": "Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita.",
+    "confirmDeleteCharacter": "Tem certeza que deseja excluir este personagem? Esta ação não pode ser desfeita.",
+    "confirmDeleteCampaign": "Tem certeza que deseja excluir esta campanha e todos os dados relacionados? Esta ação não pode ser desfeita.",
+    "deleteSuccess": "Excluído com sucesso",
+    "deleteError": "Erro durante a exclusão"
   },
   "auth": {
     "login": "Entrar",
-    "register": "Cadastrar",
-    "email": "Email",
+    "register": "Registrar",
+    "email": "E-mail",
     "username": "Nome de usuário",
     "password": "Senha",
     "confirmPassword": "Confirmar Senha",
@@ -46,9 +53,8 @@
     "recentActivity": "Atividade Recente",
     "quickAccess": "Acesso Rápido",
     "welcomeBack": "Bem-vindo de volta",
-    "welcome": "Bem-vindo, {{name}}",
-    "subtitle": "Gerencie seus personagens e campanhas",
-    "backToDashboard": "Voltar ao Painel",
+    "welcome": "Bem-vindo ao DragonRealm",
+    "subtitle": "Seu companheiro digital para aventuras de D&D",
     "buttons": {
       "newCharacter": "Novo Personagem",
       "newCampaign": "Nova Campanha"
@@ -56,12 +62,6 @@
     "tabs": {
       "characters": "Personagens",
       "campaigns": "Campanhas"
-    },
-    "errors": {
-      "charactersTitle": "Erro ao carregar personagens",
-      "charactersDescription": "Falha ao carregar seus personagens. Por favor, tente novamente.",
-      "campaignsTitle": "Erro ao carregar campanhas",
-      "campaignsDescription": "Falha ao carregar suas campanhas. Por favor, tente novamente."
     }
   },
   "campaign": {
@@ -74,47 +74,15 @@
     "campaignDetails": "Detalhes da Campanha",
     "dungeonMaster": "Mestre de Jogo",
     "players": "Jogadores",
-    "locations": "Locais",
+    "locations": "Localizações",
     "npcs": "NPCs",
     "encounters": "Encontros",
     "sessionNotes": "Notas de Sessão",
     "manageCampaign": "Gerenciar Campanha",
-    "noDescription": "Nenhuma descrição fornecida.",
-    "editCampaignDetails": "Edite os detalhes da sua campanha e gerencie elementos do mundo",
-    "createNewCampaign": "Crie uma nova campanha para suas aventuras",
-    "updateCampaignInfo": "Atualize as informações da sua campanha",
-    "enterCampaignInfo": "Insira informações básicas sobre sua nova campanha",
-    "enterCampaignName": "Digite o nome da campanha",
-    "description": "Descrição",
-    "describeCampaign": "Descreva o cenário e tema da sua campanha",
-    "saveCampaign": "Salvar Campanha",
-    "delete": {
-      "title": "Excluir Campanha",
-      "description": "Tem certeza que deseja excluir a campanha '{{name}}'? Esta ação não pode ser desfeita e todos os dados relacionados (locais, NPCs, encontros e notas) serão excluídos permanentemente."
-    },
-    "deleteSuccess": {
-      "title": "Campanha Excluída",
-      "description": "A campanha foi excluída com sucesso."
-    },
-    "deleteError": {
-      "title": "Erro ao Excluir",
-      "description": "Ocorreu um erro ao excluir a campanha. Por favor, tente novamente."
-    },
-    "buttons": {
-      "manage": "Gerenciar",
-      "npcs": "NPCs",
-      "encounters": "Encontros"
-    },
     "empty": {
       "title": "Nenhuma Campanha Ainda",
-      "description": "Crie sua primeira campanha para começar sua história.",
+      "description": "Crie sua primeira campanha para começar sua jornada como Mestre de Jogo",
       "button": "Criar Campanha"
-    },
-    "errors": {
-      "invalidIdTitle": "ID de campanha inválido",
-      "invalidIdDescription": "O ID da campanha deve ser um número.",
-      "loadErrorTitle": "Erro ao carregar campanha",
-      "loadErrorDescription": "Falha ao carregar dados da campanha. Por favor, tente novamente."
     }
   },
   "character": {
@@ -125,8 +93,7 @@
     "characterName": "Nome do Personagem",
     "characterDetails": "Detalhes do Personagem",
     "characterSheet": "Ficha de Personagem",
-    "viewSheet": "Ver Ficha de Personagem",
-    "delete": {
+    "deleteCharacter": {
       "title": "Excluir Personagem",
       "description": "Tem certeza que deseja excluir o personagem '{{name}}'? Esta ação não pode ser desfeita."
     },
@@ -204,15 +171,14 @@
     "removeCreature": "Remover Criatura"
   },
   "location": {
-    "locations": "Locais",
-    "location": "Local",
-    "createLocation": "Criar Local",
-    "editLocation": "Editar Local",
-    "locationName": "Nome do Local",
-    "locationDetails": "Detalhes do Local",
+    "locations": "Localizações",
+    "location": "Localização",
+    "createLocation": "Criar Localização",
+    "editLocation": "Editar Localização",
+    "locationName": "Nome da Localização",
+    "locationDetails": "Detalhes da Localização",
     "description": "Descrição",
-    "notes": "Anotações",
-    "worldBuilding": "Construção de Mundo"
+    "notes": "Anotações"
   },
   "sessionNote": {
     "sessionNotes": "Notas de Sessão",
@@ -226,103 +192,40 @@
   },
   "landing": {
     "heroTitle": "Seu Companheiro Definitivo de D&D",
-    "heroSubtitle": "Crie e gerencie campanhas, personagens e mais para suas aventuras de RPG de mesa",
+    "heroSubtitle": "Crie e gerencie campanhas, personagens e muito mais para suas aventuras de RPG de mesa",
     "getStarted": "Começar Agora",
     "learnMore": "Saiba Mais",
     "featuresTitle": "Recursos",
     "howItWorks": "Como Funciona",
     "pricing": "Preços",
-    "feature1Title": "Gerenciamento de Campanhas",
+    "feature1Title": "Gerenciamento de Campanha",
     "feature1Description": "Crie e gerencie suas campanhas de D&D com ferramentas poderosas para construção de mundo, NPCs e encontros",
-    "feature2Title": "Criação de Personagens",
+    "feature2Title": "Criação de Personagem",
     "feature2Description": "Construa personagens com um criador intuitivo que segue as regras do D&D 5e",
     "feature3Title": "Fichas de Personagem Interativas",
     "feature3Description": "Acompanhe estatísticas, inventário e habilidades com fichas de personagem interativas",
-    "testimonialsTitle": "O que Nossos Usuários Dizem",
+    "testimonialsTitle": "O Que Nossos Usuários Dizem",
     "ctaTitle": "Pronto para Melhorar sua Experiência de D&D?",
-    "ctaSubtitle": "Junte-se a milhares de jogadores e mestres usando o DragonRealm",
+    "ctaSubtitle": "Junte-se a milhares de jogadores e Mestres usando DragonRealm",
     "howItWorksSection": {
       "title": "Como o DragonRealm Funciona",
       "step1Title": "Crie Sua Conta",
-      "step1Description": "Cadastre-se e configure seu perfil em poucos cliques",
+      "step1Description": "Registre-se e configure seu perfil em apenas alguns cliques",
       "step2Title": "Construa Seus Personagens",
       "step2Description": "Crie fichas de personagem detalhadas seguindo as regras do D&D 5e",
       "step3Title": "Projete Sua Campanha",
-      "step3Description": "Desenvolva seu mundo com locais, NPCs e encontros",
+      "step3Description": "Construa seu mundo com localizações, NPCs e encontros",
       "step4Title": "Gerencie Seu Jogo",
       "step4Description": "Conduza sessões com ferramentas interativas e mantenha o controle de tudo"
     },
     "demoSection": {
       "title": "Experimente o DragonRealm",
-      "subtitle": "Veja de perto nossas poderosas ferramentas projetadas para aprimorar suas campanhas de D&D",
+      "subtitle": "Dê uma olhada mais de perto em nossas poderosas ferramentas projetadas para melhorar suas campanhas de D&D",
       "tabs": {
         "characterSheet": "Ficha de Personagem",
         "campaignManager": "Gerenciador de Campanha",
-        "npcCreator": "Criador de NPCs",
+        "npcCreator": "Criador de NPC",
         "encounterBuilder": "Construtor de Encontros"
-      },
-      "campaignManager": {
-        "title": "Gerenciador de Campanha",
-        "campaignName": "Saga do Pico Gelado",
-        "player1": "Jessica - Ranger Élfica",
-        "player2": "Michael - Mago Humano",
-        "player3": "Thordak - Paladino Anão",
-        "invitePlayer": "Convidar Jogador",
-        "worldMap": "Mapa do Mundo",
-        "npcs": "NPCs",
-        "encounters": "Encontros",
-        "sessionNotes": "Notas de Sessão",
-        "location1": {
-          "description": "O pico mais alto da região, lar de antigas ruínas anãs e gigantes do gelo."
-        },
-        "location2": {
-          "description": "Uma floresta densa e mágica onde é sempre crepúsculo, habitada por criaturas feéricas."
-        },
-        "location3": {
-          "description": "Um pequeno assentamento na base do Pico Gelado, o último refúgio seguro antes da natureza selvagem."
-        },
-        "created": "Criado em",
-        "edit": "Editar",
-        "addLocationHint": "Adicione um novo local à sua campanha"
-      },
-      "npcCreator": {
-        "title": "Criador de NPCs",
-        "basicInformation": "Informações Básicas",
-        "name": "Nome",
-        "race": "Raça",
-        "races": {
-          "human": "Humano",
-          "elf": "Elfo",
-          "dwarf": "Anão",
-          "halfling": "Halfling",
-          "gnome": "Gnomo",
-          "halfElf": "Meio-Elfo",
-          "halfOrc": "Meio-Orc",
-          "tiefling": "Tiefling"
-        },
-        "occupation": "Ocupação",
-        "location": "Localização",
-        "appearance": "Aparência",
-        "age": "Idade",
-        "distinctiveFeatures": "Características Distintivas",
-        "featuresExample": "Pequena estatura mesmo para um gnomo, cabelos brancos desgrenhados, espessa barba prateada, olhos azuis brilhantes que parecem sempre curiosos.",
-        "details": "Detalhes do NPC",
-        "saveDraft": "Salvar Rascunho",
-        "createNpc": "Criar NPC",
-        "personality": "Personalidade",
-        "traits": "Traços",
-        "traitsExample": "Extremamente curioso, tem um constante fascínio por novos conhecimentos, fala rapidamente quando excitado sobre um tópico, é distraído e esquece facilmente convenções sociais.",
-        "ideals": "Ideais",
-        "idealsExample": "Conhecimento (acredita que o aprendizado é o bem mais precioso), Neutralidade (considera julgamentos morais muito simplistas), Preservação (protege o conhecimento antigo a todo custo).",
-        "voice": "Voz e Maneirismos",
-        "voiceExample": "Voz aguda e rápida, frequentemente usa termos arcanos em conversas cotidianas, repete palavras quando empolgado, tem o hábito de ajustar óculos inexistentes.",
-        "roleInCampaign": "Papel na Campanha",
-        "abilities": "Habilidades",
-        "abilitiesExample": "Conhecimento arcano excepcional (especialista em artefatos antigos), leitura de runas, capacidade de lançar alguns truques e magias de 1º nível, eidética memória para textos e livros.",
-        "plotHooks": "Ganchos de Trama",
-        "plotHooksExample": "Descobriu recentemente textos proibidos sobre um artefato perdido, está sendo perseguido por cultistas que desejam roubar seu conhecimento, ouviu rumores sobre uma antiga biblioteca élfica nas montanhas.",
-        "relationshipToPlayers": "Relacionamento com os Jogadores",
-        "relationshipExample": "Potencial aliado que pode fornecer informações sobre artefatos e itens mágicos, fonte de missões relacionadas a livros raros e conhecimentos perdidos, poderia se tornar um mentor para personagens magos."
       },
       "characterSheet": {
         "characterName": "Thordak Punho de Ferro",
@@ -330,22 +233,22 @@
         "stats": {
           "ac": "CA",
           "hp": "PV",
-          "speed": "Desl.",
+          "speed": "Desloc.",
           "str": "FOR",
           "dex": "DES",
           "con": "CON",
-          "int": "INT", 
+          "int": "INT",
           "wis": "SAB",
           "cha": "CAR",
-          "savingThrows": "Testes de Resistência"
+          "savingThrows": "Resistências"
         },
         "tooltips": {
-          "strength": "Força: Afeta ataques corpo a corpo, atletismo e capacidade de carga",
+          "strength": "Força: Afeta ataques corpo-a-corpo, atletismo e capacidade de carga",
           "dexterity": "Destreza: Afeta CA, iniciativa e armas de precisão",
           "constitution": "Constituição: Afeta pontos de vida e testes de concentração",
           "intelligence": "Inteligência: Afeta perícias de conhecimento e algumas magias",
           "wisdom": "Sabedoria: Afeta percepção e algumas magias",
-          "charisma": "Carisma: Afeta habilidades sociais e magias de paladino"
+          "charisma": "Carisma: Afeta perícias sociais e magias de paladino"
         },
         "saves": {
           "wisdom": "Sabedoria +4",
@@ -354,16 +257,16 @@
         "equipmentAndAbilities": "Equipamento e Habilidades",
         "edit": "Editar",
         "weapons": "Armas",
-        "armor": "Armadura",
+        "armor": "Armaduras",
         "abilities": "Habilidades",
         "spells": "Magias",
         "weaponsList": {
           "warhammer": "Martelo de Guerra",
           "handaxe": "Machadinha",
           "lightCrossbow": "Besta Leve",
-          "warhammer_damage": "1d8+3 contundente",
-          "handaxe_damage": "1d6+3 cortante",
-          "lightCrossbow_damage": "1d8+1 perfurante"
+          "warhammer_damage": "1d8+3 de concussão",
+          "handaxe_damage": "1d6+3 de corte",
+          "lightCrossbow_damage": "1d8+1 de perfuração"
         },
         "armorList": {
           "chainMail": "Cota de Malha",
@@ -373,13 +276,13 @@
         },
         "abilitiesList": {
           "divineSense": "Sentido Divino",
-          "divineSense_desc": "Detecta celestiais, corruptores ou mortos-vivos a até 18 metros.",
-          "layOnHands": "Imposição das Mãos",
+          "divineSense_desc": "Detecta celestiais, corruptores ou mortos-vivos em um raio de 18 metros.",
+          "layOnHands": "Imposição de Mãos",
           "layOnHands_desc": "Cura 25 pontos de dano por dia.",
           "divineSmite": "Golpe Divino",
-          "divineSmite_desc": "Gasta espaço de magia para causar dano radiante extra.",
+          "divineSmite_desc": "Gasta um espaço de magia para causar dano radiante extra.",
           "oathOfDevotion": "Juramento de Devoção",
-          "oathOfDevotion_desc": "Canalizar Divindade: Arma Sagrada, Expulsar os Profanos"
+          "oathOfDevotion_desc": "Canalizar Divindade: Arma Sagrada, Expulsar o Profano"
         },
         "spellsList": {
           "spellSlots": "Espaços de Magia:",
@@ -395,8 +298,8 @@
         "players": "Jogadores",
         "campaignLinks": "Links da Campanha",
         "playersList": {
-          "player1": "Jessica - Ranger Élfica",
-          "player2": "Michael - Mago Humano", 
+          "player1": "Jéssica - Ranger Elfa",
+          "player2": "Miguel - Mago Humano",
           "player3": "Thordak - Paladino Anão",
           "invitePlayer": "Convidar Jogador"
         },
@@ -409,9 +312,6 @@
         "worldBuilding": "Construção de Mundo",
         "save": "Salvar",
         "addLocation": "Adicionar Local",
-        "created": "Criado em",
-        "edit": "Editar",
-        "addLocationHint": "Adicione um novo local à sua campanha",
         "locationsList": {
           "frostSpire": "Montanha Pico Gelado",
           "frostSpire_desc": "O pico mais alto da região, lar de antigas ruínas anãs e gigantes do gelo.",
@@ -431,7 +331,10 @@
         "location3": {
           "name": "Vila Refúgio",
           "description": "Um pequeno assentamento na base do Pico Gelado, o último refúgio seguro antes da natureza selvagem."
-        }
+        },
+        "created": "Criado em",
+        "edit": "Editar",
+        "addLocationHint": "Adicione um novo local à sua campanha"
       },
       "encounterBuilder": {
         "settings": "Configurações", 
@@ -462,25 +365,64 @@
         "ac": "CA",
         "abilities": "Habilidades",
         "snowCamouflage": "Camuflagem na Neve",
-        "snowCamouflageDesc": "Vantagem em testes de Destreza (Furtividade) para se esconder em terreno nevado.",
+        "snowCamouflageDesc": "Vantagem em testes de Destreza (Furtividade) feitos para se esconder em terreno nevado.",
         "keenSenses": "Audição e Olfato Aguçados",
         "keenSensesDesc": "Vantagem em testes de Sabedoria (Percepção) que dependem de audição ou olfato.",
         "actions": "Ações",
         "bite": "Mordida",
-        "biteDesc": "Ataque corpo a corpo: +6 para acertar, alcance 1,5 m, um alvo. 10 (2d6 + 3) de dano perfurante.",
+        "biteDesc": "Ataque corpo-a-corpo: +6 para acertar, alcance 1,5 m, um alvo. 10 (2d6 + 3) de dano perfurante.",
         "coldBreath": "Sopro Gélido",
-        "coldBreathDesc": "Cone de 4,5 m, recarga 5-6. CD 12 de Des ou 18 (4d8) de dano de frio, metade com sucesso.",
+        "coldBreathDesc": "Cone de 4,5 m, recarga 5-6. CD 12 Destreza ou 18 (4d8) de dano de frio, metade em caso de sucesso.",
         "quantity": "Quantidade",
         "encounterSummary": "Resumo do Encontro",
         "totalXP": "XP Total",
-        "difficultyLevel": "Nível de Dificuldade",
+        "difficultyLevel": "Dificuldade",
         "saveEncounter": "Salvar Encontro",
         "creatures": {
-          "winterWolf": "Lobo do Inverno",
-          "winterWolfType": "Monstruosidade grande, mal neutro",
-          "iceMephit": "Méfite de Gelo",
+          "winterWolf": "Lobo Invernal",
+          "winterWolfType": "Monstruosidade grande, neutro e mal",
+          "iceMephit": "Mefite do Gelo",
           "iceMephitType": "Elemental pequeno, mal neutro"
         }
+      },
+      "npcCreator": {
+        "title": "Criador de NPC",
+        "basicInformation": "Informações Básicas",
+        "name": "Nome",
+        "race": "Raça",
+        "races": {
+          "human": "Humano",
+          "elf": "Elfo",
+          "dwarf": "Anão",
+          "halfling": "Halfling",
+          "gnome": "Gnomo",
+          "halfElf": "Meio-Elfo",
+          "halfOrc": "Meio-Orc",
+          "tiefling": "Tiefling"
+        },
+        "occupation": "Ocupação",
+        "location": "Localização",
+        "appearance": "Aparência",
+        "age": "Idade",
+        "distinctiveFeatures": "Características Distintas",
+        "featuresExample": "Estatura pequena mesmo para um gnomo, cabelo branco desgrenhado, barba prateada espessa, olhos azuis brilhantes que sempre parecem curiosos.",
+        "details": "Detalhes do NPC",
+        "saveDraft": "Salvar Rascunho",
+        "createNpc": "Criar NPC",
+        "personality": "Personalidade",
+        "traits": "Traços",
+        "traitsExample": "Extremamente curioso, tem fascínio constante por novos conhecimentos, fala rapidamente quando empolgado com um tópico, é distraído e facilmente esquece convenções sociais.",
+        "ideals": "Ideais",
+        "idealsExample": "Conhecimento (acredita que aprender é o bem mais precioso), Neutralidade (considera julgamentos morais muito simplistas), Preservação (protege conhecimento antigo a todo custo).",
+        "voice": "Voz e Maneirismos",
+        "voiceExample": "Voz aguda e rápida, frequentemente usa termos arcanos em conversas cotidianas, repete palavras quando empolgado, tem o hábito de ajustar óculos inexistentes.",
+        "roleInCampaign": "Papel na Campanha",
+        "abilities": "Habilidades",
+        "abilitiesExample": "Conhecimento arcano excepcional (especialista em artefatos antigos), leitura de runas, capacidade de lançar algumas magias menores e de 1º nível, memória fotográfica para textos e livros.",
+        "plotHooks": "Ganchos de História",
+        "plotHooksExample": "Recentemente descobriu textos proibidos sobre um artefato perdido, está sendo perseguido por cultistas que querem roubar seu conhecimento, ouviu rumores sobre uma biblioteca élfica antiga nas montanhas.",
+        "relationshipToPlayers": "Relação com os Jogadores",
+        "relationshipExample": "Potencial aliado que pode fornecer informações sobre artefatos e itens mágicos, fonte de missões relacionadas a livros raros e conhecimento perdido, poderia se tornar um mentor para personagens magos."
       }
     },
     "pricingSection": {
@@ -492,11 +434,11 @@
         "price": "R$0",
         "period": "/mês",
         "features": {
-          "characterSheet": "1 ficha de personagem",
+          "characterSheet": "fichas de personagem",
           "characterBuilder": "Construtor básico de personagem",
           "diceRoller": "Rolador de dados e ferramentas básicas",
           "campaignManagement": "Gerenciamento de campanha",
-          "npcCreator": "Criador de NPCs"
+          "npcCreator": "NPC por campanha"
         },
         "button": "Começar Gratuitamente"
       },
@@ -507,25 +449,10 @@
         "period": "/mês",
         "popular": "POPULAR",
         "features": {
-          "characterSheets": "5 fichas de personagem",
-          "characterBuilder": "Construtor avançado de personagem",
-          "campaignManagement": "Gerenciamento de campanha",
-          "npcCreator": "Criador de NPCs e banco de dados",
-          "encounterBuilder": "Construtor de encontros"
-        },
-        "button": "Escolher Plano"
-      },
-      "premiumPlan": {
-        "title": "Lendário",
-        "description": "Para campanhas sérias",
-        "price": "R$99,90",
-        "period": "/mês",
-        "features": {
-          "unlimitedCharacters": "Personagens ilimitados",
-          "unlimitedCampaigns": "Campanhas ilimitadas",
-          "advancedTools": "Ferramentas avançadas de campanha",
-          "customContent": "Criação de conteúdo personalizado",
-          "prioritySupport": "Suporte prioritário"
+          "unlimitedCharSheets": "Fichas de personagem ilimitadas",
+          "advancedBuilder": "Construtor avançado de personagem",
+          "unlimitedCampaigns": "Gerenciamento de campanhas ilimitado",
+          "npcCreator": "Criador de NPCs e banco de dados de jogo"
         },
         "button": "Escolher Plano"
       }
