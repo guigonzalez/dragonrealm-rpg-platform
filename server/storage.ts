@@ -404,8 +404,42 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteCampaign(id: number): Promise<boolean> {
-    const result = await db.delete(campaigns).where(eq(campaigns.id, id));
-    return result.rowCount ? result.rowCount > 0 : false;
+    // Usando a pool diretamente para criar uma transação
+    const { pool } = await import('./db');
+    const client = await pool.connect();
+    
+    try {
+      // Iniciar transação
+      await client.query('BEGIN');
+      
+      // 1. Deletar todas as localizações da campanha
+      await client.query('DELETE FROM campaign_locations WHERE campaign_id = $1', [id]);
+      
+      // 2. Deletar todos os NPCs da campanha
+      await client.query('DELETE FROM npcs WHERE campaign_id = $1', [id]);
+      
+      // 3. Deletar todos os encontros da campanha
+      await client.query('DELETE FROM encounters WHERE campaign_id = $1', [id]);
+      
+      // 4. Deletar todas as notas de sessão da campanha
+      await client.query('DELETE FROM session_notes WHERE campaign_id = $1', [id]);
+      
+      // 5. Finalmente deletar a campanha
+      const result = await client.query('DELETE FROM campaigns WHERE id = $1', [id]);
+      
+      // Commit da transação
+      await client.query('COMMIT');
+      
+      return result.rowCount > 0;
+    } catch (error) {
+      // Rollback em caso de erro
+      await client.query('ROLLBACK');
+      console.error('Erro ao deletar campanha:', error);
+      return false;
+    } finally {
+      // Sempre liberar o cliente
+      client.release();
+    }
   }
 
   // NPC methods
