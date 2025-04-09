@@ -303,7 +303,7 @@ export default function DemoSection() {
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="bg-white rounded-lg p-4 border border-secondary/30 shadow-sm">
-                        <img src="https://images.unsplash.com/photo-1596825205280-5d1bec35f0a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Frost Spire Mountain" className="w-full h-40 object-cover rounded-md mb-3" />
+                        <img src="/assets/frost-spire-mountain.png" alt="Frost Spire Mountain" className="w-full h-40 object-cover rounded-md mb-3" />
                         <h4 className="font-lora font-semibold text-lg text-primary mb-1">{t('landing.demoSection.campaignManager.location1.name')}</h4>
                         <p className="font-opensans text-sm text-foreground mb-3">
                           {t('landing.demoSection.campaignManager.location1.description')}
