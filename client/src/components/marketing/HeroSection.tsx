@@ -39,7 +39,7 @@ export default function HeroSection() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <div className="parchment bg-secondary/20 p-6 rounded-md shadow-lg transform rotate-2">
-            <img src="https://images.unsplash.com/photo-1605118892221-e2b18e0a9838?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="D&D gamers playing with app" className="rounded-md shadow-sm" />
+            <img src="https://images.pexels.com/photos/5428088/pexels-photo-5428088.jpeg?auto=compress&cs=tinysrgb&w=800" alt="D&D dice and figurines" className="rounded-md shadow-sm object-cover h-48 w-full" />
           </div>
           <motion.div 
             className="parchment bg-secondary/20 p-6 rounded-md shadow-lg transform -rotate-3 absolute top-10 -right-5"
@@ -47,7 +47,7 @@ export default function HeroSection() {
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <img src="https://images.unsplash.com/photo-1547638375-ebf04735d792?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Character sheet on app" className="rounded-md shadow-sm" />
+            <img src="https://images.pexels.com/photos/2509934/pexels-photo-2509934.jpeg?auto=compress&cs=tinysrgb&w=800" alt="RPG board game with dice" className="rounded-md shadow-sm object-cover h-40 w-full" />
           </motion.div>
         </motion.div>
       </div>
