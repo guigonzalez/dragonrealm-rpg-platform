@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Link } from "wouter";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -8,16 +8,32 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Character, Campaign } from "@shared/schema";
-import { Plus, BookOpen, Swords, Scroll, Loader2 } from "lucide-react";
+import { Plus, BookOpen, Swords, Scroll, Loader2, Trash2, Edit } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const { toast } = useToast();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("characters");
+  const [, setLocation] = useLocation();
+  
+  // State for deletion confirmation
+  const [characterToDelete, setCharacterToDelete] = useState<number | null>(null);
+  const [campaignToDelete, setCampaignToDelete] = useState<number | null>(null);
   
   // Fetch user's characters
   const { 
@@ -38,6 +54,59 @@ export default function DashboardPage() {
     queryKey: ["/api/campaigns"],
     enabled: !!user,
   });
+  
+  // Delete character mutation
+  const deleteCharacterMutation = useMutation({
+    mutationFn: async (characterId: number) => {
+      await apiRequest("DELETE", `/api/characters/${characterId}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/characters"] });
+      toast({
+        title: t("character.deleteSuccess.title"),
+        description: t("character.deleteSuccess.description"),
+      });
+      setCharacterToDelete(null);
+    },
+    onError: (error: Error) => {
+      toast({
+        title: t("character.deleteError.title"),
+        description: error.message || t("character.deleteError.description"),
+        variant: "destructive",
+      });
+    }
+  });
+  
+  // Delete campaign mutation
+  const deleteCampaignMutation = useMutation({
+    mutationFn: async (campaignId: number) => {
+      await apiRequest("DELETE", `/api/campaigns/${campaignId}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/campaigns"] });
+      toast({
+        title: t("campaign.deleteSuccess.title"),
+        description: t("campaign.deleteSuccess.description"),
+      });
+      setCampaignToDelete(null);
+    },
+    onError: (error: Error) => {
+      toast({
+        title: t("campaign.deleteError.title"),
+        description: error.message || t("campaign.deleteError.description"),
+        variant: "destructive",
+      });
+    }
+  });
+  
+  // Handlers
+  const handleDeleteCharacter = (id: number) => {
+    deleteCharacterMutation.mutate(id);
+  };
+  
+  const handleDeleteCampaign = (id: number) => {
+    deleteCampaignMutation.mutate(id);
+  };
   
   // Handle errors
   useEffect(() => {
@@ -128,10 +197,50 @@ export default function DashboardPage() {
                           </p>
                         )}
                       </CardContent>
-                      <CardFooter>
+                      <CardFooter className="flex justify-between">
                         <Link href={`/character-sheet/${character.id}`}>
-                          <Button className="w-full">{t("character.viewSheet")}</Button>
+                          <Button>{t("character.viewSheet")}</Button>
                         </Link>
+                        <div className="flex space-x-2">
+                          <Link href={`/character-creation/${character.id}`}>
+                            <Button variant="outline" size="sm" className="h-9">
+                              <Edit className="h-4 w-4 mr-2" />
+                              {t("common.edit")}
+                            </Button>
+                          </Link>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button 
+                                variant="destructive" 
+                                size="sm" 
+                                className="h-9"
+                                onClick={() => setCharacterToDelete(character.id)}
+                              >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                {t("common.delete")}
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>{t("character.delete.title")}</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  {t("character.delete.description", { name: character.name })}
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel onClick={() => setCharacterToDelete(null)}>
+                                  {t("common.cancel")}
+                                </AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDeleteCharacter(character.id)}
+                                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                >
+                                  {t("common.delete")}
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
                       </CardFooter>
                     </Card>
                   ))}
@@ -171,19 +280,61 @@ export default function DashboardPage() {
                           {campaign.description || t("campaign.noDescription")}
                         </p>
                       </CardContent>
-                      <CardFooter className="flex justify-between">
-                        <Link href={`/campaign-management/${campaign.id}`}>
-                          <Button variant="outline" className="flex items-center">
-                            <BookOpen className="mr-2 h-4 w-4" />
-                            {t("campaign.buttons.manage")}
-                          </Button>
-                        </Link>
-                        <div className="flex space-x-2">
-                          <Link href={`/npc-creator/${campaign.id}`}>
-                            <Button variant="ghost" size="sm" className="h-9 px-2">{t("campaign.buttons.npcs")}</Button>
+                      <CardFooter className="flex flex-col gap-3">
+                        <div className="flex justify-between w-full">
+                          <Link href={`/campaign-management/${campaign.id}`}>
+                            <Button variant="outline" className="flex items-center">
+                              <BookOpen className="mr-2 h-4 w-4" />
+                              {t("campaign.buttons.manage")}
+                            </Button>
                           </Link>
-                          <Link href={`/encounter-builder/${campaign.id}`}>
-                            <Button variant="ghost" size="sm" className="h-9 px-2">{t("campaign.buttons.encounters")}</Button>
+                          <div className="flex space-x-2">
+                            <Link href={`/campaign-management?edit=${campaign.id}`}>
+                              <Button variant="outline" size="sm" className="h-9">
+                                <Edit className="h-4 w-4 mr-2" />
+                                {t("common.edit")}
+                              </Button>
+                            </Link>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button 
+                                  variant="destructive" 
+                                  size="sm" 
+                                  className="h-9"
+                                  onClick={() => setCampaignToDelete(campaign.id)}
+                                >
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  {t("common.delete")}
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>{t("campaign.delete.title")}</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    {t("campaign.delete.description", { name: campaign.name })}
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel onClick={() => setCampaignToDelete(null)}>
+                                    {t("common.cancel")}
+                                  </AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={() => handleDeleteCampaign(campaign.id)}
+                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                  >
+                                    {t("common.delete")}
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          </div>
+                        </div>
+                        <div className="flex space-x-2 w-full">
+                          <Link href={`/npc-creator/${campaign.id}`} className="flex-1">
+                            <Button variant="ghost" size="sm" className="w-full">{t("campaign.buttons.npcs")}</Button>
+                          </Link>
+                          <Link href={`/encounter-builder/${campaign.id}`} className="flex-1">
+                            <Button variant="ghost" size="sm" className="w-full">{t("campaign.buttons.encounters")}</Button>
                           </Link>
                         </div>
                       </CardFooter>

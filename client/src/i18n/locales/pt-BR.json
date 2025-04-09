@@ -88,6 +88,18 @@
     "description": "Descrição",
     "describeCampaign": "Descreva o cenário e tema da sua campanha",
     "saveCampaign": "Salvar Campanha",
+    "delete": {
+      "title": "Excluir Campanha",
+      "description": "Tem certeza que deseja excluir a campanha '{{name}}'? Esta ação não pode ser desfeita e todos os dados relacionados (locais, NPCs, encontros e notas) serão excluídos permanentemente."
+    },
+    "deleteSuccess": {
+      "title": "Campanha Excluída",
+      "description": "A campanha foi excluída com sucesso."
+    },
+    "deleteError": {
+      "title": "Erro ao Excluir",
+      "description": "Ocorreu um erro ao excluir a campanha. Por favor, tente novamente."
+    },
     "buttons": {
       "manage": "Gerenciar",
       "npcs": "NPCs",
@@ -114,6 +126,18 @@
     "characterDetails": "Detalhes do Personagem",
     "characterSheet": "Ficha de Personagem",
     "viewSheet": "Ver Ficha de Personagem",
+    "delete": {
+      "title": "Excluir Personagem",
+      "description": "Tem certeza que deseja excluir o personagem '{{name}}'? Esta ação não pode ser desfeita."
+    },
+    "deleteSuccess": {
+      "title": "Personagem Excluído",
+      "description": "O personagem foi excluído com sucesso."
+    },
+    "deleteError": {
+      "title": "Erro ao Excluir",
+      "description": "Ocorreu um erro ao excluir o personagem. Por favor, tente novamente."
+    },
     "empty": {
       "title": "Nenhum Personagem Ainda",
       "description": "Crie seu primeiro personagem para começar sua aventura.",
