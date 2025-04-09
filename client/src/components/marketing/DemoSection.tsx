@@ -72,26 +72,26 @@ export default function DemoSection() {
                 <div className="lg:col-span-1">
                   <div className="parchment bg-secondary/5 rounded-lg p-4 border border-secondary/30 shadow">
                     <div className="text-center mb-4">
-                      <h3 className="font-lora font-bold text-2xl text-primary">Thordak Ironfist</h3>
-                      <p className="font-opensans text-sm text-foreground/70">Mountain Dwarf - Paladin Lv.5</p>
+                      <h3 className="font-lora font-bold text-2xl text-primary">{t('landing.demoSection.characterSheet.characterName')}</h3>
+                      <p className="font-opensans text-sm text-foreground/70">{t('landing.demoSection.characterSheet.characterRaceClass')}</p>
                     </div>
                     
                     <div className="grid grid-cols-3 gap-4 mb-6">
                       <div className="text-center">
                         <div className="bg-white rounded-lg p-2 border border-secondary/30 shadow-sm">
-                          <p className="font-opensans text-xs text-foreground/70">AC</p>
+                          <p className="font-opensans text-xs text-foreground/70">{t('landing.demoSection.characterSheet.stats.ac')}</p>
                           <p className="font-lora font-bold text-xl text-primary">18</p>
                         </div>
                       </div>
                       <div className="text-center">
                         <div className="bg-white rounded-lg p-2 border border-secondary/30 shadow-sm">
-                          <p className="font-opensans text-xs text-foreground/70">HP</p>
+                          <p className="font-opensans text-xs text-foreground/70">{t('landing.demoSection.characterSheet.stats.hp')}</p>
                           <p className="font-lora font-bold text-xl text-primary">45/45</p>
                         </div>
                       </div>
                       <div className="text-center">
                         <div className="bg-white rounded-lg p-2 border border-secondary/30 shadow-sm">
-                          <p className="font-opensans text-xs text-foreground/70">Speed</p>
+                          <p className="font-opensans text-xs text-foreground/70">{t('landing.demoSection.characterSheet.stats.speed')}</p>
                           <p className="font-lora font-bold text-xl text-primary">25</p>
                         </div>
                       </div>
@@ -99,12 +99,12 @@ export default function DemoSection() {
                     
                     <div className="grid grid-cols-6 gap-3 mb-6">
                       {[
-                        { stat: "STR", value: "16", mod: "+3", tooltip: "Strength: Affects melee attacks, athletics, and carrying capacity" },
-                        { stat: "DEX", value: "12", mod: "+1", tooltip: "Dexterity: Affects AC, initiative, and finesse weapons" },
-                        { stat: "CON", value: "14", mod: "+2", tooltip: "Constitution: Affects hit points and concentration checks" },
-                        { stat: "INT", value: "10", mod: "+0", tooltip: "Intelligence: Affects knowledge skills and some spellcasting" },
-                        { stat: "WIS", value: "13", mod: "+1", tooltip: "Wisdom: Affects perception and some spellcasting" },
-                        { stat: "CHA", value: "15", mod: "+2", tooltip: "Charisma: Affects social skills and paladin spellcasting" }
+                        { stat: t('landing.demoSection.characterSheet.stats.str'), value: "16", mod: "+3", tooltip: t('landing.demoSection.characterSheet.tooltips.strength') },
+                        { stat: t('landing.demoSection.characterSheet.stats.dex'), value: "12", mod: "+1", tooltip: t('landing.demoSection.characterSheet.tooltips.dexterity') },
+                        { stat: t('landing.demoSection.characterSheet.stats.con'), value: "14", mod: "+2", tooltip: t('landing.demoSection.characterSheet.tooltips.constitution') },
+                        { stat: t('landing.demoSection.characterSheet.stats.int'), value: "10", mod: "+0", tooltip: t('landing.demoSection.characterSheet.tooltips.intelligence') },
+                        { stat: t('landing.demoSection.characterSheet.stats.wis'), value: "13", mod: "+1", tooltip: t('landing.demoSection.characterSheet.tooltips.wisdom') },
+                        { stat: t('landing.demoSection.characterSheet.stats.cha'), value: "15", mod: "+2", tooltip: t('landing.demoSection.characterSheet.tooltips.charisma') }
                       ].map((item, index) => (
                         <div key={index} className="text-center group relative">
                           <div className="bg-white rounded-lg p-2 border border-secondary/30 shadow-sm">
@@ -120,15 +120,15 @@ export default function DemoSection() {
                     </div>
                     
                     <div className="bg-white rounded-lg p-3 border border-secondary/30 shadow-sm mb-4">
-                      <h4 className="font-lora font-semibold text-md text-primary mb-2">Saving Throws</h4>
+                      <h4 className="font-lora font-semibold text-md text-primary mb-2">{t('landing.demoSection.characterSheet.stats.savingThrows')}</h4>
                       <div className="grid grid-cols-2 gap-2 font-opensans text-sm">
                         <div className="flex items-center">
                           <i className="ri-checkbox-circle-fill text-accent mr-1"></i>
-                          <span>Wisdom +4</span>
+                          <span>{t('landing.demoSection.characterSheet.saves.wisdom')}</span>
                         </div>
                         <div className="flex items-center">
                           <i className="ri-checkbox-circle-fill text-accent mr-1"></i>
-                          <span>Charisma +5</span>
+                          <span>{t('landing.demoSection.characterSheet.saves.charisma')}</span>
                         </div>
                       </div>
                     </div>
@@ -138,76 +138,76 @@ export default function DemoSection() {
                 <div className="lg:col-span-2">
                   <div className="parchment bg-secondary/5 rounded-lg p-4 border border-secondary/30 shadow">
                     <div className="flex justify-between mb-4">
-                      <h3 className="font-lora font-semibold text-xl text-primary">Equipment & Abilities</h3>
+                      <h3 className="font-lora font-semibold text-xl text-primary">{t('landing.demoSection.characterSheet.equipmentAndAbilities')}</h3>
                       <button className="text-sm bg-primary text-white px-3 py-1 rounded magic-button">
-                        <i className="ri-edit-line mr-1"></i> Edit
+                        <i className="ri-edit-line mr-1"></i> {t('landing.demoSection.characterSheet.edit')}
                       </button>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <h4 className="font-lora font-semibold text-md text-primary mb-2 flex items-center">
-                          <i className="ri-sword-fill text-accent mr-2"></i> Weapons
+                          <i className="ri-sword-fill text-accent mr-2"></i> {t('landing.demoSection.characterSheet.weapons')}
                         </h4>
                         <ul className="bg-white rounded-lg p-3 border border-secondary/30 shadow-sm space-y-2">
                           <li className="font-opensans text-sm flex justify-between">
-                            <span>Warhammer</span>
-                            <span className="text-primary">1d8+3 bludgeoning</span>
+                            <span>{t('landing.demoSection.characterSheet.weaponsList.warhammer')}</span>
+                            <span className="text-primary">{t('landing.demoSection.characterSheet.weaponsList.warhammer_damage')}</span>
                           </li>
                           <li className="font-opensans text-sm flex justify-between">
-                            <span>Handaxe</span>
-                            <span className="text-primary">1d6+3 slashing</span>
+                            <span>{t('landing.demoSection.characterSheet.weaponsList.handaxe')}</span>
+                            <span className="text-primary">{t('landing.demoSection.characterSheet.weaponsList.handaxe_damage')}</span>
                           </li>
                           <li className="font-opensans text-sm flex justify-between">
-                            <span>Light Crossbow</span>
-                            <span className="text-primary">1d8+1 piercing</span>
+                            <span>{t('landing.demoSection.characterSheet.weaponsList.lightCrossbow')}</span>
+                            <span className="text-primary">{t('landing.demoSection.characterSheet.weaponsList.lightCrossbow_damage')}</span>
                           </li>
                         </ul>
                         
                         <h4 className="font-lora font-semibold text-md text-primary mt-4 mb-2 flex items-center">
-                          <i className="ri-shield-fill text-accent mr-2"></i> Armor
+                          <i className="ri-shield-fill text-accent mr-2"></i> {t('landing.demoSection.characterSheet.armor')}
                         </h4>
                         <ul className="bg-white rounded-lg p-3 border border-secondary/30 shadow-sm space-y-2">
                           <li className="font-opensans text-sm flex justify-between">
-                            <span>Chain Mail</span>
-                            <span className="text-primary">AC 16</span>
+                            <span>{t('landing.demoSection.characterSheet.armorList.chainMail')}</span>
+                            <span className="text-primary">{t('landing.demoSection.characterSheet.armorList.chainMail_ac')}</span>
                           </li>
                           <li className="font-opensans text-sm flex justify-between">
-                            <span>Shield</span>
-                            <span className="text-primary">AC +2</span>
+                            <span>{t('landing.demoSection.characterSheet.armorList.shield')}</span>
+                            <span className="text-primary">{t('landing.demoSection.characterSheet.armorList.shield_ac')}</span>
                           </li>
                         </ul>
                       </div>
                       
                       <div>
                         <h4 className="font-lora font-semibold text-md text-primary mb-2 flex items-center">
-                          <i className="ri-magic-fill text-accent mr-2"></i> Abilities
+                          <i className="ri-magic-fill text-accent mr-2"></i> {t('landing.demoSection.characterSheet.abilities')}
                         </h4>
                         <ul className="bg-white rounded-lg p-3 border border-secondary/30 shadow-sm space-y-2">
                           <li className="font-opensans text-sm">
-                            <span className="font-semibold text-primary">Divine Sense</span>
-                            <p className="text-xs text-foreground">Detect celestials, fiends, or undead within 60 feet.</p>
+                            <span className="font-semibold text-primary">{t('landing.demoSection.characterSheet.abilitiesList.divineSense')}</span>
+                            <p className="text-xs text-foreground">{t('landing.demoSection.characterSheet.abilitiesList.divineSense_desc')}</p>
                           </li>
                           <li className="font-opensans text-sm">
-                            <span className="font-semibold text-primary">Lay on Hands</span>
-                            <p className="text-xs text-foreground">Heal 25 points of damage per day.</p>
+                            <span className="font-semibold text-primary">{t('landing.demoSection.characterSheet.abilitiesList.layOnHands')}</span>
+                            <p className="text-xs text-foreground">{t('landing.demoSection.characterSheet.abilitiesList.layOnHands_desc')}</p>
                           </li>
                           <li className="font-opensans text-sm">
-                            <span className="font-semibold text-primary">Divine Smite</span>
-                            <p className="text-xs text-foreground">Expend spell slot to deal extra radiant damage.</p>
+                            <span className="font-semibold text-primary">{t('landing.demoSection.characterSheet.abilitiesList.divineSmite')}</span>
+                            <p className="text-xs text-foreground">{t('landing.demoSection.characterSheet.abilitiesList.divineSmite_desc')}</p>
                           </li>
                           <li className="font-opensans text-sm">
-                            <span className="font-semibold text-primary">Oath of Devotion</span>
-                            <p className="text-xs text-foreground">Channel Divinity: Sacred Weapon, Turn the Unholy</p>
+                            <span className="font-semibold text-primary">{t('landing.demoSection.characterSheet.abilitiesList.oathOfDevotion')}</span>
+                            <p className="text-xs text-foreground">{t('landing.demoSection.characterSheet.abilitiesList.oathOfDevotion_desc')}</p>
                           </li>
                         </ul>
                         
                         <h4 className="font-lora font-semibold text-md text-primary mt-4 mb-2 flex items-center">
-                          <i className="ri-book-fill text-accent mr-2"></i> Spells
+                          <i className="ri-book-fill text-accent mr-2"></i> {t('landing.demoSection.characterSheet.spells')}
                         </h4>
                         <div className="bg-white rounded-lg p-3 border border-secondary/30 shadow-sm">
                           <div className="flex justify-between mb-2">
-                            <span className="font-opensans text-sm font-semibold">Spell Slots:</span>
+                            <span className="font-opensans text-sm font-semibold">{t('landing.demoSection.characterSheet.spellsList.spellSlots')}</span>
                             <div className="flex space-x-1">
                               <span className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-white text-xs">✓</span>
                               <span className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-white text-xs">✓</span>
@@ -216,9 +216,9 @@ export default function DemoSection() {
                             </div>
                           </div>
                           <ul className="space-y-1">
-                            <li className="font-opensans text-sm">Cure Wounds</li>
-                            <li className="font-opensans text-sm">Shield of Faith</li>
-                            <li className="font-opensans text-sm">Thunderous Smite</li>
+                            <li className="font-opensans text-sm">{t('landing.demoSection.characterSheet.spellsList.cureWounds')}</li>
+                            <li className="font-opensans text-sm">{t('landing.demoSection.characterSheet.spellsList.shieldOfFaith')}</li>
+                            <li className="font-opensans text-sm">{t('landing.demoSection.characterSheet.spellsList.thunderousSmite')}</li>
                           </ul>
                         </div>
                       </div>

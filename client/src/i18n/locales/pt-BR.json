@@ -260,6 +260,98 @@
         "campaignManager": "Gerenciador de Campanha",
         "npcCreator": "Criador de NPCs",
         "encounterBuilder": "Construtor de Encontros"
+      },
+      "characterSheet": {
+        "characterName": "Thordak Punho de Ferro",
+        "characterRaceClass": "Anão da Montanha - Paladino Nv.5",
+        "stats": {
+          "ac": "CA",
+          "hp": "PV",
+          "speed": "Desl.",
+          "str": "FOR",
+          "dex": "DES",
+          "con": "CON",
+          "int": "INT", 
+          "wis": "SAB",
+          "cha": "CAR",
+          "savingThrows": "Testes de Resistência"
+        },
+        "tooltips": {
+          "strength": "Força: Afeta ataques corpo a corpo, atletismo e capacidade de carga",
+          "dexterity": "Destreza: Afeta CA, iniciativa e armas de precisão",
+          "constitution": "Constituição: Afeta pontos de vida e testes de concentração",
+          "intelligence": "Inteligência: Afeta perícias de conhecimento e algumas magias",
+          "wisdom": "Sabedoria: Afeta percepção e algumas magias",
+          "charisma": "Carisma: Afeta habilidades sociais e magias de paladino"
+        },
+        "saves": {
+          "wisdom": "Sabedoria +4",
+          "charisma": "Carisma +5"
+        },
+        "equipmentAndAbilities": "Equipamento e Habilidades",
+        "edit": "Editar",
+        "weapons": "Armas",
+        "armor": "Armadura",
+        "abilities": "Habilidades",
+        "spells": "Magias",
+        "weaponsList": {
+          "warhammer": "Martelo de Guerra",
+          "handaxe": "Machadinha",
+          "lightCrossbow": "Besta Leve",
+          "warhammer_damage": "1d8+3 contundente",
+          "handaxe_damage": "1d6+3 cortante",
+          "lightCrossbow_damage": "1d8+1 perfurante"
+        },
+        "armorList": {
+          "chainMail": "Cota de Malha",
+          "shield": "Escudo",
+          "chainMail_ac": "CA 16",
+          "shield_ac": "CA +2"
+        },
+        "abilitiesList": {
+          "divineSense": "Sentido Divino",
+          "divineSense_desc": "Detecta celestiais, corruptores ou mortos-vivos a até 18 metros.",
+          "layOnHands": "Imposição das Mãos",
+          "layOnHands_desc": "Cura 25 pontos de dano por dia.",
+          "divineSmite": "Golpe Divino",
+          "divineSmite_desc": "Gasta espaço de magia para causar dano radiante extra.",
+          "oathOfDevotion": "Juramento de Devoção",
+          "oathOfDevotion_desc": "Canalizar Divindade: Arma Sagrada, Expulsar os Profanos"
+        },
+        "spellsList": {
+          "spellSlots": "Espaços de Magia:",
+          "cureWounds": "Curar Ferimentos",
+          "shieldOfFaith": "Escudo da Fé",
+          "thunderousSmite": "Golpe Trovejante"
+        }
+      },
+      "campaignManager": {
+        "campaignTitle": "Campanha: Saga do Pico Gelado",
+        "players": "Jogadores",
+        "campaignLinks": "Links da Campanha",
+        "playersList": {
+          "player1": "Jessica - Ranger Élfica",
+          "player2": "Michael - Mago Humano", 
+          "player3": "Thordak - Paladino Anão",
+          "invitePlayer": "Convidar Jogador"
+        },
+        "linksList": {
+          "worldMap": "Mapa do Mundo",
+          "npcs": "NPCs",
+          "encounters": "Encontros",
+          "sessionNotes": "Notas de Sessão"
+        },
+        "worldBuilding": "Construção de Mundo",
+        "save": "Salvar",
+        "addLocation": "Adicionar Local",
+        "locationsList": {
+          "frostSpire": "Montanha Pico Gelado",
+          "frostSpire_desc": "O pico mais alto da região, lar de antigas ruínas anãs e gigantes do gelo.",
+          "evernightForest": "Floresta Noite Eterna",
+          "evernightForest_desc": "Uma floresta densa e mágica onde é sempre crepúsculo, habitada por criaturas feéricas.",
+          "havenVillage": "Vila Refúgio",
+          "havenVillage_desc": "Um pequeno assentamento na base do Pico Gelado, o último refúgio seguro antes da natureza selvagem."
+        }
       }
     },
     "pricingSection": {

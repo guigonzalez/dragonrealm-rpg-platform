@@ -214,6 +214,98 @@
         "campaignManager": "Campaign Manager",
         "npcCreator": "NPC Creator",
         "encounterBuilder": "Encounter Builder"
+      },
+      "characterSheet": {
+        "characterName": "Thordak Ironfist",
+        "characterRaceClass": "Mountain Dwarf - Paladin Lv.5",
+        "stats": {
+          "ac": "AC",
+          "hp": "HP",
+          "speed": "Speed",
+          "str": "STR",
+          "dex": "DEX",
+          "con": "CON",
+          "int": "INT", 
+          "wis": "WIS",
+          "cha": "CHA",
+          "savingThrows": "Saving Throws"
+        },
+        "tooltips": {
+          "strength": "Strength: Affects melee attacks, athletics, and carrying capacity",
+          "dexterity": "Dexterity: Affects AC, initiative, and finesse weapons",
+          "constitution": "Constitution: Affects hit points and concentration checks",
+          "intelligence": "Intelligence: Affects knowledge skills and some spellcasting",
+          "wisdom": "Wisdom: Affects perception and some spellcasting",
+          "charisma": "Charisma: Affects social skills and paladin spellcasting"
+        },
+        "saves": {
+          "wisdom": "Wisdom +4",
+          "charisma": "Charisma +5"
+        },
+        "equipmentAndAbilities": "Equipment & Abilities",
+        "edit": "Edit",
+        "weapons": "Weapons",
+        "armor": "Armor",
+        "abilities": "Abilities",
+        "spells": "Spells",
+        "weaponsList": {
+          "warhammer": "Warhammer",
+          "handaxe": "Handaxe",
+          "lightCrossbow": "Light Crossbow",
+          "warhammer_damage": "1d8+3 bludgeoning",
+          "handaxe_damage": "1d6+3 slashing",
+          "lightCrossbow_damage": "1d8+1 piercing"
+        },
+        "armorList": {
+          "chainMail": "Chain Mail",
+          "shield": "Shield",
+          "chainMail_ac": "AC 16",
+          "shield_ac": "AC +2"
+        },
+        "abilitiesList": {
+          "divineSense": "Divine Sense",
+          "divineSense_desc": "Detect celestials, fiends, or undead within 60 feet.",
+          "layOnHands": "Lay on Hands",
+          "layOnHands_desc": "Heal 25 points of damage per day.",
+          "divineSmite": "Divine Smite",
+          "divineSmite_desc": "Expend spell slot to deal extra radiant damage.",
+          "oathOfDevotion": "Oath of Devotion",
+          "oathOfDevotion_desc": "Channel Divinity: Sacred Weapon, Turn the Unholy"
+        },
+        "spellsList": {
+          "spellSlots": "Spell Slots:",
+          "cureWounds": "Cure Wounds",
+          "shieldOfFaith": "Shield of Faith",
+          "thunderousSmite": "Thunderous Smite"
+        }
+      },
+      "campaignManager": {
+        "campaignTitle": "Campaign: Frost Spire Saga",
+        "players": "Players",
+        "campaignLinks": "Campaign Links",
+        "playersList": {
+          "player1": "Jessica - Elven Ranger",
+          "player2": "Michael - Human Wizard", 
+          "player3": "Thordak - Dwarven Paladin",
+          "invitePlayer": "Invite Player"
+        },
+        "linksList": {
+          "worldMap": "World Map",
+          "npcs": "NPCs",
+          "encounters": "Encounters",
+          "sessionNotes": "Session Notes"
+        },
+        "worldBuilding": "World Building",
+        "save": "Save",
+        "addLocation": "Add Location",
+        "locationsList": {
+          "frostSpire": "Frost Spire Mountain",
+          "frostSpire_desc": "The tallest peak in the region, home to ancient dwarven ruins and frost giants.",
+          "evernightForest": "Evernight Forest",
+          "evernightForest_desc": "A dense, magical forest where it's always twilight, inhabited by fey creatures.",
+          "havenVillage": "Haven Village",
+          "havenVillage_desc": "A small settlement at the base of Frost Spire, the last safe haven before the wilderness."
+        }
       }
     },
     "pricingSection": {
