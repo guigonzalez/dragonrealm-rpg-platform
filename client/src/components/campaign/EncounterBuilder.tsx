@@ -63,7 +63,8 @@ import {
   MinusCircle,
   Plus,
   Minus,
-  Check
+  Check,
+  Loader2
 } from "lucide-react";
 
 interface EncounterBuilderProps {
