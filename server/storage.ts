@@ -1,8 +1,12 @@
 import { users, type User, type InsertUser, characters, type Character, type InsertCharacter, campaigns, type Campaign, type InsertCampaign, npcs, type Npc, type InsertNpc, encounters, type Encounter, type InsertEncounter, campaignLocations, type CampaignLocation, type InsertCampaignLocation, sessionNotes, type SessionNote, type InsertSessionNote } from "@shared/schema";
 import session from "express-session";
 import createMemoryStore from "memorystore";
+import connectPg from "connect-pg-simple";
+import { db, pool } from "./db";
+import { eq } from "drizzle-orm";
 
 const MemoryStore = createMemoryStore(session);
+const PostgresSessionStore = connectPg(session);
 
 // Interface for storage operations
 export interface IStorage {
@@ -55,7 +59,7 @@ export interface IStorage {
   updateSessionNote(id: number, note: Partial<SessionNote>): Promise<SessionNote | undefined>;
   deleteSessionNote(id: number): Promise<boolean>;
 
-  sessionStore: session.SessionStore;
+  sessionStore: any; // Using any type for session store
 }
 
 export class MemStorage implements IStorage {
@@ -66,7 +70,7 @@ export class MemStorage implements IStorage {
   private encounters: Map<number, Encounter>;
   private locations: Map<number, CampaignLocation>;
   private sessionNotes: Map<number, SessionNote>;
-  sessionStore: session.SessionStore;
+  sessionStore: any;
   
   private userIdCounter: number;
   private characterIdCounter: number;
@@ -318,4 +322,192 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export class DatabaseStorage implements IStorage {
+  sessionStore: any;
+
+  constructor() {
+    this.sessionStore = new PostgresSessionStore({ 
+      pool,
+      createTableIfMissing: true
+    });
+  }
+
+  // User methods
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db.insert(users).values(insertUser).returning();
+    return user;
+  }
+
+  async updateUser(id: number, userData: Partial<User>): Promise<User | undefined> {
+    const [user] = await db.update(users).set(userData).where(eq(users.id, id)).returning();
+    return user;
+  }
+
+  // Character methods
+  async getCharacter(id: number): Promise<Character | undefined> {
+    const [character] = await db.select().from(characters).where(eq(characters.id, id));
+    return character;
+  }
+
+  async getCharactersByUserId(userId: number): Promise<Character[]> {
+    return await db.select().from(characters).where(eq(characters.userId, userId));
+  }
+
+  async createCharacter(insertCharacter: InsertCharacter): Promise<Character> {
+    const [character] = await db.insert(characters).values(insertCharacter).returning();
+    return character;
+  }
+
+  async updateCharacter(id: number, characterData: Partial<Character>): Promise<Character | undefined> {
+    const [character] = await db.update(characters).set(characterData).where(eq(characters.id, id)).returning();
+    return character;
+  }
+
+  async deleteCharacter(id: number): Promise<boolean> {
+    const result = await db.delete(characters).where(eq(characters.id, id));
+    return result.rowCount ? result.rowCount > 0 : false;
+  }
+
+  // Campaign methods
+  async getCampaign(id: number): Promise<Campaign | undefined> {
+    const [campaign] = await db.select().from(campaigns).where(eq(campaigns.id, id));
+    return campaign;
+  }
+
+  async getCampaignsByUserId(userId: number): Promise<Campaign[]> {
+    return await db.select().from(campaigns).where(eq(campaigns.userId, userId));
+  }
+
+  async createCampaign(insertCampaign: InsertCampaign): Promise<Campaign> {
+    const [campaign] = await db.insert(campaigns).values(insertCampaign).returning();
+    return campaign;
+  }
+
+  async updateCampaign(id: number, campaignData: Partial<Campaign>): Promise<Campaign | undefined> {
+    const [campaign] = await db.update(campaigns).set(campaignData).where(eq(campaigns.id, id)).returning();
+    return campaign;
+  }
+
+  async deleteCampaign(id: number): Promise<boolean> {
+    const result = await db.delete(campaigns).where(eq(campaigns.id, id));
+    return result.rowCount ? result.rowCount > 0 : false;
+  }
+
+  // NPC methods
+  async getNpc(id: number): Promise<Npc | undefined> {
+    const [npc] = await db.select().from(npcs).where(eq(npcs.id, id));
+    return npc;
+  }
+
+  async getNpcsByCampaignId(campaignId: number): Promise<Npc[]> {
+    return await db.select().from(npcs).where(eq(npcs.campaignId, campaignId));
+  }
+
+  async createNpc(insertNpc: InsertNpc): Promise<Npc> {
+    const [npc] = await db.insert(npcs).values(insertNpc).returning();
+    return npc;
+  }
+
+  async updateNpc(id: number, npcData: Partial<Npc>): Promise<Npc | undefined> {
+    const [npc] = await db.update(npcs).set(npcData).where(eq(npcs.id, id)).returning();
+    return npc;
+  }
+
+  async deleteNpc(id: number): Promise<boolean> {
+    const result = await db.delete(npcs).where(eq(npcs.id, id));
+    return result.rowCount ? result.rowCount > 0 : false;
+  }
+
+  // Encounter methods
+  async getEncounter(id: number): Promise<Encounter | undefined> {
+    const [encounter] = await db.select().from(encounters).where(eq(encounters.id, id));
+    return encounter;
+  }
+
+  async getEncountersByCampaignId(campaignId: number): Promise<Encounter[]> {
+    return await db.select().from(encounters).where(eq(encounters.campaignId, campaignId));
+  }
+
+  async createEncounter(insertEncounter: InsertEncounter): Promise<Encounter> {
+    const [encounter] = await db.insert(encounters).values(insertEncounter).returning();
+    return encounter;
+  }
+
+  async updateEncounter(id: number, encounterData: Partial<Encounter>): Promise<Encounter | undefined> {
+    const [encounter] = await db.update(encounters).set(encounterData).where(eq(encounters.id, id)).returning();
+    return encounter;
+  }
+
+  async deleteEncounter(id: number): Promise<boolean> {
+    const result = await db.delete(encounters).where(eq(encounters.id, id));
+    return result.rowCount ? result.rowCount > 0 : false;
+  }
+
+  // Location methods
+  async getLocation(id: number): Promise<CampaignLocation | undefined> {
+    const [location] = await db.select().from(campaignLocations).where(eq(campaignLocations.id, id));
+    return location;
+  }
+
+  async getLocationsByCampaignId(campaignId: number): Promise<CampaignLocation[]> {
+    return await db.select().from(campaignLocations).where(eq(campaignLocations.campaignId, campaignId));
+  }
+
+  async createLocation(insertLocation: InsertCampaignLocation): Promise<CampaignLocation> {
+    const [location] = await db.insert(campaignLocations).values(insertLocation).returning();
+    return location;
+  }
+
+  async updateLocation(id: number, locationData: Partial<CampaignLocation>): Promise<CampaignLocation | undefined> {
+    const [location] = await db.update(campaignLocations).set(locationData).where(eq(campaignLocations.id, id)).returning();
+    return location;
+  }
+
+  async deleteLocation(id: number): Promise<boolean> {
+    const result = await db.delete(campaignLocations).where(eq(campaignLocations.id, id));
+    return result.rowCount ? result.rowCount > 0 : false;
+  }
+
+  // Session notes methods
+  async getSessionNote(id: number): Promise<SessionNote | undefined> {
+    const [note] = await db.select().from(sessionNotes).where(eq(sessionNotes.id, id));
+    return note;
+  }
+
+  async getSessionNotesByCampaignId(campaignId: number): Promise<SessionNote[]> {
+    return await db.select().from(sessionNotes).where(eq(sessionNotes.campaignId, campaignId));
+  }
+
+  async createSessionNote(insertNote: InsertSessionNote): Promise<SessionNote> {
+    const [note] = await db.insert(sessionNotes).values(insertNote).returning();
+    return note;
+  }
+
+  async updateSessionNote(id: number, noteData: Partial<SessionNote>): Promise<SessionNote | undefined> {
+    const [note] = await db.update(sessionNotes).set(noteData).where(eq(sessionNotes.id, id)).returning();
+    return note;
+  }
+
+  async deleteSessionNote(id: number): Promise<boolean> {
+    const result = await db.delete(sessionNotes).where(eq(sessionNotes.id, id));
+    return result.rowCount ? result.rowCount > 0 : false;
+  }
+}
+
+// Switch from MemStorage to DatabaseStorage
+export const storage = new DatabaseStorage();
