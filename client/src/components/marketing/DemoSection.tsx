@@ -646,7 +646,7 @@ export default function DemoSection() {
                     <div className="bg-white rounded-lg p-4 border border-secondary/30 shadow-sm mb-4">
                       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-3">
                         <div className="flex items-center mb-2 md:mb-0">
-                          <img src="https://images.unsplash.com/photo-1602491673980-73aa38de027b?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Ice Mephit" className="w-12 h-12 object-cover rounded-md mr-3" />
+                          <img src="/assets/ice-mephit.png" alt="Ice Mephit" className="w-12 h-12 object-cover rounded-md mr-3" />
                           <div>
                             <h4 className="font-lora font-semibold text-lg text-primary">{t('landing.demoSection.encounterBuilder.creatures.iceMephit')}</h4>
                             <p className="font-opensans text-xs text-foreground/70">{t('landing.demoSection.encounterBuilder.creatures.iceMephitType')}</p>
