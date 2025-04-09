@@ -463,22 +463,24 @@
       "product": "Produto",
       "features": "Recursos",
       "pricing": "Preços",
-      "testimonials": "Depoimentos",
-      "company": "Empresa",
-      "about": "Sobre Nós",
-      "contact": "Contato",
-      "careers": "Carreiras",
-      "blog": "Blog",
+      "demo": "Demonstração",
       "resources": "Recursos",
       "documentation": "Documentação",
-      "tutorials": "Tutoriais",
+      "videoTutorials": "Vídeos Tutoriais",
+      "contact": "Contato",
       "support": "Suporte",
-      "community": "Comunidade",
+      "reportBug": "Reportar um Bug",
+      "requestFeature": "Solicitar um Recurso",
       "legal": "Legal",
       "terms": "Termos de Serviço",
       "privacy": "Política de Privacidade",
       "cookies": "Política de Cookies",
-      "copyright": "© 2025 DragonRealm. Todos os direitos reservados."
+      "copyright": "© 2025 DragonRealm. Todos os direitos reservados.",
+      "socialLinks": {
+        "discord": "Discord",
+        "instagram": "Instagram",
+        "youtube": "Youtube"
+      }
     }
   }
 }

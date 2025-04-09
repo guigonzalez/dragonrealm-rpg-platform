@@ -451,22 +451,24 @@
       "product": "Product",
       "features": "Features",
       "pricing": "Pricing",
-      "testimonials": "Testimonials",
-      "company": "Company",
-      "about": "About Us",
-      "contact": "Contact",
-      "careers": "Careers",
-      "blog": "Blog",
+      "demo": "Demo",
       "resources": "Resources",
       "documentation": "Documentation",
-      "tutorials": "Tutorials",
+      "videoTutorials": "Video Tutorials",
+      "contact": "Contact",
       "support": "Support",
-      "community": "Community",
+      "reportBug": "Report a Bug",
+      "requestFeature": "Request a Feature",
       "legal": "Legal",
       "terms": "Terms of Service",
       "privacy": "Privacy Policy",
       "cookies": "Cookie Policy",
-      "copyright": "© 2025 DragonRealm. All rights reserved."
+      "copyright": "© 2025 DragonRealm. All rights reserved.",
+      "socialLinks": {
+        "discord": "Discord",
+        "instagram": "Instagram",
+        "youtube": "Youtube"
+      }
     }
   }
 }
