@@ -12,6 +12,7 @@ import CampaignManagementPage from "@/pages/campaign-management-page";
 import NPCCreatorPage from "@/pages/npc-creator-page";
 import EncounterBuilderPage from "@/pages/encounter-builder-page";
 import { ProtectedRoute } from "./lib/protected-route";
+import { AuthProvider } from "./hooks/use-auth";
 
 function Router() {
   return (
@@ -32,8 +33,10 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router />
-      <Toaster />
+      <AuthProvider>
+        <Router />
+        <Toaster />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
