@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
@@ -12,11 +13,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import LanguageSelector from "@/components/LanguageSelector";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, logoutMutation } = useAuth();
   const [location] = useLocation();
+  const { t } = useTranslation();
 
   const isHome = location === "/";
   
@@ -50,58 +53,65 @@ export default function Navbar() {
         <nav className="hidden md:flex space-x-8 items-center">
           {isHome ? (
             <>
-              <a href="#features" className="font-opensans hover:text-accent transition-colors">Features</a>
-              <a href="#how-it-works" className="font-opensans hover:text-accent transition-colors">How It Works</a>
-              <a href="#pricing" className="font-opensans hover:text-accent transition-colors">Pricing</a>
+              <a href="#features" className="font-opensans hover:text-accent transition-colors">{t('landing.featuresTitle')}</a>
+              <a href="#how-it-works" className="font-opensans hover:text-accent transition-colors">{t('landing.howItWorks')}</a>
+              <a href="#pricing" className="font-opensans hover:text-accent transition-colors">{t('landing.pricing')}</a>
             </>
           ) : (
             user && (
               <>
-                <Link href="/dashboard">
-                  <a className="font-opensans hover:text-accent transition-colors">Dashboard</a>
+                <Link href="/dashboard" className="font-opensans hover:text-accent transition-colors">
+                  {t('common.dashboard')}
                 </Link>
-                <Link href="/character-creation">
-                  <a className="font-opensans hover:text-accent transition-colors">Create Character</a>
+                <Link href="/character-creation" className="font-opensans hover:text-accent transition-colors">
+                  {t('character.createCharacter')}
                 </Link>
               </>
             )
           )}
           
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-accent text-primary">
-                      {getInitials(user.displayName || user.username)}
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{user.displayName || user.username}</p>
-                    <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <Link href="/dashboard">
-                  <DropdownMenuItem>Dashboard</DropdownMenuItem>
-                </Link>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Link href="/auth">
-              <Button className="magic-button bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/90 transition-colors">
-                Sign In
+          <div className="flex items-center space-x-2">
+            <LanguageSelector />
+            
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback className="bg-accent text-primary">
+                        {getInitials(user.displayName || user.username)}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{user.displayName || user.username}</p>
+                      <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => window.location.href = '/dashboard'}>
+                    {t('common.dashboard')}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    {t('common.logout')}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button 
+                onClick={() => {
+                  window.location.href = '/auth';
+                }} 
+                className="magic-button bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/90 transition-colors"
+              >
+                {t('auth.login')}
               </Button>
-            </Link>
-          )}
+            )}
+          </div>
         </nav>
         
         <button onClick={toggleMobileMenu} className="md:hidden text-white focus:outline-none">
@@ -120,45 +130,50 @@ export default function Navbar() {
                   className="font-opensans text-white hover:text-accent transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Features
+                  {t('landing.featuresTitle')}
                 </a>
                 <a 
                   href="#how-it-works" 
                   className="font-opensans text-white hover:text-accent transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  How It Works
+                  {t('landing.howItWorks')}
                 </a>
                 <a 
                   href="#pricing" 
                   className="font-opensans text-white hover:text-accent transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Pricing
+                  {t('landing.pricing')}
                 </a>
               </>
             ) : (
               user && (
                 <>
-                  <Link href="/dashboard">
-                    <a 
-                      className="font-opensans text-white hover:text-accent transition-colors"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Dashboard
-                    </a>
+                  <Link 
+                    href="/dashboard" 
+                    className="font-opensans text-white hover:text-accent transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {t('common.dashboard')}
                   </Link>
-                  <Link href="/character-creation">
-                    <a 
-                      className="font-opensans text-white hover:text-accent transition-colors"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Create Character
-                    </a>
+                  <Link 
+                    href="/character-creation" 
+                    className="font-opensans text-white hover:text-accent transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {t('character.createCharacter')}
                   </Link>
                 </>
               )
             )}
+            
+            <div className="flex items-center py-2">
+              <LanguageSelector />
+              <span className="ml-2 text-white">
+                {t('common.language')}
+              </span>
+            </div>
             
             {user ? (
               <>
@@ -172,17 +187,16 @@ export default function Navbar() {
                   }}
                   className="font-opensans text-white hover:text-accent transition-colors text-left"
                 >
-                  Log out
+                  {t('common.logout')}
                 </button>
               </>
             ) : (
-              <Link href="/auth">
-                <a 
-                  className="magic-button font-opensans bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/90 transition-colors text-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Sign In
-                </a>
+              <Link 
+                href="/auth"
+                className="magic-button font-opensans bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/90 transition-colors text-center"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t('auth.login')}
               </Link>
             )}
           </div>
