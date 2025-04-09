@@ -261,6 +261,69 @@
         "npcCreator": "Criador de NPCs",
         "encounterBuilder": "Construtor de Encontros"
       },
+      "campaignManager": {
+        "title": "Gerenciador de Campanha",
+        "campaignName": "Saga do Pico Gelado",
+        "player1": "Jessica - Ranger Élfica",
+        "player2": "Michael - Mago Humano",
+        "player3": "Thordak - Paladino Anão",
+        "invitePlayer": "Convidar Jogador",
+        "worldMap": "Mapa do Mundo",
+        "npcs": "NPCs",
+        "encounters": "Encontros",
+        "sessionNotes": "Notas de Sessão",
+        "location1": {
+          "description": "O pico mais alto da região, lar de antigas ruínas anãs e gigantes do gelo."
+        },
+        "location2": {
+          "description": "Uma floresta densa e mágica onde é sempre crepúsculo, habitada por criaturas feéricas."
+        },
+        "location3": {
+          "description": "Um pequeno assentamento na base do Pico Gelado, o último refúgio seguro antes da natureza selvagem."
+        },
+        "created": "Criado em",
+        "edit": "Editar",
+        "addLocationHint": "Adicione um novo local à sua campanha"
+      },
+      "npcCreator": {
+        "title": "Criador de NPCs",
+        "basicInformation": "Informações Básicas",
+        "name": "Nome",
+        "race": "Raça",
+        "races": {
+          "human": "Humano",
+          "elf": "Elfo",
+          "dwarf": "Anão",
+          "halfling": "Halfling",
+          "gnome": "Gnomo",
+          "halfElf": "Meio-Elfo",
+          "halfOrc": "Meio-Orc",
+          "tiefling": "Tiefling"
+        },
+        "occupation": "Ocupação",
+        "location": "Localização",
+        "appearance": "Aparência",
+        "age": "Idade",
+        "distinctiveFeatures": "Características Distintivas",
+        "featuresExample": "Pequena estatura mesmo para um gnomo, cabelos brancos desgrenhados, espessa barba prateada, olhos azuis brilhantes que parecem sempre curiosos.",
+        "details": "Detalhes do NPC",
+        "saveDraft": "Salvar Rascunho",
+        "createNpc": "Criar NPC",
+        "personality": "Personalidade",
+        "traits": "Traços",
+        "traitsExample": "Extremamente curioso, tem um constante fascínio por novos conhecimentos, fala rapidamente quando excitado sobre um tópico, é distraído e esquece facilmente convenções sociais.",
+        "ideals": "Ideais",
+        "idealsExample": "Conhecimento (acredita que o aprendizado é o bem mais precioso), Neutralidade (considera julgamentos morais muito simplistas), Preservação (protege o conhecimento antigo a todo custo).",
+        "voice": "Voz e Maneirismos",
+        "voiceExample": "Voz aguda e rápida, frequentemente usa termos arcanos em conversas cotidianas, repete palavras quando empolgado, tem o hábito de ajustar óculos inexistentes.",
+        "roleInCampaign": "Papel na Campanha",
+        "abilities": "Habilidades",
+        "abilitiesExample": "Conhecimento arcano excepcional (especialista em artefatos antigos), leitura de runas, capacidade de lançar alguns truques e magias de 1º nível, eidética memória para textos e livros.",
+        "plotHooks": "Ganchos de Trama",
+        "plotHooksExample": "Descobriu recentemente textos proibidos sobre um artefato perdido, está sendo perseguido por cultistas que desejam roubar seu conhecimento, ouviu rumores sobre uma antiga biblioteca élfica nas montanhas.",
+        "relationshipToPlayers": "Relacionamento com os Jogadores",
+        "relationshipExample": "Potencial aliado que pode fornecer informações sobre artefatos e itens mágicos, fonte de missões relacionadas a livros raros e conhecimentos perdidos, poderia se tornar um mentor para personagens magos."
+      },
       "characterSheet": {
         "characterName": "Thordak Punho de Ferro",
         "characterRaceClass": "Anão da Montanha - Paladino Nv.5",
@@ -326,7 +389,9 @@
         }
       },
       "campaignManager": {
+        "title": "Gerenciador de Campanha",
         "campaignTitle": "Campanha: Saga do Pico Gelado",
+        "campaignName": "Nome da Campanha",
         "players": "Jogadores",
         "campaignLinks": "Links da Campanha",
         "playersList": {
@@ -344,6 +409,9 @@
         "worldBuilding": "Construção de Mundo",
         "save": "Salvar",
         "addLocation": "Adicionar Local",
+        "created": "Criado em",
+        "edit": "Editar",
+        "addLocationHint": "Adicione um novo local à sua campanha",
         "locationsList": {
           "frostSpire": "Montanha Pico Gelado",
           "frostSpire_desc": "O pico mais alto da região, lar de antigas ruínas anãs e gigantes do gelo.",
@@ -353,13 +421,16 @@
           "havenVillage_desc": "Um pequeno assentamento na base do Pico Gelado, o último refúgio seguro antes da natureza selvagem."
         },
         "location1": {
-          "name": "Montanha Pico Gelado"
+          "name": "Montanha Pico Gelado",
+          "description": "O pico mais alto da região, lar de antigas ruínas anãs e gigantes do gelo."
         },
         "location2": {
-          "name": "Floresta Noite Eterna"
+          "name": "Floresta Noite Eterna",
+          "description": "Uma floresta densa e mágica onde é sempre crepúsculo, habitada por criaturas feéricas."
         },
         "location3": {
-          "name": "Vila Refúgio"
+          "name": "Vila Refúgio",
+          "description": "Um pequeno assentamento na base do Pico Gelado, o último refúgio seguro antes da natureza selvagem."
         }
       },
       "encounterBuilder": {

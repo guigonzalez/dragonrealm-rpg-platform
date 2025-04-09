@@ -280,7 +280,9 @@
         }
       },
       "campaignManager": {
+        "title": "Campaign Manager",
         "campaignTitle": "Campaign: Frost Spire Saga",
+        "campaignName": "Campaign Name",
         "players": "Players",
         "campaignLinks": "Campaign Links",
         "playersList": {
