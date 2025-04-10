@@ -1849,63 +1849,13 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                           
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Propriedades</label>
-                            <div className="flex flex-wrap gap-2">
-                              {["Acuidade", "Duas Mãos", "Leve", "Pesada", "Alcance", "Arremesso", "Munição", "Recarga", "Especial", "Versátil"].map((prop) => (
-                                <Badge 
-                                  key={prop} 
-                                  variant="outline" 
-                                  className="cursor-pointer"
-                                  onClick={(e) => {
-                                    const target = e.target as HTMLElement;
-                                    target.classList.toggle("bg-primary");
-                                    target.classList.toggle("text-primary-foreground");
-                                  }}
-                                >
-                                  {prop}
-                                </Badge>
-                              ))}
-                              <div className="w-full mt-2">
-                                <label className="text-xs text-muted-foreground">Outra propriedade:</label>
-                                <div className="flex items-center gap-2 mt-1">
-                                  <Input 
-                                    id="custom-weapon-property" 
-                                    placeholder="Digite propriedade personalizada" 
-                                    className="h-8"
-                                  />
-                                  <Button 
-                                    type="button" 
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => {
-                                      const input = document.getElementById('custom-weapon-property') as HTMLInputElement;
-                                      if (input && input.value.trim()) {
-                                        // Criar um Badge temporário e adicioná-lo à página
-                                        const container = document.querySelector('.flex.flex-wrap.gap-2');
-                                        if (container) {
-                                          const badge = document.createElement('span');
-                                          badge.className = 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer bg-primary text-primary-foreground';
-                                          badge.textContent = input.value.trim();
-                                          badge.onclick = (e) => {
-                                            const target = e.target as HTMLElement;
-                                            if (target.classList.contains('bg-primary')) {
-                                              target.classList.remove('bg-primary');
-                                              target.classList.remove('text-primary-foreground');
-                                            } else {
-                                              target.classList.add('bg-primary');
-                                              target.classList.add('text-primary-foreground');
-                                            }
-                                          };
-                                          container.insertBefore(badge, document.getElementById('custom-weapon-property')?.parentElement?.parentElement);
-                                          input.value = '';
-                                        }
-                                      }
-                                    }}
-                                  >
-                                    Adicionar
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
+                            <Input 
+                              id="weapon-properties" 
+                              placeholder="ex: Acuidade, Duas Mãos, Leve (separadas por vírgula)" 
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              Exemplos: Acuidade, Duas Mãos, Leve, Pesada, Alcance, Arremesso, Munição, Recarga, Especial, Versátil
+                            </p>
                           </div>
                           
                           <div className="space-y-2">
@@ -1934,63 +1884,13 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                           
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Tipo de Dano</label>
-                            <div className="flex flex-wrap gap-2">
-                              {["Cortante", "Perfurante", "Concussão", "Ácido", "Frio", "Fogo", "Elétrico", "Necrótico", "Venenoso", "Psíquico", "Radiante", "Trovão"].map((type) => (
-                                <Badge 
-                                  key={type} 
-                                  variant="outline" 
-                                  className="cursor-pointer"
-                                  onClick={(e) => {
-                                    const target = e.target as HTMLElement;
-                                    target.classList.toggle("bg-primary");
-                                    target.classList.toggle("text-primary-foreground");
-                                  }}
-                                >
-                                  {type}
-                                </Badge>
-                              ))}
-                              <div className="w-full mt-2">
-                                <label className="text-xs text-muted-foreground">Outro tipo de dano:</label>
-                                <div className="flex items-center gap-2 mt-1">
-                                  <Input 
-                                    id="custom-damage-type" 
-                                    placeholder="Digite tipo personalizado" 
-                                    className="h-8"
-                                  />
-                                  <Button 
-                                    type="button" 
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => {
-                                      const input = document.getElementById('custom-damage-type') as HTMLInputElement;
-                                      if (input && input.value.trim()) {
-                                        // Criar um Badge temporário e adicioná-lo à página
-                                        const container = document.querySelector('.flex.flex-wrap.gap-2:nth-of-type(2)');
-                                        if (container) {
-                                          const badge = document.createElement('span');
-                                          badge.className = 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer bg-primary text-primary-foreground';
-                                          badge.textContent = input.value.trim();
-                                          badge.onclick = (e) => {
-                                            const target = e.target as HTMLElement;
-                                            if (target.classList.contains('bg-primary')) {
-                                              target.classList.remove('bg-primary');
-                                              target.classList.remove('text-primary-foreground');
-                                            } else {
-                                              target.classList.add('bg-primary');
-                                              target.classList.add('text-primary-foreground');
-                                            }
-                                          };
-                                          container.insertBefore(badge, document.getElementById('custom-damage-type')?.parentElement?.parentElement);
-                                          input.value = '';
-                                        }
-                                      }
-                                    }}
-                                  >
-                                    Adicionar
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
+                            <Input 
+                              id="weapon-damage-types" 
+                              placeholder="ex: Cortante, Fogo (separados por vírgula)" 
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              Exemplos: Cortante, Perfurante, Concussão, Ácido, Frio, Fogo, Elétrico, Necrótico, Venenoso, Psíquico, Radiante, Trovão
+                            </p>
                           </div>
                           
                           <div className="space-y-2">
@@ -2010,26 +1910,17 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                 const attackInput = document.getElementById('weapon-attack-bonus') as HTMLInputElement;
                                 const damageInput = document.getElementById('weapon-damage') as HTMLInputElement;
                                 const ammoInput = document.getElementById('weapon-ammo') as HTMLInputElement;
+                                const propertiesInput = document.getElementById('weapon-properties') as HTMLInputElement;
+                                const damageTypesInput = document.getElementById('weapon-damage-types') as HTMLInputElement;
                                 
-                                // Obter propriedades e tipos selecionados
-                                const selectedProps: string[] = [];
-                                const selectedTypes: string[] = [];
-                                
-                                // Limitando a busca aos badges dentro do modal de armas
-                                const weaponDialog = document.querySelector('[role="dialog"]') as HTMLElement;
-                                if (weaponDialog) {
-                                  weaponDialog.querySelectorAll('.bg-primary').forEach(el => {
-                                    if ((el as HTMLElement).innerText) {
-                                      // Verificar se é propriedade ou tipo de dano
-                                      const text = (el as HTMLElement).innerText;
-                                      if (["Acuidade", "Duas Mãos", "Leve", "Pesada", "Alcance", "Arremesso", "Munição", "Recarga", "Especial", "Versátil"].includes(text)) {
-                                        selectedProps.push(text);
-                                      } else if (text.length < 30) { // Verificação adicional para evitar textos longos
-                                        selectedTypes.push(text);
-                                      }
-                                    }
-                                  });
-                                }
+                                // Converter string de propriedades e tipos de dano em arrays
+                                const selectedProps = propertiesInput.value 
+                                  ? propertiesInput.value.split(',').map(item => item.trim()).filter(item => item)
+                                  : [];
+                                  
+                                const selectedTypes = damageTypesInput.value 
+                                  ? damageTypesInput.value.split(',').map(item => item.trim()).filter(item => item)
+                                  : [];
                                 
                                 // Criar nova arma
                                 if (nameInput.value) {
@@ -2052,14 +1943,8 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                   attackInput.value = '';
                                   damageInput.value = '';
                                   ammoInput.value = '';
-                                  // Limpar apenas os badges no modal atual
-                                  const currentDialog = document.querySelector('[role="dialog"]') as HTMLElement;
-                                  if (currentDialog) {
-                                    currentDialog.querySelectorAll('.bg-primary').forEach(el => {
-                                      el.classList.remove('bg-primary');
-                                      el.classList.remove('text-primary-foreground');
-                                    });
-                                  }
+                                  propertiesInput.value = '';
+                                  damageTypesInput.value = '';
                                 } else {
                                   toast({
                                     title: "Nome obrigatório",
@@ -2198,63 +2083,13 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                           
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Propriedades</label>
-                            <div className="flex flex-wrap gap-2">
-                              {["Furtividade Desvantagem", "Força Mínima", "Resistente", "Flexível", "Metálica", "Reforçada", "Mágica"].map((prop) => (
-                                <Badge 
-                                  key={prop} 
-                                  variant="outline" 
-                                  className="cursor-pointer"
-                                  onClick={(e) => {
-                                    const target = e.target as HTMLElement;
-                                    target.classList.toggle("bg-primary");
-                                    target.classList.toggle("text-primary-foreground");
-                                  }}
-                                >
-                                  {prop}
-                                </Badge>
-                              ))}
-                              <div className="w-full mt-2">
-                                <label className="text-xs text-muted-foreground">Outra propriedade:</label>
-                                <div className="flex items-center gap-2 mt-1">
-                                  <Input 
-                                    id="custom-armor-property" 
-                                    placeholder="Digite propriedade personalizada" 
-                                    className="h-8"
-                                  />
-                                  <Button 
-                                    type="button" 
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => {
-                                      const input = document.getElementById('custom-armor-property') as HTMLInputElement;
-                                      if (input && input.value.trim()) {
-                                        // Criar um Badge temporário e adicioná-lo à página
-                                        const container = document.querySelector('.flex.flex-wrap.gap-2:nth-of-type(3)');
-                                        if (container) {
-                                          const badge = document.createElement('span');
-                                          badge.className = 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer bg-primary text-primary-foreground';
-                                          badge.textContent = input.value.trim();
-                                          badge.onclick = (e) => {
-                                            const target = e.target as HTMLElement;
-                                            if (target.classList.contains('bg-primary')) {
-                                              target.classList.remove('bg-primary');
-                                              target.classList.remove('text-primary-foreground');
-                                            } else {
-                                              target.classList.add('bg-primary');
-                                              target.classList.add('text-primary-foreground');
-                                            }
-                                          };
-                                          container.insertBefore(badge, document.getElementById('custom-armor-property')?.parentElement?.parentElement);
-                                          input.value = '';
-                                        }
-                                      }
-                                    }}
-                                  >
-                                    Adicionar
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
+                            <Input 
+                              id="armor-properties" 
+                              placeholder="ex: Furtividade Desvantagem, Força Mínima, Reforçada (separadas por vírgula)" 
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              Exemplos: Furtividade Desvantagem, Força Mínima, Resistente, Flexível, Metálica, Reforçada, Mágica
+                            </p>
                           </div>
                           
                           <div className="col-span-full flex justify-end mt-4">
