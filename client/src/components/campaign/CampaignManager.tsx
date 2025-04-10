@@ -570,6 +570,30 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                           </FormItem>
                         )}
                       />
+                      
+                      <FormField
+                        control={campaignForm.control}
+                        name="imageUrl"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t("campaign.campaignImage")}</FormLabel>
+                            <FormControl>
+                              <div>
+                                <Input type="hidden" {...field} />
+                                <CampaignImageUpload 
+                                  imageUrl={field.value || ""} 
+                                  onImageChange={field.onChange}
+                                  readOnly={false}
+                                />
+                              </div>
+                            </FormControl>
+                            <FormDescription>
+                              {t("campaign.campaignImageDescription")}
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </CardContent>
                     <CardFooter className="flex justify-end">
                       <Button 
@@ -590,6 +614,21 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                 // Modo de visualização
                 <>
                   <CardContent className="space-y-4">
+                    {campaign?.imageUrl && (
+                      <div className="mb-6">
+                        <h3 className="font-lora text-lg font-medium text-primary mb-2">{t("campaign.campaignImage")}</h3>
+                        <img 
+                          src={campaign.imageUrl} 
+                          alt={t("campaign.campaignImage")} 
+                          className="w-full max-h-[300px] object-contain rounded-md border border-border"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = "https://placehold.co/800x400?text=Campaign";
+                          }} 
+                        />
+                      </div>
+                    )}
+                    
                     <div>
                       <h3 className="font-lora text-lg font-medium text-primary">{t("campaign.campaignName")}</h3>
                       <p className="mt-1 text-secondary whitespace-pre-wrap">{campaign?.name}</p>
@@ -696,7 +735,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                                   const compressAndConvertToBase64 = (file: File) => {
                                     return new Promise<string>((resolve) => {
                                       // Criar um elemento de imagem para redimensionar
-                                      const img = new Image();
+                                      const img = document.createElement("img");
                                       img.onload = () => {
                                         // Criar um canvas para redimensionar
                                         const canvas = document.createElement("canvas");
