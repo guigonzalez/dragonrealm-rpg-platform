@@ -2708,53 +2708,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                           </div>
                         )}
                         
-                        <Separator className="my-2" />
-                        
-                        {/* Legacy Spells (for backward compatibility) */}
-                        <div className="space-y-4">
-                          <h3 className="font-lora text-lg font-semibold">Simple Spell List (Legacy)</h3>
-                          
-                          <div className="flex flex-col space-y-2">
-                            {spells.map((spell, index) => (
-                              <div key={index} className="flex items-center justify-between border-b border-gray-200 pb-1">
-                                <span className="font-opensans text-sm">{spell}</span>
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm"
-                                  onClick={() => removeItemFromArray(spells, setSpells, spell)}
-                                  disabled={readOnly}
-                                >
-                                  Remove
-                                </Button>
-                              </div>
-                            ))}
-                          </div>
-                          
-                          {!readOnly && (
-                            <div className="flex items-end gap-2">
-                              <div className="flex-1">
-                                <label className="text-sm font-medium">Add Simple Spell</label>
-                                <Input
-                                  id="new-spell"
-                                  placeholder="e.g., Fireball"
-                                  className="mt-1"
-                                />
-                              </div>
-                              <Button 
-                                type="button"
-                                onClick={() => {
-                                  const input = document.getElementById('new-spell') as HTMLInputElement;
-                                  if (input) {
-                                    addItemToArray(spells, setSpells, input.value);
-                                    input.value = '';
-                                  }
-                                }}
-                              >
-                                Add Spell
-                              </Button>
-                            </div>
-                          )}
-                        </div>
+
                       </div>
                     </TabsContent>
                     </Tabs>
