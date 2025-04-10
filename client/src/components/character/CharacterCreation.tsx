@@ -910,17 +910,17 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                 <CardFooter className="flex justify-between">
                   {!readOnly && (
                     <>
-                      <Button variant="outline" type="button" onClick={() => setLocation('/dashboard')}>
+                      <Button variant="outline" type="button" onClicktype="button" onClick={() => setLocation('/dashboard')}>
                         Cancel
                       </Button>
-                      <Button type="button" onClick={goToNextTab}>
+                      <Button type="button" onClicktype="button" onClick={goToNextTab}>
                         Next
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </>
                   )}
                   {readOnly && (
-                    <Button variant="outline" type="button" onClick={() => setLocation('/dashboard')} className="ml-auto">
+                    <Button variant="outline" type="button" onClicktype="button" onClick={() => setLocation('/dashboard')} className="ml-auto">
                       Back to Dashboard
                     </Button>
                   )}
@@ -1693,11 +1693,11 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                   <Separator />
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button variant="outline" type="button" onClick={goToPreviousTab}>
+                  <Button variant="outline" type="button" onClicktype="button" onClick={goToPreviousTab}>
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Previous
                   </Button>
-                  <Button type="button" onClick={goToNextTab}>
+                  <Button type="button" onClicktype="button" onClick={goToNextTab}>
                     Next
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -2348,11 +2348,11 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button variant="outline" type="button" onClick={goToPreviousTab}>
+                  <Button variant="outline" type="button" onClicktype="button" onClick={goToPreviousTab}>
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Anterior
                   </Button>
-                  <Button type="button" onClick={goToNextTab}>
+                  <Button type="button" onClicktype="button" onClick={goToNextTab}>
                     Próximo
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -2715,11 +2715,11 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button variant="outline" type="button" onClick={goToPreviousTab}>
+                  <Button variant="outline" type="button" onClicktype="button" onClick={goToPreviousTab}>
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Previous
                   </Button>
-                  <Button type="button" onClick={goToNextTab}>
+                  <Button type="button" onClicktype="button" onClick={goToNextTab}>
                     Next
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -2845,7 +2845,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                   />
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button variant="outline" type="button" onClick={goToPreviousTab}>
+                  <Button variant="outline" type="button" onClicktype="button" onClick={goToPreviousTab}>
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Previous
                   </Button>
