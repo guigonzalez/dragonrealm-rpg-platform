@@ -383,48 +383,28 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
   
   // Campaign form submit handler
   const onCampaignSubmit = (data: CampaignFormValues) => {
-    // Converter valores nulos para string vazia para resolver o problema de tipagem
-    const cleanData = removeNullValues(data);
-    
     if (campaign) {
-      updateCampaignMutation.mutate(cleanData);
+      updateCampaignMutation.mutate(data);
     } else {
-      createCampaignMutation.mutate(cleanData);
+      createCampaignMutation.mutate(data);
     }
   };
   
-  // Função auxiliar para remover valores nulos (resolver o problema de tipagem)
-  const removeNullValues = (obj: Record<string, any>): Record<string, any> => {
-    const newObj = { ...obj };
-    Object.keys(newObj).forEach(key => {
-      if (newObj[key] === null) {
-        newObj[key] = '';
-      }
-    });
-    return newObj;
-  };
-
   // Location form submit handler
   const onLocationSubmit = (data: LocationFormValues) => {
-    // Converter valores nulos para string vazia para resolver o problema de tipagem do TextareaProps/InputProps
-    const cleanData = removeNullValues(data);
-    
     if (editingLocationId !== null) {
-      updateLocationMutation.mutate({ id: editingLocationId, data: cleanData });
+      updateLocationMutation.mutate({ id: editingLocationId, data });
     } else {
-      createLocationMutation.mutate(cleanData);
+      createLocationMutation.mutate(data);
     }
   };
   
   // Session note form submit handler
   const onNoteSubmit = (data: SessionNoteFormValues) => {
-    // Converter valores nulos para string vazia para resolver o problema de tipagem
-    const cleanData = removeNullValues(data);
-    
     if (editingNoteId !== null) {
-      updateNoteMutation.mutate({ id: editingNoteId, data: cleanData });
+      updateNoteMutation.mutate({ id: editingNoteId, data });
     } else {
-      createNoteMutation.mutate(cleanData);
+      createNoteMutation.mutate(data);
     }
   };
   
@@ -491,77 +471,88 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
         </Button>
       </div>
       
-      <Form {...campaignForm}>
-        <form onSubmit={campaignForm.handleSubmit(onCampaignSubmit)}>
-          <Card className="border-t-4 border-t-primary mb-8">
-            <CardHeader>
-              <CardTitle className="font-lora text-2xl">{t("campaign.campaignDetails")}</CardTitle>
-              <CardDescription>
-                {campaign ? t("campaign.updateCampaignInfo") : t("campaign.enterCampaignInfo")}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <FormField
-                control={campaignForm.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("campaign.campaignName")}</FormLabel>
-                    <FormControl>
-                      <Input placeholder={t("campaign.enterCampaignName")} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={campaignForm.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("campaign.description")}</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        placeholder={t("campaign.describeCampaign")} 
-                        className="min-h-[100px]"
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-            <CardFooter className="flex justify-end">
-              <Button 
-                type="submit" 
-                className="magic-button"
-                disabled={createCampaignMutation.isPending || updateCampaignMutation.isPending}
-              >
-                {campaign ? (
-                  updateCampaignMutation.isPending ? t("common.saving") : t("campaign.saveCampaign")
-                ) : (
-                  createCampaignMutation.isPending ? t("common.creating") : t("campaign.createCampaign")
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
-        </form>
-      </Form>
-      
-      {campaign && (
+      <div className="mb-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-2 md:w-[400px] mb-6">
+          <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full mb-6">
+            <TabsTrigger value="details" className="font-lora">
+              <Info className="h-4 w-4 mr-2" />
+              {t("campaign.details")}
+            </TabsTrigger>
             <TabsTrigger value="world" className="font-lora">
-              <Map className="h-4 w-4 mr-2" />
+              <Globe className="h-4 w-4 mr-2" />
               {t("location.worldBuilding")}
             </TabsTrigger>
-            <TabsTrigger value="sessions" className="font-lora">
-              <BookOpen className="h-4 w-4 mr-2" />
-              {t("sessionNote.sessionNotes")}
+            <TabsTrigger value="npcs" className="font-lora">
+              <Users className="h-4 w-4 mr-2" />
+              {t("campaign.npcsCreatures")}
+            </TabsTrigger>
+            <TabsTrigger value="encounters" className="font-lora">
+              <Swords className="h-4 w-4 mr-2" />
+              {t("campaign.encounters")}
             </TabsTrigger>
           </TabsList>
+          
+          {/* Detalhes da Campanha */}
+          <TabsContent value="details" className="space-y-6">
+            <Form {...campaignForm}>
+              <form onSubmit={campaignForm.handleSubmit(onCampaignSubmit)}>
+                <Card className="border-t-4 border-t-primary">
+                  <CardHeader>
+                    <CardTitle className="font-lora text-2xl">{t("campaign.campaignDetails")}</CardTitle>
+                    <CardDescription>
+                      {campaign ? t("campaign.updateCampaignInfo") : t("campaign.enterCampaignInfo")}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <FormField
+                      control={campaignForm.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{t("campaign.campaignName")}</FormLabel>
+                          <FormControl>
+                            <Input placeholder={t("campaign.enterCampaignName")} {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={campaignForm.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{t("campaign.description")}</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder={t("campaign.describeCampaign")} 
+                              className="min-h-[150px]"
+                              {...field} 
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </CardContent>
+                  <CardFooter className="flex justify-end">
+                    <Button 
+                      type="submit" 
+                      className="magic-button"
+                      disabled={createCampaignMutation.isPending || updateCampaignMutation.isPending}
+                    >
+                      {campaign ? (
+                        updateCampaignMutation.isPending ? t("common.saving") : t("campaign.saveCampaign")
+                      ) : (
+                        createCampaignMutation.isPending ? t("common.creating") : t("campaign.createCampaign")
+                      )}
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </form>
+            </Form>
+          </TabsContent>
           
           {/* World Building Tab */}
           <TabsContent value="world" className="space-y-6">
@@ -738,206 +729,54 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                   <p className="text-muted-foreground mb-6">
                     Start building your world by adding locations to your campaign.
                   </p>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button className="magic-button" onClick={() => {
-                        setEditingLocationId(null);
-                        locationForm.reset();
-                        setLocationDialogOpen(true);
-                      }}>
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add First Location
-                      </Button>
-                    </DialogTrigger>
-                  </Dialog>
+                  <Button className="magic-button" onClick={() => {
+                    setEditingLocationId(null);
+                    locationForm.reset();
+                    setLocationDialogOpen(true);
+                  }}>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add First Location
+                  </Button>
                 </CardContent>
               </Card>
             )}
           </TabsContent>
           
-          {/* Session Notes Tab */}
-          <TabsContent value="sessions" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="font-lora text-2xl text-primary">{t("sessionNote.sessionNotes")}</h2>
-              <Dialog open={noteDialogOpen} onOpenChange={setNoteDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button className="magic-button" onClick={() => {
-                    setEditingNoteId(null);
-                    sessionNoteForm.reset({
-                      title: "",
-                      content: "",
-                      date: new Date().toISOString().split('T')[0],
-                    });
-                  }}>
-                    <Plus className="mr-2 h-4 w-4" />
-                    {t("sessionNote.createSessionNote")}
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[550px]">
-                  <DialogHeader>
-                    <DialogTitle>
-                      {editingNoteId !== null ? t("sessionNote.editSessionNote") : t("sessionNote.createSessionNote")}
-                    </DialogTitle>
-                    <DialogDescription>
-                      {editingNoteId !== null 
-                        ? "Update the details of this session note" 
-                        : "Record notes from your campaign session"}
-                    </DialogDescription>
-                  </DialogHeader>
-                  <Form {...sessionNoteForm}>
-                    <form onSubmit={sessionNoteForm.handleSubmit(onNoteSubmit)} className="space-y-4">
-                      <FormField
-                        control={sessionNoteForm.control}
-                        name="title"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Session Title</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Enter session title" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={sessionNoteForm.control}
-                        name="date"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Session Date</FormLabel>
-                            <FormControl>
-                              <Input type="date" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={sessionNoteForm.control}
-                        name="content"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Session Notes</FormLabel>
-                            <FormControl>
-                              <Textarea 
-                                placeholder="Record what happened during this session" 
-                                className="min-h-[200px]"
-                                {...field} 
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <DialogFooter>
-                        <Button type="submit" className="magic-button">
-                          {editingNoteId !== null ? "Update Note" : "Add Note"}
-                        </Button>
-                      </DialogFooter>
-                    </form>
-                  </Form>
-                </DialogContent>
-              </Dialog>
-            </div>
-            
-            {notesLoading ? (
-              <div className="flex justify-center p-8">
-                <p>Loading session notes...</p>
-              </div>
-            ) : sessionNotes.length > 0 ? (
-              <div className="space-y-4">
-                {sessionNotes
-                  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-                  .map((note) => (
-                  <Card key={note.id}>
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <CardTitle className="font-lora text-xl text-primary">
-                            {note.title}
-                          </CardTitle>
-                          <CardDescription className="flex items-center">
-                            <Calendar className="h-3 w-3 mr-2" />
-                            {new Date(note.date).toLocaleDateString()}
-                          </CardDescription>
-                        </div>
-                        <div className="flex space-x-2">
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={() => handleEditNote(note.id)}
-                          >
-                            <Edit className="h-4 w-4 mr-2" />
-                            Edit
-                          </Button>
-                          <Button 
-                            variant="destructive" 
-                            size="sm"
-                            onClick={() => handleDeleteNote(note.id)}
-                          >
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Delete
-                          </Button>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="whitespace-pre-wrap">
-                        {note.content}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <Card className="bg-muted/40">
-                <CardContent className="flex flex-col items-center justify-center p-12 text-center">
-                  <BookOpen className="h-12 w-12 text-primary/40 mb-4" />
-                  <h3 className="font-lora text-xl font-semibold mb-2">No Session Notes Yet</h3>
-                  <p className="text-muted-foreground mb-6">
-                    Record your campaign sessions to keep track of your adventures.
-                  </p>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button className="magic-button" onClick={() => {
-                        setEditingNoteId(null);
-                        sessionNoteForm.reset({
-                          title: "",
-                          content: "",
-                          date: new Date().toISOString().split('T')[0],
-                        });
-                        setNoteDialogOpen(true);
-                      }}>
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add First Session Note
-                      </Button>
-                    </DialogTrigger>
-                  </Dialog>
-                </CardContent>
-              </Card>
-            )}
-            
-            <div className="flex justify-end mt-4">
-              <Button 
-                variant="outline" 
-                onClick={() => setLocation(`/npc-creator/${campaign.id}`)}
-                className="mr-2"
-              >
-                Manage NPCs
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => setLocation(`/encounter-builder/${campaign.id}`)}
-              >
-                Create Encounters
-              </Button>
-            </div>
+          {/* NPCs & Criaturas */}
+          <TabsContent value="npcs" className="space-y-6">
+            <Card className="bg-muted/40">
+              <CardContent className="flex flex-col items-center justify-center p-12 text-center">
+                <Users className="h-12 w-12 text-primary/40 mb-4" />
+                <h3 className="font-lora text-xl font-semibold mb-2">{t("campaign.npcsCreatures")}</h3>
+                <p className="text-muted-foreground mb-6">
+                  {t("common.comingSoon")}
+                </p>
+                <Button className="magic-button" disabled>
+                  <Plus className="mr-2 h-4 w-4" />
+                  {t("campaign.addNpc")}
+                </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          {/* Encontros */}
+          <TabsContent value="encounters" className="space-y-6">
+            <Card className="bg-muted/40">
+              <CardContent className="flex flex-col items-center justify-center p-12 text-center">
+                <Swords className="h-12 w-12 text-primary/40 mb-4" />
+                <h3 className="font-lora text-xl font-semibold mb-2">{t("campaign.encounters")}</h3>
+                <p className="text-muted-foreground mb-6">
+                  {t("common.comingSoon")}
+                </p>
+                <Button className="magic-button" disabled>
+                  <Plus className="mr-2 h-4 w-4" />
+                  {t("campaign.addEncounter")}
+                </Button>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
-      )}
+      </div>
     </div>
   );
 }
