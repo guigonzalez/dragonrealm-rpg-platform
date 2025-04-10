@@ -100,6 +100,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
   const [activeTab, setActiveTab] = useState("details");
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
   const [noteDialogOpen, setNoteDialogOpen] = useState(false);
+  const [showLocationForm, setShowLocationForm] = useState(false);
   const [editingLocationId, setEditingLocationId] = useState<number | null>(null);
   const [editingNoteId, setEditingNoteId] = useState<number | null>(null);
   
@@ -233,7 +234,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
         title: "Location created",
         description: "Your location has been created successfully.",
       });
-      setLocationDialogOpen(false);
+      setShowLocationForm(false);
       locationForm.reset();
     },
     onError: (error: Error) => {
@@ -261,7 +262,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
         title: "Location updated",
         description: "Your location has been updated successfully.",
       });
-      setLocationDialogOpen(false);
+      setShowLocationForm(false);
       setEditingLocationId(null);
       locationForm.reset();
     },
@@ -420,7 +421,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
         notes: locationToEdit.notes || "",
       });
       setEditingLocationId(locationId);
-      setLocationDialogOpen(true);
+      setShowLocationForm(true);
     }
   };
   
@@ -677,49 +678,71 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
             </Card>
             
             {/* Locations Section */}
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mb-6">
               <h2 className="font-lora text-2xl text-primary">{t("location.locations")}</h2>
-              <Dialog open={locationDialogOpen} onOpenChange={setLocationDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button className="magic-button" onClick={() => {
-                    setEditingLocationId(null);
-                    locationForm.reset({
-                      name: "",
-                      description: "",
-                      imageUrl: "",
-                      notes: "",
-                    });
-                  }}>
-                    <Plus className="mr-2 h-4 w-4" />
-                    {t("location.createLocation")}
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[550px]">
-                  <DialogHeader>
-                    <DialogTitle>
-                      {editingLocationId !== null ? t("location.editLocation") : t("location.createLocation")}
-                    </DialogTitle>
-                    <DialogDescription>
-                      {editingLocationId !== null 
-                        ? "Update the details of this location in your campaign world" 
-                        : "Create a new location for your campaign world"}
-                    </DialogDescription>
-                  </DialogHeader>
+              <Button 
+                className="magic-button" 
+                onClick={() => {
+                  setEditingLocationId(null);
+                  locationForm.reset({
+                    name: "",
+                    description: "",
+                    imageUrl: "",
+                    notes: "",
+                  });
+                  setShowLocationForm(!showLocationForm);
+                }}
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                {t("location.createLocation")}
+              </Button>
+            </div>
+            
+            {showLocationForm && (
+              <Card className="mb-8 border border-primary/20">
+                <CardHeader>
+                  <CardTitle className="font-lora text-xl flex items-center">
+                    <MapPin className="h-5 w-5 mr-2 text-primary" />
+                    {editingLocationId !== null ? t("location.editLocation") : t("location.createLocation")}
+                  </CardTitle>
+                  <CardDescription>
+                    {editingLocationId !== null 
+                      ? "Update the details of this location in your campaign world" 
+                      : "Create a new location for your campaign world"}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
                   <Form {...locationForm}>
                     <form onSubmit={locationForm.handleSubmit(onLocationSubmit)} className="space-y-4">
-                      <FormField
-                        control={locationForm.control}
-                        name="name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Location Name</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Enter location name" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={locationForm.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Location Name</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Enter location name" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={locationForm.control}
+                          name="imageUrl"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Image URL (Optional)</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Enter image URL" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
                       
                       <FormField
                         control={locationForm.control}
@@ -730,27 +753,10 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                             <FormControl>
                               <Textarea 
                                 placeholder="Describe this location" 
-                                className="min-h-[80px]"
+                                className="min-h-[100px]"
                                 {...field} 
                               />
                             </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={locationForm.control}
-                        name="imageUrl"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Image URL (Optional)</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Enter image URL" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                              Add an image URL to visually represent this location
-                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -774,16 +780,23 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                         )}
                       />
                       
-                      <DialogFooter>
+                      <div className="flex justify-end space-x-2 pt-2">
+                        <Button 
+                          type="button" 
+                          variant="outline"
+                          onClick={() => setShowLocationForm(false)}
+                        >
+                          Cancel
+                        </Button>
                         <Button type="submit" className="magic-button">
                           {editingLocationId !== null ? "Update Location" : "Add Location"}
                         </Button>
-                      </DialogFooter>
+                      </div>
                     </form>
                   </Form>
-                </DialogContent>
-              </Dialog>
-            </div>
+                </CardContent>
+              </Card>
+            )}
             
             {locationsLoading ? (
               <div className="flex justify-center p-8">
@@ -825,7 +838,10 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={() => handleEditLocation(loc.id)}
+                        onClick={() => {
+                          handleEditLocation(loc.id);
+                          setShowLocationForm(true);
+                        }}
                       >
                         <Edit className="h-4 w-4 mr-2" />
                         Edit
@@ -850,11 +866,14 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                   <p className="text-muted-foreground mb-6">
                     Start building your world by adding locations to your campaign.
                   </p>
-                  <Button className="magic-button" onClick={() => {
-                    setEditingLocationId(null);
-                    locationForm.reset();
-                    setLocationDialogOpen(true);
-                  }}>
+                  <Button 
+                    className="magic-button" 
+                    onClick={() => {
+                      setEditingLocationId(null);
+                      locationForm.reset();
+                      setShowLocationForm(true);
+                    }}
+                  >
                     <Plus className="mr-2 h-4 w-4" />
                     Add First Location
                   </Button>
