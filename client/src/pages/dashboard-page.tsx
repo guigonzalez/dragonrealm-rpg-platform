@@ -318,12 +318,6 @@ export default function DashboardPage() {
                             </Button>
                           </Link>
                           <div className="flex space-x-2">
-                            <Link href={`/campaign-management?edit=${campaign.id}`}>
-                              <Button variant="outline" size="sm" className="h-9">
-                                <Edit className="h-4 w-4 mr-2" />
-                                {t("common.edit")}
-                              </Button>
-                            </Link>
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
                                 <Button 
