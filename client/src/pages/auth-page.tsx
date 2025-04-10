@@ -122,7 +122,7 @@ export default function AuthPage() {
               <TabsContent value="signin">
                 <div className="space-y-4">
                   <div className="text-center mb-6">
-                    <img src="./assets/logo.png" alt="DragonRealm" className="h-10 mx-auto mb-3" />
+                    <img src="/assets/logo.png" alt="DragonRealm" className="h-10 mx-auto mb-3" />
                     <h2 className="font-lora text-2xl font-bold text-primary">{t("auth.loginToYourAccount")}</h2>
                     <p className="text-secondary/80 mt-1">{t("auth.login")} {t("common.welcome")}</p>
                   </div>
@@ -183,7 +183,7 @@ export default function AuthPage() {
               <TabsContent value="signup">
                 <div className="space-y-4">
                   <div className="text-center mb-6">
-                    <img src="./assets/logo.png" alt="DragonRealm" className="h-10 mx-auto mb-3" />
+                    <img src="/assets/logo.png" alt="DragonRealm" className="h-10 mx-auto mb-3" />
                     <h2 className="font-lora text-2xl font-bold text-primary">{t("auth.createYourAccount")}</h2>
                     <p className="text-secondary/80 mt-1">{t("landing.getStarted")}</p>
                   </div>
