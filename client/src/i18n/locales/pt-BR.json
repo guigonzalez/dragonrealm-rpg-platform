@@ -102,6 +102,23 @@
     "encounters": "Encontros",
     "sessionNotes": "Notas de Sessão",
     "manageCampaign": "Gerenciar Campanha",
+    "createNewCampaign": "Criar Nova Campanha",
+    "enterCampaignInfo": "Insira as Informações da Campanha",
+    "enterCampaignName": "Digite o nome da campanha",
+    "description": "Descrição",
+    "describeCampaign": "Descreva sua campanha...",
+    "saveCampaign": "Salvar Campanha",
+    "updateCampaignInfo": "Atualizar Informações da Campanha",
+    "editCampaignDetails": "Editar Detalhes da Campanha",
+    "buttons": {
+      "manage": "Gerenciar",
+      "npcs": "NPCs",
+      "encounters": "Encontros"
+    },
+    "delete": {
+      "title": "Excluir Campanha",
+      "description": "Tem certeza que deseja excluir esta campanha? Esta ação não pode ser desfeita."
+    },
     "empty": {
       "title": "Nenhuma Campanha Ainda",
       "description": "Crie sua primeira campanha para começar sua jornada como Mestre de Jogo",
@@ -116,6 +133,11 @@
     "characterName": "Nome do Personagem",
     "characterDetails": "Detalhes do Personagem",
     "characterSheet": "Ficha de Personagem",
+    "viewSheet": "Ver Ficha",
+    "delete": {
+      "title": "Excluir Personagem",
+      "description": "Tem certeza que deseja excluir este personagem? Esta ação não pode ser desfeita."
+    },
     "deleteCharacter": {
       "title": "Excluir Personagem",
       "description": "Tem certeza que deseja excluir o personagem '{{name}}'? Esta ação não pode ser desfeita."
