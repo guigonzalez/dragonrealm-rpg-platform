@@ -906,9 +906,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Prestidigitação: usada para manipulações manuais delicadas como bater carteiras, truques de mãos ou desarmar armadilhas">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="sleight-of-hand-adv"
-                              checked={skillsWithAdvantage.includes("SleightOfHand")}
-                              onCheckedChange={() => toggleAdvantage("SleightOfHand")}
+                              id="sleight-of-hand-prof"
+                              checked={skills.includes("SleightOfHand")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "SleightOfHand")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Prestidigitação</span>
@@ -1028,9 +1028,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Arcana: usada para recordar conhecimento sobre magias, itens mágicos, símbolos arcanos e tradições místicas">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="arcana-adv"
-                              checked={skillsWithAdvantage.includes("Arcana")}
-                              onCheckedChange={() => toggleAdvantage("Arcana")}
+                              id="arcana-prof"
+                              checked={skills.includes("Arcana")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Arcana")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Arcana</span>
@@ -1040,9 +1040,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="História: usada para recordar conhecimento sobre eventos históricos, pessoas lendárias, reinos antigos, disputas passadas e guerras">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="history-adv"
-                              checked={skillsWithAdvantage.includes("History")}
-                              onCheckedChange={() => toggleAdvantage("History")}
+                              id="history-prof"
+                              checked={skills.includes("History")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "History")}
                               className="border-[#FFF8E1]"
                             />
                             <span>História</span>
@@ -1052,9 +1052,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Investigação: usada para procurar pistas e fazer deduções baseadas nelas, como encontrar um item escondido ou determinar o ponto fraco de algo">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="investigation-adv"
-                              checked={skillsWithAdvantage.includes("Investigation")}
-                              onCheckedChange={() => toggleAdvantage("Investigation")}
+                              id="investigation-prof"
+                              checked={skills.includes("Investigation")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Investigation")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Investigação</span>
@@ -1064,9 +1064,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Natureza: usada para recordar conhecimento sobre terrenos, plantas e animais, clima e ciclos naturais">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="nature-adv"
-                              checked={skillsWithAdvantage.includes("Nature")}
-                              onCheckedChange={() => toggleAdvantage("Nature")}
+                              id="nature-prof"
+                              checked={skills.includes("Nature")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Nature")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Natureza</span>
@@ -1076,9 +1076,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Religião: usada para recordar conhecimento sobre divindades, rituais, simbolismos religiosos, estruturas clericais, e o funcionamento de cultos">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="religion-adv"
-                              checked={skillsWithAdvantage.includes("Religion")}
-                              onCheckedChange={() => toggleAdvantage("Religion")}
+                              id="religion-prof"
+                              checked={skills.includes("Religion")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Religion")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Religião</span>
@@ -1142,9 +1142,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Adestrar Animais: usada para acalmar, treinar ou controlar animais">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="animal-handling-adv"
-                              checked={skillsWithAdvantage.includes("AnimalHandling")}
-                              onCheckedChange={() => toggleAdvantage("AnimalHandling")}
+                              id="animal-handling-prof"
+                              checked={skills.includes("AnimalHandling")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "AnimalHandling")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Adestrar Animais</span>
@@ -1154,9 +1154,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Intuição: usada para determinar as intenções verdadeiras de uma criatura, detectar mentiras ou prever as ações de alguém">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="insight-adv"
-                              checked={skillsWithAdvantage.includes("Insight")}
-                              onCheckedChange={() => toggleAdvantage("Insight")}
+                              id="insight-prof"
+                              checked={skills.includes("Insight")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Insight")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Intuição</span>
@@ -1166,9 +1166,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Medicina: usada para estabilizar uma criatura que está morrendo ou diagnosticar uma doença">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="medicine-adv"
-                              checked={skillsWithAdvantage.includes("Medicine")}
-                              onCheckedChange={() => toggleAdvantage("Medicine")}
+                              id="medicine-prof"
+                              checked={skills.includes("Medicine")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Medicine")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Medicina</span>
@@ -1178,9 +1178,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Percepção: usada para observar seu entorno, detectar a presença de criaturas escondidas ou notar detalhes importantes">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="perception-adv"
-                              checked={skillsWithAdvantage.includes("Perception")}
-                              onCheckedChange={() => toggleAdvantage("Perception")}
+                              id="perception-prof"
+                              checked={skills.includes("Perception")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Perception")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Percepção</span>
