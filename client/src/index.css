@@ -125,26 +125,20 @@
     position: relative;
     background: var(--muted);
     border-radius: 0.5rem;
-    padding: 0;
-    overflow: hidden;
+    padding: 0.25rem;
   }
   
-  .tab-header-list [role="tab"] {
-    border-radius: 0;
-    margin: 0;
-    padding: 0.5rem;
-  }
-  
-  .tab-header-list [data-state="active"] {
-    box-shadow: none;
-  }
-  
+  /* Ajustes específicos para primeira e última aba */
   .tab-header-list [data-state="active"]:first-child {
+    margin-left: -0.25rem;
+    padding-left: 1rem;
     border-top-left-radius: 0.5rem;
     border-bottom-left-radius: 0.5rem;
   }
   
   .tab-header-list [data-state="active"]:last-child {
+    margin-right: -0.25rem;
+    padding-right: 1rem;
     border-top-right-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
   }
