@@ -1111,7 +1111,8 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                             <Checkbox 
                               id="acrobatics-prof"
                               checked={skills.includes("Acrobatics")}
-                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Acrobatics")}
+                              disabled={readOnly}
+                              onCheckedChange={readOnly ? undefined : () => toggleArrayItem(skills, setSkills, "Acrobatics")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Acrobacia</span>
@@ -1123,7 +1124,8 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                             <Checkbox 
                               id="stealth-prof"
                               checked={skills.includes("Stealth")}
-                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Stealth")}
+                              disabled={readOnly}
+                              onCheckedChange={readOnly ? undefined : () => toggleArrayItem(skills, setSkills, "Stealth")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Furtividade</span>
@@ -1135,7 +1137,8 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                             <Checkbox 
                               id="sleight-of-hand-prof"
                               checked={skills.includes("SleightOfHand")}
-                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "SleightOfHand")}
+                              disabled={readOnly}
+                              onCheckedChange={readOnly ? undefined : () => toggleArrayItem(skills, setSkills, "SleightOfHand")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Prestidigitação</span>
@@ -1172,6 +1175,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                 min={3}
                                 max={20}
                                 className="w-full accent-primary"
+                                disabled={readOnly}
                                 {...field}
                                 onChange={(e) => {
                                   const value = parseInt(e.target.value);
