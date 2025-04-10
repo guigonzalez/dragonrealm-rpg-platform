@@ -112,6 +112,9 @@
     "saveCampaign": "Save Campaign",
     "updateCampaignInfo": "Update Campaign Information",
     "editCampaignDetails": "Edit Campaign Details",
+    "campaignUpdated": "Campaign Updated",
+    "campaignUpdatedDescription": "Your campaign has been updated successfully.",
+    "updateFailed": "Update Failed",
     "buttons": {
       "manage": "Manage",
       "npcs": "NPCs",
