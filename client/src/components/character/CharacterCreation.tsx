@@ -2052,10 +2052,14 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                   attackInput.value = '';
                                   damageInput.value = '';
                                   ammoInput.value = '';
-                                  document.querySelectorAll('.bg-primary').forEach(el => {
-                                    el.classList.remove('bg-primary');
-                                    el.classList.remove('text-primary-foreground');
-                                  });
+                                  // Limpar apenas os badges no modal atual
+                                  const currentDialog = document.querySelector('[role="dialog"]') as HTMLElement;
+                                  if (currentDialog) {
+                                    currentDialog.querySelectorAll('.bg-primary').forEach(el => {
+                                      el.classList.remove('bg-primary');
+                                      el.classList.remove('text-primary-foreground');
+                                    });
+                                  }
                                 } else {
                                   toast({
                                     title: "Nome obrigatório",
@@ -2265,11 +2269,15 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                 
                                 // Obter propriedades selecionadas
                                 const selectedProps: string[] = [];
-                                document.querySelectorAll('.bg-primary').forEach(el => {
-                                  if ((el as HTMLElement).innerText) {
-                                    selectedProps.push((el as HTMLElement).innerText);
-                                  }
-                                });
+                                // Limitando a busca ao modal de armaduras atual
+                                const armorDialog = document.querySelector('[role="dialog"]') as HTMLElement;
+                                if (armorDialog) {
+                                  armorDialog.querySelectorAll('.bg-primary').forEach(el => {
+                                    if ((el as HTMLElement).innerText && (el as HTMLElement).innerText.length < 30) {
+                                      selectedProps.push((el as HTMLElement).innerText);
+                                    }
+                                  });
+                                }
                                 
                                 // Criar nova armadura
                                 if (nameInput.value) {
@@ -2302,10 +2310,13 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                   if (typeSelect) typeSelect.value = '';
                                   acBonusInput.value = '';
                                   penaltyCheckbox.checked = false;
-                                  document.querySelectorAll('.bg-primary').forEach(el => {
-                                    el.classList.remove('bg-primary');
-                                    el.classList.remove('text-primary-foreground');
-                                  });
+                                  // Limpar apenas os badges no modal atual
+                                  if (armorDialog) {
+                                    armorDialog.querySelectorAll('.bg-primary').forEach(el => {
+                                      el.classList.remove('bg-primary');
+                                      el.classList.remove('text-primary-foreground');
+                                    });
+                                  }
                                 } else {
                                   toast({
                                     title: "Nome obrigatório",
