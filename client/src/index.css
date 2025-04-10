@@ -107,7 +107,24 @@
   }
   
   /* Custom styles for tablist to fix the active tab visual issue */
+  [role="tablist"] {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+  }
+  
   [role="tablist"] [data-state="active"] {
-    z-index: 10;
+    z-index: 2;
+    background: var(--background);
+  }
+  
+  /* Add custom tab styling for campaign sections */
+  .tab-header-list {
+    width: 100%;
+    display: grid;
+    position: relative;
+    background: var(--muted);
+    border-radius: 0.5rem;
+    padding: 0.25rem;
   }
 }

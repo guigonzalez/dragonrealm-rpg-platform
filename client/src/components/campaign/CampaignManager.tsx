@@ -501,7 +501,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
       
       <div className="mb-6">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-6">
+          <TabsList className="tab-header-list grid-cols-2 md:grid-cols-4 mb-6">
             <TabsTrigger value="details" className="font-lora">
               <div className="w-6 h-6 mr-2 inline-flex items-center justify-center">
                 <Info className="h-5 w-5" />
