@@ -234,6 +234,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
   const [equipment, setEquipment] = useState<string[]>([]);
   const [spells, setSpells] = useState<string[]>([]);
   const [spellList, setSpellList] = useState<Spell[]>([]);
+  const [newSpellLevel, setNewSpellLevel] = useState<number>(1);
   const [features, setFeatures] = useState<string[]>([]);
   const [classFeatures, setClassFeatures] = useState<string[]>([]);
   const [raceFeatures, setRaceFeatures] = useState<string[]>([]);
@@ -2788,8 +2789,12 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                               </div>
                               <div>
                                 <label className="text-sm font-medium">Level</label>
-                                <Select defaultValue="1">
-                                  <SelectTrigger id="new-spell-level">
+                                <Select 
+                                  defaultValue="1"
+                                  onValueChange={(value) => setNewSpellLevel(parseInt(value) || 0)}
+                                  value={newSpellLevel.toString()}
+                                >
+                                  <SelectTrigger>
                                     <SelectValue placeholder="Spell level" />
                                   </SelectTrigger>
                                   <SelectContent>
@@ -2815,21 +2820,20 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                   type="button"
                                   onClick={() => {
                                     const nameInput = document.getElementById('new-spell-name') as HTMLInputElement;
-                                    const levelSelect = document.getElementById('new-spell-level') as HTMLSelectElement;
                                     const descriptionInput = document.getElementById('new-spell-description') as HTMLTextAreaElement;
                                     const damageInput = document.getElementById('new-spell-damage') as HTMLInputElement;
                                     
-                                    if (nameInput && levelSelect && descriptionInput) {
+                                    if (nameInput && descriptionInput) {
                                       addSpell({
                                         name: nameInput.value,
-                                        level: parseInt(levelSelect.value) || 0,
+                                        level: newSpellLevel,
                                         description: descriptionInput.value,
                                         damage: damageInput.value || undefined
                                       });
                                       
                                       // Clear inputs
                                       nameInput.value = '';
-                                      levelSelect.value = '1';
+                                      setNewSpellLevel(1);
                                       descriptionInput.value = '';
                                       damageInput.value = '';
                                     }
