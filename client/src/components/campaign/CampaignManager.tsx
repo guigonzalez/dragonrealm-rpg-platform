@@ -648,15 +648,57 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                               onChange={(e) => {
                                 const file = e.target.files?.[0];
                                 if (file) {
-                                  // Converter a imagem para base64 para persistência
-                                  const reader = new FileReader();
-                                  reader.onloadend = () => {
-                                    const base64String = reader.result as string;
-                                    // Armazenar a URL da imagem no estado
-                                    setMapImageUrl(base64String);
-                                    console.log("Mapa carregado e convertido para base64");
+                                  // Comprimir e converter a imagem para base64
+                                  const compressAndConvertToBase64 = (file: File) => {
+                                    return new Promise<string>((resolve) => {
+                                      // Criar um elemento de imagem para redimensionar
+                                      const img = new Image();
+                                      img.onload = () => {
+                                        // Criar um canvas para redimensionar
+                                        const canvas = document.createElement("canvas");
+                                        
+                                        // Definir tamanho máximo (1000px de largura ou altura, mantendo a proporção)
+                                        const MAX_SIZE = 1000;
+                                        let width = img.width;
+                                        let height = img.height;
+                                        
+                                        // Redimensionar mantendo a proporção se necessário
+                                        if (width > MAX_SIZE || height > MAX_SIZE) {
+                                          if (width > height) {
+                                            height = Math.round(height * MAX_SIZE / width);
+                                            width = MAX_SIZE;
+                                          } else {
+                                            width = Math.round(width * MAX_SIZE / height);
+                                            height = MAX_SIZE;
+                                          }
+                                        }
+                                        
+                                        canvas.width = width;
+                                        canvas.height = height;
+                                        
+                                        // Desenhar no canvas
+                                        const ctx = canvas.getContext("2d");
+                                        ctx?.drawImage(img, 0, 0, width, height);
+                                        
+                                        // Converter para base64 com qualidade reduzida (0.7)
+                                        const base64String = canvas.toDataURL("image/jpeg", 0.7);
+                                        resolve(base64String);
+                                      };
+                                      
+                                      // Carregar a imagem
+                                      const reader = new FileReader();
+                                      reader.onload = (e) => {
+                                        img.src = e.target?.result as string;
+                                      };
+                                      reader.readAsDataURL(file);
+                                    });
                                   };
-                                  reader.readAsDataURL(file);
+                                  
+                                  // Comprimir e converter para base64
+                                  compressAndConvertToBase64(file).then((base64String) => {
+                                    setMapImageUrl(base64String);
+                                    console.log("Mapa carregado, comprimido e convertido para base64");
+                                  });
                                 }
                               }}
                             />
