@@ -588,14 +588,108 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
       try {
         // Analisar strings de equipment para extrair armas, armaduras e outros itens
         // Este é um processo imperfeito, mas faz o melhor possível para migrar dados existentes
-        const weaponsFromEquipment = characterData.equipment?.filter(e => e.startsWith('Arma:')) || [];
-        const armorsFromEquipment = characterData.equipment?.filter(e => e.startsWith('Armadura:')) || [];
-        const otherEquipmentFromEquipment = characterData.equipment?.filter(e => e.startsWith('Equipamento:')) || [];
-        const coinsFromEquipment = characterData.equipment?.find(e => e.startsWith('Moedas:')) || '';
+        const weaponsFromEquipment = characterData.equipment?.filter((e: string) => e.startsWith('Arma:')) || [];
+        const armorsFromEquipment = characterData.equipment?.filter((e: string) => e.startsWith('Armadura:')) || [];
+        const otherEquipmentFromEquipment = characterData.equipment?.filter((e: string) => e.startsWith('Equipamento:')) || [];
+        const coinsFromEquipment = characterData.equipment?.find((e: string) => e.startsWith('Moedas:')) || '';
         
-        // Inicializa equipamentos com dados existentes ou padrões
+        // Extrair armas da string
+        const extractedWeapons: Weapon[] = [];
+        
+        weaponsFromEquipment.forEach((weaponString: string) => {
+          try {
+            // Formato: "Arma: Nome | Propriedades: prop1, prop2 | Alcance: X | Bônus: +X | Dano: XdY+Z | Tipo: type1, type2 | Munição: X"
+            const weaponParts = weaponString.replace('Arma:', '').split('|');
+            const name = weaponParts[0]?.trim() || '';
+            
+            let properties: string[] = [];
+            let range = '';
+            let attackBonus = '';
+            let damage = '';
+            let damageTypes: string[] = [];
+            let ammunition = '';
+            
+            // Extrair dados de cada parte
+            weaponParts.forEach((part: string) => {
+              const trimmed = part.trim();
+              if (trimmed.startsWith('Propriedades:')) properties = trimmed.replace('Propriedades:', '').trim().split(',').map((p: string) => p.trim());
+              if (trimmed.startsWith('Alcance:')) range = trimmed.replace('Alcance:', '').trim();
+              if (trimmed.startsWith('Bônus:')) attackBonus = trimmed.replace('Bônus:', '').trim();
+              if (trimmed.startsWith('Dano:')) damage = trimmed.replace('Dano:', '').trim();
+              if (trimmed.startsWith('Tipo:')) damageTypes = trimmed.replace('Tipo:', '').trim().split(',').map((t: string) => t.trim());
+              if (trimmed.startsWith('Munição:')) ammunition = trimmed.replace('Munição:', '').trim();
+            });
+            
+            if (name) {
+              extractedWeapons.push({
+                id: crypto.randomUUID(),
+                name,
+                properties,
+                range,
+                attackBonus,
+                damage,
+                damageTypes,
+                ammunition
+              });
+            }
+          } catch (error) {
+            console.error("Erro ao converter arma:", error);
+          }
+        });
+        
+        // Extrair armaduras da string
+        const extractedArmors: Armor[] = [];
+        
+        armorsFromEquipment.forEach((armorString: string) => {
+          try {
+            // Formato: "Armadura: Nome | Tipo: X | Peso: Y | CA: +Z | Penalidade: Sim/Não | Propriedades: prop1, prop2"
+            const armorParts = armorString.replace('Armadura:', '').split('|');
+            const name = armorParts[0]?.trim() || '';
+            
+            let type = '';
+            let weight = '';
+            let acBonus = '';
+            let hasPenalty = false;
+            let properties: string[] = [];
+            
+            // Extrair dados de cada parte
+            armorParts.forEach((part: string) => {
+              const trimmed = part.trim();
+              if (trimmed.startsWith('Tipo:')) type = trimmed.replace('Tipo:', '').trim();
+              if (trimmed.startsWith('Peso:')) weight = trimmed.replace('Peso:', '').trim();
+              if (trimmed.startsWith('CA:')) acBonus = trimmed.replace('CA:', '').trim();
+              if (trimmed.startsWith('Penalidade:')) hasPenalty = trimmed.replace('Penalidade:', '').trim().toLowerCase() === 'sim';
+              if (trimmed.startsWith('Propriedades:')) properties = trimmed.replace('Propriedades:', '').trim().split(',').map((p: string) => p.trim());
+            });
+            
+            if (name) {
+              extractedArmors.push({
+                id: crypto.randomUUID(),
+                name,
+                type,
+                weight,
+                acBonus,
+                hasPenalty,
+                properties
+              });
+            }
+          } catch (error) {
+            console.error("Erro ao converter armadura:", error);
+          }
+        });
+        
+        // Atualizar estado com as armas e armaduras extraídas
+        if (extractedWeapons.length > 0) {
+          setWeapons(extractedWeapons);
+        }
+        
+        if (extractedArmors.length > 0) {
+          setArmors(extractedArmors);
+        }
+        
+        // Inicializa equipamentos diversos com dados existentes ou padrões
         const notes = otherEquipmentFromEquipment.length > 0 ? 
-            otherEquipmentFromEquipment.map(e => e.replace('Equipamento:', '').trim()).join('\n') : '';
+            otherEquipmentFromEquipment.map((e: string) => e.replace('Equipamento:', '').trim()).join('\n') : '';
             
         // Extrair valores de moedas
         const coins = {
@@ -608,7 +702,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
         
         if (coinsFromEquipment) {
           const coinParts = coinsFromEquipment.replace('Moedas:', '').trim().split(',');
-          coinParts.forEach(part => {
+          coinParts.forEach((part: string) => {
             const trimmed = part.trim();
             if (trimmed.startsWith('PC:')) coins.copper = parseInt(trimmed.replace('PC:', '').trim()) || 0;
             if (trimmed.startsWith('PP:')) coins.silver = parseInt(trimmed.replace('PP:', '').trim()) || 0;
