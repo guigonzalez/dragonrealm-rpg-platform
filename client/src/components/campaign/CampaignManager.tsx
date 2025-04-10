@@ -582,7 +582,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                                 <Input type="hidden" {...field} />
                                 <CampaignImageUpload 
                                   imageUrl={field.value || ""} 
-                                  onImageChange={field.onChange}
+                                  onImageChange={(url) => field.onChange(url)}
                                   readOnly={false}
                                 />
                               </div>

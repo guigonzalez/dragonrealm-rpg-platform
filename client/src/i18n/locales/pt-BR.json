@@ -99,6 +99,7 @@
     "campaignDescription": "Descrição da Campanha",
     "campaignDetails": "Detalhes da Campanha",
     "campaignImage": "Imagem da Campanha",
+    "campaignImageDescription": "Adicione uma imagem de capa para sua campanha. Formatos suportados: JPG, PNG, GIF",
     "uploadCampaignImage": "Enviar Imagem da Campanha",
     "uploadCampaignImageDescription": "Envie uma imagem de capa para sua campanha",
     "changeCampaignImage": "Trocar Imagem",

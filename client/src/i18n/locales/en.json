@@ -101,6 +101,7 @@
     "campaignDescription": "Campaign Description",
     "campaignDetails": "Campaign Details",
     "campaignImage": "Campaign Image",
+    "campaignImageDescription": "Add a cover image for your campaign. Supported formats: JPG, PNG, GIF",
     "uploadCampaignImage": "Upload Campaign Image",
     "uploadCampaignImageDescription": "Upload a cover image for your campaign",
     "changeCampaignImage": "Change Image",
