@@ -198,7 +198,7 @@ export default function DashboardPage() {
                         )}
                       </CardContent>
                       <CardFooter className="flex justify-between">
-                        <Link href={`/character-sheet/${character.id}`}>
+                        <Link href={`/character-sheet/${character.id}?readOnly=true`}>
                           <Button>{t("character.viewSheet")}</Button>
                         </Link>
                         <div className="flex space-x-2">
