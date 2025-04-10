@@ -53,7 +53,11 @@ import {
   Save, 
   Map, 
   BookOpen, 
-  Calendar 
+  Calendar,
+  Info,
+  Globe,
+  Users, 
+  Swords 
 } from "lucide-react";
 
 interface CampaignManagerProps {
@@ -92,7 +96,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState("world");
+  const [activeTab, setActiveTab] = useState("details");
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
   const [noteDialogOpen, setNoteDialogOpen] = useState(false);
   const [editingLocationId, setEditingLocationId] = useState<number | null>(null);
