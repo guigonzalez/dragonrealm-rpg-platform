@@ -118,30 +118,18 @@
     background: var(--background);
   }
   
-  /* Add custom tab styling for campaign sections */
-  .tab-header-list {
-    width: 100%;
-    display: grid;
+  /* Correção específica para espaçamento e bordas dos tabs */
+  .tabs-fix [role="tablist"] {
     position: relative;
-    background: var(--muted);
-    border-radius: 0.5rem;
-    padding: 0.25rem;
+    overflow: hidden;
   }
   
-  /* Ajustes para o container das abas */
-  .tab-header-list {
-    margin-left: -0.5rem;
-    margin-right: -0.5rem;
-    width: calc(100% + 1rem);
-  }
-  
-  /* Ajustes específicos para primeira e última aba */
-  .tab-header-list [data-state="active"]:first-child {
+  .tabs-fix [role="tab"]:first-child {
     border-top-left-radius: 0.5rem;
     border-bottom-left-radius: 0.5rem;
   }
   
-  .tab-header-list [data-state="active"]:last-child {
+  .tabs-fix [role="tab"]:last-child {
     border-top-right-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
   }
