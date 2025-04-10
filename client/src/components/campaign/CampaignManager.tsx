@@ -113,7 +113,15 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
   const [magicTech, setMagicTech] = useState<string>(campaign?.magicTech || "");
   
   // State para controlar se está no modo de edição ou visualização
-  const [worldEditMode, setWorldEditMode] = useState<boolean>(true);
+  // Se já existem dados na campanha, iniciar em modo de visualização, caso contrário em modo de edição
+  const [worldEditMode, setWorldEditMode] = useState<boolean>(
+    !campaign?.centralConcept && 
+    !campaign?.geography && 
+    !campaign?.factions && 
+    !campaign?.history && 
+    !campaign?.magicTech && 
+    !campaign?.mapImageUrl
+  );
   const [editingLocationId, setEditingLocationId] = useState<number | null>(null);
   const [editingNoteId, setEditingNoteId] = useState<number | null>(null);
   
@@ -212,6 +220,8 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/campaigns/${campaign?.id}`] });
       queryClient.invalidateQueries({ queryKey: ["/api/campaigns"] });
+      // Sempre voltar para o modo de visualização após salvar
+      setWorldEditMode(false);
       toast({
         title: t("campaign.campaignUpdated"),
         description: t("campaign.campaignUpdatedDescription"),
