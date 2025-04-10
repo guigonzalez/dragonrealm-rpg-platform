@@ -816,9 +816,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Atletismo: usada para escalar, nadar, saltar ou outras atividades físicas que exigem força">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="athletics-adv"
-                              checked={skillsWithAdvantage.includes("Athletics")}
-                              onCheckedChange={() => toggleAdvantage("Athletics")}
+                              id="athletics-prof"
+                              checked={skills.includes("Athletics")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Athletics")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Atletismo</span>
@@ -882,9 +882,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Acrobacia: usada para fazer acrobacias, manter o equilíbrio ou se livrar de imobilizações">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="acrobatics-adv"
-                              checked={skillsWithAdvantage.includes("Acrobatics")}
-                              onCheckedChange={() => toggleAdvantage("Acrobatics")}
+                              id="acrobatics-prof"
+                              checked={skills.includes("Acrobatics")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Acrobatics")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Acrobacia</span>
@@ -894,9 +894,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Furtividade: usada para se esconder, se mover silenciosamente ou evitar ser detectado">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="stealth-adv"
-                              checked={skillsWithAdvantage.includes("Stealth")}
-                              onCheckedChange={() => toggleAdvantage("Stealth")}
+                              id="stealth-prof"
+                              checked={skills.includes("Stealth")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Stealth")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Furtividade</span>
