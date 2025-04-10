@@ -500,27 +500,27 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
       </div>
       
       <div className="mb-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full mb-6 relative overflow-hidden">
-            <TabsTrigger value="details" className="font-lora data-[state=active]:relative">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-6">
+            <TabsTrigger value="details" className="font-lora">
               <div className="w-6 h-6 mr-2 inline-flex items-center justify-center">
                 <Info className="h-5 w-5" />
               </div>
               {t("campaign.details")}
             </TabsTrigger>
-            <TabsTrigger value="world" className="font-lora data-[state=active]:relative">
+            <TabsTrigger value="world" className="font-lora">
               <div className="w-6 h-6 mr-2 inline-flex items-center justify-center">
                 <Globe className="h-5 w-5" />
               </div>
               {t("location.worldBuilding")}
             </TabsTrigger>
-            <TabsTrigger value="npcs" className="font-lora data-[state=active]:relative">
+            <TabsTrigger value="npcs" className="font-lora">
               <div className="w-6 h-6 mr-2 inline-flex items-center justify-center">
                 <Users className="h-5 w-5" />
               </div>
               {t("campaign.npcsCreatures")}
             </TabsTrigger>
-            <TabsTrigger value="encounters" className="font-lora data-[state=active]:relative">
+            <TabsTrigger value="encounters" className="font-lora">
               <div className="w-6 h-6 mr-2 inline-flex items-center justify-center">
                 <Swords className="h-5 w-5" />
               </div>
