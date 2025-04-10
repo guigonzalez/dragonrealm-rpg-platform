@@ -57,7 +57,8 @@ import {
   Info,
   Globe,
   Users, 
-  Swords 
+  Swords,
+  Upload
 } from "lucide-react";
 
 interface CampaignManagerProps {
@@ -591,6 +592,36 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                     placeholder="Describe the key geographical regions of your world"
                     className="min-h-[100px]"
                   />
+                  
+                  {/* World Map Upload */}
+                  <div className="mt-6 space-y-2">
+                    <div className="flex justify-between items-center">
+                      <h4 className="font-lora text-md text-primary">{t("location.worldMap")}</h4>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      {t("location.worldMapDescription")}
+                    </p>
+                    
+                    <div className="border-2 border-dashed border-primary/20 rounded-md p-6 text-center hover:border-primary/40 transition-colors">
+                      <div className="space-y-2">
+                        <div className="flex justify-center">
+                          <Upload className="h-8 w-8 text-muted-foreground" />
+                        </div>
+                        <p className="text-sm font-medium">{t("location.uploadMapDescription")}</p>
+                        <label htmlFor="map-upload">
+                          <Button type="button" variant="outline" size="sm" className="mt-2">
+                            {t("location.uploadMap")}
+                          </Button>
+                          <Input
+                            id="map-upload"
+                            type="file"
+                            accept="image/png,image/jpeg,image/gif"
+                            className="hidden"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 
                 {/* Factions */}
