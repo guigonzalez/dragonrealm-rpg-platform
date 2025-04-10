@@ -490,19 +490,19 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full mb-6">
             <TabsTrigger value="details" className="font-lora">
-              <Info className="h-4 w-4 mr-2" />
+              <Info className="h-4 w-4 mr-2 inline-block" />
               {t("campaign.details")}
             </TabsTrigger>
             <TabsTrigger value="world" className="font-lora">
-              <Globe className="h-4 w-4 mr-2" />
+              <Globe className="h-4 w-4 mr-2 inline-block" />
               {t("location.worldBuilding")}
             </TabsTrigger>
             <TabsTrigger value="npcs" className="font-lora">
-              <Users className="h-4 w-4 mr-2" />
+              <Users className="h-4 w-4 mr-2 inline-block" />
               {t("campaign.npcsCreatures")}
             </TabsTrigger>
             <TabsTrigger value="encounters" className="font-lora">
-              <Swords className="h-4 w-4 mr-2" />
+              <Swords className="h-4 w-4 mr-2 inline-block" />
               {t("campaign.encounters")}
             </TabsTrigger>
           </TabsList>
