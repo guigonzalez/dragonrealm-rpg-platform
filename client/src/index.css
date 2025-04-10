@@ -128,17 +128,20 @@
     padding: 0.25rem;
   }
   
+  /* Ajustes para o container das abas */
+  .tab-header-list {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+    width: calc(100% + 1rem);
+  }
+  
   /* Ajustes específicos para primeira e última aba */
   .tab-header-list [data-state="active"]:first-child {
-    margin-left: -0.25rem;
-    padding-left: 1rem;
     border-top-left-radius: 0.5rem;
     border-bottom-left-radius: 0.5rem;
   }
   
   .tab-header-list [data-state="active"]:last-child {
-    margin-right: -0.25rem;
-    padding-right: 1rem;
     border-top-right-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
   }
