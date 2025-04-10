@@ -199,7 +199,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
   
   // Update campaign mutation
   const updateCampaignMutation = useMutation({
-    mutationFn: async (data: CampaignFormValues) => {
+    mutationFn: async (data: CampaignFormValues | any) => {
       if (!campaign) throw new Error("No campaign to update");
       
       const res = await apiRequest("PUT", `/api/campaigns/${campaign.id}`, {
@@ -213,13 +213,13 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
       queryClient.invalidateQueries({ queryKey: [`/api/campaigns/${campaign?.id}`] });
       queryClient.invalidateQueries({ queryKey: ["/api/campaigns"] });
       toast({
-        title: "Campaign updated",
-        description: "Your campaign has been updated successfully.",
+        title: t("campaign.campaignUpdated"),
+        description: t("campaign.campaignUpdatedDescription"),
       });
     },
     onError: (error: Error) => {
       toast({
-        title: "Update failed",
+        title: t("campaign.updateFailed"),
         description: error.message,
         variant: "destructive",
       });
