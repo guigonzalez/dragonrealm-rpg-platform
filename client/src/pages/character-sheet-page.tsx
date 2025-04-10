@@ -3,7 +3,7 @@ import { useParams, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import CharacterSheet from "@/components/character/CharacterSheet";
+import CharacterCreation from "@/components/character/CharacterCreation";
 import { Character } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
@@ -73,7 +73,7 @@ export default function CharacterSheetPage() {
       <Navbar />
       <main className="flex-grow bg-background">
         <div className="container mx-auto px-4 py-8">
-          <CharacterSheet character={character} readOnly={readOnly} />
+          <CharacterCreation predefinedCharacter={character} readOnly={readOnly} />
         </div>
       </main>
       <Footer />
