@@ -1942,7 +1942,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                           </div>
                           
                           <div className="col-span-full flex justify-end mt-4">
-                            <Button
+                            <Button type="button"
                               onClick={() => {
                                 // Obter valores dos inputs
                                 const nameInput = document.getElementById('weapon-name') as HTMLInputElement;
@@ -2190,7 +2190,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                           </div>
                           
                           <div className="col-span-full flex justify-end mt-4">
-                            <Button
+                            <Button type="button"
                               onClick={() => {
                                 // Obter valores dos inputs
                                 const nameInput = document.getElementById('armor-name') as HTMLInputElement;
