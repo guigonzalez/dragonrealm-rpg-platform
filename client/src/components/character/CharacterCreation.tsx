@@ -428,6 +428,16 @@ export default function CharacterCreation() {
     }
   };
   
+  // Helper function to calculate ability modifier
+  const getAbilityModifier = (score: number) => {
+    return Math.floor((score - 10) / 2);
+  };
+  
+  // Helper function to format modifier with + or - sign
+  const formatModifier = (modifier: number) => {
+    return modifier >= 0 ? `+${modifier}` : `${modifier}`;
+  };
+  
   return (
     <div>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
