@@ -1702,6 +1702,47 @@ export default function CharacterCreation() {
                                   {prop}
                                 </Badge>
                               ))}
+                              <div className="w-full mt-2">
+                                <label className="text-xs text-muted-foreground">Outra propriedade:</label>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <Input 
+                                    id="custom-weapon-property" 
+                                    placeholder="Digite propriedade personalizada" 
+                                    className="h-8"
+                                  />
+                                  <Button 
+                                    type="button" 
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      const input = document.getElementById('custom-weapon-property') as HTMLInputElement;
+                                      if (input && input.value.trim()) {
+                                        // Criar um Badge temporário e adicioná-lo à página
+                                        const container = document.querySelector('.flex.flex-wrap.gap-2');
+                                        if (container) {
+                                          const badge = document.createElement('span');
+                                          badge.className = 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer bg-primary text-primary-foreground';
+                                          badge.textContent = input.value.trim();
+                                          badge.onclick = (e) => {
+                                            const target = e.target as HTMLElement;
+                                            if (target.classList.contains('bg-primary')) {
+                                              target.classList.remove('bg-primary');
+                                              target.classList.remove('text-primary-foreground');
+                                            } else {
+                                              target.classList.add('bg-primary');
+                                              target.classList.add('text-primary-foreground');
+                                            }
+                                          };
+                                          container.insertBefore(badge, document.getElementById('custom-weapon-property')?.parentElement?.parentElement);
+                                          input.value = '';
+                                        }
+                                      }
+                                    }}
+                                  >
+                                    Adicionar
+                                  </Button>
+                                </div>
+                              </div>
                             </div>
                           </div>
                           
@@ -1746,6 +1787,47 @@ export default function CharacterCreation() {
                                   {type}
                                 </Badge>
                               ))}
+                              <div className="w-full mt-2">
+                                <label className="text-xs text-muted-foreground">Outro tipo de dano:</label>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <Input 
+                                    id="custom-damage-type" 
+                                    placeholder="Digite tipo personalizado" 
+                                    className="h-8"
+                                  />
+                                  <Button 
+                                    type="button" 
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      const input = document.getElementById('custom-damage-type') as HTMLInputElement;
+                                      if (input && input.value.trim()) {
+                                        // Criar um Badge temporário e adicioná-lo à página
+                                        const container = document.querySelector('.flex.flex-wrap.gap-2:nth-of-type(2)');
+                                        if (container) {
+                                          const badge = document.createElement('span');
+                                          badge.className = 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer bg-primary text-primary-foreground';
+                                          badge.textContent = input.value.trim();
+                                          badge.onclick = (e) => {
+                                            const target = e.target as HTMLElement;
+                                            if (target.classList.contains('bg-primary')) {
+                                              target.classList.remove('bg-primary');
+                                              target.classList.remove('text-primary-foreground');
+                                            } else {
+                                              target.classList.add('bg-primary');
+                                              target.classList.add('text-primary-foreground');
+                                            }
+                                          };
+                                          container.insertBefore(badge, document.getElementById('custom-damage-type')?.parentElement?.parentElement);
+                                          input.value = '';
+                                        }
+                                      }
+                                    }}
+                                  >
+                                    Adicionar
+                                  </Button>
+                                </div>
+                              </div>
                             </div>
                           </div>
                           
@@ -1961,6 +2043,47 @@ export default function CharacterCreation() {
                                   {prop}
                                 </Badge>
                               ))}
+                              <div className="w-full mt-2">
+                                <label className="text-xs text-muted-foreground">Outra propriedade:</label>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <Input 
+                                    id="custom-armor-property" 
+                                    placeholder="Digite propriedade personalizada" 
+                                    className="h-8"
+                                  />
+                                  <Button 
+                                    type="button" 
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      const input = document.getElementById('custom-armor-property') as HTMLInputElement;
+                                      if (input && input.value.trim()) {
+                                        // Criar um Badge temporário e adicioná-lo à página
+                                        const container = document.querySelector('.flex.flex-wrap.gap-2:nth-of-type(3)');
+                                        if (container) {
+                                          const badge = document.createElement('span');
+                                          badge.className = 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer bg-primary text-primary-foreground';
+                                          badge.textContent = input.value.trim();
+                                          badge.onclick = (e) => {
+                                            const target = e.target as HTMLElement;
+                                            if (target.classList.contains('bg-primary')) {
+                                              target.classList.remove('bg-primary');
+                                              target.classList.remove('text-primary-foreground');
+                                            } else {
+                                              target.classList.add('bg-primary');
+                                              target.classList.add('text-primary-foreground');
+                                            }
+                                          };
+                                          container.insertBefore(badge, document.getElementById('custom-armor-property')?.parentElement?.parentElement);
+                                          input.value = '';
+                                        }
+                                      }
+                                    }}
+                                  >
+                                    Adicionar
+                                  </Button>
+                                </div>
+                              </div>
                             </div>
                           </div>
                           
