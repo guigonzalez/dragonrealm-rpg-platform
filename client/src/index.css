@@ -105,4 +105,9 @@
   .read-only-form [class*="trigger"] {
     pointer-events: none !important;
   }
+  
+  /* Custom styles for tablist to fix the active tab visual issue */
+  [role="tablist"] [data-state="active"] {
+    z-index: 10;
+  }
 }
