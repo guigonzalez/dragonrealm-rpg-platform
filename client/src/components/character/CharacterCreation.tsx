@@ -249,6 +249,23 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
   });
   const [hasInspiration, setHasInspiration] = useState<boolean>(false);
   
+  // Estado para armazenar bônus de atributos (raciais, mágicos, etc.)
+  const [attributeBonuses, setAttributeBonuses] = useState<{
+    strength: number;
+    dexterity: number;
+    constitution: number;
+    intelligence: number;
+    wisdom: number;
+    charisma: number;
+  }>({
+    strength: 0,
+    dexterity: 0,
+    constitution: 0,
+    intelligence: 0,
+    wisdom: 0,
+    charisma: 0
+  });
+  
   // Fetch character data if in edit mode
   const { data: characterData, isLoading: isLoadingCharacter } = useQuery({
     queryKey: ["/api/characters", characterId],
@@ -540,7 +557,22 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
       featuresArray.push(`Recurso: ${feature}`);
     });
     
+    // Adicionar bônus de atributos se houver algum
+    const hasBonuses = Object.values(attributeBonuses).some(bonus => bonus !== 0);
+    if (hasBonuses) {
+      const bonusString = `Bônus: FOR:${attributeBonuses.strength}, DES:${attributeBonuses.dexterity}, CON:${attributeBonuses.constitution}, INT:${attributeBonuses.intelligence}, SAB:${attributeBonuses.wisdom}, CAR:${attributeBonuses.charisma}`;
+      featuresArray.push(bonusString);
+    }
+    
     return featuresArray;
+  };
+  
+  // Função auxiliar para atualizar um bônus de atributo específico
+  const updateAttributeBonus = (attribute: keyof typeof attributeBonuses, value: number) => {
+    setAttributeBonuses(prev => ({
+      ...prev,
+      [attribute]: value
+    }));
   };
 
   // Load character data when in edit mode
@@ -697,6 +729,16 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
         const raceFeaturesList: string[] = [];
         const otherFeaturesList: string[] = [];
         
+        // Inicializar bônus de atributos
+        let loadedAttributeBonuses = {
+          strength: 0,
+          dexterity: 0,
+          constitution: 0,
+          intelligence: 0,
+          wisdom: 0,
+          charisma: 0
+        };
+        
         featuresArray.forEach((feature: string) => {
           if (feature.startsWith('Classe:')) {
             classFeaturesList.push(feature.replace('Classe:', '').trim());
@@ -704,15 +746,33 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
             raceFeaturesList.push(feature.replace('Raça:', '').trim());
           } else if (feature.startsWith('Recurso:')) {
             otherFeaturesList.push(feature.replace('Recurso:', '').trim());
+          } else if (feature.startsWith('Bônus:')) {
+            // Extrair bônus de atributos
+            try {
+              const bonusParts = feature.replace('Bônus:', '').split(',');
+              bonusParts.forEach(part => {
+                const trimmed = part.trim();
+                if (trimmed.startsWith('FOR:')) loadedAttributeBonuses.strength = parseInt(trimmed.replace('FOR:', '').trim()) || 0;
+                if (trimmed.startsWith('DES:')) loadedAttributeBonuses.dexterity = parseInt(trimmed.replace('DES:', '').trim()) || 0;
+                if (trimmed.startsWith('CON:')) loadedAttributeBonuses.constitution = parseInt(trimmed.replace('CON:', '').trim()) || 0;
+                if (trimmed.startsWith('INT:')) loadedAttributeBonuses.intelligence = parseInt(trimmed.replace('INT:', '').trim()) || 0;
+                if (trimmed.startsWith('SAB:')) loadedAttributeBonuses.wisdom = parseInt(trimmed.replace('SAB:', '').trim()) || 0;
+                if (trimmed.startsWith('CAR:')) loadedAttributeBonuses.charisma = parseInt(trimmed.replace('CAR:', '').trim()) || 0;
+              });
+            } catch (error) {
+              console.error("Erro ao extrair bônus de atributos:", error);
+            }
           } else {
             // Para compatibilidade com dados antigos, adicionar features sem prefixo a outros recursos
             otherFeaturesList.push(feature);
           }
         });
         
+        // Definir os estados com os dados carregados
         setClassFeatures(classFeaturesList);
         setRaceFeatures(raceFeaturesList);
         setFeatures(otherFeaturesList);
+        setAttributeBonuses(loadedAttributeBonuses);
       } catch (error) {
         console.error("Erro ao processar features:", error);
         // Em caso de erro, apenas defina as features originais
