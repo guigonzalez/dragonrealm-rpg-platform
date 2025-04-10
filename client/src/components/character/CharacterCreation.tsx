@@ -1190,9 +1190,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Sobrevivência: usada para rastrear, caçar, navegar por terrenos selvagens ou prever o clima">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="survival-adv"
-                              checked={skillsWithAdvantage.includes("Survival")}
-                              onCheckedChange={() => toggleAdvantage("Survival")}
+                              id="survival-prof"
+                              checked={skills.includes("Survival")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Survival")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Sobrevivência</span>
@@ -1256,9 +1256,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Atuação: usada para entreter um público com música, dança, atuação, histórias ou outro tipo de apresentação">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="performance-adv"
-                              checked={skillsWithAdvantage.includes("Performance")}
-                              onCheckedChange={() => toggleAdvantage("Performance")}
+                              id="performance-prof"
+                              checked={skills.includes("Performance")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Performance")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Atuação</span>
@@ -1268,9 +1268,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Enganação: usada para mentir convincentemente, disfarçar intenções, blefar ou manipular alguém">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="deception-adv"
-                              checked={skillsWithAdvantage.includes("Deception")}
-                              onCheckedChange={() => toggleAdvantage("Deception")}
+                              id="deception-prof"
+                              checked={skills.includes("Deception")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Deception")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Enganação</span>
@@ -1280,9 +1280,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Intimidação: usada para influenciar alguém através de ameaças, demonstrações de força ou violência">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="intimidation-adv"
-                              checked={skillsWithAdvantage.includes("Intimidation")}
-                              onCheckedChange={() => toggleAdvantage("Intimidation")}
+                              id="intimidation-prof"
+                              checked={skills.includes("Intimidation")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Intimidation")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Intimidação</span>
@@ -1292,9 +1292,9 @@ export default function CharacterCreation() {
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Persuasão: usada para influenciar alguém através de argumentos lógicos, diplomacia, charme ou boa vontade">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
-                              id="persuasion-adv"
-                              checked={skillsWithAdvantage.includes("Persuasion")}
-                              onCheckedChange={() => toggleAdvantage("Persuasion")}
+                              id="persuasion-prof"
+                              checked={skills.includes("Persuasion")}
+                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Persuasion")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Persuasão</span>
