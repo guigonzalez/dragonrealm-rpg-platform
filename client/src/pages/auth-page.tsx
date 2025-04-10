@@ -31,6 +31,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/hooks/use-auth";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { useTranslation } from "react-i18next";
 
 // Login form schema
 const loginSchema = z.object({
@@ -56,6 +57,7 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 export default function AuthPage() {
   const { user, loginMutation, registerMutation } = useAuth();
   const [, setLocation] = useLocation();
+  const { t } = useTranslation();
   
   // Redirect to dashboard if already authenticated
   useEffect(() => {
@@ -113,8 +115,8 @@ export default function AuthPage() {
           <div className="bg-white p-8 rounded-lg shadow-md">
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                <TabsTrigger value="signin">{t("auth.login")}</TabsTrigger>
+                <TabsTrigger value="signup">{t("auth.register")}</TabsTrigger>
               </TabsList>
               
               <TabsContent value="signin">
@@ -169,7 +171,7 @@ export default function AuthPage() {
                         className="w-full magic-button" 
                         disabled={loginMutation.isPending}
                       >
-                        {loginMutation.isPending ? "Signing in..." : "Sign In"}
+                        {loginMutation.isPending ? t("common.loading") : t("auth.login")}
                       </Button>
                       
                       <div className="relative flex items-center justify-center mt-6">
@@ -301,7 +303,7 @@ export default function AuthPage() {
                         className="w-full magic-button" 
                         disabled={registerMutation.isPending}
                       >
-                        {registerMutation.isPending ? "Creating Account..." : "Create Account"}
+                        {registerMutation.isPending ? t("common.creating") : t("auth.createAccount")}
                       </Button>
                       
                       <div className="relative flex items-center justify-center mt-6">
