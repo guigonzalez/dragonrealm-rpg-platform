@@ -104,6 +104,16 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
   
   // State para armazenar a URL da imagem do mapa do mundo
   const [mapImageUrl, setMapImageUrl] = useState<string>("");
+  
+  // States para armazenar os textos do mundo
+  const [centralConcept, setCentralConcept] = useState<string>("");
+  const [geography, setGeography] = useState<string>("");
+  const [factions, setFactions] = useState<string>("");
+  const [history, setHistory] = useState<string>("");
+  const [magicTech, setMagicTech] = useState<string>("");
+  
+  // State para controlar se está no modo de edição ou visualização
+  const [worldEditMode, setWorldEditMode] = useState<boolean>(true);
   const [editingLocationId, setEditingLocationId] = useState<number | null>(null);
   const [editingNoteId, setEditingNoteId] = useState<number | null>(null);
   
@@ -581,6 +591,8 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                   <Textarea 
                     placeholder="What's the central concept of your world?"
                     className="min-h-[100px]"
+                    value={centralConcept}
+                    onChange={(e) => setCentralConcept(e.target.value)}
                   />
                 </div>
                 
