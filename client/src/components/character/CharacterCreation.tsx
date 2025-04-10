@@ -594,15 +594,33 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
         const coinsFromEquipment = characterData.equipment?.find(e => e.startsWith('Moedas:')) || '';
         
         // Inicializa equipamentos com dados existentes ou padrões
-        setOtherEquipment({
-          notes: otherEquipmentFromEquipment.length > 0 ? 
-                 otherEquipmentFromEquipment.map(e => e.replace('Equipamento:', '').trim()).join('\n') : 
-                 '',
+        const notes = otherEquipmentFromEquipment.length > 0 ? 
+            otherEquipmentFromEquipment.map(e => e.replace('Equipamento:', '').trim()).join('\n') : '';
+            
+        // Extrair valores de moedas
+        const coins = {
           copper: 0,
           silver: 0,
           electrum: 0,
           gold: 0,
           platinum: 0
+        };
+        
+        if (coinsFromEquipment) {
+          const coinParts = coinsFromEquipment.replace('Moedas:', '').trim().split(',');
+          coinParts.forEach(part => {
+            const trimmed = part.trim();
+            if (trimmed.startsWith('PC:')) coins.copper = parseInt(trimmed.replace('PC:', '').trim()) || 0;
+            if (trimmed.startsWith('PP:')) coins.silver = parseInt(trimmed.replace('PP:', '').trim()) || 0;
+            if (trimmed.startsWith('PE:')) coins.electrum = parseInt(trimmed.replace('PE:', '').trim()) || 0;
+            if (trimmed.startsWith('PO:')) coins.gold = parseInt(trimmed.replace('PO:', '').trim()) || 0;
+            if (trimmed.startsWith('PL:')) coins.platinum = parseInt(trimmed.replace('PL:', '').trim()) || 0;
+          });
+        }
+        
+        setOtherEquipment({
+          notes,
+          ...coins
         });
       } catch (error) {
         console.error("Erro ao converter equipamento:", error);
