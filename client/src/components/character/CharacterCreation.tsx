@@ -962,8 +962,16 @@ export default function CharacterCreation() {
                       
                       <div className="space-y-1 mt-1 text-sm">
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Constituição: usada para resistir a venenos, doenças e manter a concentração em magias quando sofre dano">
-                          <span>Resistência</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("constitution") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="constitution-save-adv"
+                              checked={skillsWithAdvantage.includes("ConstitutionSave")}
+                              onCheckedChange={() => toggleAdvantage("ConstitutionSave")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Resistência</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("constitution") || 10) + (savingThrows.includes("Constitution") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                       </div>
                     </div>
@@ -1008,28 +1016,76 @@ export default function CharacterCreation() {
                       
                       <div className="space-y-1 mt-1 text-sm">
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Inteligência: usada para resistir a magias e efeitos que afetam a mente">
-                          <span>Resistência</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="intelligence-save-adv"
+                              checked={skillsWithAdvantage.includes("IntelligenceSave")}
+                              onCheckedChange={() => toggleAdvantage("IntelligenceSave")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Resistência</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10) + (savingThrows.includes("Intelligence") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Arcana: usada para recordar conhecimento sobre magias, itens mágicos, símbolos arcanos e tradições místicas">
-                          <span>Arcana</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="arcana-adv"
+                              checked={skillsWithAdvantage.includes("Arcana")}
+                              onCheckedChange={() => toggleAdvantage("Arcana")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Arcana</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10) + (skills.includes("Arcana") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="História: usada para recordar conhecimento sobre eventos históricos, pessoas lendárias, reinos antigos, disputas passadas e guerras">
-                          <span>História</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="history-adv"
+                              checked={skillsWithAdvantage.includes("History")}
+                              onCheckedChange={() => toggleAdvantage("History")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>História</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10) + (skills.includes("History") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Investigação: usada para procurar pistas e fazer deduções baseadas nelas, como encontrar um item escondido ou determinar o ponto fraco de algo">
-                          <span>Investigação</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="investigation-adv"
+                              checked={skillsWithAdvantage.includes("Investigation")}
+                              onCheckedChange={() => toggleAdvantage("Investigation")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Investigação</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10) + (skills.includes("Investigation") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Natureza: usada para recordar conhecimento sobre terrenos, plantas e animais, clima e ciclos naturais">
-                          <span>Natureza</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="nature-adv"
+                              checked={skillsWithAdvantage.includes("Nature")}
+                              onCheckedChange={() => toggleAdvantage("Nature")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Natureza</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10) + (skills.includes("Nature") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Religião: usada para recordar conhecimento sobre divindades, rituais, simbolismos religiosos, estruturas clericais, e o funcionamento de cultos">
-                          <span>Religião</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="religion-adv"
+                              checked={skillsWithAdvantage.includes("Religion")}
+                              onCheckedChange={() => toggleAdvantage("Religion")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Religião</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10) + (skills.includes("Religion") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                       </div>
                     </div>
@@ -1074,28 +1130,76 @@ export default function CharacterCreation() {
                       
                       <div className="space-y-1 mt-1 text-sm">
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Sabedoria: usada para resistir a efeitos de encantamento e controle mental">
-                          <span>Resistência</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="wisdom-save-adv"
+                              checked={skillsWithAdvantage.includes("WisdomSave")}
+                              onCheckedChange={() => toggleAdvantage("WisdomSave")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Resistência</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10) + (savingThrows.includes("Wisdom") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Adestrar Animais: usada para acalmar, treinar ou controlar animais">
-                          <span>Adestrar Animais</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="animal-handling-adv"
+                              checked={skillsWithAdvantage.includes("AnimalHandling")}
+                              onCheckedChange={() => toggleAdvantage("AnimalHandling")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Adestrar Animais</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10) + (skills.includes("AnimalHandling") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Intuição: usada para determinar as intenções verdadeiras de uma criatura, detectar mentiras ou prever as ações de alguém">
-                          <span>Intuição</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="insight-adv"
+                              checked={skillsWithAdvantage.includes("Insight")}
+                              onCheckedChange={() => toggleAdvantage("Insight")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Intuição</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10) + (skills.includes("Insight") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Medicina: usada para estabilizar uma criatura que está morrendo ou diagnosticar uma doença">
-                          <span>Medicina</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="medicine-adv"
+                              checked={skillsWithAdvantage.includes("Medicine")}
+                              onCheckedChange={() => toggleAdvantage("Medicine")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Medicina</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10) + (skills.includes("Medicine") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Percepção: usada para observar seu entorno, detectar a presença de criaturas escondidas ou notar detalhes importantes">
-                          <span>Percepção</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="perception-adv"
+                              checked={skillsWithAdvantage.includes("Perception")}
+                              onCheckedChange={() => toggleAdvantage("Perception")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Percepção</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10) + (skills.includes("Perception") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Sobrevivência: usada para rastrear, caçar, navegar por terrenos selvagens ou prever o clima">
-                          <span>Sobrevivência</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="survival-adv"
+                              checked={skillsWithAdvantage.includes("Survival")}
+                              onCheckedChange={() => toggleAdvantage("Survival")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Sobrevivência</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10) + (skills.includes("Survival") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                       </div>
                     </div>
@@ -1140,24 +1244,64 @@ export default function CharacterCreation() {
                       
                       <div className="space-y-1 mt-1 text-sm">
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Carisma: usada para resistir a efeitos que afetam a personalidade ou tentam possuir você">
-                          <span>Resistência</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="charisma-save-adv"
+                              checked={skillsWithAdvantage.includes("CharismaSave")}
+                              onCheckedChange={() => toggleAdvantage("CharismaSave")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Resistência</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10) + (savingThrows.includes("Charisma") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Atuação: usada para entreter um público com música, dança, atuação, histórias ou outro tipo de apresentação">
-                          <span>Atuação</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="performance-adv"
+                              checked={skillsWithAdvantage.includes("Performance")}
+                              onCheckedChange={() => toggleAdvantage("Performance")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Atuação</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10) + (skills.includes("Performance") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Enganação: usada para mentir convincentemente, disfarçar intenções, blefar ou manipular alguém">
-                          <span>Enganação</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="deception-adv"
+                              checked={skillsWithAdvantage.includes("Deception")}
+                              onCheckedChange={() => toggleAdvantage("Deception")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Enganação</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10) + (skills.includes("Deception") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Intimidação: usada para influenciar alguém através de ameaças, demonstrações de força ou violência">
-                          <span>Intimidação</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="intimidation-adv"
+                              checked={skillsWithAdvantage.includes("Intimidation")}
+                              onCheckedChange={() => toggleAdvantage("Intimidation")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Intimidação</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10) + (skills.includes("Intimidation") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Persuasão: usada para influenciar alguém através de argumentos lógicos, diplomacia, charme ou boa vontade">
-                          <span>Persuasão</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="persuasion-adv"
+                              checked={skillsWithAdvantage.includes("Persuasion")}
+                              onCheckedChange={() => toggleAdvantage("Persuasion")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Persuasão</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10) + (skills.includes("Persuasion") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                       </div>
                     </div>
