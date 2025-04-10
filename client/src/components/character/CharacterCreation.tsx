@@ -989,7 +989,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                     {/* Strength */}
                     <div className="bg-[#FFF8E1] border-2 border-[#8D6E63] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
-                        <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
+                        <div className="bg-[#7B1FA2] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("strength") || 10}
                         </div>
                       </div>
@@ -1058,7 +1058,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                     {/* Dexterity */}
                     <div className="bg-[#FFF8E1] border-2 border-[#8D6E63] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
-                        <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
+                        <div className="bg-[#7B1FA2] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("dexterity") || 10}
                         </div>
                       </div>
@@ -1151,7 +1151,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                     {/* Constitution */}
                     <div className="bg-[#FFF8E1] border-2 border-[#8D6E63] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
-                        <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
+                        <div className="bg-[#7B1FA2] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("constitution") || 10}
                         </div>
                       </div>
@@ -1208,7 +1208,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                     {/* Intelligence */}
                     <div className="bg-[#FFF8E1] border-2 border-[#8D6E63] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
-                        <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
+                        <div className="bg-[#7B1FA2] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("intelligence") || 10}
                         </div>
                       </div>
@@ -1322,7 +1322,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                     {/* Wisdom */}
                     <div className="bg-[#FFF8E1] border-2 border-[#8D6E63] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
-                        <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
+                        <div className="bg-[#7B1FA2] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("wisdom") || 10}
                         </div>
                       </div>
@@ -1436,7 +1436,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                     {/* Charisma */}
                     <div className="bg-[#FFF8E1] border-2 border-[#8D6E63] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
-                        <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
+                        <div className="bg-[#7B1FA2] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("charisma") || 10}
                         </div>
                       </div>
