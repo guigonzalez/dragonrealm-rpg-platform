@@ -56,7 +56,33 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, ArrowRight, Dices, Shield, Swords, Scroll, User, HelpCircle, Check } from "lucide-react";
+import { 
+  ArrowLeft, 
+  ArrowRight, 
+  Dices, 
+  Shield, 
+  Swords, 
+  Scroll, 
+  User, 
+  HelpCircle, 
+  Check, 
+  Sword, 
+  Trash, 
+  PlusCircle 
+} from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 // Define races and classes
 const races = [
