@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import { FaDiscord, FaInstagram, FaYoutube } from "react-icons/fa";
+import symbolImage from "@assets/symbol.png";
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -11,7 +12,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
             <div className="flex items-center mb-4">
-              <img src="./assets/symbol.png" alt="DragonRealm" className="h-12" />
+              <img src={symbolImage} alt="DragonRealm" className="h-12" />
             </div>
             <p className="font-opensans text-white/80 mb-4">{t("landing.footer.description")}</p>
             <div className="flex space-x-4">
