@@ -420,49 +420,12 @@ export default function CharacterCreation() {
   
   // Set saving throws based on class
   const setClassSavingThrows = () => {
-    const charClass = form.getValues("class");
-    let classSaves: string[] = [];
-    
-    switch (charClass) {
-      case "barbarian":
-        classSaves = ["Strength", "Constitution"];
-        break;
-      case "bard":
-        classSaves = ["Dexterity", "Charisma"];
-        break;
-      case "cleric":
-        classSaves = ["Wisdom", "Charisma"];
-        break;
-      case "druid":
-        classSaves = ["Intelligence", "Wisdom"];
-        break;
-      case "fighter":
-        classSaves = ["Strength", "Constitution"];
-        break;
-      case "monk":
-        classSaves = ["Strength", "Dexterity"];
-        break;
-      case "paladin":
-        classSaves = ["Wisdom", "Charisma"];
-        break;
-      case "ranger":
-        classSaves = ["Strength", "Dexterity"];
-        break;
-      case "rogue":
-        classSaves = ["Dexterity", "Intelligence"];
-        break;
-      case "sorcerer":
-        classSaves = ["Constitution", "Charisma"];
-        break;
-      case "warlock":
-        classSaves = ["Wisdom", "Charisma"];
-        break;
-      case "wizard":
-        classSaves = ["Intelligence", "Wisdom"];
-        break;
+    // Now with open text inputs for class, we'll set some default saving throws for new characters
+    // For existing characters being edited, we'll keep their current saving throws
+    if (!isEditMode) {
+      // Default to Strength and Constitution as common saving throws
+      setSavingThrows(["Strength", "Constitution"]);
     }
-    
-    setSavingThrows(classSaves);
   };
   
   return (
@@ -544,35 +507,11 @@ export default function CharacterCreation() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Race</FormLabel>
-                          <Select 
-                            onValueChange={(value) => {
-                              field.onChange(value);
-                              // Update speed based on race
-                              if (value === "halfling" || value === "gnome") {
-                                form.setValue("speed", 25);
-                              } else if (value === "elf") {
-                                form.setValue("speed", 35);
-                              } else {
-                                form.setValue("speed", 30);
-                              }
-                            }}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select race" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {races.map((race) => (
-                                <SelectItem key={race.id} value={race.id}>
-                                  {race.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <FormControl>
+                            <Input placeholder="Enter character race" {...field} />
+                          </FormControl>
                           <FormDescription>
-                            {races.find(r => r.id === field.value)?.description || "Choose your character's race"}
+                            The race of your character (Human, Elf, Dwarf, etc.)
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -585,33 +524,11 @@ export default function CharacterCreation() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Class</FormLabel>
-                          <Select 
-                            onValueChange={(value) => {
-                              field.onChange(value);
-                              
-                              // Set saving throws based on class
-                              setTimeout(() => {
-                                setClassSavingThrows();
-                                calculateHP();
-                              }, 0);
-                            }}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select class" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {classes.map((cls) => (
-                                <SelectItem key={cls.id} value={cls.id}>
-                                  {cls.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <FormControl>
+                            <Input placeholder="Enter character class" {...field} />
+                          </FormControl>
                           <FormDescription>
-                            {classes.find(c => c.id === field.value)?.description || "Choose your character's class"}
+                            The class of your character (Fighter, Wizard, Rogue, etc.)
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -626,25 +543,11 @@ export default function CharacterCreation() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Background</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select background" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {backgrounds.map((bg) => (
-                                <SelectItem key={bg.id} value={bg.id}>
-                                  {bg.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <FormControl>
+                            <Input placeholder="Enter character background" {...field} />
+                          </FormControl>
                           <FormDescription>
-                            {backgrounds.find(b => b.id === field.value)?.description || "Choose your character's background"}
+                            Your character's background (Acolyte, Noble, Soldier, etc.)
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -657,25 +560,11 @@ export default function CharacterCreation() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Alignment</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select alignment" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {alignments.map((alignment) => (
-                                <SelectItem key={alignment} value={alignment}>
-                                  {alignment}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <FormControl>
+                            <Input placeholder="Enter character alignment" {...field} />
+                          </FormControl>
                           <FormDescription>
-                            Your character's moral and ethical outlook
+                            Your character's moral and ethical outlook (Lawful Good, Chaotic Neutral, etc.)
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
