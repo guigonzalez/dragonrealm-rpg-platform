@@ -730,11 +730,11 @@ export default function CharacterCreation() {
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Força: usada para resistir efeitos físicos que exigem força bruta">
                           <span>Resistência</span>
-                          <span>+{form.watch("proficiencyBonus") || 2}</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("strength") || 10))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Atletismo: usada para escalar, nadar, saltar ou outras atividades físicas que exigem força">
                           <span>Atletismo</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("strength") || 10))}</span>
                         </div>
@@ -780,16 +780,20 @@ export default function CharacterCreation() {
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Destreza: usada para esquivar de ataques de área e armadilhas">
                           <span>Resistência</span>
-                          <span>+{form.watch("proficiencyBonus") || 2}</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Acrobacia: usada para fazer acrobacias, manter o equilíbrio ou se livrar de imobilizações">
                           <span>Acrobacia</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Furtividade: usada para se esconder, se mover silenciosamente ou evitar ser detectado">
                           <span>Furtividade</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Prestidigitação: usada para manipulações manuais delicadas como bater carteiras, truques de mãos ou desarmar armadilhas">
+                          <span>Prestidigitação</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}</span>
                         </div>
                       </div>
@@ -836,9 +840,9 @@ export default function CharacterCreation() {
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Constituição: usada para resistir a venenos, doenças e manter a concentração em magias quando sofre dano">
                           <span>Resistência</span>
-                          <span>+{form.watch("proficiencyBonus") || 2}</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("constitution") || 10))}</span>
                         </div>
                       </div>
                     </div>
@@ -882,16 +886,28 @@ export default function CharacterCreation() {
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Inteligência: usada para resistir a magias e efeitos que afetam a mente">
                           <span>Resistência</span>
-                          <span>+{form.watch("proficiencyBonus") || 2}</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Arcana: usada para recordar conhecimento sobre magias, itens mágicos, símbolos arcanos e tradições místicas">
                           <span>Arcana</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="História: usada para recordar conhecimento sobre eventos históricos, pessoas lendárias, reinos antigos, disputas passadas e guerras">
                           <span>História</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Investigação: usada para procurar pistas e fazer deduções baseadas nelas, como encontrar um item escondido ou determinar o ponto fraco de algo">
+                          <span>Investigação</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Natureza: usada para recordar conhecimento sobre terrenos, plantas e animais, clima e ciclos naturais">
+                          <span>Natureza</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Religião: usada para recordar conhecimento sobre divindades, rituais, simbolismos religiosos, estruturas clericais, e o funcionamento de cultos">
+                          <span>Religião</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
                         </div>
                       </div>
@@ -936,15 +952,27 @@ export default function CharacterCreation() {
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Sabedoria: usada para resistir a efeitos de encantamento e controle mental">
                           <span>Resistência</span>
-                          <span>+{form.watch("proficiencyBonus") || 2}</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Adestrar Animais: usada para acalmar, treinar ou controlar animais">
+                          <span>Adestrar Animais</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Intuição: usada para determinar as intenções verdadeiras de uma criatura, detectar mentiras ou prever as ações de alguém">
+                          <span>Intuição</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Medicina: usada para estabilizar uma criatura que está morrendo ou diagnosticar uma doença">
+                          <span>Medicina</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Percepção: usada para observar seu entorno, detectar a presença de criaturas escondidas ou notar detalhes importantes">
                           <span>Percepção</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Sobrevivência: usada para rastrear, caçar, navegar por terrenos selvagens ou prever o clima">
                           <span>Sobrevivência</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
                         </div>
@@ -990,16 +1018,24 @@ export default function CharacterCreation() {
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Carisma: usada para resistir a efeitos que afetam a personalidade ou tentam possuir você">
                           <span>Resistência</span>
-                          <span>+{form.watch("proficiencyBonus") || 2}</span>
-                        </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
-                          <span>Persuasão</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Atuação: usada para entreter um público com música, dança, atuação, histórias ou outro tipo de apresentação">
+                          <span>Atuação</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Enganação: usada para mentir convincentemente, disfarçar intenções, blefar ou manipular alguém">
+                          <span>Enganação</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Intimidação: usada para influenciar alguém através de ameaças, demonstrações de força ou violência">
                           <span>Intimidação</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Persuasão: usada para influenciar alguém através de argumentos lógicos, diplomacia, charme ou boa vontade">
+                          <span>Persuasão</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
                         </div>
                       </div>
