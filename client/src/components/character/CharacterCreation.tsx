@@ -2210,11 +2210,15 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                 // Criar nova armadura
                                 if (nameInput.value) {
                                   let armorType = "Desconhecido";
-                                  if (typeSelect.value === "light") armorType = "Armadura Leve";
-                                  else if (typeSelect.value === "medium") armorType = "Armadura Média";
-                                  else if (typeSelect.value === "heavy") armorType = "Armadura Pesada";
-                                  else if (typeSelect.value === "shield") armorType = "Escudo";
-                                  else if (typeSelect.value === "other") armorType = "Outro";
+                                  
+                                  // Verificando de forma segura o tipo selecionado
+                                  if (typeSelect && typeSelect.value) {
+                                    if (typeSelect.value === "light") armorType = "Armadura Leve";
+                                    else if (typeSelect.value === "medium") armorType = "Armadura Média";
+                                    else if (typeSelect.value === "heavy") armorType = "Armadura Pesada";
+                                    else if (typeSelect.value === "shield") armorType = "Escudo";
+                                    else if (typeSelect.value === "other") armorType = "Outro";
+                                  }
                                   
                                   const newArmor: Armor = {
                                     id: Date.now().toString(),
@@ -2231,7 +2235,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                   // Limpar campos
                                   nameInput.value = '';
                                   weightInput.value = '';
-                                  typeSelect.value = '';
+                                  if (typeSelect) typeSelect.value = '';
                                   acBonusInput.value = '';
                                   penaltyCheckbox.checked = false;
                                   document.querySelectorAll('.bg-primary').forEach(el => {
