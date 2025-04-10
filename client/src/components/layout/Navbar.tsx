@@ -45,7 +45,7 @@ export default function Navbar() {
       <div className="container mx-auto px-6 py-3 flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <Link href="/" className="flex items-center space-x-2">
-            <img src="./assets/logo.png" alt="DragonRealm" className="h-8 md:h-8" />
+            <img src="/assets/logo.png" alt="DragonRealm" className="h-8 md:h-8" />
           </Link>
         </div>
         
