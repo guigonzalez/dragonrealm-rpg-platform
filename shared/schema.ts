@@ -52,6 +52,7 @@ export const campaigns = pgTable("campaigns", {
   userId: integer("user_id").notNull().references(() => users.id),
   name: text("name").notNull(),
   description: text("description"),
+  imageUrl: text("image_url"),
   // World building fields
   centralConcept: text("central_concept"),
   geography: text("geography"),
