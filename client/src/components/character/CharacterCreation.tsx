@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useLocation } from "wouter";
+import { useState, useEffect } from "react";
+import { useLocation, useParams } from "wouter";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -133,12 +133,27 @@ export default function CharacterCreation() {
   const { user } = useAuth();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const params = useParams();
+  const characterId = params.id ? parseInt(params.id) : undefined;
+  const isEditMode = !!characterId;
   const [currentTab, setCurrentTab] = useState("basics");
   const [savingThrows, setSavingThrows] = useState<string[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
   const [equipment, setEquipment] = useState<string[]>([]);
   const [spells, setSpells] = useState<string[]>([]);
   const [features, setFeatures] = useState<string[]>([]);
+  
+  // Fetch character data if in edit mode
+  const { data: characterData, isLoading: isLoadingCharacter } = useQuery({
+    queryKey: ["/api/characters", characterId],
+    queryFn: async () => {
+      if (!characterId) return null;
+      const res = await fetch(`/api/characters/${characterId}`);
+      if (!res.ok) throw new Error("Character not found");
+      return res.json();
+    },
+    enabled: !!characterId
+  });
   
   // Define the form with default values
   const form = useForm<CharacterFormValues>({
@@ -217,6 +232,39 @@ export default function CharacterCreation() {
     },
   });
   
+  // Mutation for updating a character
+  const updateMutation = useMutation({
+    mutationFn: async (characterData: CharacterFormValues) => {
+      if (!user) throw new Error("You must be logged in to update a character");
+      if (!characterId) throw new Error("Character ID is required");
+      
+      const now = new Date().toISOString();
+      const updateData = {
+        ...characterData,
+        updated: now
+      };
+      
+      const res = await apiRequest("PATCH", `/api/characters/${characterId}`, updateData);
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/characters"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/characters", characterId] });
+      toast({
+        title: "Character updated",
+        description: "Your character has been updated successfully.",
+      });
+      setLocation("/dashboard");
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Update failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+  
   // Form submission handler
   const onSubmit = (data: CharacterFormValues) => {
     // Create a new object with the form data and the current array values
@@ -229,9 +277,52 @@ export default function CharacterCreation() {
       features
     };
     
-    // Now submit the complete data
-    createMutation.mutate(formDataWithArrays);
+    // Submit to different mutations based on whether we're creating or editing
+    if (isEditMode) {
+      updateMutation.mutate(formDataWithArrays);
+    } else {
+      createMutation.mutate(formDataWithArrays);
+    }
   };
+  
+  // Load character data when in edit mode
+  useEffect(() => {
+    if (characterData) {
+      // Set form values from character data
+      form.reset({
+        name: characterData.name || "",
+        race: characterData.race || "",
+        class: characterData.class || "",
+        level: characterData.level || 1,
+        background: characterData.background || "",
+        alignment: characterData.alignment || "",
+        experience: characterData.experience || 0,
+        strength: characterData.strength || 10,
+        dexterity: characterData.dexterity || 10,
+        constitution: characterData.constitution || 10,
+        intelligence: characterData.intelligence || 10,
+        wisdom: characterData.wisdom || 10,
+        charisma: characterData.charisma || 10,
+        maxHitPoints: characterData.maxHitPoints || 10,
+        currentHitPoints: characterData.currentHitPoints || 10,
+        armorClass: characterData.armorClass || 10,
+        speed: characterData.speed || 30,
+        proficiencyBonus: characterData.proficiencyBonus || 2,
+        traits: characterData.traits || "",
+        ideals: characterData.ideals || "",
+        bonds: characterData.bonds || "",
+        flaws: characterData.flaws || "",
+        notes: characterData.notes || ""
+      });
+      
+      // Set array values
+      setSavingThrows(characterData.savingThrows || []);
+      setSkills(characterData.skills || []);
+      setEquipment(characterData.equipment || []);
+      setSpells(characterData.spells || []);
+      setFeatures(characterData.features || []);
+    }
+  }, [characterData, form]);
   
   // Roll dice for ability scores
   const rollAbilityScores = () => {

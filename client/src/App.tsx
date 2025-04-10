@@ -21,7 +21,7 @@ function Router() {
       <Route path="/auth" component={AuthPage} />
       <ProtectedRoute path="/dashboard" component={DashboardPage} />
       <ProtectedRoute path="/character-sheet/:id" component={CharacterSheetPage} />
-      <ProtectedRoute path="/character-creation" component={CharacterCreationPage} />
+      <ProtectedRoute path="/character-creation/:id?" component={CharacterCreationPage} />
       <ProtectedRoute path="/campaign-management/:id?" component={CampaignManagementPage} />
       <ProtectedRoute path="/npc-creator/:campaignId" component={NPCCreatorPage} />
       <ProtectedRoute path="/encounter-builder/:campaignId" component={EncounterBuilderPage} />
