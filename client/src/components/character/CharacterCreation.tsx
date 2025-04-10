@@ -153,6 +153,7 @@ const characterFormSchema = insertCharacterSchema.omit({
   armorClass: z.number().min(1),
   speed: z.number().min(0),
   proficiencyBonus: z.number().min(0),
+  imageUrl: z.string().url("Por favor, forneça uma URL válida").nullable().optional(),
   savingThrows: z.array(z.string()).optional(),
   skills: z.array(z.string()).optional(),
   equipment: z.array(z.string()).optional(),
@@ -298,6 +299,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
       background: "",
       alignment: "",
       experience: 0,
+      imageUrl: "",
       strength: 10,
       dexterity: 10,
       constitution: 10,
@@ -614,6 +616,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
         background: characterData.background || "",
         alignment: characterData.alignment || "",
         experience: characterData.experience || 0,
+        imageUrl: characterData.imageUrl || "",
         proficiencyBonus: calculatedProfBonus, // Usando o bônus calculado baseado no nível
         strength: characterData.strength || 10,
         dexterity: characterData.dexterity || 10,
@@ -1172,24 +1175,68 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Character Name</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter character name" 
-                            {...field} 
-                            disabled={readOnly}
-                            className={readOnly ? "opacity-100 cursor-default" : ""}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="md:col-span-2">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Character Name</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="Enter character name" 
+                                {...field} 
+                                disabled={readOnly}
+                                className={readOnly ? "opacity-100 cursor-default" : ""}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    
+                    <div className="flex flex-col items-center">
+                      <FormField
+                        control={form.control}
+                        name="imageUrl"
+                        render={({ field }) => (
+                          <FormItem className="w-full">
+                            <FormLabel className="text-center w-full block">Character Image</FormLabel>
+                            <FormControl>
+                              <div className="flex flex-col items-center gap-2">
+                                <div className="w-32 h-32 border-2 rounded-md overflow-hidden flex items-center justify-center bg-background/50">
+                                  {field.value ? (
+                                    <img 
+                                      src={field.value} 
+                                      alt="Character" 
+                                      className="w-full h-full object-cover"
+                                      onError={(e) => {
+                                        e.currentTarget.src = "https://placehold.co/200x200?text=Character";
+                                      }} 
+                                    />
+                                  ) : (
+                                    <User className="w-12 h-12 text-muted-foreground" />
+                                  )}
+                                </div>
+                                <Input
+                                  placeholder="Image URL"
+                                  {...field}
+                                  disabled={readOnly}
+                                  className={`${readOnly ? "opacity-100 cursor-default" : ""} text-sm`}
+                                />
+                              </div>
+                            </FormControl>
+                            <FormDescription>
+                              Add a URL to your character image
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField

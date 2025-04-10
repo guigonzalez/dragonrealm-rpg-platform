@@ -360,82 +360,12 @@ export class DatabaseStorage implements IStorage {
 
   // Character methods
   async getCharacter(id: number): Promise<Character | undefined> {
-    // Adicionar imageUrl com um valor nulo temporário
-    const [character] = await db.select({
-      id: characters.id,
-      userId: characters.userId,
-      name: characters.name,
-      race: characters.race,
-      class: characters.class,
-      level: characters.level,
-      background: characters.background,
-      alignment: characters.alignment,
-      experience: characters.experience,
-      imageUrl: sql`null::text`, // Valor nulo para a coluna imageUrl até a migração
-      strength: characters.strength,
-      dexterity: characters.dexterity,
-      constitution: characters.constitution,
-      intelligence: characters.intelligence,
-      wisdom: characters.wisdom,
-      charisma: characters.charisma,
-      maxHitPoints: characters.maxHitPoints,
-      currentHitPoints: characters.currentHitPoints,
-      armorClass: characters.armorClass,
-      speed: characters.speed,
-      proficiencyBonus: characters.proficiencyBonus,
-      savingThrows: characters.savingThrows,
-      skills: characters.skills,
-      equipment: characters.equipment,
-      spells: characters.spells,
-      features: characters.features,
-      traits: characters.traits,
-      ideals: characters.ideals,
-      bonds: characters.bonds,
-      flaws: characters.flaws,
-      notes: characters.notes,
-      created: characters.created,
-      updated: characters.updated
-    }).from(characters).where(eq(characters.id, id));
+    const [character] = await db.select().from(characters).where(eq(characters.id, id));
     return character;
   }
 
   async getCharactersByUserId(userId: number): Promise<Character[]> {
-    // Adicionar imageUrl com um valor nulo temporário
-    return await db.select({
-      id: characters.id,
-      userId: characters.userId,
-      name: characters.name,
-      race: characters.race,
-      class: characters.class,
-      level: characters.level,
-      background: characters.background,
-      alignment: characters.alignment,
-      experience: characters.experience,
-      imageUrl: sql`null::text`, // Valor nulo para a coluna imageUrl até a migração
-      strength: characters.strength,
-      dexterity: characters.dexterity,
-      constitution: characters.constitution,
-      intelligence: characters.intelligence,
-      wisdom: characters.wisdom,
-      charisma: characters.charisma,
-      maxHitPoints: characters.maxHitPoints,
-      currentHitPoints: characters.currentHitPoints,
-      armorClass: characters.armorClass,
-      speed: characters.speed,
-      proficiencyBonus: characters.proficiencyBonus,
-      savingThrows: characters.savingThrows,
-      skills: characters.skills,
-      equipment: characters.equipment,
-      spells: characters.spells,
-      features: characters.features,
-      traits: characters.traits,
-      ideals: characters.ideals,
-      bonds: characters.bonds,
-      flaws: characters.flaws,
-      notes: characters.notes,
-      created: characters.created,
-      updated: characters.updated
-    }).from(characters).where(eq(characters.userId, userId));
+    return await db.select().from(characters).where(eq(characters.userId, userId));
   }
 
   async createCharacter(insertCharacter: InsertCharacter): Promise<Character> {
