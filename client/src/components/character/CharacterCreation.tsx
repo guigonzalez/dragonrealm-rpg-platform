@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useParams } from "wouter";
+import { useLocation, useParams, Link } from "wouter";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { insertCharacterSchema, InsertCharacter, Character } from "@shared/schema";
+import { Edit2 } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -669,7 +670,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
       </div>
       
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={readOnly ? (e) => e.preventDefault() : form.handleSubmit(onSubmit)}>
           <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
             <TabsList className="grid grid-cols-5 w-full mb-6">
               <TabsTrigger value="basics" className="font-lora">
@@ -711,7 +712,12 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                       <FormItem>
                         <FormLabel>Character Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter character name" {...field} />
+                          <Input 
+                            placeholder="Enter character name" 
+                            {...field} 
+                            disabled={readOnly}
+                            className={readOnly ? "opacity-100 cursor-default" : ""}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -915,7 +921,8 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                         <Checkbox 
                           id="inspiration" 
                           checked={hasInspiration}
-                          onCheckedChange={(checked) => {
+                          disabled={readOnly}
+                          onCheckedChange={readOnly ? undefined : (checked) => {
                             setHasInspiration(checked === true);
                           }}
                         />
@@ -952,8 +959,8 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                         <Badge
                           key={save}
                           variant={savingThrows.includes(save) ? "default" : "outline"}
-                          className="cursor-pointer"
-                          onClick={() => toggleArrayItem(savingThrows, setSavingThrows, save)}
+                          className={readOnly ? "" : "cursor-pointer"}
+                          onClick={readOnly ? undefined : () => toggleArrayItem(savingThrows, setSavingThrows, save)}
                         >
                           {savingThrows.includes(save) && (
                             <Check className="mr-1 h-3 w-3" />
