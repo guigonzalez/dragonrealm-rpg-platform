@@ -21,6 +21,7 @@ export const characters = pgTable("characters", {
   background: text("background"),
   alignment: text("alignment"),
   experience: integer("experience").notNull().default(0),
+  imageUrl: text("image_url"),
   strength: integer("strength").notNull(),
   dexterity: integer("dexterity").notNull(),
   constitution: integer("constitution").notNull(),
