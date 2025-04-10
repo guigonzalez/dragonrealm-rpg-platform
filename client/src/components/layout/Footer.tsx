@@ -15,9 +15,9 @@ export default function Footer() {
             </div>
             <p className="font-opensans text-white/80 mb-4">{t("landing.footer.description")}</p>
             <div className="flex space-x-4">
-              <a href="#" className="text-white hover:text-accent"><FaDiscord className="text-xl" aria-label={t("landing.footer.socialLinks.discord")} /></a>
-              <a href="#" className="text-white hover:text-accent"><FaInstagram className="text-xl" aria-label={t("landing.footer.socialLinks.instagram")} /></a>
-              <a href="#" className="text-white hover:text-accent"><FaYoutube className="text-xl" aria-label={t("landing.footer.socialLinks.youtube")} /></a>
+              <span className="text-white hover:text-accent cursor-pointer"><FaDiscord className="text-xl" aria-label={t("landing.footer.socialLinks.discord")} /></span>
+              <span className="text-white hover:text-accent cursor-pointer"><FaInstagram className="text-xl" aria-label={t("landing.footer.socialLinks.instagram")} /></span>
+              <span className="text-white hover:text-accent cursor-pointer"><FaYoutube className="text-xl" aria-label={t("landing.footer.socialLinks.youtube")} /></span>
             </div>
           </div>
           
@@ -43,8 +43,6 @@ export default function Footer() {
             <h3 className="font-lora font-semibold text-lg mb-4">{t("landing.footer.contact")}</h3>
             <ul className="font-opensans space-y-2">
               <li><a href="https://www.notion.so/1d180ec9a16280abb7d9fafa5d2259a7?pvs=106" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-accent">{t("landing.footer.support")}</a></li>
-              <li><a href="#" className="text-white/80 hover:text-accent">{t("landing.footer.reportBug")}</a></li>
-              <li><a href="#" className="text-white/80 hover:text-accent">{t("landing.footer.requestFeature")}</a></li>
             </ul>
           </div>
         </div>
@@ -52,9 +50,9 @@ export default function Footer() {
         <div className="border-t border-white/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="font-opensans text-sm text-white/60 mb-4 md:mb-0">{t("landing.footer.copyright")}</p>
           <div className="flex space-x-6">
-            <a href="#" className="font-opensans text-sm text-white/60 hover:text-white">{t("landing.footer.privacy")}</a>
-            <a href="#" className="font-opensans text-sm text-white/60 hover:text-white">{t("landing.footer.terms")}</a>
-            <a href="#" className="font-opensans text-sm text-white/60 hover:text-white">{t("landing.footer.cookies")}</a>
+            <span className="font-opensans text-sm text-white/60 hover:text-white cursor-pointer">{t("landing.footer.privacy")}</span>
+            <span className="font-opensans text-sm text-white/60 hover:text-white cursor-pointer">{t("landing.footer.terms")}</span>
+            <span className="font-opensans text-sm text-white/60 hover:text-white cursor-pointer">{t("landing.footer.cookies")}</span>
           </div>
         </div>
       </div>
