@@ -1386,12 +1386,196 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                       <FormLabel>Sabedoria Passiva (Percepção)</FormLabel>
                       <div className="flex items-center mt-2">
                         <div className="text-2xl font-bold border border-input rounded-md p-2 w-16 text-center">
-                          {10 + getAbilityModifier(form.watch("wisdom") || 10) + (skills.includes("Perception") ? form.watch("proficiencyBonus") || 2 : 0)}
+                          {10 + getAbilityModifier(form.watch("wisdom") || 10, "wisdom") + (skills.includes("Perception") ? form.watch("proficiencyBonus") || 2 : 0)}
                         </div>
                       </div>
                       <FormDescription>
                         10 + mod. de Sabedoria + bônus (se proficiente)
                       </FormDescription>
+                    </div>
+                  </div>
+                  
+                  {/* Bônus de atributos */}
+                  <div className="mb-6 p-4 bg-[#FFF8E1] rounded-lg border border-[#8D6E63]">
+                    <h3 className="font-lora text-lg font-semibold mb-3">Bônus de Atributos</h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Adicione bônus de atributos provenientes de itens mágicos, habilidades raciais ou efeitos especiais.
+                    </p>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                      <div>
+                        <FormLabel htmlFor="bonus-strength">Força</FormLabel>
+                        <div className="flex items-center space-x-2">
+                          <Button 
+                            type="button" 
+                            size="icon" 
+                            variant="outline" 
+                            className="h-8 w-8"
+                            onClick={() => updateAttributeBonus("strength", Math.max(attributeBonuses.strength - 1, -5))}
+                            disabled={readOnly}
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <div className="w-10 text-center font-semibold">
+                            {attributeBonuses.strength > 0 ? `+${attributeBonuses.strength}` : attributeBonuses.strength}
+                          </div>
+                          <Button 
+                            type="button" 
+                            size="icon" 
+                            variant="outline" 
+                            className="h-8 w-8"
+                            onClick={() => updateAttributeBonus("strength", Math.min(attributeBonuses.strength + 1, 5))}
+                            disabled={readOnly}
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <FormLabel htmlFor="bonus-dexterity">Destreza</FormLabel>
+                        <div className="flex items-center space-x-2">
+                          <Button 
+                            type="button" 
+                            size="icon" 
+                            variant="outline" 
+                            className="h-8 w-8"
+                            onClick={() => updateAttributeBonus("dexterity", Math.max(attributeBonuses.dexterity - 1, -5))}
+                            disabled={readOnly}
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <div className="w-10 text-center font-semibold">
+                            {attributeBonuses.dexterity > 0 ? `+${attributeBonuses.dexterity}` : attributeBonuses.dexterity}
+                          </div>
+                          <Button 
+                            type="button" 
+                            size="icon" 
+                            variant="outline" 
+                            className="h-8 w-8"
+                            onClick={() => updateAttributeBonus("dexterity", Math.min(attributeBonuses.dexterity + 1, 5))}
+                            disabled={readOnly}
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <FormLabel htmlFor="bonus-constitution">Constituição</FormLabel>
+                        <div className="flex items-center space-x-2">
+                          <Button 
+                            type="button" 
+                            size="icon" 
+                            variant="outline" 
+                            className="h-8 w-8"
+                            onClick={() => updateAttributeBonus("constitution", Math.max(attributeBonuses.constitution - 1, -5))}
+                            disabled={readOnly}
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <div className="w-10 text-center font-semibold">
+                            {attributeBonuses.constitution > 0 ? `+${attributeBonuses.constitution}` : attributeBonuses.constitution}
+                          </div>
+                          <Button 
+                            type="button" 
+                            size="icon" 
+                            variant="outline" 
+                            className="h-8 w-8"
+                            onClick={() => updateAttributeBonus("constitution", Math.min(attributeBonuses.constitution + 1, 5))}
+                            disabled={readOnly}
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <FormLabel htmlFor="bonus-intelligence">Inteligência</FormLabel>
+                        <div className="flex items-center space-x-2">
+                          <Button 
+                            type="button" 
+                            size="icon" 
+                            variant="outline" 
+                            className="h-8 w-8"
+                            onClick={() => updateAttributeBonus("intelligence", Math.max(attributeBonuses.intelligence - 1, -5))}
+                            disabled={readOnly}
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <div className="w-10 text-center font-semibold">
+                            {attributeBonuses.intelligence > 0 ? `+${attributeBonuses.intelligence}` : attributeBonuses.intelligence}
+                          </div>
+                          <Button 
+                            type="button" 
+                            size="icon" 
+                            variant="outline" 
+                            className="h-8 w-8"
+                            onClick={() => updateAttributeBonus("intelligence", Math.min(attributeBonuses.intelligence + 1, 5))}
+                            disabled={readOnly}
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <FormLabel htmlFor="bonus-wisdom">Sabedoria</FormLabel>
+                        <div className="flex items-center space-x-2">
+                          <Button 
+                            type="button" 
+                            size="icon" 
+                            variant="outline" 
+                            className="h-8 w-8"
+                            onClick={() => updateAttributeBonus("wisdom", Math.max(attributeBonuses.wisdom - 1, -5))}
+                            disabled={readOnly}
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <div className="w-10 text-center font-semibold">
+                            {attributeBonuses.wisdom > 0 ? `+${attributeBonuses.wisdom}` : attributeBonuses.wisdom}
+                          </div>
+                          <Button 
+                            type="button" 
+                            size="icon" 
+                            variant="outline" 
+                            className="h-8 w-8"
+                            onClick={() => updateAttributeBonus("wisdom", Math.min(attributeBonuses.wisdom + 1, 5))}
+                            disabled={readOnly}
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <FormLabel htmlFor="bonus-charisma">Carisma</FormLabel>
+                        <div className="flex items-center space-x-2">
+                          <Button 
+                            type="button" 
+                            size="icon" 
+                            variant="outline" 
+                            className="h-8 w-8"
+                            onClick={() => updateAttributeBonus("charisma", Math.max(attributeBonuses.charisma - 1, -5))}
+                            disabled={readOnly}
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <div className="w-10 text-center font-semibold">
+                            {attributeBonuses.charisma > 0 ? `+${attributeBonuses.charisma}` : attributeBonuses.charisma}
+                          </div>
+                          <Button 
+                            type="button" 
+                            size="icon" 
+                            variant="outline" 
+                            className="h-8 w-8"
+                            onClick={() => updateAttributeBonus("charisma", Math.min(attributeBonuses.charisma + 1, 5))}
+                            disabled={readOnly}
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   
@@ -1425,7 +1609,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                       </div>
                       <div className="text-center mt-3">
                         <div className="text-4xl font-bold mb-1 text-[#2C1810]">
-                          {formatModifier(getAbilityModifier(form.watch("strength") || 10))}
+                          {formatModifier(getAbilityModifier(form.watch("strength") || 10, "strength"))}
                         </div>
                         <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#2C1810]">
                           FORÇA
