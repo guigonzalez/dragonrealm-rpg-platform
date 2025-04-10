@@ -31,7 +31,7 @@ export default function CampaignImageUpload({
       const compressAndConvertToBase64 = (file: File) => {
         return new Promise<string>((resolve) => {
           // Criar um elemento de imagem para redimensionar
-          const img = new Image();
+          const img = document.createElement("img");
           img.onload = () => {
             // Criar um canvas para redimensionar
             const canvas = document.createElement("canvas");
@@ -57,11 +57,20 @@ export default function CampaignImageUpload({
             
             // Desenhar no canvas
             const ctx = canvas.getContext("2d");
-            ctx?.drawImage(img, 0, 0, width, height);
-            
-            // Converter para base64 com qualidade reduzida (0.7)
-            const base64String = canvas.toDataURL("image/jpeg", 0.7);
-            resolve(base64String);
+            if (ctx) {
+              ctx.drawImage(img, 0, 0, width, height);
+              
+              // Converter para base64 com qualidade reduzida (0.7)
+              const base64String = canvas.toDataURL("image/jpeg", 0.7);
+              resolve(base64String);
+            } else {
+              // Fallback caso não consiga obter o contexto do canvas
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                resolve(e.target?.result as string);
+              };
+              reader.readAsDataURL(file);
+            }
           };
           
           // Carregar a imagem
