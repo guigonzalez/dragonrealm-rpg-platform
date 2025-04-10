@@ -291,14 +291,20 @@ export default function CharacterCreation() {
   useEffect(() => {
     if (characterData) {
       // Set form values from character data
+      const characterLevel = characterData.level || 1;
+      
+      // Calculate the correct proficiency bonus based on the character's level
+      const calculatedProfBonus = calculateProficiencyBonus(characterLevel);
+      
       form.reset({
         name: characterData.name || "",
         race: characterData.race || "",
         class: characterData.class || "",
-        level: characterData.level || 1,
+        level: characterLevel,
         background: characterData.background || "",
         alignment: characterData.alignment || "",
         experience: characterData.experience || 0,
+        proficiencyBonus: calculatedProfBonus,
         strength: characterData.strength || 10,
         dexterity: characterData.dexterity || 10,
         constitution: characterData.constitution || 10,
@@ -414,6 +420,15 @@ export default function CharacterCreation() {
   };
   
   // Calculate HP based on class and constitution
+  // Função para calcular o bônus de proficiência baseado no nível do personagem
+  const calculateProficiencyBonus = (level: number): number => {
+    if (level >= 17) return 6;
+    if (level >= 13) return 5;
+    if (level >= 9) return 4;
+    if (level >= 5) return 3;
+    return 2; // Níveis 1-4
+  };
+  
   const calculateHP = () => {
     const charClass = form.getValues("class");
     const conMod = Math.floor((form.getValues("constitution") - 10) / 2);
@@ -612,7 +627,7 @@ export default function CharacterCreation() {
                                 
                                 // Update proficiency bonus based on level
                                 const level = value || 1;
-                                const profBonus = Math.ceil(level / 4) + 1;
+                                const profBonus = calculateProficiencyBonus(level);
                                 form.setValue("proficiencyBonus", profBonus);
                               }}
                             />
