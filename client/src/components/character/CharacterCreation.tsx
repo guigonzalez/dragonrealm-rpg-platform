@@ -202,6 +202,23 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
     gold: number;
     platinum: number;
   };
+  
+  // Definição dos tipos para magias e recursos
+  type Spell = {
+    id: string;
+    name: string;
+    level: number;
+    description: string;
+    damage?: string;
+  };
+  
+  type SpellcastingInfo = {
+    ability: string;
+    saveDC: number;
+    attackBonus: number;
+    spellSlots: {[key: number]: number};
+    points: number; // Para SP/Ki points
+  };
 
   const [weapons, setWeapons] = useState<Weapon[]>([]);
   const [armors, setArmors] = useState<Armor[]>([]);
@@ -215,7 +232,19 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
   });
   const [equipment, setEquipment] = useState<string[]>([]);
   const [spells, setSpells] = useState<string[]>([]);
+  const [spellList, setSpellList] = useState<Spell[]>([]);
   const [features, setFeatures] = useState<string[]>([]);
+  const [classFeatures, setClassFeatures] = useState<string[]>([]);
+  const [raceFeatures, setRaceFeatures] = useState<string[]>([]);
+  const [spellcasting, setSpellcasting] = useState<SpellcastingInfo>({
+    ability: 'Intelligence',
+    saveDC: 10,
+    attackBonus: 0,
+    spellSlots: {
+      1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0
+    },
+    points: 0
+  });
   const [hasInspiration, setHasInspiration] = useState<boolean>(false);
   
   // Fetch character data if in edit mode
@@ -396,6 +425,26 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
 
   const updateOtherEquipment = (updatedEquipment: Partial<OtherEquipment>) => {
     setOtherEquipment({ ...otherEquipment, ...updatedEquipment });
+  };
+  
+  // Funções para gerenciar magias
+  const addSpell = (newSpell: Omit<Spell, 'id'>) => {
+    const id = crypto.randomUUID();
+    setSpellList([...spellList, { ...newSpell, id }]);
+  };
+
+  const updateSpell = (id: string, updatedSpell: Partial<Spell>) => {
+    setSpellList(spellList.map(spell => 
+      spell.id === id ? { ...spell, ...updatedSpell } : spell
+    ));
+  };
+
+  const removeSpell = (id: string) => {
+    setSpellList(spellList.filter(spell => spell.id !== id));
+  };
+
+  const updateSpellcasting = (updatedSpellcasting: Partial<SpellcastingInfo>) => {
+    setSpellcasting({ ...spellcasting, ...updatedSpellcasting });
   };
 
   // Converter entre o novo formato de equipamento e o formato antigo (array de strings)
