@@ -87,6 +87,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to update character" });
     }
   });
+  
+  // Adicionando rota PATCH para compatibilidade com o cliente
+  app.patch("/api/characters/:id", requireAuth, async (req, res) => {
+    try {
+      const characterId = parseInt(req.params.id);
+      const character = await storage.getCharacter(characterId);
+      
+      if (!character) {
+        return res.status(404).json({ message: "Character not found" });
+      }
+      
+      if (character.userId !== req.user!.id) {
+        return res.status(403).json({ message: "Unauthorized access to character" });
+      }
+      
+      const updatedCharacter = await storage.updateCharacter(characterId, {
+        ...req.body,
+        updated: new Date().toISOString()
+      });
+      
+      res.json(updatedCharacter);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid character data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update character" });
+    }
+  });
 
   app.delete("/api/characters/:id", requireAuth, async (req, res) => {
     const characterId = parseInt(req.params.id);
