@@ -1039,11 +1039,24 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
     }
   };
   
-  // Helper function to calculate ability modifier
-  const getAbilityModifier = (score: number) => {
-    return Math.floor((score - 10) / 2);
+  // Helper function to calculate ability modifier (including bonus)
+  const getAbilityModifier = (score: number, attribute?: keyof typeof attributeBonuses) => {
+    // Calcular o modificador base do atributo
+    const baseModifier = Math.floor((score - 10) / 2);
+    
+    // Adicionar qualquer bônus se o atributo for especificado
+    if (attribute) {
+      return baseModifier + attributeBonuses[attribute];
+    }
+    
+    return baseModifier;
   };
-  
+
+  // Helper function to get total score including bonus
+  const getTotalAbilityScore = (score: number, attribute: keyof typeof attributeBonuses) => {
+    return score + attributeBonuses[attribute];
+  };
+
   // Helper function to format modifier with + or - sign
   const formatModifier = (modifier: number) => {
     return modifier >= 0 ? `+${modifier}` : `${modifier}`;
