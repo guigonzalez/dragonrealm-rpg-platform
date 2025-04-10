@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { insertCharacterSchema, InsertCharacter, Character } from "@shared/schema";
-import { Edit2 } from "lucide-react";
+import { CircleHelp, Edit2, Eye, Minus, Plus, Save } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -58,18 +58,18 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { 
-  ArrowLeft, 
-  ArrowRight, 
-  Dices, 
-  Shield, 
-  Swords, 
-  Scroll, 
-  User, 
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Dices,
   HelpCircle, 
-  Check, 
+  Scroll,
+  Shield,
   Sword,
+  Swords,
+  Trash,
+  User, 
   X, 
-  Trash, 
   PlusCircle 
 } from "lucide-react";
 import {
