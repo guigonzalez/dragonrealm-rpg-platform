@@ -304,7 +304,7 @@ export default function CharacterCreation() {
         background: characterData.background || "",
         alignment: characterData.alignment || "",
         experience: characterData.experience || 0,
-        proficiencyBonus: calculatedProfBonus,
+        proficiencyBonus: calculatedProfBonus, // Usando o bônus calculado baseado no nível
         strength: characterData.strength || 10,
         dexterity: characterData.dexterity || 10,
         constitution: characterData.constitution || 10,
@@ -315,7 +315,6 @@ export default function CharacterCreation() {
         currentHitPoints: characterData.currentHitPoints || 10,
         armorClass: characterData.armorClass || 10,
         speed: characterData.speed || 30,
-        proficiencyBonus: characterData.proficiencyBonus || 2,
         traits: characterData.traits || "",
         ideals: characterData.ideals || "",
         bonds: characterData.bonds || "",
