@@ -342,14 +342,7 @@ export default function DashboardPage() {
                             </AlertDialog>
                           </div>
                         </div>
-                        <div className="flex space-x-2 w-full">
-                          <Link href={`/npc-creator/${campaign.id}`} className="flex-1">
-                            <Button variant="ghost" size="sm" className="w-full">{t("campaign.buttons.npcs")}</Button>
-                          </Link>
-                          <Link href={`/encounter-builder/${campaign.id}`} className="flex-1">
-                            <Button variant="ghost" size="sm" className="w-full">{t("campaign.buttons.encounters")}</Button>
-                          </Link>
-                        </div>
+
                       </CardFooter>
                     </Card>
                   ))}
