@@ -1026,27 +1026,27 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Força: usada para resistir efeitos físicos que exigem força bruta">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Resistência de Força: usada para resistir efeitos físicos que exigem força bruta">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="strength-save-adv"
                               checked={skillsWithAdvantage.includes("StrengthSave")}
                               disabled={readOnly}
                               onCheckedChange={readOnly ? undefined : () => toggleAdvantage("StrengthSave")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Resistência</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("strength") || 10) + (savingThrows.includes("Strength") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Atletismo: usada para escalar, nadar, saltar ou outras atividades físicas que exigem força">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Atletismo: usada para escalar, nadar, saltar ou outras atividades físicas que exigem força">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="athletics-prof"
                               checked={skills.includes("Athletics")}
                               disabled={readOnly}
                               onCheckedChange={readOnly ? undefined : () => toggleArrayItem(skills, setSkills, "Athletics")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Atletismo</span>
                           </div>
@@ -1094,52 +1094,52 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Destreza: usada para esquivar de ataques de área e armadilhas">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Resistência de Destreza: usada para esquivar de ataques de área e armadilhas">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="dexterity-save-adv"
                               checked={skillsWithAdvantage.includes("DexteritySave")}
                               onCheckedChange={() => toggleAdvantage("DexteritySave")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Resistência</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10) + (savingThrows.includes("Dexterity") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Acrobacia: usada para fazer acrobacias, manter o equilíbrio ou se livrar de imobilizações">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Acrobacia: usada para fazer acrobacias, manter o equilíbrio ou se livrar de imobilizações">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="acrobatics-prof"
                               checked={skills.includes("Acrobatics")}
                               disabled={readOnly}
                               onCheckedChange={readOnly ? undefined : () => toggleArrayItem(skills, setSkills, "Acrobatics")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Acrobacia</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10) + (skills.includes("Acrobatics") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Furtividade: usada para se esconder, se mover silenciosamente ou evitar ser detectado">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Furtividade: usada para se esconder, se mover silenciosamente ou evitar ser detectado">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="stealth-prof"
                               checked={skills.includes("Stealth")}
                               disabled={readOnly}
                               onCheckedChange={readOnly ? undefined : () => toggleArrayItem(skills, setSkills, "Stealth")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Furtividade</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10) + (skills.includes("Stealth") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Prestidigitação: usada para manipulações manuais delicadas como bater carteiras, truques de mãos ou desarmar armadilhas">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Prestidigitação: usada para manipulações manuais delicadas como bater carteiras, truques de mãos ou desarmar armadilhas">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="sleight-of-hand-prof"
                               checked={skills.includes("SleightOfHand")}
                               disabled={readOnly}
                               onCheckedChange={readOnly ? undefined : () => toggleArrayItem(skills, setSkills, "SleightOfHand")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Prestidigitação</span>
                           </div>
@@ -1190,13 +1190,13 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Constituição: usada para resistir a venenos, doenças e manter a concentração em magias quando sofre dano">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Resistência de Constituição: usada para resistir a venenos, doenças e manter a concentração em magias quando sofre dano">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="constitution-save-adv"
                               checked={skillsWithAdvantage.includes("ConstitutionSave")}
                               onCheckedChange={() => toggleAdvantage("ConstitutionSave")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Resistência</span>
                           </div>
@@ -1244,73 +1244,73 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Inteligência: usada para resistir a magias e efeitos que afetam a mente">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Resistência de Inteligência: usada para resistir a magias e efeitos que afetam a mente">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="intelligence-save-adv"
                               checked={skillsWithAdvantage.includes("IntelligenceSave")}
                               onCheckedChange={() => toggleAdvantage("IntelligenceSave")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Resistência</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10) + (savingThrows.includes("Intelligence") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Arcana: usada para recordar conhecimento sobre magias, itens mágicos, símbolos arcanos e tradições místicas">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Arcana: usada para recordar conhecimento sobre magias, itens mágicos, símbolos arcanos e tradições místicas">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="arcana-prof"
                               checked={skills.includes("Arcana")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "Arcana")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Arcana</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10) + (skills.includes("Arcana") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="História: usada para recordar conhecimento sobre eventos históricos, pessoas lendárias, reinos antigos, disputas passadas e guerras">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="História: usada para recordar conhecimento sobre eventos históricos, pessoas lendárias, reinos antigos, disputas passadas e guerras">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="history-prof"
                               checked={skills.includes("History")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "History")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>História</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10) + (skills.includes("History") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Investigação: usada para procurar pistas e fazer deduções baseadas nelas, como encontrar um item escondido ou determinar o ponto fraco de algo">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Investigação: usada para procurar pistas e fazer deduções baseadas nelas, como encontrar um item escondido ou determinar o ponto fraco de algo">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="investigation-prof"
                               checked={skills.includes("Investigation")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "Investigation")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Investigação</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10) + (skills.includes("Investigation") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Natureza: usada para recordar conhecimento sobre terrenos, plantas e animais, clima e ciclos naturais">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Natureza: usada para recordar conhecimento sobre terrenos, plantas e animais, clima e ciclos naturais">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="nature-prof"
                               checked={skills.includes("Nature")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "Nature")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Natureza</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10) + (skills.includes("Nature") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Religião: usada para recordar conhecimento sobre divindades, rituais, simbolismos religiosos, estruturas clericais, e o funcionamento de cultos">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Religião: usada para recordar conhecimento sobre divindades, rituais, simbolismos religiosos, estruturas clericais, e o funcionamento de cultos">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="religion-prof"
                               checked={skills.includes("Religion")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "Religion")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Religião</span>
                           </div>
@@ -1358,73 +1358,73 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Sabedoria: usada para resistir a efeitos de encantamento e controle mental">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Resistência de Sabedoria: usada para resistir a efeitos de encantamento e controle mental">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="wisdom-save-adv"
                               checked={skillsWithAdvantage.includes("WisdomSave")}
                               onCheckedChange={() => toggleAdvantage("WisdomSave")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Resistência</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10) + (savingThrows.includes("Wisdom") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Adestrar Animais: usada para acalmar, treinar ou controlar animais">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Adestrar Animais: usada para acalmar, treinar ou controlar animais">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="animal-handling-prof"
                               checked={skills.includes("AnimalHandling")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "AnimalHandling")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Adestrar Animais</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10) + (skills.includes("AnimalHandling") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Intuição: usada para determinar as intenções verdadeiras de uma criatura, detectar mentiras ou prever as ações de alguém">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Intuição: usada para determinar as intenções verdadeiras de uma criatura, detectar mentiras ou prever as ações de alguém">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="insight-prof"
                               checked={skills.includes("Insight")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "Insight")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Intuição</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10) + (skills.includes("Insight") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Medicina: usada para estabilizar uma criatura que está morrendo ou diagnosticar uma doença">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Medicina: usada para estabilizar uma criatura que está morrendo ou diagnosticar uma doença">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="medicine-prof"
                               checked={skills.includes("Medicine")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "Medicine")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Medicina</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10) + (skills.includes("Medicine") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Percepção: usada para observar seu entorno, detectar a presença de criaturas escondidas ou notar detalhes importantes">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Percepção: usada para observar seu entorno, detectar a presença de criaturas escondidas ou notar detalhes importantes">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="perception-prof"
                               checked={skills.includes("Perception")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "Perception")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Percepção</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10) + (skills.includes("Perception") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Sobrevivência: usada para rastrear, caçar, navegar por terrenos selvagens ou prever o clima">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Sobrevivência: usada para rastrear, caçar, navegar por terrenos selvagens ou prever o clima">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="survival-prof"
                               checked={skills.includes("Survival")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "Survival")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Sobrevivência</span>
                           </div>
@@ -1472,61 +1472,61 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Carisma: usada para resistir a efeitos que afetam a personalidade ou tentam possuir você">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Resistência de Carisma: usada para resistir a efeitos que afetam a personalidade ou tentam possuir você">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="charisma-save-adv"
                               checked={skillsWithAdvantage.includes("CharismaSave")}
                               onCheckedChange={() => toggleAdvantage("CharismaSave")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Resistência</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10) + (savingThrows.includes("Charisma") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Atuação: usada para entreter um público com música, dança, atuação, histórias ou outro tipo de apresentação">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Atuação: usada para entreter um público com música, dança, atuação, histórias ou outro tipo de apresentação">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="performance-prof"
                               checked={skills.includes("Performance")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "Performance")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Atuação</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10) + (skills.includes("Performance") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Enganação: usada para mentir convincentemente, disfarçar intenções, blefar ou manipular alguém">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Enganação: usada para mentir convincentemente, disfarçar intenções, blefar ou manipular alguém">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="deception-prof"
                               checked={skills.includes("Deception")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "Deception")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Enganação</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10) + (skills.includes("Deception") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Intimidação: usada para influenciar alguém através de ameaças, demonstrações de força ou violência">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Intimidação: usada para influenciar alguém através de ameaças, demonstrações de força ou violência">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="intimidation-prof"
                               checked={skills.includes("Intimidation")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "Intimidation")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Intimidação</span>
                           </div>
                           <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10) + (skills.includes("Intimidation") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Persuasão: usada para influenciar alguém através de argumentos lógicos, diplomacia, charme ou boa vontade">
+                        <div className="flex items-center justify-between flex items-center justify-between py-1 text-[#2C1810]" title="Persuasão: usada para influenciar alguém através de argumentos lógicos, diplomacia, charme ou boa vontade">
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="persuasion-prof"
                               checked={skills.includes("Persuasion")}
                               onCheckedChange={() => toggleArrayItem(skills, setSkills, "Persuasion")}
-                              className="border-[#FFF8E1]"
+                              className="border-[#2C1810]"
                             />
                             <span>Persuasão</span>
                           </div>
