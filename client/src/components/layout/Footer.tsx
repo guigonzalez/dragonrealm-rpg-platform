@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
             <div className="flex items-center mb-4">
-              <img src="./assets/logo.png" alt="DragonRealm" className="h-10" />
+              <img src="./assets/logo.png" alt="DragonRealm" className="h-8" />
             </div>
             <p className="font-opensans text-white/80 mb-4">{t("landing.footer.description")}</p>
             <div className="flex space-x-4">
