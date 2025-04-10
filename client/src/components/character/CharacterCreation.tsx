@@ -855,13 +855,22 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button variant="outline" type="button" onClick={() => setLocation('/dashboard')}>
-                    Cancel
-                  </Button>
-                  <Button type="button" onClick={goToNextTab}>
-                    Next
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
+                  {!readOnly && (
+                    <>
+                      <Button variant="outline" type="button" onClick={() => setLocation('/dashboard')}>
+                        Cancel
+                      </Button>
+                      <Button type="button" onClick={goToNextTab}>
+                        Next
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </>
+                  )}
+                  {readOnly && (
+                    <Button variant="outline" type="button" onClick={() => setLocation('/dashboard')} className="ml-auto">
+                      Back to Dashboard
+                    </Button>
+                  )}
                 </CardFooter>
               </Card>
             </TabsContent>
@@ -881,6 +890,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                       type="button"
                       variant="outline"
                       onClick={rollAbilityScores}
+                      disabled={readOnly}
                       className="mb-4"
                     >
                       <Dices className="mr-2 h-4 w-4" />
@@ -902,6 +912,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                               min={0}
                               max={6}
                               {...field}
+                              disabled={readOnly}
                               onChange={(e) => {
                                 const value = parseInt(e.target.value);
                                 field.onChange(value || 0);
@@ -1000,6 +1011,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                 max={20}
                                 className="w-full accent-primary"
                                 {...field}
+                                disabled={readOnly}
                                 onChange={(e) => {
                                   const value = parseInt(e.target.value);
                                   field.onChange(value || 0);
@@ -1016,7 +1028,8 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                             <Checkbox 
                               id="strength-save-adv"
                               checked={skillsWithAdvantage.includes("StrengthSave")}
-                              onCheckedChange={() => toggleAdvantage("StrengthSave")}
+                              disabled={readOnly}
+                              onCheckedChange={readOnly ? undefined : () => toggleAdvantage("StrengthSave")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Resistência</span>
@@ -1028,7 +1041,8 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                             <Checkbox 
                               id="athletics-prof"
                               checked={skills.includes("Athletics")}
-                              onCheckedChange={() => toggleArrayItem(skills, setSkills, "Athletics")}
+                              disabled={readOnly}
+                              onCheckedChange={readOnly ? undefined : () => toggleArrayItem(skills, setSkills, "Athletics")}
                               className="border-[#FFF8E1]"
                             />
                             <span>Atletismo</span>
