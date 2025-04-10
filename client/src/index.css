@@ -125,6 +125,27 @@
     position: relative;
     background: var(--muted);
     border-radius: 0.5rem;
-    padding: 0.25rem;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .tab-header-list [role="tab"] {
+    border-radius: 0;
+    margin: 0;
+    padding: 0.5rem;
+  }
+  
+  .tab-header-list [data-state="active"] {
+    box-shadow: none;
+  }
+  
+  .tab-header-list [data-state="active"]:first-child {
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+  }
+  
+  .tab-header-list [data-state="active"]:last-child {
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
   }
 }
