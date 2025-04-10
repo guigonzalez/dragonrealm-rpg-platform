@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Character } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 import {
   Card,
   CardContent,
@@ -47,6 +48,7 @@ interface CharacterSheetProps {
 export default function CharacterSheet({ character }: CharacterSheetProps) {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [currentHp, setCurrentHp] = useState(character.currentHitPoints);
   
@@ -103,7 +105,7 @@ export default function CharacterSheet({ character }: CharacterSheetProps) {
             size="sm"
             onClick={() => setLocation('/dashboard')}
           >
-            Back to Dashboard
+            {t('dashboard.backToDashboard')}
           </Button>
           <Button
             variant={isEditing ? "default" : "outline"}
@@ -114,12 +116,12 @@ export default function CharacterSheet({ character }: CharacterSheetProps) {
             {isEditing ? (
               <>
                 <Save className="mr-2 h-4 w-4" />
-                Save Mode
+                {t('landing.demoSection.campaignManager.save')}
               </>
             ) : (
               <>
                 <Edit2 className="mr-2 h-4 w-4" />
-                Edit Mode
+                {t('landing.demoSection.characterSheet.edit')}
               </>
             )}
           </Button>

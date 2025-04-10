@@ -78,6 +78,7 @@
     "welcomeBack": "Bem-vindo de volta",
     "welcome": "Bem-vindo ao DragonRealm",
     "subtitle": "Seu companheiro digital para aventuras de D&D",
+    "backToDashboard": "Voltar ao Painel",
     "buttons": {
       "newCharacter": "Novo Personagem",
       "newCampaign": "Nova Campanha"
@@ -223,7 +224,8 @@
     "locationName": "Nome da Localização",
     "locationDetails": "Detalhes da Localização",
     "description": "Descrição",
-    "notes": "Anotações"
+    "notes": "Anotações",
+    "worldBuilding": "Construção de Mundo"
   },
   "sessionNote": {
     "sessionNotes": "Notas de Sessão",
