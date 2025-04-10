@@ -367,6 +367,15 @@ export default function CharacterCreation() {
     }
   };
   
+  // Helper function for toggling advantage on skills
+  const toggleAdvantage = (skill: string) => {
+    if (skillsWithAdvantage.includes(skill)) {
+      setSkillsWithAdvantage(skillsWithAdvantage.filter(s => s !== skill));
+    } else {
+      setSkillsWithAdvantage([...skillsWithAdvantage, skill]);
+    }
+  };
+  
   // Function to add a new item to an array
   const addItemToArray = (
     array: string[],
@@ -795,12 +804,28 @@ export default function CharacterCreation() {
                       
                       <div className="space-y-1 mt-1 text-sm">
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Força: usada para resistir efeitos físicos que exigem força bruta">
-                          <span>Resistência</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("strength") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="strength-save-adv"
+                              checked={skillsWithAdvantage.includes("StrengthSave")}
+                              onCheckedChange={() => toggleAdvantage("StrengthSave")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Resistência</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("strength") || 10) + (savingThrows.includes("Strength") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Atletismo: usada para escalar, nadar, saltar ou outras atividades físicas que exigem força">
-                          <span>Atletismo</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("strength") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="athletics-adv"
+                              checked={skillsWithAdvantage.includes("Athletics")}
+                              onCheckedChange={() => toggleAdvantage("Athletics")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Atletismo</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("strength") || 10) + (skills.includes("Athletics") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                       </div>
                     </div>
@@ -845,20 +870,52 @@ export default function CharacterCreation() {
                       
                       <div className="space-y-1 mt-1 text-sm">
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Resistência de Destreza: usada para esquivar de ataques de área e armadilhas">
-                          <span>Resistência</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="dexterity-save-adv"
+                              checked={skillsWithAdvantage.includes("DexteritySave")}
+                              onCheckedChange={() => toggleAdvantage("DexteritySave")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Resistência</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10) + (savingThrows.includes("Dexterity") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Acrobacia: usada para fazer acrobacias, manter o equilíbrio ou se livrar de imobilizações">
-                          <span>Acrobacia</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="acrobatics-adv"
+                              checked={skillsWithAdvantage.includes("Acrobatics")}
+                              onCheckedChange={() => toggleAdvantage("Acrobatics")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Acrobacia</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10) + (skills.includes("Acrobatics") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Furtividade: usada para se esconder, se mover silenciosamente ou evitar ser detectado">
-                          <span>Furtividade</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="stealth-adv"
+                              checked={skillsWithAdvantage.includes("Stealth")}
+                              onCheckedChange={() => toggleAdvantage("Stealth")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Furtividade</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10) + (skills.includes("Stealth") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                         <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]" title="Prestidigitação: usada para manipulações manuais delicadas como bater carteiras, truques de mãos ou desarmar armadilhas">
-                          <span>Prestidigitação</span>
-                          <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}</span>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="sleight-of-hand-adv"
+                              checked={skillsWithAdvantage.includes("SleightOfHand")}
+                              onCheckedChange={() => toggleAdvantage("SleightOfHand")}
+                              className="border-[#FFF8E1]"
+                            />
+                            <span>Prestidigitação</span>
+                          </div>
+                          <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10) + (skills.includes("SleightOfHand") ? form.watch("proficiencyBonus") || 2 : 0))}</span>
                         </div>
                       </div>
                     </div>
