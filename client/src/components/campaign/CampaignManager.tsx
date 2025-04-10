@@ -494,7 +494,9 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
               {t("campaign.details")}
             </TabsTrigger>
             <TabsTrigger value="world" className="font-lora">
-              <Globe className="h-5 w-5 mr-2 inline-block" />
+              <div className="w-6 h-6 mr-2 inline-flex items-center justify-center">
+                <Globe className="h-5 w-5" />
+              </div>
               {t("location.worldBuilding")}
             </TabsTrigger>
             <TabsTrigger value="npcs" className="font-lora">
