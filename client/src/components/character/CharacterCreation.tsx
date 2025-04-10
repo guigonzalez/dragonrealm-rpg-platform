@@ -705,19 +705,27 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
         const spellEntries = spellsArray.filter((spell: string) => spell.startsWith('Magia:'));
         spellEntries.forEach((spellString: string) => {
           try {
-            // Formato: "Magia: Nome | Nível: X | Descrição | Dano: Y"
+            // Formato: "Magia: Nome | Nível: X | Tempo: Y | Alcance: Z | Componentes: A | Duração: B | Descrição | Dano: C"
             const parts = spellString.replace('Magia:', '').split('|');
             const name = parts[0].trim();
             
             let level = 0;
             let description = '';
             let damage = '';
+            let castingTime = '';
+            let range = '';
+            let components = '';
+            let duration = '';
             
             // Extrair dados de cada parte
             parts.forEach((part: string) => {
               const trimmed = part.trim();
               if (trimmed.startsWith('Nível:')) level = parseInt(trimmed.replace('Nível:', '').trim()) || 0;
               else if (trimmed.startsWith('Dano:')) damage = trimmed.replace('Dano:', '').trim();
+              else if (trimmed.startsWith('Tempo:')) castingTime = trimmed.replace('Tempo:', '').trim();
+              else if (trimmed.startsWith('Alcance:')) range = trimmed.replace('Alcance:', '').trim();
+              else if (trimmed.startsWith('Componentes:')) components = trimmed.replace('Componentes:', '').trim();
+              else if (trimmed.startsWith('Duração:')) duration = trimmed.replace('Duração:', '').trim();
               else if (!trimmed.startsWith('Magia:') && !trimmed.includes(':')) description = trimmed;
             });
             
@@ -727,7 +735,11 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                 name,
                 level,
                 description,
-                damage: damage || undefined
+                damage: damage || undefined,
+                castingTime: castingTime || undefined,
+                range: range || undefined,
+                components: components || undefined,
+                duration: duration || undefined
               });
             }
           } catch (error) {
