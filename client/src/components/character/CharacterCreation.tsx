@@ -8,7 +8,27 @@ import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { insertCharacterSchema, InsertCharacter, Character } from "@shared/schema";
-import { CircleHelp, Edit2, Eye, Minus, Plus, Save } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  CircleHelp,
+  Dices,
+  Edit2,
+  Eye,
+  HelpCircle, 
+  Minus,
+  Plus,
+  PlusCircle,
+  Save,
+  Scroll,
+  Shield,
+  Sword,
+  Swords,
+  Trash,
+  User, 
+  X
+} from "lucide-react";
 import {
   Form,
   FormControl,
@@ -57,21 +77,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { 
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  Dices,
-  HelpCircle, 
-  Scroll,
-  Shield,
-  Sword,
-  Swords,
-  Trash,
-  User, 
-  X, 
-  PlusCircle 
-} from "lucide-react";
 import {
   Table,
   TableBody,
