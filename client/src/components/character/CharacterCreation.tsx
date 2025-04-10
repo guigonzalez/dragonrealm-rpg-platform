@@ -216,6 +216,10 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
     level: number;
     description: string;
     damage?: string;
+    castingTime?: string; // Tempo de Conjuração
+    range?: string;       // Alcance
+    components?: string;  // Componentes
+    duration?: string;    // Duração
   };
   
   type SpellcastingInfo = {
@@ -532,7 +536,18 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
     
     // Adicionar lista de magias
     spellList.forEach(spell => {
-      const spellStr = `Magia: ${spell.name} | Nível: ${spell.level} | ${spell.description}${spell.damage ? ` | Dano: ${spell.damage}` : ''}`;
+      let spellStr = `Magia: ${spell.name} | Nível: ${spell.level}`;
+      
+      // Adicionar novos campos se estiverem definidos
+      if (spell.castingTime) spellStr += ` | Tempo: ${spell.castingTime}`;
+      if (spell.range) spellStr += ` | Alcance: ${spell.range}`;
+      if (spell.components) spellStr += ` | Componentes: ${spell.components}`;
+      if (spell.duration) spellStr += ` | Duração: ${spell.duration}`;
+      
+      // Adicionar descrição e dano (campos originais)
+      spellStr += ` | ${spell.description}`;
+      if (spell.damage) spellStr += ` | Dano: ${spell.damage}`;
+      
       spellsArray.push(spellStr);
     });
     
@@ -3046,51 +3061,75 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                             <h4 className="font-medium">Add New Spell</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div>
-                                <label className="text-sm font-medium">Name</label>
-                                <Input id="new-spell-name" placeholder="e.g., Fireball" />
+                                <label className="text-sm font-medium">Nome</label>
+                                <Input id="new-spell-name" placeholder="ex: Bola de Fogo" />
                               </div>
                               <div>
-                                <label className="text-sm font-medium">Level</label>
+                                <label className="text-sm font-medium">Nível</label>
                                 <Select 
                                   defaultValue="1"
                                   onValueChange={(value) => setNewSpellLevel(parseInt(value) || 0)}
                                   value={newSpellLevel.toString()}
                                 >
                                   <SelectTrigger>
-                                    <SelectValue placeholder="Spell level" />
+                                    <SelectValue placeholder="Nível da magia" />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    <SelectItem value="0">Cantrip (0)</SelectItem>
+                                    <SelectItem value="0">Truque (0)</SelectItem>
                                     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((level) => (
                                       <SelectItem key={level} value={level.toString()}>
-                                        Level {level}
+                                        Nível {level}
                                       </SelectItem>
                                     ))}
                                   </SelectContent>
                                 </Select>
                               </div>
-                              <div className="md:col-span-2">
-                                <label className="text-sm font-medium">Description</label>
-                                <Textarea id="new-spell-description" placeholder="Describe what the spell does" />
+                              <div>
+                                <label className="text-sm font-medium">Tempo de Conjuração</label>
+                                <Input id="new-spell-casting-time" placeholder="ex: 1 ação" />
                               </div>
                               <div>
-                                <label className="text-sm font-medium">Damage (Optional)</label>
-                                <Input id="new-spell-damage" placeholder="e.g., 8d6 fire" />
+                                <label className="text-sm font-medium">Alcance</label>
+                                <Input id="new-spell-range" placeholder="ex: 150 pés" />
                               </div>
-                              <div className="self-end">
+                              <div>
+                                <label className="text-sm font-medium">Componentes</label>
+                                <Input id="new-spell-components" placeholder="ex: V, S, M (enxofre)" />
+                              </div>
+                              <div>
+                                <label className="text-sm font-medium">Duração</label>
+                                <Input id="new-spell-duration" placeholder="ex: Instantânea" />
+                              </div>
+                              <div className="md:col-span-2">
+                                <label className="text-sm font-medium">Descrição</label>
+                                <Textarea id="new-spell-description" placeholder="Descreva o que a magia faz" />
+                              </div>
+                              <div>
+                                <label className="text-sm font-medium">Dano (Opcional)</label>
+                                <Input id="new-spell-damage" placeholder="ex: 8d6 fogo" />
+                              </div>
+                              <div className="self-end md:col-span-1">
                                 <Button 
                                   type="button"
                                   onClick={() => {
                                     const nameInput = document.getElementById('new-spell-name') as HTMLInputElement;
                                     const descriptionInput = document.getElementById('new-spell-description') as HTMLTextAreaElement;
                                     const damageInput = document.getElementById('new-spell-damage') as HTMLInputElement;
+                                    const castingTimeInput = document.getElementById('new-spell-casting-time') as HTMLInputElement;
+                                    const rangeInput = document.getElementById('new-spell-range') as HTMLInputElement;
+                                    const componentsInput = document.getElementById('new-spell-components') as HTMLInputElement;
+                                    const durationInput = document.getElementById('new-spell-duration') as HTMLInputElement;
                                     
                                     if (nameInput && descriptionInput) {
                                       addSpell({
                                         name: nameInput.value,
                                         level: newSpellLevel,
                                         description: descriptionInput.value,
-                                        damage: damageInput.value || undefined
+                                        damage: damageInput.value || undefined,
+                                        castingTime: castingTimeInput.value || undefined,
+                                        range: rangeInput.value || undefined,
+                                        components: componentsInput.value || undefined,
+                                        duration: durationInput.value || undefined
                                       });
                                       
                                       // Clear inputs
@@ -3098,6 +3137,10 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                       setNewSpellLevel(1);
                                       descriptionInput.value = '';
                                       damageInput.value = '';
+                                      castingTimeInput.value = '';
+                                      rangeInput.value = '';
+                                      componentsInput.value = '';
+                                      durationInput.value = '';
                                     }
                                   }}
                                   className="w-full"
