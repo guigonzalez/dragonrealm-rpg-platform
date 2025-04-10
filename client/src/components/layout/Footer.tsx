@@ -35,8 +35,8 @@ export default function Footer() {
           <div>
             <h3 className="font-lora font-semibold text-lg mb-4">{t("landing.footer.resources")}</h3>
             <ul className="font-opensans space-y-2">
-              <li><a href="#" className="text-white/80 hover:text-accent">{t("landing.footer.documentation")}</a></li>
-              <li><a href="#" className="text-white/80 hover:text-accent">{t("landing.footer.videoTutorials")}</a></li>
+              <li><a href="https://groovy-friend-cce.notion.site/1d180ec9a16280e9afb0e9066166fc84?v=1d180ec9a162804889c2000c872ec58d" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-accent">{t("landing.footer.documentation")}</a></li>
+              <li><a href="https://www.youtube.com/@DragonRealmRPG" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-accent">{t("landing.footer.videoTutorials")}</a></li>
             </ul>
           </div>
           
