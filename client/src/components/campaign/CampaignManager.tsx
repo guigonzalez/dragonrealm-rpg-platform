@@ -734,9 +734,59 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                           name="imageUrl"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Image URL (Optional)</FormLabel>
+                              <FormLabel>Image Upload</FormLabel>
                               <FormControl>
-                                <Input placeholder="Enter image URL" {...field} />
+                                <div className="space-y-2">
+                                  <div className="border border-dashed border-primary/20 rounded-md p-3 text-center hover:border-primary/40 transition-colors">
+                                    <div className="space-y-2">
+                                      <div className="flex justify-center">
+                                        <Upload className="h-5 w-5 text-muted-foreground" />
+                                      </div>
+                                      <p className="text-xs text-muted-foreground">Upload an image for this location</p>
+                                      <label htmlFor="location-image-upload">
+                                        <Button type="button" variant="outline" size="sm" className="mt-1">
+                                          {t("location.uploadImage")}
+                                        </Button>
+                                        <Input
+                                          id="location-image-upload"
+                                          type="file"
+                                          accept="image/png,image/jpeg,image/gif"
+                                          className="hidden"
+                                          onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                              // Simular uma URL para a imagem
+                                              const imageUrl = URL.createObjectURL(file);
+                                              field.onChange(imageUrl);
+                                            }
+                                          }}
+                                        />
+                                      </label>
+                                    </div>
+                                  </div>
+                                  {field.value && (
+                                    <div className="flex flex-col items-center">
+                                      <img 
+                                        src={field.value} 
+                                        alt="Location preview" 
+                                        className="w-full max-h-40 object-cover rounded-md mt-2"
+                                      />
+                                      <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        className="text-destructive mt-1"
+                                        onClick={() => field.onChange("")}
+                                      >
+                                        Remove Image
+                                      </Button>
+                                    </div>
+                                  )}
+                                  <Input
+                                    type="hidden"
+                                    {...field}
+                                  />
+                                </div>
                               </FormControl>
                               <FormMessage />
                             </FormItem>
