@@ -223,6 +223,7 @@
     "worldMapDescription": "Upload an image of your world map.",
     "uploadMap": "Upload Map",
     "uploadMapDescription": "Add a visual map for your world. Supported formats: JPG, PNG, GIF",
+    "uploadImage": "Upload Image",
     "factions": "Factions and Tensions",
     "factionsDescription": "List the main power groups and their relationships or conflicts.",
     "history": "A Past with Consequences",

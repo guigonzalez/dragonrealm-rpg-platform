@@ -618,10 +618,41 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                             type="file"
                             accept="image/png,image/jpeg,image/gif"
                             className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                // Criar URL temporária para a imagem
+                                const imageUrl = URL.createObjectURL(file);
+                                // Aqui você deve armazenar a URL da imagem em algum estado para exibi-la
+                                console.log("Mapa carregado:", imageUrl);
+                              }
+                            }}
                           />
                         </label>
                       </div>
                     </div>
+                    
+                    {/* Aqui você pode adicionar o preview da imagem quando ela for carregada */}
+                    {/* 
+                    {mapImageUrl && (
+                      <div className="mt-4">
+                        <img 
+                          src={mapImageUrl} 
+                          alt="World map" 
+                          className="w-full max-h-96 object-contain rounded-md border border-border" 
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive mt-2"
+                          onClick={() => setMapImageUrl("")}
+                        >
+                          Remove Image
+                        </Button>
+                      </div>
+                    )}
+                    */}
                   </div>
                 </div>
                 

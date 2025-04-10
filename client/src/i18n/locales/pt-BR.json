@@ -240,6 +240,7 @@
     "worldMapDescription": "Faça upload de uma imagem do mapa do seu mundo.",
     "uploadMap": "Fazer Upload de Mapa",
     "uploadMapDescription": "Adicione um mapa visual para seu mundo. Formatos suportados: JPG, PNG, GIF",
+    "uploadImage": "Fazer Upload de Imagem",
     "factions": "Facções e Tensões",
     "factionsDescription": "Liste os principais grupos de poder e suas relações ou conflitos.",
     "history": "Um Passado com Consequências",
