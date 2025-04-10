@@ -2101,18 +2101,12 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                 const typeSelect = document.getElementById('armor-type') as HTMLSelectElement;
                                 const acBonusInput = document.getElementById('armor-ac-bonus') as HTMLInputElement;
                                 const penaltyCheckbox = document.getElementById('armor-penalty') as HTMLInputElement;
+                                const propertiesInput = document.getElementById('armor-properties') as HTMLInputElement;
                                 
-                                // Obter propriedades selecionadas
-                                const selectedProps: string[] = [];
-                                // Limitando a busca ao modal de armaduras atual
-                                const armorDialog = document.querySelector('[role="dialog"]') as HTMLElement;
-                                if (armorDialog) {
-                                  armorDialog.querySelectorAll('.bg-primary').forEach(el => {
-                                    if ((el as HTMLElement).innerText && (el as HTMLElement).innerText.length < 30) {
-                                      selectedProps.push((el as HTMLElement).innerText);
-                                    }
-                                  });
-                                }
+                                // Converter string de propriedades em array
+                                const selectedProps = propertiesInput.value 
+                                  ? propertiesInput.value.split(',').map(item => item.trim()).filter(item => item)
+                                  : [];
                                 
                                 // Criar nova armadura
                                 if (nameInput.value) {
@@ -2145,13 +2139,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                   if (typeSelect) typeSelect.value = '';
                                   acBonusInput.value = '';
                                   penaltyCheckbox.checked = false;
-                                  // Limpar apenas os badges no modal atual
-                                  if (armorDialog) {
-                                    armorDialog.querySelectorAll('.bg-primary').forEach(el => {
-                                      el.classList.remove('bg-primary');
-                                      el.classList.remove('text-primary-foreground');
-                                    });
-                                  }
+                                  propertiesInput.value = '';
                                 } else {
                                   toast({
                                     title: "Nome obrigatório",
