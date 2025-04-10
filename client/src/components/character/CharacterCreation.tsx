@@ -2049,18 +2049,13 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                           
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Tipo</label>
-                            <Select id="armor-type">
-                              <SelectTrigger>
-                                <SelectValue placeholder="Selecione o tipo" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="light">Armadura Leve</SelectItem>
-                                <SelectItem value="medium">Armadura Média</SelectItem>
-                                <SelectItem value="heavy">Armadura Pesada</SelectItem>
-                                <SelectItem value="shield">Escudo</SelectItem>
-                                <SelectItem value="other">Outro</SelectItem>
-                              </SelectContent>
-                            </Select>
+                            <Input 
+                              id="armor-type" 
+                              placeholder="ex: Armadura Leve, Escudo, etc" 
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              Exemplos: Armadura Leve, Armadura Média, Armadura Pesada, Escudo
+                            </p>
                           </div>
                           
                           <div className="space-y-2">
@@ -2098,7 +2093,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                 // Obter valores dos inputs
                                 const nameInput = document.getElementById('armor-name') as HTMLInputElement;
                                 const weightInput = document.getElementById('armor-weight') as HTMLInputElement;
-                                const typeSelect = document.getElementById('armor-type') as HTMLSelectElement;
+                                const typeInput = document.getElementById('armor-type') as HTMLInputElement;
                                 const acBonusInput = document.getElementById('armor-ac-bonus') as HTMLInputElement;
                                 const penaltyCheckbox = document.getElementById('armor-penalty') as HTMLInputElement;
                                 const propertiesInput = document.getElementById('armor-properties') as HTMLInputElement;
@@ -2110,16 +2105,8 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                 
                                 // Criar nova armadura
                                 if (nameInput.value) {
-                                  let armorType = "Desconhecido";
-                                  
-                                  // Verificando de forma segura o tipo selecionado
-                                  if (typeSelect && typeSelect.value) {
-                                    if (typeSelect.value === "light") armorType = "Armadura Leve";
-                                    else if (typeSelect.value === "medium") armorType = "Armadura Média";
-                                    else if (typeSelect.value === "heavy") armorType = "Armadura Pesada";
-                                    else if (typeSelect.value === "shield") armorType = "Escudo";
-                                    else if (typeSelect.value === "other") armorType = "Outro";
-                                  }
+                                  // Usar o valor do input diretamente
+                                  const armorType = typeInput && typeInput.value ? typeInput.value : "Desconhecido";
                                   
                                   const newArmor: Armor = {
                                     id: Date.now().toString(),
@@ -2136,7 +2123,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                   // Limpar campos
                                   nameInput.value = '';
                                   weightInput.value = '';
-                                  if (typeSelect) typeSelect.value = '';
+                                  if (typeInput) typeInput.value = '';
                                   acBonusInput.value = '';
                                   penaltyCheckbox.checked = false;
                                   propertiesInput.value = '';
