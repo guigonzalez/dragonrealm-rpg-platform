@@ -69,4 +69,30 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(123, 31, 162, 0.4);
   }
+  
+  /* Read-only form styling */
+  .read-only-form input,
+  .read-only-form textarea,
+  .read-only-form select,
+  .read-only-form button:not([type="button"]) {
+    pointer-events: none;
+    opacity: 0.8;
+    cursor: default !important;
+  }
+
+  .read-only-form input[type="range"] {
+    opacity: 0.7;
+  }
+
+  .read-only-form button:not([type="button"]) {
+    display: none;
+  }
+
+  /* Only show buttons explicitly marked for read-only mode */
+  .read-only-form button[type="button"] {
+    display: inline-flex;
+    pointer-events: auto;
+    opacity: 1;
+    cursor: pointer !important;
+  }
 }

@@ -670,7 +670,10 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
       </div>
       
       <Form {...form}>
-        <form onSubmit={readOnly ? (e) => e.preventDefault() : form.handleSubmit(onSubmit)}>
+        <form 
+          onSubmit={readOnly ? (e) => e.preventDefault() : form.handleSubmit(onSubmit)}
+          className={`${readOnly ? "read-only-form" : ""}`}
+        >
           <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
             <TabsList className="grid grid-cols-5 w-full mb-6">
               <TabsTrigger value="basics" className="font-lora">
