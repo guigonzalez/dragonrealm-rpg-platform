@@ -692,17 +692,17 @@ export default function CharacterCreation() {
                   
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                     {/* Strength */}
-                    <div className="bg-gray-900 border-2 border-gray-700 rounded-lg p-4 pb-2 relative shadow-lg">
+                    <div className="bg-[#8D6E63] border-2 border-[#6D5046] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
-                        <div className="bg-gray-800 text-center px-2 py-1 rounded-md text-xs font-semibold">
+                        <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("strength") || 10}
                         </div>
                       </div>
                       <div className="text-center mt-3">
-                        <div className="text-4xl font-bold mb-1">
+                        <div className="text-4xl font-bold mb-1 text-[#FFF8E1]">
                           {formatModifier(getAbilityModifier(form.watch("strength") || 10))}
                         </div>
-                        <div className="uppercase text-xs font-semibold tracking-wider mb-3">
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#FFF8E1]">
                           FORÇA
                         </div>
                       </div>
@@ -730,11 +730,11 @@ export default function CharacterCreation() {
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Resistência</span>
                           <span>+{form.watch("proficiencyBonus") || 2}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Atletismo</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("strength") || 10))}</span>
                         </div>
@@ -742,17 +742,17 @@ export default function CharacterCreation() {
                     </div>
                       
                     {/* Dexterity */}
-                    <div className="bg-gray-900 border-2 border-gray-700 rounded-lg p-4 pb-2 relative shadow-lg">
+                    <div className="bg-[#8D6E63] border-2 border-[#6D5046] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
-                        <div className="bg-gray-800 text-center px-2 py-1 rounded-md text-xs font-semibold">
+                        <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("dexterity") || 10}
                         </div>
                       </div>
                       <div className="text-center mt-3">
-                        <div className="text-4xl font-bold mb-1">
+                        <div className="text-4xl font-bold mb-1 text-[#FFF8E1]">
                           {formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}
                         </div>
-                        <div className="uppercase text-xs font-semibold tracking-wider mb-3">
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#FFF8E1]">
                           DESTREZA
                         </div>
                       </div>
@@ -780,15 +780,15 @@ export default function CharacterCreation() {
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Resistência</span>
                           <span>+{form.watch("proficiencyBonus") || 2}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Acrobacia</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Furtividade</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}</span>
                         </div>
@@ -796,17 +796,17 @@ export default function CharacterCreation() {
                     </div>
                     
                     {/* Constitution */}
-                    <div className="bg-gray-900 border-2 border-gray-700 rounded-lg p-4 pb-2 relative shadow-lg">
+                    <div className="bg-[#8D6E63] border-2 border-[#6D5046] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
-                        <div className="bg-gray-800 text-center px-2 py-1 rounded-md text-xs font-semibold">
+                        <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("constitution") || 10}
                         </div>
                       </div>
                       <div className="text-center mt-3">
-                        <div className="text-4xl font-bold mb-1">
+                        <div className="text-4xl font-bold mb-1 text-[#FFF8E1]">
                           {formatModifier(getAbilityModifier(form.watch("constitution") || 10))}
                         </div>
-                        <div className="uppercase text-xs font-semibold tracking-wider mb-3">
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#FFF8E1]">
                           CONSTITUIÇÃO
                         </div>
                       </div>
@@ -836,7 +836,7 @@ export default function CharacterCreation() {
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Resistência</span>
                           <span>+{form.watch("proficiencyBonus") || 2}</span>
                         </div>
@@ -844,17 +844,17 @@ export default function CharacterCreation() {
                     </div>
                     
                     {/* Intelligence */}
-                    <div className="bg-gray-900 border-2 border-gray-700 rounded-lg p-4 pb-2 relative shadow-lg">
+                    <div className="bg-[#8D6E63] border-2 border-[#6D5046] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
-                        <div className="bg-gray-800 text-center px-2 py-1 rounded-md text-xs font-semibold">
+                        <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("intelligence") || 10}
                         </div>
                       </div>
                       <div className="text-center mt-3">
-                        <div className="text-4xl font-bold mb-1">
+                        <div className="text-4xl font-bold mb-1 text-[#FFF8E1]">
                           {formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}
                         </div>
-                        <div className="uppercase text-xs font-semibold tracking-wider mb-3">
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#FFF8E1]">
                           INTELIGÊNCIA
                         </div>
                       </div>
@@ -882,15 +882,15 @@ export default function CharacterCreation() {
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Resistência</span>
                           <span>+{form.watch("proficiencyBonus") || 2}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Arcana</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>História</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
                         </div>
@@ -898,17 +898,17 @@ export default function CharacterCreation() {
                     </div>
                     
                     {/* Wisdom */}
-                    <div className="bg-gray-900 border-2 border-gray-700 rounded-lg p-4 pb-2 relative shadow-lg">
+                    <div className="bg-[#8D6E63] border-2 border-[#6D5046] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
-                        <div className="bg-gray-800 text-center px-2 py-1 rounded-md text-xs font-semibold">
+                        <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("wisdom") || 10}
                         </div>
                       </div>
                       <div className="text-center mt-3">
-                        <div className="text-4xl font-bold mb-1">
+                        <div className="text-4xl font-bold mb-1 text-[#FFF8E1]">
                           {formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}
                         </div>
-                        <div className="uppercase text-xs font-semibold tracking-wider mb-3">
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#FFF8E1]">
                           SABEDORIA
                         </div>
                       </div>
@@ -936,15 +936,15 @@ export default function CharacterCreation() {
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Resistência</span>
                           <span>+{form.watch("proficiencyBonus") || 2}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Percepção</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Sobrevivência</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
                         </div>
@@ -952,17 +952,17 @@ export default function CharacterCreation() {
                     </div>
                     
                     {/* Charisma */}
-                    <div className="bg-gray-900 border-2 border-gray-700 rounded-lg p-4 pb-2 relative shadow-lg">
+                    <div className="bg-[#8D6E63] border-2 border-[#6D5046] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
-                        <div className="bg-gray-800 text-center px-2 py-1 rounded-md text-xs font-semibold">
+                        <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("charisma") || 10}
                         </div>
                       </div>
                       <div className="text-center mt-3">
-                        <div className="text-4xl font-bold mb-1">
+                        <div className="text-4xl font-bold mb-1 text-[#FFF8E1]">
                           {formatModifier(getAbilityModifier(form.watch("charisma") || 10))}
                         </div>
-                        <div className="uppercase text-xs font-semibold tracking-wider mb-3">
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#FFF8E1]">
                           CARISMA
                         </div>
                       </div>
@@ -990,15 +990,15 @@ export default function CharacterCreation() {
                       />
                       
                       <div className="space-y-1 mt-1 text-sm">
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Resistência</span>
                           <span>+{form.watch("proficiencyBonus") || 2}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Persuasão</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
                         </div>
-                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                        <div className="flex items-center justify-between bg-[#6D5046] rounded px-2 py-1 text-[#FFF8E1]">
                           <span>Intimidação</span>
                           <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
                         </div>
