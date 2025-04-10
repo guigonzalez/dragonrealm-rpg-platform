@@ -43,7 +43,7 @@ export default function Footer() {
           <div>
             <h3 className="font-lora font-semibold text-lg mb-4">{t("landing.footer.contact")}</h3>
             <ul className="font-opensans space-y-2">
-              <li><a href="#" className="text-white/80 hover:text-accent">{t("landing.footer.support")}</a></li>
+              <li><a href="https://www.notion.so/1d180ec9a16280abb7d9fafa5d2259a7?pvs=106" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-accent">{t("landing.footer.support")}</a></li>
               <li><a href="#" className="text-white/80 hover:text-accent">{t("landing.footer.reportBug")}</a></li>
               <li><a href="#" className="text-white/80 hover:text-accent">{t("landing.footer.requestFeature")}</a></li>
             </ul>
