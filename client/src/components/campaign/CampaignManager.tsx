@@ -58,8 +58,10 @@ import {
   Globe,
   Users, 
   Swords,
-  Upload
+  Upload,
+  Image
 } from "lucide-react";
+import CampaignImageUpload from "./CampaignImageUpload";
 
 interface CampaignManagerProps {
   campaign?: Campaign;
@@ -69,6 +71,7 @@ interface CampaignManagerProps {
 const campaignFormSchema = insertCampaignSchema.pick({
   name: true,
   description: true,
+  imageUrl: true,
 }).extend({
   name: z.string().min(1, "Campaign name is required"),
 });
@@ -133,6 +136,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
     defaultValues: {
       name: campaign?.name || "",
       description: campaign?.description || "",
+      imageUrl: campaign?.imageUrl || "",
     },
   });
   
