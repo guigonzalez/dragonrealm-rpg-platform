@@ -503,15 +503,11 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-6">
             <TabsTrigger value="details" className="font-lora">
-              <div className="w-6 h-6 mr-2 inline-flex items-center justify-center">
-                <Info className="h-5 w-5" />
-              </div>
+              <Info className="h-4 w-4 mr-2" />
               {t("campaign.details")}
             </TabsTrigger>
             <TabsTrigger value="world" className="font-lora">
-              <div className="w-6 h-6 mr-2 inline-flex items-center justify-center">
-                <Globe className="h-5 w-5" />
-              </div>
+              <Globe className="h-4 w-4 mr-2" />
               {t("location.worldBuilding")}
             </TabsTrigger>
             <TabsTrigger value="npcs" className="font-lora">
