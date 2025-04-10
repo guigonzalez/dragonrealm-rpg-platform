@@ -583,6 +583,112 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
       setEquipment(characterData.equipment || []);
       setSpells(characterData.spells || []);
       
+      // Processar spells para extrair Spellcasting info e SpellList
+      try {
+        const spellsArray = characterData.spells || [];
+        const spellsListExtracted: Spell[] = [];
+        
+        // Procurar informações de conjuração
+        const spellcastingInfo = spellsArray.find((spell: string) => spell.startsWith('Conjuração:'));
+        if (spellcastingInfo) {
+          try {
+            const parts = spellcastingInfo.replace('Conjuração:', '').split(',');
+            let newSpellcastingInfo: Partial<SpellcastingInfo> = { ...spellcasting };
+            
+            parts.forEach((part: string) => {
+              const trimmed = part.trim();
+              if (trimmed.startsWith('Atributo:')) {
+                newSpellcastingInfo.ability = trimmed.replace('Atributo:', '').trim();
+              } else if (trimmed.startsWith('CD:')) {
+                newSpellcastingInfo.saveDC = parseInt(trimmed.replace('CD:', '').trim()) || 10;
+              } else if (trimmed.startsWith('Bônus:')) {
+                newSpellcastingInfo.attackBonus = parseInt(trimmed.replace('Bônus:', '').trim()) || 0;
+              }
+            });
+            
+            setSpellcasting(prev => ({...prev, ...newSpellcastingInfo}));
+          } catch (error) {
+            console.error("Erro ao processar informações de conjuração:", error);
+          }
+        }
+        
+        // Procurar espaços de magia
+        const slotsInfo = spellsArray.find((spell: string) => spell.startsWith('Espaços:'));
+        if (slotsInfo) {
+          try {
+            const parts = slotsInfo.replace('Espaços:', '').trim().split(',');
+            const newSlots = { ...spellcasting.spellSlots };
+            
+            parts.forEach((part: string) => {
+              const trimmed = part.trim();
+              const match = trimmed.match(/Nível (\d+): (\d+)/);
+              if (match) {
+                const level = parseInt(match[1]);
+                const slots = parseInt(match[2]);
+                if (level >= 1 && level <= 9) {
+                  newSlots[level] = slots;
+                }
+              }
+            });
+            
+            setSpellcasting(prev => ({...prev, spellSlots: newSlots}));
+          } catch (error) {
+            console.error("Erro ao processar espaços de magia:", error);
+          }
+        }
+        
+        // Procurar pontos de feitiçaria/ki
+        const pointsInfo = spellsArray.find((spell: string) => spell.startsWith('Pontos:'));
+        if (pointsInfo) {
+          try {
+            const points = parseInt(pointsInfo.replace('Pontos:', '').trim()) || 0;
+            setSpellcasting(prev => ({...prev, points}));
+          } catch (error) {
+            console.error("Erro ao processar pontos de feitiçaria/ki:", error);
+          }
+        }
+        
+        // Processar magias
+        const spellEntries = spellsArray.filter((spell: string) => spell.startsWith('Magia:'));
+        spellEntries.forEach((spellString: string) => {
+          try {
+            // Formato: "Magia: Nome | Nível: X | Descrição | Dano: Y"
+            const parts = spellString.replace('Magia:', '').split('|');
+            const name = parts[0].trim();
+            
+            let level = 0;
+            let description = '';
+            let damage = '';
+            
+            // Extrair dados de cada parte
+            parts.forEach((part: string) => {
+              const trimmed = part.trim();
+              if (trimmed.startsWith('Nível:')) level = parseInt(trimmed.replace('Nível:', '').trim()) || 0;
+              else if (trimmed.startsWith('Dano:')) damage = trimmed.replace('Dano:', '').trim();
+              else if (!trimmed.startsWith('Magia:') && !trimmed.includes(':')) description = trimmed;
+            });
+            
+            if (name) {
+              spellsListExtracted.push({
+                id: crypto.randomUUID(),
+                name,
+                level,
+                description,
+                damage: damage || undefined
+              });
+            }
+          } catch (error) {
+            console.error("Erro ao processar magia:", error);
+          }
+        });
+        
+        if (spellsListExtracted.length > 0) {
+          setSpellList(spellsListExtracted);
+        }
+      } catch (error) {
+        console.error("Erro ao processar magias:", error);
+      }
+      
       // Processar features para separar em class, race e outros
       try {
         const featuresArray = characterData.features || [];
