@@ -140,6 +140,47 @@ export default function CharacterCreation() {
   const [savingThrows, setSavingThrows] = useState<string[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
   const [skillsWithAdvantage, setSkillsWithAdvantage] = useState<string[]>([]);
+  // Definição dos tipos para o novo sistema de equipamentos
+  type Weapon = {
+    id: string;
+    name: string;
+    properties: string[];
+    range: string;
+    attackBonus: string;
+    damage: string;
+    damageTypes: string[];
+    ammunition: string;
+  };
+
+  type Armor = {
+    id: string;
+    name: string;
+    weight: string;
+    type: string;
+    acBonus: string;
+    hasPenalty: boolean;
+    properties: string[];
+  };
+
+  type OtherEquipment = {
+    notes: string;
+    copper: number;
+    silver: number;
+    electrum: number;
+    gold: number;
+    platinum: number;
+  };
+
+  const [weapons, setWeapons] = useState<Weapon[]>([]);
+  const [armors, setArmors] = useState<Armor[]>([]);
+  const [otherEquipment, setOtherEquipment] = useState<OtherEquipment>({
+    notes: '',
+    copper: 0,
+    silver: 0,
+    electrum: 0,
+    gold: 0,
+    platinum: 0
+  });
   const [equipment, setEquipment] = useState<string[]>([]);
   const [spells, setSpells] = useState<string[]>([]);
   const [features, setFeatures] = useState<string[]>([]);
@@ -269,12 +310,15 @@ export default function CharacterCreation() {
   
   // Form submission handler
   const onSubmit = (data: CharacterFormValues) => {
+    // Converter o novo formato de equipamentos para o formato string[] antes de salvar
+    const equipmentStringArray = convertEquipmentToStringArray();
+    
     // Create a new object with the form data and the current array values
     const formDataWithArrays: CharacterFormValues = {
       ...data,
       savingThrows,
       skills,
-      equipment,
+      equipment: equipmentStringArray, // Usa o formato convertido
       spells,
       features
     };
@@ -287,6 +331,75 @@ export default function CharacterCreation() {
     }
   };
   
+  // Helper functions para gerenciar armas, armaduras e equipamentos
+  const addWeapon = (newWeapon: Omit<Weapon, 'id'>) => {
+    const id = crypto.randomUUID();
+    setWeapons([...weapons, { ...newWeapon, id }]);
+  };
+
+  const updateWeapon = (id: string, updatedWeapon: Partial<Weapon>) => {
+    setWeapons(weapons.map(weapon => 
+      weapon.id === id ? { ...weapon, ...updatedWeapon } : weapon
+    ));
+  };
+
+  const removeWeapon = (id: string) => {
+    setWeapons(weapons.filter(weapon => weapon.id !== id));
+  };
+
+  const addArmor = (newArmor: Omit<Armor, 'id'>) => {
+    const id = crypto.randomUUID();
+    setArmors([...armors, { ...newArmor, id }]);
+  };
+
+  const updateArmor = (id: string, updatedArmor: Partial<Armor>) => {
+    setArmors(armors.map(armor => 
+      armor.id === id ? { ...armor, ...updatedArmor } : armor
+    ));
+  };
+
+  const removeArmor = (id: string) => {
+    setArmors(armors.filter(armor => armor.id !== id));
+  };
+
+  const updateOtherEquipment = (updatedEquipment: Partial<OtherEquipment>) => {
+    setOtherEquipment({ ...otherEquipment, ...updatedEquipment });
+  };
+
+  // Converter entre o novo formato de equipamento e o formato antigo (array de strings)
+  const convertEquipmentToStringArray = (): string[] => {
+    let equipmentArray: string[] = [];
+    
+    // Adiciona armas ao array
+    weapons.forEach(weapon => {
+      const weaponStr = `Arma: ${weapon.name} | Acerto: ${weapon.attackBonus} | Dano: ${weapon.damage} ${weapon.damageTypes.join('/')} | Alcance: ${weapon.range}`;
+      equipmentArray.push(weaponStr);
+    });
+    
+    // Adiciona armaduras ao array
+    armors.forEach(armor => {
+      const armorStr = `Armadura: ${armor.name} | Tipo: ${armor.type} | CA: ${armor.acBonus} | Peso: ${armor.weight}`;
+      equipmentArray.push(armorStr);
+    });
+    
+    // Adiciona equipamento geral e moedas
+    if (otherEquipment.notes.trim()) {
+      equipmentArray.push(`Equipamento: ${otherEquipment.notes}`);
+    }
+    
+    const coins = [
+      `PC: ${otherEquipment.copper}`,
+      `PP: ${otherEquipment.silver}`,
+      `PE: ${otherEquipment.electrum}`,
+      `PO: ${otherEquipment.gold}`,
+      `PL: ${otherEquipment.platinum}`
+    ].join(', ');
+    
+    equipmentArray.push(`Moedas: ${coins}`);
+    
+    return equipmentArray;
+  };
+
   // Load character data when in edit mode
   useEffect(() => {
     if (characterData) {
@@ -328,6 +441,30 @@ export default function CharacterCreation() {
       setEquipment(characterData.equipment || []);
       setSpells(characterData.spells || []);
       setFeatures(characterData.features || []);
+      
+      // Tentar extrair informações de equipamento do formato atual string[]
+      try {
+        // Analisar strings de equipment para extrair armas, armaduras e outros itens
+        // Este é um processo imperfeito, mas faz o melhor possível para migrar dados existentes
+        const weaponsFromEquipment = characterData.equipment?.filter(e => e.startsWith('Arma:')) || [];
+        const armorsFromEquipment = characterData.equipment?.filter(e => e.startsWith('Armadura:')) || [];
+        const otherEquipmentFromEquipment = characterData.equipment?.filter(e => e.startsWith('Equipamento:')) || [];
+        const coinsFromEquipment = characterData.equipment?.find(e => e.startsWith('Moedas:')) || '';
+        
+        // Inicializa equipamentos com dados existentes ou padrões
+        setOtherEquipment({
+          notes: otherEquipmentFromEquipment.length > 0 ? 
+                 otherEquipmentFromEquipment.map(e => e.replace('Equipamento:', '').trim()).join('\n') : 
+                 '',
+          copper: 0,
+          silver: 0,
+          electrum: 0,
+          gold: 0,
+          platinum: 0
+        });
+      } catch (error) {
+        console.error("Erro ao converter equipamento:", error);
+      }
     }
   }, [characterData, form]);
   
@@ -1449,150 +1586,523 @@ export default function CharacterCreation() {
                     Add weapons, armor, and other items to your character.
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-8">
+                  {/* Área de Armas */}
                   <div className="space-y-4">
-                    <h3 className="font-lora text-lg font-semibold">Equipment List</h3>
+                    <h3 className="font-lora text-xl font-semibold text-primary">Armas</h3>
                     
+                    {/* Lista de Armas */}
                     <div className="flex flex-col space-y-2">
-                      {equipment.map((item, index) => (
-                        <div key={index} className="flex items-center justify-between border-b border-gray-200 pb-1">
-                          <span className="font-opensans text-sm">{item}</span>
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => removeItemFromArray(equipment, setEquipment, item)}
-                          >
-                            Remove
-                          </Button>
+                      {weapons.length > 0 ? (
+                        <div className="rounded-md border">
+                          <Table>
+                            <TableHeader>
+                              <TableRow className="bg-muted/50">
+                                <TableHead className="w-[180px]">Nome</TableHead>
+                                <TableHead>Propriedades</TableHead>
+                                <TableHead className="w-[100px]">Alcance</TableHead>
+                                <TableHead className="w-[80px]">Acerto</TableHead>
+                                <TableHead className="w-[120px]">Dano / Tipo</TableHead>
+                                <TableHead className="w-[100px]">Ações</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {weapons.map((weapon) => (
+                                <TableRow key={weapon.id}>
+                                  <TableCell className="font-medium">{weapon.name}</TableCell>
+                                  <TableCell>{weapon.properties.join(", ")}</TableCell>
+                                  <TableCell>{weapon.range}</TableCell>
+                                  <TableCell>{weapon.attackBonus}</TableCell>
+                                  <TableCell>{`${weapon.damage} ${weapon.damageTypes.join("/")}`} {weapon.ammunition ? `(${weapon.ammunition})` : ''}</TableCell>
+                                  <TableCell>
+                                    <Button 
+                                      variant="ghost" 
+                                      size="icon"
+                                      onClick={() => setWeapons(weapons.filter(w => w.id !== weapon.id))}
+                                    >
+                                      <Trash className="h-4 w-4" />
+                                    </Button>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
                         </div>
-                      ))}
+                      ) : (
+                        <div className="flex items-center justify-center rounded-md border border-dashed p-8">
+                          <div className="flex flex-col items-center space-y-2 text-center">
+                            <Sword className="h-10 w-10 text-muted-foreground" />
+                            <h3 className="text-lg font-semibold">Nenhuma arma adicionada</h3>
+                            <p className="text-sm text-muted-foreground">
+                              Adicione armas usando o formulário abaixo
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                     
-                    <div className="flex items-end gap-2">
-                      <div className="flex-1">
-                        <label className="text-sm font-medium">Add Equipment</label>
-                        <Input
-                          id="new-equipment"
-                          placeholder="e.g., Longsword: 1d8 slashing"
-                          className="mt-1"
+                    {/* Formulário para adicionar arma */}
+                    <Collapsible className="w-full border rounded-md p-4">
+                      <CollapsibleTrigger asChild>
+                        <Button variant="outline" className="w-full flex items-center justify-between mb-2">
+                          <span>Adicionar Nova Arma</span>
+                          <PlusCircle className="h-4 w-4 ml-2" />
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Nome da Arma</label>
+                            <Input 
+                              id="weapon-name" 
+                              placeholder="ex: Espada Longa" 
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Propriedades</label>
+                            <div className="flex flex-wrap gap-2">
+                              {["Acuidade", "Duas Mãos", "Leve", "Pesada", "Alcance", "Arremesso", "Munição", "Recarga", "Especial", "Versátil"].map((prop) => (
+                                <Badge 
+                                  key={prop} 
+                                  variant="outline" 
+                                  className="cursor-pointer"
+                                  onClick={(e) => {
+                                    const target = e.target as HTMLElement;
+                                    target.classList.toggle("bg-primary");
+                                    target.classList.toggle("text-primary-foreground");
+                                  }}
+                                >
+                                  {prop}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Alcance</label>
+                            <Input 
+                              id="weapon-range" 
+                              placeholder="ex: 1,5m ou 25/100"
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Bônus de Acerto</label>
+                            <Input 
+                              id="weapon-attack-bonus" 
+                              placeholder="+5" 
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Dano</label>
+                            <Input 
+                              id="weapon-damage" 
+                              placeholder="ex: 1d8+3" 
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Tipo de Dano</label>
+                            <div className="flex flex-wrap gap-2">
+                              {["Cortante", "Perfurante", "Concussão", "Ácido", "Frio", "Fogo", "Elétrico", "Necrótico", "Venenoso", "Psíquico", "Radiante", "Trovão"].map((type) => (
+                                <Badge 
+                                  key={type} 
+                                  variant="outline" 
+                                  className="cursor-pointer"
+                                  onClick={(e) => {
+                                    const target = e.target as HTMLElement;
+                                    target.classList.toggle("bg-primary");
+                                    target.classList.toggle("text-primary-foreground");
+                                  }}
+                                >
+                                  {type}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Munição</label>
+                            <Input 
+                              id="weapon-ammo" 
+                              placeholder="ex: 20 flechas" 
+                            />
+                          </div>
+                          
+                          <div className="col-span-full flex justify-end mt-4">
+                            <Button
+                              onClick={() => {
+                                // Obter valores dos inputs
+                                const nameInput = document.getElementById('weapon-name') as HTMLInputElement;
+                                const rangeInput = document.getElementById('weapon-range') as HTMLInputElement;
+                                const attackInput = document.getElementById('weapon-attack-bonus') as HTMLInputElement;
+                                const damageInput = document.getElementById('weapon-damage') as HTMLInputElement;
+                                const ammoInput = document.getElementById('weapon-ammo') as HTMLInputElement;
+                                
+                                // Obter propriedades e tipos selecionados
+                                const selectedProps: string[] = [];
+                                const selectedTypes: string[] = [];
+                                
+                                document.querySelectorAll('.bg-primary').forEach(el => {
+                                  if ((el as HTMLElement).innerText) {
+                                    // Verificar se é propriedade ou tipo de dano
+                                    const text = (el as HTMLElement).innerText;
+                                    if (["Acuidade", "Duas Mãos", "Leve", "Pesada", "Alcance", "Arremesso", "Munição", "Recarga", "Especial", "Versátil"].includes(text)) {
+                                      selectedProps.push(text);
+                                    } else {
+                                      selectedTypes.push(text);
+                                    }
+                                  }
+                                });
+                                
+                                // Criar nova arma
+                                if (nameInput.value) {
+                                  const newWeapon: Weapon = {
+                                    id: Date.now().toString(),
+                                    name: nameInput.value,
+                                    properties: selectedProps,
+                                    range: rangeInput.value || '-',
+                                    attackBonus: attackInput.value || '-',
+                                    damage: damageInput.value || '-',
+                                    damageTypes: selectedTypes.length > 0 ? selectedTypes : ['N/A'],
+                                    ammunition: ammoInput.value || ''
+                                  };
+                                  
+                                  setWeapons([...weapons, newWeapon]);
+                                  
+                                  // Limpar campos
+                                  nameInput.value = '';
+                                  rangeInput.value = '';
+                                  attackInput.value = '';
+                                  damageInput.value = '';
+                                  ammoInput.value = '';
+                                  document.querySelectorAll('.bg-primary').forEach(el => {
+                                    el.classList.remove('bg-primary');
+                                    el.classList.remove('text-primary-foreground');
+                                  });
+                                } else {
+                                  toast({
+                                    title: "Nome obrigatório",
+                                    description: "Você deve informar um nome para a arma",
+                                    variant: "destructive"
+                                  });
+                                }
+                              }}
+                            >
+                              Adicionar Arma
+                            </Button>
+                          </div>
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </div>
+                  
+                  {/* Separador entre seções */}
+                  <Separator className="my-4" />
+                  
+                  {/* Área de Armaduras */}
+                  <div className="space-y-4">
+                    <h3 className="font-lora text-xl font-semibold text-primary">Armaduras</h3>
+                    
+                    {/* Lista de Armaduras */}
+                    <div className="flex flex-col space-y-2">
+                      {armors.length > 0 ? (
+                        <div className="rounded-md border">
+                          <Table>
+                            <TableHeader>
+                              <TableRow className="bg-muted/50">
+                                <TableHead className="w-[180px]">Nome</TableHead>
+                                <TableHead>Tipo</TableHead>
+                                <TableHead className="w-[100px]">Peso</TableHead>
+                                <TableHead className="w-[100px]">Bônus CA</TableHead>
+                                <TableHead className="w-[100px]">Penalidade</TableHead>
+                                <TableHead className="w-[200px]">Propriedades</TableHead>
+                                <TableHead className="w-[80px]">Ações</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {armors.map((armor) => (
+                                <TableRow key={armor.id}>
+                                  <TableCell className="font-medium">{armor.name}</TableCell>
+                                  <TableCell>{armor.type}</TableCell>
+                                  <TableCell>{armor.weight}</TableCell>
+                                  <TableCell>{armor.acBonus}</TableCell>
+                                  <TableCell>{armor.hasPenalty ? "Sim" : "Não"}</TableCell>
+                                  <TableCell>{armor.properties.join(", ")}</TableCell>
+                                  <TableCell>
+                                    <Button 
+                                      variant="ghost" 
+                                      size="icon"
+                                      onClick={() => setArmors(armors.filter(a => a.id !== armor.id))}
+                                    >
+                                      <Trash className="h-4 w-4" />
+                                    </Button>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center rounded-md border border-dashed p-8">
+                          <div className="flex flex-col items-center space-y-2 text-center">
+                            <Shield className="h-10 w-10 text-muted-foreground" />
+                            <h3 className="text-lg font-semibold">Nenhuma armadura adicionada</h3>
+                            <p className="text-sm text-muted-foreground">
+                              Adicione armaduras usando o formulário abaixo
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Formulário para adicionar armadura */}
+                    <Collapsible className="w-full border rounded-md p-4">
+                      <CollapsibleTrigger asChild>
+                        <Button variant="outline" className="w-full flex items-center justify-between mb-2">
+                          <span>Adicionar Nova Armadura</span>
+                          <PlusCircle className="h-4 w-4 ml-2" />
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Nome da Armadura</label>
+                            <Input 
+                              id="armor-name" 
+                              placeholder="ex: Cota de Malha" 
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Peso</label>
+                            <Input 
+                              id="armor-weight" 
+                              placeholder="ex: 20 kg" 
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Tipo</label>
+                            <Select id="armor-type">
+                              <SelectTrigger>
+                                <SelectValue placeholder="Selecione o tipo" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="light">Armadura Leve</SelectItem>
+                                <SelectItem value="medium">Armadura Média</SelectItem>
+                                <SelectItem value="heavy">Armadura Pesada</SelectItem>
+                                <SelectItem value="shield">Escudo</SelectItem>
+                                <SelectItem value="other">Outro</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Bônus de Classe de Armadura</label>
+                            <Input 
+                              id="armor-ac-bonus" 
+                              placeholder="ex: +2" 
+                            />
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox id="armor-penalty" />
+                            <label
+                              htmlFor="armor-penalty"
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              Possui Penalidade
+                            </label>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Propriedades</label>
+                            <div className="flex flex-wrap gap-2">
+                              {["Furtividade Desvantagem", "Força Mínima", "Resistente", "Flexível", "Metálica", "Reforçada", "Mágica"].map((prop) => (
+                                <Badge 
+                                  key={prop} 
+                                  variant="outline" 
+                                  className="cursor-pointer"
+                                  onClick={(e) => {
+                                    const target = e.target as HTMLElement;
+                                    target.classList.toggle("bg-primary");
+                                    target.classList.toggle("text-primary-foreground");
+                                  }}
+                                >
+                                  {prop}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <div className="col-span-full flex justify-end mt-4">
+                            <Button
+                              onClick={() => {
+                                // Obter valores dos inputs
+                                const nameInput = document.getElementById('armor-name') as HTMLInputElement;
+                                const weightInput = document.getElementById('armor-weight') as HTMLInputElement;
+                                const typeSelect = document.getElementById('armor-type') as HTMLSelectElement;
+                                const acBonusInput = document.getElementById('armor-ac-bonus') as HTMLInputElement;
+                                const penaltyCheckbox = document.getElementById('armor-penalty') as HTMLInputElement;
+                                
+                                // Obter propriedades selecionadas
+                                const selectedProps: string[] = [];
+                                document.querySelectorAll('.bg-primary').forEach(el => {
+                                  if ((el as HTMLElement).innerText) {
+                                    selectedProps.push((el as HTMLElement).innerText);
+                                  }
+                                });
+                                
+                                // Criar nova armadura
+                                if (nameInput.value) {
+                                  let armorType = "Desconhecido";
+                                  if (typeSelect.value === "light") armorType = "Armadura Leve";
+                                  else if (typeSelect.value === "medium") armorType = "Armadura Média";
+                                  else if (typeSelect.value === "heavy") armorType = "Armadura Pesada";
+                                  else if (typeSelect.value === "shield") armorType = "Escudo";
+                                  else if (typeSelect.value === "other") armorType = "Outro";
+                                  
+                                  const newArmor: Armor = {
+                                    id: Date.now().toString(),
+                                    name: nameInput.value,
+                                    weight: weightInput.value || '-',
+                                    type: armorType,
+                                    acBonus: acBonusInput.value || '-',
+                                    hasPenalty: penaltyCheckbox.checked,
+                                    properties: selectedProps
+                                  };
+                                  
+                                  setArmors([...armors, newArmor]);
+                                  
+                                  // Limpar campos
+                                  nameInput.value = '';
+                                  weightInput.value = '';
+                                  typeSelect.value = '';
+                                  acBonusInput.value = '';
+                                  penaltyCheckbox.checked = false;
+                                  document.querySelectorAll('.bg-primary').forEach(el => {
+                                    el.classList.remove('bg-primary');
+                                    el.classList.remove('text-primary-foreground');
+                                  });
+                                } else {
+                                  toast({
+                                    title: "Nome obrigatório",
+                                    description: "Você deve informar um nome para a armadura",
+                                    variant: "destructive"
+                                  });
+                                }
+                              }}
+                            >
+                              Adicionar Armadura
+                            </Button>
+                          </div>
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </div>
+                  
+                  {/* Separador entre seções */}
+                  <Separator className="my-4" />
+                  
+                  {/* Área de Outros Equipamentos & Moedas */}
+                  <div className="space-y-4">
+                    <h3 className="font-lora text-xl font-semibold text-primary">Outros Equipamentos & Moedas</h3>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Equipamentos Diversos</label>
+                        <Textarea 
+                          id="other-equipment-notes" 
+                          placeholder="Anote seus equipamentos gerais aqui..." 
+                          className="min-h-[200px]"
+                          value={otherEquipment.notes}
+                          onChange={(e) => setOtherEquipment({...otherEquipment, notes: e.target.value})}
                         />
                       </div>
-                      <Button 
-                        type="button"
-                        onClick={() => {
-                          const input = document.getElementById('new-equipment') as HTMLInputElement;
-                          if (input) {
-                            addItemToArray(equipment, setEquipment, input.value);
-                            input.value = '';
-                          }
-                        }}
-                      >
-                        Add Item
-                      </Button>
+                      
+                      <div className="space-y-4">
+                        <h4 className="font-lora text-lg font-semibold">Moedas</h4>
+                        
+                        <div className="grid grid-cols-1 gap-4">
+                          <div className="space-y-2">
+                            <label className="flex items-center text-sm font-medium">
+                              <div className="mr-2 h-4 w-4 rounded-full bg-amber-300"></div>
+                              Peças de Ouro (PO)
+                            </label>
+                            <Input 
+                              type="number" 
+                              min="0" 
+                              value={otherEquipment.gold}
+                              onChange={(e) => setOtherEquipment({...otherEquipment, gold: parseInt(e.target.value) || 0})}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="flex items-center text-sm font-medium">
+                              <div className="mr-2 h-4 w-4 rounded-full bg-zinc-300"></div>
+                              Peças de Prata (PP)
+                            </label>
+                            <Input 
+                              type="number" 
+                              min="0" 
+                              value={otherEquipment.silver}
+                              onChange={(e) => setOtherEquipment({...otherEquipment, silver: parseInt(e.target.value) || 0})}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="flex items-center text-sm font-medium">
+                              <div className="mr-2 h-4 w-4 rounded-full bg-amber-600"></div>
+                              Peças de Cobre (PC)
+                            </label>
+                            <Input 
+                              type="number" 
+                              min="0" 
+                              value={otherEquipment.copper}
+                              onChange={(e) => setOtherEquipment({...otherEquipment, copper: parseInt(e.target.value) || 0})}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="flex items-center text-sm font-medium">
+                              <div className="mr-2 h-4 w-4 rounded-full bg-cyan-200"></div>
+                              Peças de Electrum (PE)
+                            </label>
+                            <Input 
+                              type="number" 
+                              min="0" 
+                              value={otherEquipment.electrum}
+                              onChange={(e) => setOtherEquipment({...otherEquipment, electrum: parseInt(e.target.value) || 0})}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="flex items-center text-sm font-medium">
+                              <div className="mr-2 h-4 w-4 rounded-full bg-zinc-400"></div>
+                              Peças de Platina (PL)
+                            </label>
+                            <Input 
+                              type="number" 
+                              min="0" 
+                              value={otherEquipment.platinum}
+                              onChange={(e) => setOtherEquipment({...otherEquipment, platinum: parseInt(e.target.value) || 0})}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    
-                    <h3 className="font-lora text-lg font-semibold mt-6">Common Equipment</h3>
-                    
-                    <Accordion type="multiple" className="w-full">
-                      <AccordionItem value="weapons">
-                        <AccordionTrigger className="font-lora">Weapons</AccordionTrigger>
-                        <AccordionContent>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            {[
-                              "Longsword: 1d8 slashing",
-                              "Shortsword: 1d6 piercing",
-                              "Longbow: 1d8 piercing",
-                              "Dagger: 1d4 piercing",
-                              "Greataxe: 1d12 slashing",
-                              "Warhammer: 1d8 bludgeoning",
-                              "Light Crossbow: 1d8 piercing",
-                              "Quarterstaff: 1d6 bludgeoning"
-                            ].map((weapon) => (
-                              <Button
-                                key={weapon}
-                                variant="outline"
-                                size="sm"
-                                className="justify-start"
-                                onClick={() => addItemToArray(equipment, setEquipment, weapon)}
-                              >
-                                {weapon}
-                              </Button>
-                            ))}
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                      
-                      <AccordionItem value="armor">
-                        <AccordionTrigger className="font-lora">Armor</AccordionTrigger>
-                        <AccordionContent>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            {[
-                              "Leather Armor: AC 11",
-                              "Chain Shirt: AC 13",
-                              "Chain Mail: AC 16",
-                              "Plate: AC 18",
-                              "Shield: AC +2",
-                              "Studded Leather: AC 12",
-                              "Scale Mail: AC 14",
-                              "Half Plate: AC 15"
-                            ].map((armor) => (
-                              <Button
-                                key={armor}
-                                variant="outline"
-                                size="sm"
-                                className="justify-start"
-                                onClick={() => addItemToArray(equipment, setEquipment, armor)}
-                              >
-                                {armor}
-                              </Button>
-                            ))}
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                      
-                      <AccordionItem value="adventuring-gear">
-                        <AccordionTrigger className="font-lora">Adventuring Gear</AccordionTrigger>
-                        <AccordionContent>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            {[
-                              "Backpack",
-                              "Bedroll",
-                              "Mess kit",
-                              "Tinderbox",
-                              "Torch (10)",
-                              "Rations (10 days)",
-                              "Waterskin",
-                              "Rope, hempen (50 feet)",
-                              "Healer's kit",
-                              "Potion of healing",
-                              "Spellbook",
-                              "Component pouch",
-                              "Holy symbol",
-                              "Thieves' tools"
-                            ].map((gear) => (
-                              <Button
-                                key={gear}
-                                variant="outline"
-                                size="sm"
-                                className="justify-start"
-                                onClick={() => addItemToArray(equipment, setEquipment, gear)}
-                              >
-                                {gear}
-                              </Button>
-                            ))}
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <Button variant="outline" type="button" onClick={goToPreviousTab}>
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    Previous
+                    Anterior
                   </Button>
                   <Button type="button" onClick={goToNextTab}>
-                    Next
+                    Próximo
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </CardFooter>
