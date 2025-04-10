@@ -2015,17 +2015,21 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                 const selectedProps: string[] = [];
                                 const selectedTypes: string[] = [];
                                 
-                                document.querySelectorAll('.bg-primary').forEach(el => {
-                                  if ((el as HTMLElement).innerText) {
-                                    // Verificar se é propriedade ou tipo de dano
-                                    const text = (el as HTMLElement).innerText;
-                                    if (["Acuidade", "Duas Mãos", "Leve", "Pesada", "Alcance", "Arremesso", "Munição", "Recarga", "Especial", "Versátil"].includes(text)) {
-                                      selectedProps.push(text);
-                                    } else {
-                                      selectedTypes.push(text);
+                                // Limitando a busca aos badges dentro do modal de armas
+                                const weaponDialog = document.querySelector('[role="dialog"]') as HTMLElement;
+                                if (weaponDialog) {
+                                  weaponDialog.querySelectorAll('.bg-primary').forEach(el => {
+                                    if ((el as HTMLElement).innerText) {
+                                      // Verificar se é propriedade ou tipo de dano
+                                      const text = (el as HTMLElement).innerText;
+                                      if (["Acuidade", "Duas Mãos", "Leve", "Pesada", "Alcance", "Arremesso", "Munição", "Recarga", "Especial", "Versátil"].includes(text)) {
+                                        selectedProps.push(text);
+                                      } else if (text.length < 30) { // Verificação adicional para evitar textos longos
+                                        selectedTypes.push(text);
+                                      }
                                     }
-                                  }
-                                });
+                                  });
+                                }
                                 
                                 // Criar nova arma
                                 if (nameInput.value) {
