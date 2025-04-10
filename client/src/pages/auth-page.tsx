@@ -174,19 +174,7 @@ export default function AuthPage() {
                         {loginMutation.isPending ? t("common.loading") : t("auth.login")}
                       </Button>
                       
-                      <div className="relative flex items-center justify-center mt-6">
-                        <div className="border-t border-secondary/30 absolute w-full"></div>
-                        <span className="font-opensans text-sm text-secondary/70 bg-white px-2 relative">{t("auth.orContinueWith")}</span>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-3 mt-6">
-                        <Button variant="outline" type="button" disabled className="py-2 px-4 flex items-center justify-center text-sm">
-                          <i className="ri-google-fill text-lg mr-2"></i> Google
-                        </Button>
-                        <Button variant="outline" type="button" disabled className="py-2 px-4 flex items-center justify-center text-sm">
-                          <i className="ri-discord-fill text-lg mr-2"></i> Discord
-                        </Button>
-                      </div>
+
                     </form>
                   </Form>
                 </div>
@@ -306,19 +294,7 @@ export default function AuthPage() {
                         {registerMutation.isPending ? t("common.creating") : t("auth.createAccount")}
                       </Button>
                       
-                      <div className="relative flex items-center justify-center mt-6">
-                        <div className="border-t border-secondary/30 absolute w-full"></div>
-                        <span className="font-opensans text-sm text-secondary/70 bg-white px-2 relative">{t("auth.orRegisterWith")}</span>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-3 mt-6">
-                        <Button variant="outline" type="button" disabled className="py-2 px-4 flex items-center justify-center text-sm">
-                          <i className="ri-google-fill text-lg mr-2"></i> Google
-                        </Button>
-                        <Button variant="outline" type="button" disabled className="py-2 px-4 flex items-center justify-center text-sm">
-                          <i className="ri-discord-fill text-lg mr-2"></i> Discord
-                        </Button>
-                      </div>
+
                     </form>
                   </Form>
                 </div>
