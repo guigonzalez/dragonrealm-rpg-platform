@@ -609,26 +609,32 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                           <Upload className="h-8 w-8 text-muted-foreground" />
                         </div>
                         <p className="text-sm font-medium">{t("location.uploadMapDescription")}</p>
-                        <label htmlFor="map-upload">
-                          <Button type="button" variant="outline" size="sm" className="mt-2">
-                            {t("location.uploadMap")}
-                          </Button>
-                          <Input
-                            id="map-upload"
-                            type="file"
-                            accept="image/png,image/jpeg,image/gif"
-                            className="hidden"
-                            onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file) {
-                                // Criar URL temporária para a imagem
-                                const imageUrl = URL.createObjectURL(file);
-                                // Aqui você deve armazenar a URL da imagem em algum estado para exibi-la
-                                console.log("Mapa carregado:", imageUrl);
-                              }
-                            }}
-                          />
-                        </label>
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          size="sm" 
+                          className="mt-2"
+                          onClick={() => {
+                            document.getElementById('map-upload')?.click();
+                          }}
+                        >
+                          {t("location.uploadMap")}
+                        </Button>
+                        <Input
+                          id="map-upload"
+                          type="file"
+                          accept="image/png,image/jpeg,image/gif"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              // Criar URL temporária para a imagem
+                              const imageUrl = URL.createObjectURL(file);
+                              // Aqui você deve armazenar a URL da imagem em algum estado para exibi-la
+                              console.log("Mapa carregado:", imageUrl);
+                            }
+                          }}
+                        />
                       </div>
                     </div>
                     
@@ -774,25 +780,31 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                                         <Upload className="h-5 w-5 text-muted-foreground" />
                                       </div>
                                       <p className="text-xs text-muted-foreground">Upload an image for this location</p>
-                                      <label htmlFor="location-image-upload">
-                                        <Button type="button" variant="outline" size="sm" className="mt-1">
-                                          {t("location.uploadImage")}
-                                        </Button>
-                                        <Input
-                                          id="location-image-upload"
-                                          type="file"
-                                          accept="image/png,image/jpeg,image/gif"
-                                          className="hidden"
-                                          onChange={(e) => {
-                                            const file = e.target.files?.[0];
-                                            if (file) {
-                                              // Simular uma URL para a imagem
-                                              const imageUrl = URL.createObjectURL(file);
-                                              field.onChange(imageUrl);
-                                            }
-                                          }}
-                                        />
-                                      </label>
+                                      <Button 
+                                        type="button" 
+                                        variant="outline" 
+                                        size="sm" 
+                                        className="mt-1"
+                                        onClick={() => {
+                                          document.getElementById('location-image-upload')?.click();
+                                        }}
+                                      >
+                                        {t("location.uploadImage")}
+                                      </Button>
+                                      <Input
+                                        id="location-image-upload"
+                                        type="file"
+                                        accept="image/png,image/jpeg,image/gif"
+                                        className="hidden"
+                                        onChange={(e) => {
+                                          const file = e.target.files?.[0];
+                                          if (file) {
+                                            // Simular uma URL para a imagem
+                                            const imageUrl = URL.createObjectURL(file);
+                                            field.onChange(imageUrl);
+                                          }
+                                        }}
+                                      />
                                     </div>
                                   </div>
                                   {field.value && (
