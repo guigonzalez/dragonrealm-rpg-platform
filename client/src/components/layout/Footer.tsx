@@ -10,9 +10,8 @@ export default function Footer() {
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
-            <div className="flex items-center space-x-2 mb-4">
-              <i className="ri-dragonfight-fill text-3xl text-accent"></i>
-              <h2 className="font-lora font-bold text-xl">DragonRealm</h2>
+            <div className="flex items-center mb-4">
+              <img src="/assets/logo.png" alt="DragonRealm" className="h-10" />
             </div>
             <p className="font-opensans text-white/80 mb-4">{t("landing.footer.description")}</p>
             <div className="flex space-x-4">

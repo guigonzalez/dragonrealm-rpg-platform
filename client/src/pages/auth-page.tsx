@@ -120,6 +120,7 @@ export default function AuthPage() {
               <TabsContent value="signin">
                 <div className="space-y-4">
                   <div className="text-center mb-6">
+                    <img src="/assets/logo.png" alt="DragonRealm" className="h-12 mx-auto mb-3" />
                     <h2 className="font-lora text-2xl font-bold text-primary">Welcome Back</h2>
                     <p className="text-secondary/80 mt-1">Sign in to continue your adventure</p>
                   </div>
@@ -192,6 +193,7 @@ export default function AuthPage() {
               <TabsContent value="signup">
                 <div className="space-y-4">
                   <div className="text-center mb-6">
+                    <img src="/assets/logo.png" alt="DragonRealm" className="h-12 mx-auto mb-3" />
                     <h2 className="font-lora text-2xl font-bold text-primary">Create an Account</h2>
                     <p className="text-secondary/80 mt-1">Join DragonRealm to begin your journey</p>
                   </div>

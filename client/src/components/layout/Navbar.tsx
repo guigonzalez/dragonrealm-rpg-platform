@@ -44,9 +44,8 @@ export default function Navbar() {
     <header className="bg-primary text-white shadow-md">
       <div className="container mx-auto px-6 py-3 flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <i className="ri-dragonfight-fill text-3xl text-accent"></i>
-          <Link href="/">
-            <h1 className="font-lora font-bold text-xl md:text-2xl cursor-pointer">DragonRealm</h1>
+          <Link href="/" className="flex items-center space-x-2">
+            <img src="/assets/logo.png" alt="DragonRealm" className="h-8 md:h-10" />
           </Link>
         </div>
         
