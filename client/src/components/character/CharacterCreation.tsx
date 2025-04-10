@@ -469,8 +469,14 @@ export default function CharacterCreation() {
     <div>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
-          <h1 className="font-lora font-bold text-3xl text-primary mb-2">Create Your Character</h1>
-          <p className="text-secondary">Fill out the details to bring your character to life</p>
+          <h1 className="font-lora font-bold text-3xl text-primary mb-2">
+            {isEditMode ? "Edit Your Character" : "Create Your Character"}
+          </h1>
+          <p className="text-secondary">
+            {isEditMode 
+              ? "Update your character's details" 
+              : "Fill out the details to bring your character to life"}
+          </p>
         </div>
         <Button
           variant="outline"
@@ -1704,9 +1710,11 @@ export default function CharacterCreation() {
                   <Button 
                     type="submit" 
                     className="magic-button"
-                    disabled={createMutation.isPending}
+                    disabled={isEditMode ? updateMutation.isPending : createMutation.isPending}
                   >
-                    {createMutation.isPending ? "Creating..." : "Create Character"}
+                    {isEditMode 
+                      ? (updateMutation.isPending ? "Updating..." : "Update Character") 
+                      : (createMutation.isPending ? "Creating..." : "Create Character")}
                   </Button>
                 </CardFooter>
               </Card>
