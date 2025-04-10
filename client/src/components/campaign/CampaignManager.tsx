@@ -580,151 +580,244 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-8">
-                {/* Central Concept */}
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-lora text-xl text-primary">{t("location.centralConcept")}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {t("location.centralConceptDescription")}
-                  </p>
-                  <Textarea 
-                    placeholder="What's the central concept of your world?"
-                    className="min-h-[100px]"
-                    value={centralConcept}
-                    onChange={(e) => setCentralConcept(e.target.value)}
-                  />
-                </div>
-                
-                {/* Geography */}
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-lora text-xl text-primary">{t("location.geography")}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {t("location.geographyDescription")}
-                  </p>
-                  <Textarea 
-                    placeholder="Describe the key geographical regions of your world"
-                    className="min-h-[100px]"
-                  />
-                  
-                  {/* World Map Upload */}
-                  <div className="mt-6 space-y-2">
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-lora text-md text-primary">{t("location.worldMap")}</h4>
+                {worldEditMode ? (
+                  <>
+                    {/* Modo de Edição */}
+                    {/* Central Concept */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <h3 className="font-lora text-xl text-primary">{t("location.centralConcept")}</h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {t("location.centralConceptDescription")}
+                      </p>
+                      <Textarea 
+                        placeholder="What's the central concept of your world?"
+                        className="min-h-[100px]"
+                        value={centralConcept}
+                        onChange={(e) => setCentralConcept(e.target.value)}
+                      />
                     </div>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {t("location.worldMapDescription")}
-                    </p>
                     
-                    <div className="border-2 border-dashed border-primary/20 rounded-md p-6 text-center hover:border-primary/40 transition-colors">
-                      <div className="space-y-2">
-                        <div className="flex justify-center">
-                          <Upload className="h-8 w-8 text-muted-foreground" />
+                    {/* Geography */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <h3 className="font-lora text-xl text-primary">{t("location.geography")}</h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {t("location.geographyDescription")}
+                      </p>
+                      <Textarea 
+                        placeholder="Describe the key geographical regions of your world"
+                        className="min-h-[100px]"
+                        value={geography}
+                        onChange={(e) => setGeography(e.target.value)}
+                      />
+                      
+                      {/* World Map Upload */}
+                      <div className="mt-6 space-y-2">
+                        <div className="flex justify-between items-center">
+                          <h4 className="font-lora text-md text-primary">{t("location.worldMap")}</h4>
                         </div>
-                        <p className="text-sm font-medium">{t("location.uploadMapDescription")}</p>
-                        <Button 
-                          type="button" 
-                          variant="outline" 
-                          size="sm" 
-                          className="mt-2"
-                          onClick={() => {
-                            document.getElementById('map-upload')?.click();
-                          }}
-                        >
-                          {t("location.uploadMap")}
-                        </Button>
-                        <Input
-                          id="map-upload"
-                          type="file"
-                          accept="image/png,image/jpeg,image/gif"
-                          className="hidden"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              // Criar URL temporária para a imagem
-                              const imageUrl = URL.createObjectURL(file);
-                              // Armazenar a URL da imagem no estado
-                              setMapImageUrl(imageUrl);
-                              console.log("Mapa carregado:", imageUrl);
-                            }
-                          }}
-                        />
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {t("location.worldMapDescription")}
+                        </p>
+                        
+                        <div className="border-2 border-dashed border-primary/20 rounded-md p-6 text-center hover:border-primary/40 transition-colors">
+                          <div className="space-y-2">
+                            <div className="flex justify-center">
+                              <Upload className="h-8 w-8 text-muted-foreground" />
+                            </div>
+                            <p className="text-sm font-medium">{t("location.uploadMapDescription")}</p>
+                            <Button 
+                              type="button" 
+                              variant="outline" 
+                              size="sm" 
+                              className="mt-2"
+                              onClick={() => {
+                                document.getElementById('map-upload')?.click();
+                              }}
+                            >
+                              {t("location.uploadMap")}
+                            </Button>
+                            <Input
+                              id="map-upload"
+                              type="file"
+                              accept="image/png,image/jpeg,image/gif"
+                              className="hidden"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  // Criar URL temporária para a imagem
+                                  const imageUrl = URL.createObjectURL(file);
+                                  // Armazenar a URL da imagem no estado
+                                  setMapImageUrl(imageUrl);
+                                  console.log("Mapa carregado:", imageUrl);
+                                }
+                              }}
+                            />
+                          </div>
+                        </div>
+                        
+                        {/* Exibir preview da imagem quando ela for carregada */}
+                        {mapImageUrl && (
+                          <div className="mt-4">
+                            <img 
+                              src={mapImageUrl} 
+                              alt="World map" 
+                              className="w-full max-h-96 object-contain rounded-md border border-border" 
+                            />
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="text-destructive mt-2"
+                              onClick={() => setMapImageUrl("")}
+                            >
+                              {t("common.removeImage")}
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     </div>
                     
-                    {/* Exibir preview da imagem quando ela for carregada */}
+                    {/* Factions */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <h3 className="font-lora text-xl text-primary">{t("location.factions")}</h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {t("location.factionsDescription")}
+                      </p>
+                      <Textarea 
+                        placeholder="Describe the major factions and their tensions"
+                        className="min-h-[100px]"
+                        value={factions}
+                        onChange={(e) => setFactions(e.target.value)}
+                      />
+                    </div>
+                    
+                    {/* History */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <h3 className="font-lora text-xl text-primary">{t("location.history")}</h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {t("location.historyDescription")}
+                      </p>
+                      <Textarea 
+                        placeholder="Describe a key historical event and its consequences"
+                        className="min-h-[100px]"
+                        value={history}
+                        onChange={(e) => setHistory(e.target.value)}
+                      />
+                    </div>
+                    
+                    {/* Magic/Technology */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <h3 className="font-lora text-xl text-primary">{t("location.magicTech")}</h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {t("location.magicTechDescription")}
+                      </p>
+                      <Textarea 
+                        placeholder="Describe how magic, technology, or other systems work in your world"
+                        className="min-h-[100px]"
+                        value={magicTech}
+                        onChange={(e) => setMagicTech(e.target.value)}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {/* Modo de Visualização */}
+                    {/* Mostrar mapa no topo se existir */}
                     {mapImageUrl && (
-                      <div className="mt-4">
+                      <div className="mb-8">
                         <img 
                           src={mapImageUrl} 
                           alt="World map" 
-                          className="w-full max-h-96 object-contain rounded-md border border-border" 
+                          className="w-full max-h-[500px] object-contain rounded-md border border-border" 
                         />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="text-destructive mt-2"
-                          onClick={() => setMapImageUrl("")}
-                        >
-                          {t("common.removeImage")}
-                        </Button>
                       </div>
                     )}
-                  </div>
-                </div>
-                
-                {/* Factions */}
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-lora text-xl text-primary">{t("location.factions")}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {t("location.factionsDescription")}
-                  </p>
-                  <Textarea 
-                    placeholder="Describe the major factions and their tensions"
-                    className="min-h-[100px]"
-                  />
-                </div>
-                
-                {/* History */}
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-lora text-xl text-primary">{t("location.history")}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {t("location.historyDescription")}
-                  </p>
-                  <Textarea 
-                    placeholder="Describe a key historical event and its consequences"
-                    className="min-h-[100px]"
-                  />
-                </div>
-                
-                {/* Magic/Technology */}
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-lora text-xl text-primary">{t("location.magicTech")}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {t("location.magicTechDescription")}
-                  </p>
-                  <Textarea 
-                    placeholder="Describe how magic, technology, or other systems work in your world"
-                    className="min-h-[100px]"
-                  />
-                </div>
+                    
+                    {/* Central Concept */}
+                    {centralConcept && (
+                      <div className="space-y-2">
+                        <h3 className="font-lora text-xl text-primary">{t("location.centralConcept")}</h3>
+                        <div className="prose prose-sm max-w-none">
+                          <p className="text-secondary whitespace-pre-wrap">{centralConcept}</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Geography */}
+                    {geography && (
+                      <div className="space-y-2">
+                        <h3 className="font-lora text-xl text-primary">{t("location.geography")}</h3>
+                        <div className="prose prose-sm max-w-none">
+                          <p className="text-secondary whitespace-pre-wrap">{geography}</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Factions */}
+                    {factions && (
+                      <div className="space-y-2">
+                        <h3 className="font-lora text-xl text-primary">{t("location.factions")}</h3>
+                        <div className="prose prose-sm max-w-none">
+                          <p className="text-secondary whitespace-pre-wrap">{factions}</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* History */}
+                    {history && (
+                      <div className="space-y-2">
+                        <h3 className="font-lora text-xl text-primary">{t("location.history")}</h3>
+                        <div className="prose prose-sm max-w-none">
+                          <p className="text-secondary whitespace-pre-wrap">{history}</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Magic/Technology */}
+                    {magicTech && (
+                      <div className="space-y-2">
+                        <h3 className="font-lora text-xl text-primary">{t("location.magicTech")}</h3>
+                        <div className="prose prose-sm max-w-none">
+                          <p className="text-secondary whitespace-pre-wrap">{magicTech}</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Mensagem quando não houver conteúdo */}
+                    {!centralConcept && !geography && !factions && !history && !magicTech && !mapImageUrl && (
+                      <div className="text-center py-8">
+                        <p className="text-muted-foreground">{t("location.noWorldContent")}</p>
+                      </div>
+                    )}
+                  </>
+                )}
               </CardContent>
               <CardFooter className="flex justify-end space-x-2">
-                <Button variant="outline">
-                  {t("location.edit")}
-                </Button>
-                <Button className="magic-button">
-                  {t("location.save")}
-                </Button>
+                {worldEditMode ? (
+                  <Button 
+                    className="magic-button"
+                    onClick={() => setWorldEditMode(false)}
+                  >
+                    {t("location.save")}
+                  </Button>
+                ) : (
+                  <Button 
+                    variant="outline"
+                    onClick={() => setWorldEditMode(true)}
+                  >
+                    {t("location.edit")}
+                  </Button>
+                )}
               </CardFooter>
             </Card>
             

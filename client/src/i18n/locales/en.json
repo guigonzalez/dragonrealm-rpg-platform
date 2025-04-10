@@ -233,7 +233,8 @@
     "magicTechDescription": "Explain how magic or technology works in your world and one unique rule of this universe.",
     "edit": "Edit",
     "save": "Save",
-    "worldFoundations": "World Foundations"
+    "worldFoundations": "World Foundations",
+    "noWorldContent": "No world content added yet. Click the Edit button to start building your world."
   },
   "sessionNote": {
     "sessionNotes": "Session Notes",
