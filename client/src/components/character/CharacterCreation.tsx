@@ -462,7 +462,9 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
   // Funções para gerenciar magias
   const addSpell = (newSpell: Omit<Spell, 'id'>) => {
     const id = crypto.randomUUID();
-    setSpellList([...spellList, { ...newSpell, id }]);
+    const spellWithId = { ...newSpell, id };
+    console.log("Adicionando magia:", spellWithId);
+    setSpellList([...spellList, spellWithId]);
   };
 
   const updateSpell = (id: string, updatedSpell: Partial<Spell>) => {
