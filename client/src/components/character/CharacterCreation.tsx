@@ -7,7 +7,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { insertCharacterSchema, InsertCharacter } from "@shared/schema";
+import { insertCharacterSchema, InsertCharacter, Character } from "@shared/schema";
 import {
   Form,
   FormControl,
@@ -155,12 +155,17 @@ const characterFormSchema = insertCharacterSchema.omit({
 
 type CharacterFormValues = z.infer<typeof characterFormSchema>;
 
-export default function CharacterCreation() {
+interface CharacterCreationProps {
+  readOnly?: boolean;
+  predefinedCharacter?: Character;
+}
+
+export default function CharacterCreation({ readOnly = false, predefinedCharacter }: CharacterCreationProps) {
   const { user } = useAuth();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const params = useParams();
-  const characterId = params.id ? parseInt(params.id) : undefined;
+  const characterId = predefinedCharacter?.id || (params.id ? parseInt(params.id) : undefined);
   const isEditMode = !!characterId;
   const [currentTab, setCurrentTab] = useState("basics");
   const [savingThrows, setSavingThrows] = useState<string[]>([]);
@@ -631,21 +636,36 @@ export default function CharacterCreation() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
           <h1 className="font-lora font-bold text-3xl text-primary mb-2">
-            {isEditMode ? "Edit Your Character" : "Create Your Character"}
+            {readOnly 
+              ? `${predefinedCharacter?.name || form.getValues().name || "Character"}`
+              : isEditMode 
+                ? "Edit Your Character" 
+                : "Create Your Character"}
           </h1>
           <p className="text-secondary">
-            {isEditMode 
-              ? "Update your character's details" 
-              : "Fill out the details to bring your character to life"}
+            {readOnly
+              ? `${predefinedCharacter?.race || form.getValues().race || ""} ${predefinedCharacter?.class || form.getValues().class || ""} • Level ${predefinedCharacter?.level || form.getValues().level || 1}`
+              : isEditMode 
+                ? "Update your character's details" 
+                : "Fill out the details to bring your character to life"}
           </p>
         </div>
-        <Button
-          variant="outline"
-          onClick={() => setLocation('/dashboard')}
-          className="mt-4 md:mt-0"
-        >
-          Back to Dashboard
-        </Button>
+        <div className="flex mt-4 md:mt-0 space-x-3">
+          <Button
+            variant="outline"
+            onClick={() => setLocation('/dashboard')}
+          >
+            Back to Dashboard
+          </Button>
+          {readOnly && (
+            <Link href={`/character-creation/${predefinedCharacter?.id || characterId}`}>
+              <Button variant="outline">
+                <Edit2 className="mr-2 h-4 w-4" />
+                Edit Character
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
       
       <Form {...form}>
