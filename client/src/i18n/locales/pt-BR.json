@@ -250,7 +250,8 @@
     "magicTechDescription": "Explique como a magia ou tecnologia funciona no seu mundo e uma regra única deste universo.",
     "edit": "Editar",
     "save": "Salvar",
-    "worldFoundations": "Fundamentos do Mundo"
+    "worldFoundations": "Fundamentos do Mundo",
+    "noWorldContent": "Nenhum conteúdo de mundo adicionado ainda. Clique no botão Editar para começar a construir seu mundo."
   },
   "sessionNote": {
     "sessionNotes": "Notas de Sessão",
