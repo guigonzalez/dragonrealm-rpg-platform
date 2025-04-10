@@ -67,7 +67,8 @@ import {
   User, 
   HelpCircle, 
   Check, 
-  Sword, 
+  Sword,
+  X, 
   Trash, 
   PlusCircle 
 } from "lucide-react";
@@ -2363,94 +2364,400 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
             <TabsContent value="features">
               <Card className="border-t-4 border-t-primary">
                 <CardHeader>
-                  <CardTitle className="font-lora text-2xl">Features & Spells</CardTitle>
+                  <CardTitle className="font-lora text-2xl">Resources & Spells</CardTitle>
                   <CardDescription>
-                    Add class features, abilities, and spells your character knows.
+                    Add class features, racial abilities, and manage your character's spells.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div className="space-y-4">
-                    <h3 className="font-lora text-lg font-semibold">Class Features</h3>
-                    
-                    <div className="flex flex-col space-y-2">
-                      {features.map((feature, index) => (
-                        <div key={index} className="flex items-center justify-between border-b border-gray-200 pb-1">
-                          <span className="font-opensans text-sm">{feature}</span>
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => removeItemFromArray(features, setFeatures, feature)}
-                          >
-                            Remove
-                          </Button>
+                  <div className="space-y-6">
+                    <Tabs defaultValue="abilities" className="w-full">
+                      <TabsList className="grid grid-cols-2 w-full mb-6">
+                        <TabsTrigger value="abilities">Class & Race Abilities</TabsTrigger>
+                        <TabsTrigger value="spells">Spellcasting</TabsTrigger>
+                      </TabsList>
+                      
+                      <TabsContent value="abilities" className="space-y-6">
+                      {/* Class Features */}
+                      <div className="space-y-4">
+                        <h3 className="font-lora text-lg font-semibold">Class Features</h3>
+                        
+                        <div className="flex flex-col space-y-2">
+                          {classFeatures.map((feature, index) => (
+                            <div key={index} className="flex items-center justify-between border-b border-gray-200 pb-1">
+                              <span className="font-opensans text-sm">{feature}</span>
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => removeItemFromArray(classFeatures, setClassFeatures, feature)}
+                                disabled={readOnly}
+                              >
+                                Remove
+                              </Button>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                    
-                    <div className="flex items-end gap-2">
-                      <div className="flex-1">
-                        <label className="text-sm font-medium">Add Feature</label>
-                        <Input
-                          id="new-feature"
-                          placeholder="e.g., Rage: Enter a rage as a bonus action"
-                          className="mt-1"
-                        />
+                        
+                        {!readOnly && (
+                          <div className="flex items-end gap-2">
+                            <div className="flex-1">
+                              <label className="text-sm font-medium">Add Class Feature</label>
+                              <Input
+                                id="new-class-feature"
+                                placeholder="e.g., Rage: Enter a rage as a bonus action"
+                                className="mt-1"
+                              />
+                            </div>
+                            <Button 
+                              type="button"
+                              onClick={() => {
+                                const input = document.getElementById('new-class-feature') as HTMLInputElement;
+                                if (input) {
+                                  addItemToArray(classFeatures, setClassFeatures, input.value);
+                                  input.value = '';
+                                }
+                              }}
+                            >
+                              Add
+                            </Button>
+                          </div>
+                        )}
                       </div>
-                      <Button 
-                        type="button"
-                        onClick={() => {
-                          const input = document.getElementById('new-feature') as HTMLInputElement;
-                          if (input) {
-                            addItemToArray(features, setFeatures, input.value);
-                            input.value = '';
-                          }
-                        }}
-                      >
-                        Add Feature
-                      </Button>
-                    </div>
-                    
-                    <Separator className="my-6" />
-                    
-                    <h3 className="font-lora text-lg font-semibold">Spells</h3>
-                    
-                    <div className="flex flex-col space-y-2">
-                      {spells.map((spell, index) => (
-                        <div key={index} className="flex items-center justify-between border-b border-gray-200 pb-1">
-                          <span className="font-opensans text-sm">{spell}</span>
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => removeItemFromArray(spells, setSpells, spell)}
-                          >
-                            Remove
-                          </Button>
+                      
+                      <Separator />
+                      
+                      {/* Race Features */}
+                      <div className="space-y-4">
+                        <h3 className="font-lora text-lg font-semibold">Race Features</h3>
+                        
+                        <div className="flex flex-col space-y-2">
+                          {raceFeatures.map((feature, index) => (
+                            <div key={index} className="flex items-center justify-between border-b border-gray-200 pb-1">
+                              <span className="font-opensans text-sm">{feature}</span>
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => removeItemFromArray(raceFeatures, setRaceFeatures, feature)}
+                                disabled={readOnly}
+                              >
+                                Remove
+                              </Button>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                    
-                    <div className="flex items-end gap-2">
-                      <div className="flex-1">
-                        <label className="text-sm font-medium">Add Spell</label>
-                        <Input
-                          id="new-spell"
-                          placeholder="e.g., Fireball"
-                          className="mt-1"
-                        />
+                        
+                        {!readOnly && (
+                          <div className="flex items-end gap-2">
+                            <div className="flex-1">
+                              <label className="text-sm font-medium">Add Race Feature</label>
+                              <Input
+                                id="new-race-feature"
+                                placeholder="e.g., Darkvision: Can see in darkness up to 60 feet"
+                                className="mt-1"
+                              />
+                            </div>
+                            <Button 
+                              type="button"
+                              onClick={() => {
+                                const input = document.getElementById('new-race-feature') as HTMLInputElement;
+                                if (input) {
+                                  addItemToArray(raceFeatures, setRaceFeatures, input.value);
+                                  input.value = '';
+                                }
+                              }}
+                            >
+                              Add
+                            </Button>
+                          </div>
+                        )}
                       </div>
-                      <Button 
-                        type="button"
-                        onClick={() => {
-                          const input = document.getElementById('new-spell') as HTMLInputElement;
-                          if (input) {
-                            addItemToArray(spells, setSpells, input.value);
-                            input.value = '';
-                          }
-                        }}
-                      >
-                        Add Spell
-                      </Button>
-                    </div>
+                      
+                      <Separator />
+                      
+                      {/* General Features */}
+                      <div className="space-y-4">
+                        <h3 className="font-lora text-lg font-semibold">Other Features</h3>
+                        
+                        <div className="flex flex-col space-y-2">
+                          {features.map((feature, index) => (
+                            <div key={index} className="flex items-center justify-between border-b border-gray-200 pb-1">
+                              <span className="font-opensans text-sm">{feature}</span>
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => removeItemFromArray(features, setFeatures, feature)}
+                                disabled={readOnly}
+                              >
+                                Remove
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        {!readOnly && (
+                          <div className="flex items-end gap-2">
+                            <div className="flex-1">
+                              <label className="text-sm font-medium">Add Feature</label>
+                              <Input
+                                id="new-feature"
+                                placeholder="e.g., Lucky: Reroll 1s on damage dice"
+                                className="mt-1"
+                              />
+                            </div>
+                            <Button 
+                              type="button"
+                              onClick={() => {
+                                const input = document.getElementById('new-feature') as HTMLInputElement;
+                                if (input) {
+                                  addItemToArray(features, setFeatures, input.value);
+                                  input.value = '';
+                                }
+                              }}
+                            >
+                              Add
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="spells" className="space-y-6">
+                      {/* Spellcasting Information */}
+                      <div className="space-y-4">
+                        <h3 className="font-lora text-lg font-semibold">Spellcasting</h3>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div>
+                            <label className="text-sm font-medium">Spellcasting Ability</label>
+                            <Select 
+                              disabled={readOnly}
+                              value={spellcasting.ability}
+                              onValueChange={(value) => updateSpellcasting({ ability: value })}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select ability" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Intelligence">Intelligence</SelectItem>
+                                <SelectItem value="Wisdom">Wisdom</SelectItem>
+                                <SelectItem value="Charisma">Charisma</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          
+                          <div>
+                            <label className="text-sm font-medium">Spell Save DC</label>
+                            <Input 
+                              type="number"
+                              value={spellcasting.saveDC} 
+                              onChange={(e) => updateSpellcasting({ saveDC: parseInt(e.target.value) || 0 })}
+                              disabled={readOnly}
+                              className={readOnly ? "opacity-100" : ""}
+                              min={0}
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="text-sm font-medium">Spell Attack Bonus</label>
+                            <Input 
+                              type="number"
+                              value={spellcasting.attackBonus} 
+                              onChange={(e) => updateSpellcasting({ attackBonus: parseInt(e.target.value) || 0 })}
+                              disabled={readOnly}
+                              className={readOnly ? "opacity-100" : ""}
+                              min={0}
+                            />
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <h4 className="font-lora text-md font-semibold my-3">Spell Slots</h4>
+                          <div className="grid grid-cols-3 md:grid-cols-9 gap-2">
+                            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((level) => (
+                              <div key={level}>
+                                <label className="text-xs font-medium block">Level {level}</label>
+                                <Input 
+                                  type="number"
+                                  value={spellcasting.spellSlots[level]} 
+                                  onChange={(e) => {
+                                    const newSlots = { ...spellcasting.spellSlots };
+                                    newSlots[level] = parseInt(e.target.value) || 0;
+                                    updateSpellcasting({ spellSlots: newSlots });
+                                  }}
+                                  disabled={readOnly}
+                                  className={`${readOnly ? "opacity-100" : ""} text-center`}
+                                  min={0}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-4">
+                          <div className="w-32">
+                            <label className="text-sm font-medium block">SP/Ki Points</label>
+                            <Input 
+                              type="number"
+                              value={spellcasting.points} 
+                              onChange={(e) => updateSpellcasting({ points: parseInt(e.target.value) || 0 })}
+                              disabled={readOnly}
+                              className={readOnly ? "opacity-100" : ""}
+                              min={0}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <Separator />
+                      
+                      {/* Spell List */}
+                      <div className="space-y-4">
+                        <h3 className="font-lora text-lg font-semibold">Spell List</h3>
+                        
+                        <div className="grid grid-cols-1 gap-4">
+                          {spellList.map((spell) => (
+                            <div key={spell.id} className="border rounded-md p-3 relative">
+                              <div className="flex justify-between items-start">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2">
+                                    <h4 className="font-bold">{spell.name}</h4>
+                                    <Badge variant="outline">Level {spell.level}</Badge>
+                                  </div>
+                                  <p className="text-sm mt-1">{spell.description}</p>
+                                  {spell.damage && (
+                                    <p className="text-sm mt-1"><span className="font-semibold">Damage:</span> {spell.damage}</p>
+                                  )}
+                                </div>
+                                {!readOnly && (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeSpell(spell.id)}
+                                    className="text-destructive"
+                                  >
+                                    <X className="h-4 w-4" />
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        {!readOnly && (
+                          <div className="border rounded-md p-4 space-y-4">
+                            <h4 className="font-medium">Add New Spell</h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div>
+                                <label className="text-sm font-medium">Name</label>
+                                <Input id="new-spell-name" placeholder="e.g., Fireball" />
+                              </div>
+                              <div>
+                                <label className="text-sm font-medium">Level</label>
+                                <Select defaultValue="1">
+                                  <SelectTrigger id="new-spell-level">
+                                    <SelectValue placeholder="Spell level" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="0">Cantrip (0)</SelectItem>
+                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((level) => (
+                                      <SelectItem key={level} value={level.toString()}>
+                                        Level {level}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div className="md:col-span-2">
+                                <label className="text-sm font-medium">Description</label>
+                                <Textarea id="new-spell-description" placeholder="Describe what the spell does" />
+                              </div>
+                              <div>
+                                <label className="text-sm font-medium">Damage (Optional)</label>
+                                <Input id="new-spell-damage" placeholder="e.g., 8d6 fire" />
+                              </div>
+                              <div className="self-end">
+                                <Button 
+                                  type="button"
+                                  onClick={() => {
+                                    const nameInput = document.getElementById('new-spell-name') as HTMLInputElement;
+                                    const levelSelect = document.getElementById('new-spell-level') as HTMLSelectElement;
+                                    const descriptionInput = document.getElementById('new-spell-description') as HTMLTextAreaElement;
+                                    const damageInput = document.getElementById('new-spell-damage') as HTMLInputElement;
+                                    
+                                    if (nameInput && levelSelect && descriptionInput) {
+                                      addSpell({
+                                        name: nameInput.value,
+                                        level: parseInt(levelSelect.value) || 0,
+                                        description: descriptionInput.value,
+                                        damage: damageInput.value || undefined
+                                      });
+                                      
+                                      // Clear inputs
+                                      nameInput.value = '';
+                                      levelSelect.value = '1';
+                                      descriptionInput.value = '';
+                                      damageInput.value = '';
+                                    }
+                                  }}
+                                  className="w-full"
+                                >
+                                  Add Spell
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        
+                        <Separator className="my-2" />
+                        
+                        {/* Legacy Spells (for backward compatibility) */}
+                        <div className="space-y-4">
+                          <h3 className="font-lora text-lg font-semibold">Simple Spell List (Legacy)</h3>
+                          
+                          <div className="flex flex-col space-y-2">
+                            {spells.map((spell, index) => (
+                              <div key={index} className="flex items-center justify-between border-b border-gray-200 pb-1">
+                                <span className="font-opensans text-sm">{spell}</span>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm"
+                                  onClick={() => removeItemFromArray(spells, setSpells, spell)}
+                                  disabled={readOnly}
+                                >
+                                  Remove
+                                </Button>
+                              </div>
+                            ))}
+                          </div>
+                          
+                          {!readOnly && (
+                            <div className="flex items-end gap-2">
+                              <div className="flex-1">
+                                <label className="text-sm font-medium">Add Simple Spell</label>
+                                <Input
+                                  id="new-spell"
+                                  placeholder="e.g., Fireball"
+                                  className="mt-1"
+                                />
+                              </div>
+                              <Button 
+                                type="button"
+                                onClick={() => {
+                                  const input = document.getElementById('new-spell') as HTMLInputElement;
+                                  if (input) {
+                                    addItemToArray(spells, setSpells, input.value);
+                                    input.value = '';
+                                  }
+                                }}
+                              >
+                                Add Spell
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </TabsContent>
+                    </Tabs>
                     
                     <h3 className="font-lora text-lg font-semibold mt-6">Common Class Features</h3>
                     
