@@ -101,6 +101,9 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
   const [noteDialogOpen, setNoteDialogOpen] = useState(false);
   const [showLocationForm, setShowLocationForm] = useState(false);
+  
+  // State para armazenar a URL da imagem do mapa do mundo
+  const [mapImageUrl, setMapImageUrl] = useState<string>("");
   const [editingLocationId, setEditingLocationId] = useState<number | null>(null);
   const [editingNoteId, setEditingNoteId] = useState<number | null>(null);
   
@@ -630,7 +633,8 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                             if (file) {
                               // Criar URL temporária para a imagem
                               const imageUrl = URL.createObjectURL(file);
-                              // Aqui você deve armazenar a URL da imagem em algum estado para exibi-la
+                              // Armazenar a URL da imagem no estado
+                              setMapImageUrl(imageUrl);
                               console.log("Mapa carregado:", imageUrl);
                             }
                           }}
@@ -638,8 +642,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                       </div>
                     </div>
                     
-                    {/* Aqui você pode adicionar o preview da imagem quando ela for carregada */}
-                    {/* 
+                    {/* Exibir preview da imagem quando ela for carregada */}
                     {mapImageUrl && (
                       <div className="mt-4">
                         <img 
@@ -654,11 +657,10 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                           className="text-destructive mt-2"
                           onClick={() => setMapImageUrl("")}
                         >
-                          Remove Image
+                          {t("common.removeImage")}
                         </Button>
                       </div>
                     )}
-                    */}
                   </div>
                 </div>
                 
