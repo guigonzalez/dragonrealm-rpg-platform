@@ -1083,6 +1083,7 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                 max={20}
                                 className="w-full accent-primary"
                                 {...field}
+                                disabled={readOnly}
                                 onChange={(e) => {
                                   const value = parseInt(e.target.value);
                                   field.onChange(value || 0);
