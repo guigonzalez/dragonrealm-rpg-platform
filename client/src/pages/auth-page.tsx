@@ -290,7 +290,7 @@ export default function AuthPage() {
                             </FormControl>
                             <div className="space-y-1 leading-none">
                               <FormLabel className="text-xs">
-                                I agree to the <a href="#" className="text-primary hover:underline">Terms of Service</a> and <a href="#" className="text-primary hover:underline">Privacy Policy</a>
+                                {t("auth.termsAgreement")}
                               </FormLabel>
                               <FormMessage />
                             </div>
@@ -328,8 +328,8 @@ export default function AuthPage() {
           
           <div className="hidden md:block">
             <div className="h-full flex flex-col justify-center">
-              <h1 className="font-lora font-bold text-4xl text-primary mb-6">Begin Your Epic Adventure</h1>
-              <p className="text-lg mb-8">Join DragonRealm and unlock a suite of powerful tools designed specifically for D&D players and Game Masters.</p>
+              <h1 className="font-lora font-bold text-4xl text-primary mb-6">{t("auth.beginAdventure")}</h1>
+              <p className="text-lg mb-8">{t("auth.joinDescription")}</p>
               
               <div className="space-y-6">
                 <div className="flex items-start gap-3">
@@ -337,8 +337,8 @@ export default function AuthPage() {
                     <i className="ri-sword-fill text-xl text-primary"></i>
                   </div>
                   <div>
-                    <h3 className="font-lora text-xl font-semibold text-primary">Character Management</h3>
-                    <p className="text-secondary">Create and manage detailed character sheets following official D&D 5e rules.</p>
+                    <h3 className="font-lora text-xl font-semibold text-primary">{t("auth.features.characterManagement.title")}</h3>
+                    <p className="text-secondary">{t("auth.features.characterManagement.description")}</p>
                   </div>
                 </div>
                 
@@ -347,8 +347,8 @@ export default function AuthPage() {
                     <i className="ri-map-pin-fill text-xl text-primary"></i>
                   </div>
                   <div>
-                    <h3 className="font-lora text-xl font-semibold text-primary">Campaign Tools</h3>
-                    <p className="text-secondary">Build worlds, create NPCs, and design encounters with our intuitive tools.</p>
+                    <h3 className="font-lora text-xl font-semibold text-primary">{t("auth.features.campaignTools.title")}</h3>
+                    <p className="text-secondary">{t("auth.features.campaignTools.description")}</p>
                   </div>
                 </div>
                 
@@ -357,8 +357,8 @@ export default function AuthPage() {
                     <i className="ri-magic-fill text-xl text-primary"></i>
                   </div>
                   <div>
-                    <h3 className="font-lora text-xl font-semibold text-primary">Interactive Elements</h3>
-                    <p className="text-secondary">Experience real-time stat tracking and interactive features during gameplay.</p>
+                    <h3 className="font-lora text-xl font-semibold text-primary">{t("auth.features.interactiveElements.title")}</h3>
+                    <p className="text-secondary">{t("auth.features.interactiveElements.description")}</p>
                   </div>
                 </div>
               </div>

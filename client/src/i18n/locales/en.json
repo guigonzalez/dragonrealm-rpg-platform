@@ -43,7 +43,30 @@
     "alreadyHaveAccount": "Already have an account?",
     "dontHaveAccount": "Don't have an account?",
     "loginToYourAccount": "Login to your account",
-    "createYourAccount": "Create your account"
+    "createYourAccount": "Create your account",
+    "orContinueWith": "or continue with",
+    "orRegisterWith": "or register with",
+    "chooseName": "Choose a username",
+    "enterEmail": "Enter your email",
+    "displayNamePlaceholder": "How you want to be addressed",
+    "createPassword": "Create a password",
+    "termsAgreement": "I agree to the Terms of Service and Privacy Policy",
+    "beginAdventure": "Begin Your Epic Adventure",
+    "joinDescription": "Join DragonRealm and unlock a suite of powerful tools designed specifically for D&D players and Game Masters.",
+    "features": {
+      "characterManagement": {
+        "title": "Character Management",
+        "description": "Create and manage detailed character sheets following official D&D 5e rules."
+      },
+      "campaignTools": {
+        "title": "Campaign Tools",
+        "description": "Build worlds, create NPCs, and design encounters with our intuitive tools."
+      },
+      "interactiveElements": {
+        "title": "Interactive Elements",
+        "description": "Experience real-time stat tracking and interactive features during gameplay."
+      }
+    }
   },
   "dashboard": {
     "yourCampaigns": "Your Campaigns",

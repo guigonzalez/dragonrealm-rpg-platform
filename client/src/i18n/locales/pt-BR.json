@@ -43,7 +43,30 @@
     "alreadyHaveAccount": "Já tem uma conta?",
     "dontHaveAccount": "Não tem uma conta?",
     "loginToYourAccount": "Entre na sua conta",
-    "createYourAccount": "Crie sua conta"
+    "createYourAccount": "Crie sua conta",
+    "orContinueWith": "ou continue com",
+    "orRegisterWith": "ou registre-se com",
+    "chooseName": "Escolha um nome de usuário",
+    "enterEmail": "Digite seu e-mail",
+    "displayNamePlaceholder": "Como você quer ser chamado",
+    "createPassword": "Crie uma senha",
+    "termsAgreement": "Concordo com os Termos de Serviço e Política de Privacidade",
+    "beginAdventure": "Comece sua Aventura Épica",
+    "joinDescription": "Junte-se ao DragonRealm e desbloqueie um conjunto de ferramentas poderosas desenvolvidas especificamente para jogadores e Mestres de D&D.",
+    "features": {
+      "characterManagement": {
+        "title": "Gerenciamento de Personagem",
+        "description": "Crie e gerencie fichas de personagem detalhadas seguindo as regras oficiais do D&D 5e."
+      },
+      "campaignTools": {
+        "title": "Ferramentas de Campanha",
+        "description": "Construa mundos, crie NPCs e projete encontros com nossas ferramentas intuitivas."
+      },
+      "interactiveElements": {
+        "title": "Elementos Interativos",
+        "description": "Experimente rastreamento de estatísticas em tempo real e recursos interativos durante o jogo."
+      }
+    }
   },
   "dashboard": {
     "yourCampaigns": "Suas Campanhas",
