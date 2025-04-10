@@ -10,9 +10,13 @@ import { Loader2 } from "lucide-react";
 
 export default function CharacterSheetPage() {
   const params = useParams<{ id: string }>();
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const characterId = parseInt(params.id);
+  
+  // Check if we're in view-only mode from URL
+  const searchParams = new URLSearchParams(location.split('?')[1]);
+  const readOnly = searchParams.get('readOnly') === 'true';
   
   // Validate the character ID
   useEffect(() => {
@@ -69,7 +73,7 @@ export default function CharacterSheetPage() {
       <Navbar />
       <main className="flex-grow bg-background">
         <div className="container mx-auto px-4 py-8">
-          <CharacterSheet character={character} />
+          <CharacterSheet character={character} readOnly={readOnly} />
         </div>
       </main>
       <Footer />

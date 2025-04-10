@@ -43,9 +43,10 @@ import {
 
 interface CharacterSheetProps {
   character: Character;
+  readOnly?: boolean;
 }
 
-export default function CharacterSheet({ character }: CharacterSheetProps) {
+export default function CharacterSheet({ character, readOnly = false }: CharacterSheetProps) {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const { t } = useTranslation();
@@ -89,6 +90,11 @@ export default function CharacterSheet({ character }: CharacterSheetProps) {
     return mod >= 0 ? `+${mod}` : `${mod}`;
   };
   
+  // Use useEffect para definir o estado inicial de edição
+  useEffect(() => {
+    setIsEditing(false);
+  }, [readOnly]);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
@@ -107,24 +113,33 @@ export default function CharacterSheet({ character }: CharacterSheetProps) {
           >
             {t('dashboard.backToDashboard')}
           </Button>
-          <Button
-            variant={isEditing ? "default" : "outline"}
-            size="sm"
-            onClick={() => setIsEditing(!isEditing)}
-            className={isEditing ? "magic-button" : ""}
-          >
-            {isEditing ? (
-              <>
-                <Save className="mr-2 h-4 w-4" />
-                {t('landing.demoSection.campaignManager.save')}
-              </>
-            ) : (
-              <>
+          {!readOnly ? (
+            <Button
+              variant={isEditing ? "default" : "outline"}
+              size="sm"
+              onClick={() => setIsEditing(!isEditing)}
+              className={isEditing ? "magic-button" : ""}
+            >
+              {isEditing ? (
+                <>
+                  <Save className="mr-2 h-4 w-4" />
+                  {t('landing.demoSection.campaignManager.save')}
+                </>
+              ) : (
+                <>
+                  <Edit2 className="mr-2 h-4 w-4" />
+                  {t('landing.demoSection.characterSheet.edit')}
+                </>
+              )}
+            </Button>
+          ) : (
+            <Link href={`/character-creation/${character.id}`}>
+              <Button variant="outline" size="sm">
                 <Edit2 className="mr-2 h-4 w-4" />
                 {t('landing.demoSection.characterSheet.edit')}
-              </>
-            )}
-          </Button>
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
       
