@@ -103,14 +103,14 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
   const [showLocationForm, setShowLocationForm] = useState(false);
   
   // State para armazenar a URL da imagem do mapa do mundo
-  const [mapImageUrl, setMapImageUrl] = useState<string>("");
+  const [mapImageUrl, setMapImageUrl] = useState<string>(campaign?.mapImageUrl || "");
   
   // States para armazenar os textos do mundo
-  const [centralConcept, setCentralConcept] = useState<string>("");
-  const [geography, setGeography] = useState<string>("");
-  const [factions, setFactions] = useState<string>("");
-  const [history, setHistory] = useState<string>("");
-  const [magicTech, setMagicTech] = useState<string>("");
+  const [centralConcept, setCentralConcept] = useState<string>(campaign?.centralConcept || "");
+  const [geography, setGeography] = useState<string>(campaign?.geography || "");
+  const [factions, setFactions] = useState<string>(campaign?.factions || "");
+  const [history, setHistory] = useState<string>(campaign?.history || "");
+  const [magicTech, setMagicTech] = useState<string>(campaign?.magicTech || "");
   
   // State para controlar se está no modo de edição ou visualização
   const [worldEditMode, setWorldEditMode] = useState<boolean>(true);
@@ -810,9 +810,22 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                 {worldEditMode ? (
                   <Button 
                     className="magic-button"
-                    onClick={() => setWorldEditMode(false)}
+                    onClick={() => {
+                      // Salvar os fundamentos do mundo
+                      if (campaign) {
+                        updateCampaignMutation.mutate({
+                          centralConcept,
+                          geography,
+                          mapImageUrl,
+                          factions, 
+                          history,
+                          magicTech
+                        });
+                      }
+                      setWorldEditMode(false);
+                    }}
                   >
-                    {t("location.save")}
+                    {updateCampaignMutation.isPending ? t("common.saving") : t("location.save")}
                   </Button>
                 ) : (
                   <Button 
