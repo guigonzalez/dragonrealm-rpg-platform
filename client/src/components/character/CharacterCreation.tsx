@@ -987,17 +987,17 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                   
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                     {/* Strength */}
-                    <div className="bg-[#8D6E63] border-2 border-[#6D5046] rounded-lg p-4 pb-2 relative shadow-lg">
+                    <div className="bg-[#FFF8E1] border-2 border-[#8D6E63] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
                         <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("strength") || 10}
                         </div>
                       </div>
                       <div className="text-center mt-3">
-                        <div className="text-4xl font-bold mb-1 text-[#FFF8E1]">
+                        <div className="text-4xl font-bold mb-1 text-[#2C1810]">
                           {formatModifier(getAbilityModifier(form.watch("strength") || 10))}
                         </div>
-                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#FFF8E1]">
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#2C1810]">
                           FORÇA
                         </div>
                       </div>
@@ -1056,17 +1056,17 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                     </div>
                       
                     {/* Dexterity */}
-                    <div className="bg-[#8D6E63] border-2 border-[#6D5046] rounded-lg p-4 pb-2 relative shadow-lg">
+                    <div className="bg-[#FFF8E1] border-2 border-[#8D6E63] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
                         <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("dexterity") || 10}
                         </div>
                       </div>
                       <div className="text-center mt-3">
-                        <div className="text-4xl font-bold mb-1 text-[#FFF8E1]">
+                        <div className="text-4xl font-bold mb-1 text-[#2C1810]">
                           {formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}
                         </div>
-                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#FFF8E1]">
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#2C1810]">
                           DESTREZA
                         </div>
                       </div>
@@ -1149,17 +1149,17 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                     </div>
                     
                     {/* Constitution */}
-                    <div className="bg-[#8D6E63] border-2 border-[#6D5046] rounded-lg p-4 pb-2 relative shadow-lg">
+                    <div className="bg-[#FFF8E1] border-2 border-[#8D6E63] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
                         <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("constitution") || 10}
                         </div>
                       </div>
                       <div className="text-center mt-3">
-                        <div className="text-4xl font-bold mb-1 text-[#FFF8E1]">
+                        <div className="text-4xl font-bold mb-1 text-[#2C1810]">
                           {formatModifier(getAbilityModifier(form.watch("constitution") || 10))}
                         </div>
-                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#FFF8E1]">
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#2C1810]">
                           CONSTITUIÇÃO
                         </div>
                       </div>
@@ -1206,17 +1206,17 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                     </div>
                     
                     {/* Intelligence */}
-                    <div className="bg-[#8D6E63] border-2 border-[#6D5046] rounded-lg p-4 pb-2 relative shadow-lg">
+                    <div className="bg-[#FFF8E1] border-2 border-[#8D6E63] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
                         <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("intelligence") || 10}
                         </div>
                       </div>
                       <div className="text-center mt-3">
-                        <div className="text-4xl font-bold mb-1 text-[#FFF8E1]">
+                        <div className="text-4xl font-bold mb-1 text-[#2C1810]">
                           {formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}
                         </div>
-                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#FFF8E1]">
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#2C1810]">
                           INTELIGÊNCIA
                         </div>
                       </div>
@@ -1320,17 +1320,17 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                     </div>
                     
                     {/* Wisdom */}
-                    <div className="bg-[#8D6E63] border-2 border-[#6D5046] rounded-lg p-4 pb-2 relative shadow-lg">
+                    <div className="bg-[#FFF8E1] border-2 border-[#8D6E63] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
                         <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("wisdom") || 10}
                         </div>
                       </div>
                       <div className="text-center mt-3">
-                        <div className="text-4xl font-bold mb-1 text-[#FFF8E1]">
+                        <div className="text-4xl font-bold mb-1 text-[#2C1810]">
                           {formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}
                         </div>
-                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#FFF8E1]">
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#2C1810]">
                           SABEDORIA
                         </div>
                       </div>
@@ -1434,17 +1434,17 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                     </div>
                     
                     {/* Charisma */}
-                    <div className="bg-[#8D6E63] border-2 border-[#6D5046] rounded-lg p-4 pb-2 relative shadow-lg">
+                    <div className="bg-[#FFF8E1] border-2 border-[#8D6E63] rounded-lg p-4 pb-2 relative shadow-lg">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
                         <div className="bg-[#6D5046] text-center px-2 py-1 rounded-md text-xs font-semibold text-[#FFF8E1]">
                           {form.watch("charisma") || 10}
                         </div>
                       </div>
                       <div className="text-center mt-3">
-                        <div className="text-4xl font-bold mb-1 text-[#FFF8E1]">
+                        <div className="text-4xl font-bold mb-1 text-[#2C1810]">
                           {formatModifier(getAbilityModifier(form.watch("charisma") || 10))}
                         </div>
-                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#FFF8E1]">
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3 text-[#2C1810]">
                           CARISMA
                         </div>
                       </div>
