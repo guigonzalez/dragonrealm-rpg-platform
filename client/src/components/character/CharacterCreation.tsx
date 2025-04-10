@@ -761,6 +761,26 @@ export default function CharacterCreation() {
                     </div>
                   </div>
                   
+                  {/* Saving Throws */}
+                  <div className="mb-6 p-4 bg-[#FFF8E1] rounded-lg border border-[#8D6E63]">
+                    <h3 className="font-lora text-lg font-semibold mb-2">Saving Throws</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"].map((save) => (
+                        <Badge
+                          key={save}
+                          variant={savingThrows.includes(save) ? "default" : "outline"}
+                          className="cursor-pointer"
+                          onClick={() => toggleArrayItem(savingThrows, setSavingThrows, save)}
+                        >
+                          {savingThrows.includes(save) && (
+                            <Check className="mr-1 h-3 w-3" />
+                          )}
+                          {save}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                     {/* Strength */}
                     <div className="bg-[#8D6E63] border-2 border-[#6D5046] rounded-lg p-4 pb-2 relative shadow-lg">
@@ -1406,57 +1426,6 @@ export default function CharacterCreation() {
                   </div>
                   
                   <Separator />
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="font-lora text-lg font-semibold mb-2">Saving Throws</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"].map((save) => (
-                          <Badge
-                            key={save}
-                            variant={savingThrows.includes(save) ? "default" : "outline"}
-                            className="cursor-pointer"
-                            onClick={() => toggleArrayItem(savingThrows, setSavingThrows, save)}
-                          >
-                            {savingThrows.includes(save) && (
-                              <Check className="mr-1 h-3 w-3" />
-                            )}
-                            {save}
-                          </Badge>
-                        ))}
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        These are automatically set based on your class, but you can customize them.
-                      </p>
-                    </div>
-                    
-                    <div>
-                      <h3 className="font-lora text-lg font-semibold mb-2">Skills</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {[
-                          "Acrobatics", "Animal Handling", "Arcana", "Athletics", "Deception",
-                          "History", "Insight", "Intimidation", "Investigation", "Medicine",
-                          "Nature", "Perception", "Performance", "Persuasion", "Religion",
-                          "Sleight of Hand", "Stealth", "Survival"
-                        ].map((skill) => (
-                          <Badge
-                            key={skill}
-                            variant={skills.includes(skill) ? "default" : "outline"}
-                            className="cursor-pointer"
-                            onClick={() => toggleArrayItem(skills, setSkills, skill)}
-                          >
-                            {skills.includes(skill) && (
-                              <Check className="mr-1 h-3 w-3" />
-                            )}
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        Select the skills your character is proficient in.
-                      </p>
-                    </div>
-                  </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <Button variant="outline" type="button" onClick={goToPreviousTab}>
