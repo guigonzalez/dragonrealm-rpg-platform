@@ -139,9 +139,11 @@ export default function CharacterCreation() {
   const [currentTab, setCurrentTab] = useState("basics");
   const [savingThrows, setSavingThrows] = useState<string[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
+  const [skillsWithAdvantage, setSkillsWithAdvantage] = useState<string[]>([]);
   const [equipment, setEquipment] = useState<string[]>([]);
   const [spells, setSpells] = useState<string[]>([]);
   const [features, setFeatures] = useState<string[]>([]);
+  const [hasInspiration, setHasInspiration] = useState<boolean>(false);
   
   // Fetch character data if in edit mode
   const { data: characterData, isLoading: isLoadingCharacter } = useQuery({
@@ -688,6 +690,68 @@ export default function CharacterCreation() {
                       <Dices className="mr-2 h-4 w-4" />
                       Roll Ability Scores
                     </Button>
+                  </div>
+                  
+                  {/* Bônus de Proficiência, Inspiração e Percepção Passiva */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 bg-[#FFF8E1] rounded-lg border border-[#8D6E63]">
+                    <FormField
+                      control={form.control}
+                      name="proficiencyBonus"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Bônus de Proficiência</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              min={0}
+                              max={6}
+                              {...field}
+                              onChange={(e) => {
+                                const value = parseInt(e.target.value);
+                                field.onChange(value || 0);
+                              }}
+                            />
+                          </FormControl>
+                          <FormDescription>
+                            Bônus adicionado às proficiências do personagem
+                          </FormDescription>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <div>
+                      <FormLabel>Inspiração</FormLabel>
+                      <div className="flex items-center mt-2 space-x-2">
+                        <Checkbox 
+                          id="inspiration" 
+                          checked={hasInspiration}
+                          onCheckedChange={(checked) => {
+                            setHasInspiration(checked === true);
+                          }}
+                        />
+                        <label
+                          htmlFor="inspiration"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          Possui Inspiração
+                        </label>
+                      </div>
+                      <FormDescription>
+                        Use para obter vantagem em um teste
+                      </FormDescription>
+                    </div>
+                    
+                    <div>
+                      <FormLabel>Sabedoria Passiva (Percepção)</FormLabel>
+                      <div className="flex items-center mt-2">
+                        <div className="text-2xl font-bold border border-input rounded-md p-2 w-16 text-center">
+                          {10 + getAbilityModifier(form.watch("wisdom") || 10) + (skills.includes("Perception") ? form.watch("proficiencyBonus") || 2 : 0)}
+                        </div>
+                      </div>
+                      <FormDescription>
+                        10 + mod. de Sabedoria + bônus (se proficiente)
+                      </FormDescription>
+                    </div>
                   </div>
                   
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
