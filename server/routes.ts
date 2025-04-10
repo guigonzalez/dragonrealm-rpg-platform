@@ -37,6 +37,14 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Certifique-se de que o diretório de uploads existe
+  if (!fs.existsSync("public/uploads")) {
+    fs.mkdirSync("public/uploads", { recursive: true });
+  }
+  
+  // Servir arquivos estáticos da pasta public
+  app.use(express.static("public"));
+
   // Setup authentication routes
   setupAuth(app);
 
@@ -165,6 +173,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(204).end();
     } else {
       res.status(500).json({ message: "Failed to delete character" });
+    }
+  });
+  
+  // Rota para upload de imagem de personagem
+  app.post("/api/upload/character-image", requireAuth, upload.single("image"), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+      
+      // Construir o caminho da imagem relativo à pasta public
+      const imagePath = `/uploads/${req.file.filename}`;
+      
+      // Retornar o caminho da imagem para o cliente
+      res.status(200).json({ 
+        message: "Image uploaded successfully", 
+        imagePath 
+      });
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      res.status(500).json({ message: "Failed to upload image" });
     }
   });
 
