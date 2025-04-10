@@ -582,7 +582,35 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
       setSkills(characterData.skills || []);
       setEquipment(characterData.equipment || []);
       setSpells(characterData.spells || []);
-      setFeatures(characterData.features || []);
+      
+      // Processar features para separar em class, race e outros
+      try {
+        const featuresArray = characterData.features || [];
+        const classFeaturesList: string[] = [];
+        const raceFeaturesList: string[] = [];
+        const otherFeaturesList: string[] = [];
+        
+        featuresArray.forEach((feature: string) => {
+          if (feature.startsWith('Classe:')) {
+            classFeaturesList.push(feature.replace('Classe:', '').trim());
+          } else if (feature.startsWith('Raça:')) {
+            raceFeaturesList.push(feature.replace('Raça:', '').trim());
+          } else if (feature.startsWith('Recurso:')) {
+            otherFeaturesList.push(feature.replace('Recurso:', '').trim());
+          } else {
+            // Para compatibilidade com dados antigos, adicionar features sem prefixo a outros recursos
+            otherFeaturesList.push(feature);
+          }
+        });
+        
+        setClassFeatures(classFeaturesList);
+        setRaceFeatures(raceFeaturesList);
+        setFeatures(otherFeaturesList);
+      } catch (error) {
+        console.error("Erro ao processar features:", error);
+        // Em caso de erro, apenas defina as features originais
+        setFeatures(characterData.features || []);
+      }
       
       // Tentar extrair informações de equipamento do formato atual string[]
       try {
