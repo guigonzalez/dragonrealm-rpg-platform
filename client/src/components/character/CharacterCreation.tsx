@@ -607,7 +607,7 @@ export default function CharacterCreation() {
                     />
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
                       name="level"
@@ -631,6 +631,9 @@ export default function CharacterCreation() {
                               }}
                             />
                           </FormControl>
+                          <FormDescription>
+                            Determina o bônus de proficiência e progressão do personagem
+                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -653,28 +656,9 @@ export default function CharacterCreation() {
                               }}
                             />
                           </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="proficiencyBonus"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Proficiency Bonus</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              min={0}
-                              {...field}
-                              onChange={(e) => {
-                                const value = parseInt(e.target.value);
-                                field.onChange(value || 0);
-                              }}
-                            />
-                          </FormControl>
+                          <FormDescription>
+                            Pontos de experiência acumulados pelo personagem
+                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
