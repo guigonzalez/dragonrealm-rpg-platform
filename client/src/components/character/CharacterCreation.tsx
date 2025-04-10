@@ -375,14 +375,18 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
     // Converter o novo formato de equipamentos para o formato string[] antes de salvar
     const equipmentStringArray = convertEquipmentToStringArray();
     
+    // Converter magias e recursos para o formato string[]
+    const spellsStringArray = convertSpellsToStringArray();
+    const featuresStringArray = convertFeaturesToStringArray();
+    
     // Create a new object with the form data and the current array values
     const formDataWithArrays: CharacterFormValues = {
       ...data,
       savingThrows,
       skills,
       equipment: equipmentStringArray, // Usa o formato convertido
-      spells,
-      features
+      spells: spellsStringArray,      // Usa o formato convertido
+      features: featuresStringArray   // Usa o formato convertido
     };
     
     // Submit to different mutations based on whether we're creating or editing
@@ -480,6 +484,62 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
     equipmentArray.push(`Moedas: ${coins}`);
     
     return equipmentArray;
+  };
+  
+  // Converter magias para formato string[]
+  const convertSpellsToStringArray = (): string[] => {
+    let spellsArray: string[] = [];
+    
+    // Adicionar informações de conjuração
+    spellsArray.push(`Conjuração: Atributo: ${spellcasting.ability}, CD: ${spellcasting.saveDC}, Bônus: ${spellcasting.attackBonus}`);
+    
+    // Adicionar espaços de magia
+    const spellSlotEntries = Object.entries(spellcasting.spellSlots);
+    if (spellSlotEntries.length > 0) {
+      const spellSlots = spellSlotEntries.map(([level, slots]) => 
+        `Nível ${level}: ${slots}`
+      ).join(', ');
+      spellsArray.push(`Espaços: ${spellSlots}`);
+    }
+    
+    // Adicionar pontos de feitiçaria/ki
+    if (spellcasting.points > 0) {
+      spellsArray.push(`Pontos: ${spellcasting.points}`);
+    }
+    
+    // Adicionar lista de magias
+    spellList.forEach(spell => {
+      const spellStr = `Magia: ${spell.name} | Nível: ${spell.level} | ${spell.description}${spell.damage ? ` | Dano: ${spell.damage}` : ''}`;
+      spellsArray.push(spellStr);
+    });
+    
+    return spellsArray;
+  };
+  
+  // Converter recursos de classe e raça para formato string[]
+  const convertFeaturesToStringArray = (): string[] => {
+    let featuresArray: string[] = [];
+    
+    // Adicionar habilidades de classe
+    if (classFeatures.length > 0) {
+      classFeatures.forEach(feature => {
+        featuresArray.push(`Classe: ${feature}`);
+      });
+    }
+    
+    // Adicionar habilidades de raça
+    if (raceFeatures.length > 0) {
+      raceFeatures.forEach(feature => {
+        featuresArray.push(`Raça: ${feature}`);
+      });
+    }
+    
+    // Adicionar outros recursos
+    features.forEach(feature => {
+      featuresArray.push(`Recurso: ${feature}`);
+    });
+    
+    return featuresArray;
   };
 
   // Load character data when in edit mode
