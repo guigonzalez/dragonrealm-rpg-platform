@@ -511,15 +511,11 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
               {t("location.worldBuilding")}
             </TabsTrigger>
             <TabsTrigger value="npcs" className="font-lora">
-              <div className="w-6 h-6 mr-2 inline-flex items-center justify-center">
-                <Users className="h-5 w-5" />
-              </div>
+              <Users className="h-4 w-4 mr-2" />
               {t("campaign.npcsCreatures")}
             </TabsTrigger>
             <TabsTrigger value="encounters" className="font-lora">
-              <div className="w-6 h-6 mr-2 inline-flex items-center justify-center">
-                <Swords className="h-5 w-5" />
-              </div>
+              <Swords className="h-4 w-4 mr-2" />
               {t("campaign.encounters")}
             </TabsTrigger>
           </TabsList>
