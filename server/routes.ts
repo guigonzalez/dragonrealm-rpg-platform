@@ -1,9 +1,40 @@
-import type { Express } from "express";
+import express, { type Express, type Request, type Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
 import { z } from "zod";
 import { insertCharacterSchema, insertCampaignSchema, insertNpcSchema, insertEncounterSchema, insertCampaignLocationSchema, insertSessionNoteSchema } from "@shared/schema";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+
+// Configurar o armazenamento do Multer
+const storage_config = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads/");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, `character-${uniqueSuffix}${ext}`);
+  },
+});
+
+// Configurar filtro de arquivo para permitir apenas imagens
+const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+// Criar instância do Multer
+const upload = multer({ 
+  storage: storage_config,
+  limits: { fileSize: 5 * 1024 * 1024 }, // limite de 5MB
+  fileFilter
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication routes
@@ -629,6 +660,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Upload de imagem para personagem
+  app.post("/api/upload/character-image", requireAuth, upload.single("image"), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "Nenhum arquivo foi enviado" });
+      }
+      
+      // Retorna o caminho relativo da imagem salva
+      const imagePath = `/uploads/${req.file.filename}`;
+      res.status(200).json({ imagePath });
+    } catch (error) {
+      console.error("Erro ao fazer upload da imagem:", error);
+      res.status(500).json({ message: "Falha ao fazer upload da imagem" });
+    }
+  });
+
+  // Rota para servir arquivos estáticos da pasta uploads
+  app.use('/uploads', express.static('public/uploads'));
+  
   const httpServer = createServer(app);
   return httpServer;
 }
