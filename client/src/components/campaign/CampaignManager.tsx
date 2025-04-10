@@ -648,11 +648,15 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                               onChange={(e) => {
                                 const file = e.target.files?.[0];
                                 if (file) {
-                                  // Criar URL temporária para a imagem
-                                  const imageUrl = URL.createObjectURL(file);
-                                  // Armazenar a URL da imagem no estado
-                                  setMapImageUrl(imageUrl);
-                                  console.log("Mapa carregado:", imageUrl);
+                                  // Converter a imagem para base64 para persistência
+                                  const reader = new FileReader();
+                                  reader.onloadend = () => {
+                                    const base64String = reader.result as string;
+                                    // Armazenar a URL da imagem no estado
+                                    setMapImageUrl(base64String);
+                                    console.log("Mapa carregado e convertido para base64");
+                                  };
+                                  reader.readAsDataURL(file);
                                 }
                               }}
                             />
@@ -906,9 +910,14 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                                         onChange={(e) => {
                                           const file = e.target.files?.[0];
                                           if (file) {
-                                            // Simular uma URL para a imagem
-                                            const imageUrl = URL.createObjectURL(file);
-                                            field.onChange(imageUrl);
+                                            // Converter a imagem para base64 para persistência
+                                            const reader = new FileReader();
+                                            reader.onloadend = () => {
+                                              const base64String = reader.result as string;
+                                              field.onChange(base64String);
+                                              console.log("Imagem convertida para base64");
+                                            };
+                                            reader.readAsDataURL(file);
                                           }
                                         }}
                                       />
