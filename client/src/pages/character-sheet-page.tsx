@@ -15,8 +15,8 @@ export default function CharacterSheetPage() {
   const characterId = parseInt(params.id);
   
   // Check if we're in view-only mode from URL
-  const searchParams = new URLSearchParams(location.split('?')[1]);
-  const readOnly = searchParams.get('readOnly') === 'true';
+  const searchParams = new URLSearchParams(location.split('?')[1] || '');
+  const readOnly = searchParams.get('readOnly') === 'true' || true; // Default to true for character sheet page
   
   // Validate the character ID
   useEffect(() => {
