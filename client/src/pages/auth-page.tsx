@@ -123,8 +123,8 @@ export default function AuthPage() {
                 <div className="space-y-4">
                   <div className="text-center mb-6">
                     <img src="./assets/logo.png" alt="DragonRealm" className="h-10 mx-auto mb-3" />
-                    <h2 className="font-lora text-2xl font-bold text-primary">Welcome Back</h2>
-                    <p className="text-secondary/80 mt-1">Sign in to continue your adventure</p>
+                    <h2 className="font-lora text-2xl font-bold text-primary">{t("auth.loginToYourAccount")}</h2>
+                    <p className="text-secondary/80 mt-1">{t("auth.login")} {t("common.welcome")}</p>
                   </div>
                   
                   <Form {...loginForm}>
@@ -134,10 +134,10 @@ export default function AuthPage() {
                         name="username"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Username or Email</FormLabel>
+                            <FormLabel>{t("auth.username")}</FormLabel>
                             <FormControl>
                               <Input 
-                                placeholder="Enter your username or email" 
+                                placeholder={t("auth.username")} 
                                 {...field} 
                                 disabled={loginMutation.isPending}
                               />
@@ -152,11 +152,11 @@ export default function AuthPage() {
                         name="password"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel>{t("auth.password")}</FormLabel>
                             <FormControl>
                               <Input 
                                 type="password" 
-                                placeholder="Enter your password" 
+                                placeholder={t("auth.password")}
                                 {...field} 
                                 disabled={loginMutation.isPending}
                               />
@@ -176,7 +176,7 @@ export default function AuthPage() {
                       
                       <div className="relative flex items-center justify-center mt-6">
                         <div className="border-t border-secondary/30 absolute w-full"></div>
-                        <span className="font-opensans text-sm text-secondary/70 bg-white px-2 relative">or continue with</span>
+                        <span className="font-opensans text-sm text-secondary/70 bg-white px-2 relative">{t("auth.orContinueWith")}</span>
                       </div>
                       
                       <div className="grid grid-cols-2 gap-3 mt-6">
@@ -196,8 +196,8 @@ export default function AuthPage() {
                 <div className="space-y-4">
                   <div className="text-center mb-6">
                     <img src="./assets/logo.png" alt="DragonRealm" className="h-10 mx-auto mb-3" />
-                    <h2 className="font-lora text-2xl font-bold text-primary">Create an Account</h2>
-                    <p className="text-secondary/80 mt-1">Join DragonRealm to begin your journey</p>
+                    <h2 className="font-lora text-2xl font-bold text-primary">{t("auth.createYourAccount")}</h2>
+                    <p className="text-secondary/80 mt-1">{t("landing.getStarted")}</p>
                   </div>
                   
                   <Form {...registerForm}>
@@ -207,10 +207,10 @@ export default function AuthPage() {
                         name="username"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>{t("auth.username")}</FormLabel>
                             <FormControl>
                               <Input 
-                                placeholder="Choose a username" 
+                                placeholder={t("auth.chooseName")}
                                 {...field} 
                                 disabled={registerMutation.isPending}
                               />
@@ -225,11 +225,11 @@ export default function AuthPage() {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel>{t("auth.email")}</FormLabel>
                             <FormControl>
                               <Input 
                                 type="email" 
-                                placeholder="Enter your email" 
+                                placeholder={t("auth.enterEmail")}
                                 {...field} 
                                 disabled={registerMutation.isPending}
                               />
@@ -244,10 +244,10 @@ export default function AuthPage() {
                         name="displayName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Display Name (optional)</FormLabel>
+                            <FormLabel>{t("auth.displayName")}</FormLabel>
                             <FormControl>
                               <Input 
-                                placeholder="How you want to be addressed" 
+                                placeholder={t("auth.displayNamePlaceholder")}
                                 {...field} 
                                 disabled={registerMutation.isPending}
                               />
@@ -262,11 +262,11 @@ export default function AuthPage() {
                         name="password"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel>{t("auth.password")}</FormLabel>
                             <FormControl>
                               <Input 
                                 type="password" 
-                                placeholder="Create a password" 
+                                placeholder={t("auth.createPassword")}
                                 {...field} 
                                 disabled={registerMutation.isPending}
                               />
@@ -308,7 +308,7 @@ export default function AuthPage() {
                       
                       <div className="relative flex items-center justify-center mt-6">
                         <div className="border-t border-secondary/30 absolute w-full"></div>
-                        <span className="font-opensans text-sm text-secondary/70 bg-white px-2 relative">or register with</span>
+                        <span className="font-opensans text-sm text-secondary/70 bg-white px-2 relative">{t("auth.orRegisterWith")}</span>
                       </div>
                       
                       <div className="grid grid-cols-2 gap-3 mt-6">
