@@ -691,201 +691,319 @@ export default function CharacterCreation() {
                   </div>
                   
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div>
-                            <FormField
-                              control={form.control}
-                              name="strength"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Strength</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      min={3}
-                                      max={20}
-                                      {...field}
-                                      onChange={(e) => {
-                                        const value = parseInt(e.target.value);
-                                        field.onChange(value || 0);
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Strength: Natural athleticism, bodily power, and physical force</p>
-                        </TooltipContent>
-                      </Tooltip>
+                    {/* Strength */}
+                    <div className="bg-gray-900 border-2 border-gray-700 rounded-lg p-4 pb-2 relative shadow-lg">
+                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
+                        <div className="bg-gray-800 text-center px-2 py-1 rounded-md text-xs font-semibold">
+                          {form.watch("strength") || 10}
+                        </div>
+                      </div>
+                      <div className="text-center mt-3">
+                        <div className="text-4xl font-bold mb-1">
+                          {formatModifier(getAbilityModifier(form.watch("strength") || 10))}
+                        </div>
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3">
+                          FORÇA
+                        </div>
+                      </div>
                       
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div>
-                            <FormField
-                              control={form.control}
-                              name="dexterity"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Dexterity</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      min={3}
-                                      max={20}
-                                      {...field}
-                                      onChange={(e) => {
-                                        const value = parseInt(e.target.value);
-                                        field.onChange(value || 0);
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Dexterity: Physical agility, reflexes, balance, and poise</p>
-                        </TooltipContent>
-                      </Tooltip>
+                      <FormField
+                        control={form.control}
+                        name="strength"
+                        render={({ field }) => (
+                          <FormItem className="mb-3">
+                            <FormControl>
+                              <Input
+                                type="range"
+                                min={3}
+                                max={20}
+                                className="w-full accent-primary"
+                                {...field}
+                                onChange={(e) => {
+                                  const value = parseInt(e.target.value);
+                                  field.onChange(value || 0);
+                                }}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
                       
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div>
-                            <FormField
-                              control={form.control}
-                              name="constitution"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Constitution</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      min={3}
-                                      max={20}
-                                      {...field}
-                                      onChange={(e) => {
-                                        const value = parseInt(e.target.value);
-                                        field.onChange(value || 0);
-                                        // Recalculate HP when constitution changes
-                                        setTimeout(calculateHP, 0);
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Constitution: Health, stamina, and vital force</p>
-                        </TooltipContent>
-                      </Tooltip>
+                      <div className="space-y-1 mt-1 text-sm">
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Resistência</span>
+                          <span>+{form.watch("proficiencyBonus") || 2}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Atletismo</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("strength") || 10))}</span>
+                        </div>
+                      </div>
+                    </div>
                       
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div>
-                            <FormField
-                              control={form.control}
-                              name="intelligence"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Intelligence</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      min={3}
-                                      max={20}
-                                      {...field}
-                                      onChange={(e) => {
-                                        const value = parseInt(e.target.value);
-                                        field.onChange(value || 0);
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Intelligence: Mental acuity, information recall, and analytical skill</p>
-                        </TooltipContent>
-                      </Tooltip>
+                    {/* Dexterity */}
+                    <div className="bg-gray-900 border-2 border-gray-700 rounded-lg p-4 pb-2 relative shadow-lg">
+                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
+                        <div className="bg-gray-800 text-center px-2 py-1 rounded-md text-xs font-semibold">
+                          {form.watch("dexterity") || 10}
+                        </div>
+                      </div>
+                      <div className="text-center mt-3">
+                        <div className="text-4xl font-bold mb-1">
+                          {formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}
+                        </div>
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3">
+                          DESTREZA
+                        </div>
+                      </div>
                       
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div>
-                            <FormField
-                              control={form.control}
-                              name="wisdom"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Wisdom</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      min={3}
-                                      max={20}
-                                      {...field}
-                                      onChange={(e) => {
-                                        const value = parseInt(e.target.value);
-                                        field.onChange(value || 0);
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Wisdom: Awareness, intuition, and insight</p>
-                        </TooltipContent>
-                      </Tooltip>
+                      <FormField
+                        control={form.control}
+                        name="dexterity"
+                        render={({ field }) => (
+                          <FormItem className="mb-3">
+                            <FormControl>
+                              <Input
+                                type="range"
+                                min={3}
+                                max={20}
+                                className="w-full accent-primary"
+                                {...field}
+                                onChange={(e) => {
+                                  const value = parseInt(e.target.value);
+                                  field.onChange(value || 0);
+                                }}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
                       
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div>
-                            <FormField
-                              control={form.control}
-                              name="charisma"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Charisma</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      min={3}
-                                      max={20}
-                                      {...field}
-                                      onChange={(e) => {
-                                        const value = parseInt(e.target.value);
-                                        field.onChange(value || 0);
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Charisma: Force of personality, persuasiveness, and leadership</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                      <div className="space-y-1 mt-1 text-sm">
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Resistência</span>
+                          <span>+{form.watch("proficiencyBonus") || 2}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Acrobacia</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Furtividade</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("dexterity") || 10))}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Constitution */}
+                    <div className="bg-gray-900 border-2 border-gray-700 rounded-lg p-4 pb-2 relative shadow-lg">
+                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
+                        <div className="bg-gray-800 text-center px-2 py-1 rounded-md text-xs font-semibold">
+                          {form.watch("constitution") || 10}
+                        </div>
+                      </div>
+                      <div className="text-center mt-3">
+                        <div className="text-4xl font-bold mb-1">
+                          {formatModifier(getAbilityModifier(form.watch("constitution") || 10))}
+                        </div>
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3">
+                          CONSTITUIÇÃO
+                        </div>
+                      </div>
+                      
+                      <FormField
+                        control={form.control}
+                        name="constitution"
+                        render={({ field }) => (
+                          <FormItem className="mb-3">
+                            <FormControl>
+                              <Input
+                                type="range"
+                                min={3}
+                                max={20}
+                                className="w-full accent-primary"
+                                {...field}
+                                onChange={(e) => {
+                                  const value = parseInt(e.target.value);
+                                  field.onChange(value || 0);
+                                  // Recalculate HP when constitution changes
+                                  setTimeout(calculateHP, 0);
+                                }}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <div className="space-y-1 mt-1 text-sm">
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Resistência</span>
+                          <span>+{form.watch("proficiencyBonus") || 2}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Intelligence */}
+                    <div className="bg-gray-900 border-2 border-gray-700 rounded-lg p-4 pb-2 relative shadow-lg">
+                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
+                        <div className="bg-gray-800 text-center px-2 py-1 rounded-md text-xs font-semibold">
+                          {form.watch("intelligence") || 10}
+                        </div>
+                      </div>
+                      <div className="text-center mt-3">
+                        <div className="text-4xl font-bold mb-1">
+                          {formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}
+                        </div>
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3">
+                          INTELIGÊNCIA
+                        </div>
+                      </div>
+                      
+                      <FormField
+                        control={form.control}
+                        name="intelligence"
+                        render={({ field }) => (
+                          <FormItem className="mb-3">
+                            <FormControl>
+                              <Input
+                                type="range"
+                                min={3}
+                                max={20}
+                                className="w-full accent-primary"
+                                {...field}
+                                onChange={(e) => {
+                                  const value = parseInt(e.target.value);
+                                  field.onChange(value || 0);
+                                }}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <div className="space-y-1 mt-1 text-sm">
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Resistência</span>
+                          <span>+{form.watch("proficiencyBonus") || 2}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Arcana</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>História</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("intelligence") || 10))}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Wisdom */}
+                    <div className="bg-gray-900 border-2 border-gray-700 rounded-lg p-4 pb-2 relative shadow-lg">
+                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
+                        <div className="bg-gray-800 text-center px-2 py-1 rounded-md text-xs font-semibold">
+                          {form.watch("wisdom") || 10}
+                        </div>
+                      </div>
+                      <div className="text-center mt-3">
+                        <div className="text-4xl font-bold mb-1">
+                          {formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}
+                        </div>
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3">
+                          SABEDORIA
+                        </div>
+                      </div>
+                      
+                      <FormField
+                        control={form.control}
+                        name="wisdom"
+                        render={({ field }) => (
+                          <FormItem className="mb-3">
+                            <FormControl>
+                              <Input
+                                type="range"
+                                min={3}
+                                max={20}
+                                className="w-full accent-primary"
+                                {...field}
+                                onChange={(e) => {
+                                  const value = parseInt(e.target.value);
+                                  field.onChange(value || 0);
+                                }}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <div className="space-y-1 mt-1 text-sm">
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Resistência</span>
+                          <span>+{form.watch("proficiencyBonus") || 2}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Percepção</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Sobrevivência</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("wisdom") || 10))}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Charisma */}
+                    <div className="bg-gray-900 border-2 border-gray-700 rounded-lg p-4 pb-2 relative shadow-lg">
+                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3">
+                        <div className="bg-gray-800 text-center px-2 py-1 rounded-md text-xs font-semibold">
+                          {form.watch("charisma") || 10}
+                        </div>
+                      </div>
+                      <div className="text-center mt-3">
+                        <div className="text-4xl font-bold mb-1">
+                          {formatModifier(getAbilityModifier(form.watch("charisma") || 10))}
+                        </div>
+                        <div className="uppercase text-xs font-semibold tracking-wider mb-3">
+                          CARISMA
+                        </div>
+                      </div>
+                      
+                      <FormField
+                        control={form.control}
+                        name="charisma"
+                        render={({ field }) => (
+                          <FormItem className="mb-3">
+                            <FormControl>
+                              <Input
+                                type="range"
+                                min={3}
+                                max={20}
+                                className="w-full accent-primary"
+                                {...field}
+                                onChange={(e) => {
+                                  const value = parseInt(e.target.value);
+                                  field.onChange(value || 0);
+                                }}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <div className="space-y-1 mt-1 text-sm">
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Resistência</span>
+                          <span>+{form.watch("proficiencyBonus") || 2}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Persuasão</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
+                        </div>
+                        <div className="flex items-center justify-between bg-gray-800 rounded px-2 py-1">
+                          <span>Intimidação</span>
+                          <span>{formatModifier(getAbilityModifier(form.watch("charisma") || 10))}</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   
                   <Separator />
