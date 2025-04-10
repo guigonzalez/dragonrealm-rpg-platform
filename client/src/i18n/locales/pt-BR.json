@@ -28,7 +28,8 @@
     "confirmDeleteCharacter": "Tem certeza que deseja excluir este personagem? Esta ação não pode ser desfeita.",
     "confirmDeleteCampaign": "Tem certeza que deseja excluir esta campanha e todos os dados relacionados? Esta ação não pode ser desfeita.",
     "deleteSuccess": "Excluído com sucesso",
-    "deleteError": "Erro durante a exclusão"
+    "deleteError": "Erro durante a exclusão",
+    "comingSoon": "Em breve"
   },
   "auth": {
     "login": "Entrar",
@@ -111,6 +112,10 @@
     "saveCampaign": "Salvar Campanha",
     "updateCampaignInfo": "Atualizar Informações da Campanha",
     "editCampaignDetails": "Editar Detalhes da Campanha",
+    "details": "Detalhes",
+    "npcsCreatures": "NPCs & Criaturas",
+    "addNpc": "Adicionar NPC",
+    "addEncounter": "Adicionar Encontro",
     "buttons": {
       "manage": "Gerenciar",
       "npcs": "NPCs",
