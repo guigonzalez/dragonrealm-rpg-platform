@@ -122,6 +122,8 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
     !campaign?.magicTech && 
     !campaign?.mapImageUrl
   );
+  // State para controlar edição dos detalhes da campanha
+  const [detailsEditMode, setDetailsEditMode] = useState<boolean>(!campaign);
   const [editingLocationId, setEditingLocationId] = useState<number | null>(null);
   const [editingNoteId, setEditingNoteId] = useState<number | null>(null);
   
@@ -222,6 +224,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
       queryClient.invalidateQueries({ queryKey: ["/api/campaigns"] });
       // Sempre voltar para o modo de visualização após salvar
       setWorldEditMode(false);
+      setDetailsEditMode(false);
       toast({
         title: t("campaign.campaignUpdated"),
         description: t("campaign.campaignUpdatedDescription"),
@@ -527,64 +530,91 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
           
           {/* Detalhes da Campanha */}
           <TabsContent value="details" className="space-y-6">
-            <Form {...campaignForm}>
-              <form onSubmit={campaignForm.handleSubmit(onCampaignSubmit)}>
-                <Card className="border-t-4 border-t-primary">
-                  <CardHeader>
-                    <CardTitle className="font-lora text-2xl">{t("campaign.campaignDetails")}</CardTitle>
-                    <CardDescription>
-                      {campaign ? t("campaign.updateCampaignInfo") : t("campaign.enterCampaignInfo")}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <FormField
-                      control={campaignForm.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t("campaign.campaignName")}</FormLabel>
-                          <FormControl>
-                            <Input placeholder={t("campaign.enterCampaignName")} {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+            <Card className="border-t-4 border-t-primary">
+              <CardHeader>
+                <CardTitle className="font-lora text-2xl">{t("campaign.campaignDetails")}</CardTitle>
+                <CardDescription>
+                  {campaign ? t("campaign.updateCampaignInfo") : t("campaign.enterCampaignInfo")}
+                </CardDescription>
+              </CardHeader>
+              
+              {detailsEditMode ? (
+                // Modo de edição
+                <Form {...campaignForm}>
+                  <form onSubmit={campaignForm.handleSubmit(onCampaignSubmit)}>
+                    <CardContent className="space-y-6">
+                      <FormField
+                        control={campaignForm.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t("campaign.campaignName")}</FormLabel>
+                            <FormControl>
+                              <Input placeholder={t("campaign.enterCampaignName")} {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={campaignForm.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t("campaign.description")}</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder={t("campaign.describeCampaign")} 
+                                className="min-h-[150px]"
+                                {...field} 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </CardContent>
+                    <CardFooter className="flex justify-end">
+                      <Button 
+                        type="submit" 
+                        className="magic-button"
+                        disabled={createCampaignMutation.isPending || updateCampaignMutation.isPending}
+                      >
+                        {campaign ? (
+                          updateCampaignMutation.isPending ? t("common.saving") : t("campaign.saveCampaign")
+                        ) : (
+                          createCampaignMutation.isPending ? t("common.creating") : t("campaign.createCampaign")
+                        )}
+                      </Button>
+                    </CardFooter>
+                  </form>
+                </Form>
+              ) : (
+                // Modo de visualização
+                <>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h3 className="font-lora text-lg font-medium text-primary">{t("campaign.campaignName")}</h3>
+                      <p className="mt-1 text-secondary whitespace-pre-wrap">{campaign?.name}</p>
+                    </div>
                     
-                    <FormField
-                      control={campaignForm.control}
-                      name="description"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t("campaign.description")}</FormLabel>
-                          <FormControl>
-                            <Textarea 
-                              placeholder={t("campaign.describeCampaign")} 
-                              className="min-h-[150px]"
-                              {...field} 
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    <div>
+                      <h3 className="font-lora text-lg font-medium text-primary">{t("campaign.description")}</h3>
+                      <p className="mt-1 text-secondary whitespace-pre-wrap">{campaign?.description}</p>
+                    </div>
                   </CardContent>
                   <CardFooter className="flex justify-end">
                     <Button 
-                      type="submit" 
-                      className="magic-button"
-                      disabled={createCampaignMutation.isPending || updateCampaignMutation.isPending}
+                      variant="outline"
+                      onClick={() => setDetailsEditMode(true)}
                     >
-                      {campaign ? (
-                        updateCampaignMutation.isPending ? t("common.saving") : t("campaign.saveCampaign")
-                      ) : (
-                        createCampaignMutation.isPending ? t("common.creating") : t("campaign.createCampaign")
-                      )}
+                      {t("location.edit")}
                     </Button>
                   </CardFooter>
-                </Card>
-              </form>
-            </Form>
+                </>
+              )}
+            </Card>
           </TabsContent>
           
           {/* World Building Tab */}
