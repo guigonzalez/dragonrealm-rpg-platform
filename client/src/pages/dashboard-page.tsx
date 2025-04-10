@@ -280,15 +280,31 @@ export default function DashboardPage() {
               ) : campaigns.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {campaigns.map((campaign) => (
-                    <Card key={campaign.id} className="overflow-hidden">
+                    <Card key={campaign.id} className="overflow-hidden flex flex-col">
                       <div className="h-2 bg-secondary" />
+                      {campaign.imageUrl ? (
+                        <div className="relative w-full h-40">
+                          <img 
+                            src={campaign.imageUrl}
+                            alt={campaign.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = "https://placehold.co/800x400?text=Campaign";
+                              target.className = "w-full h-full object-contain";
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="h-2" /> // Para campanhas sem imagem, só manter o cabeçalho colorido
+                      )}
                       <CardHeader>
                         <CardTitle className="font-lora text-primary">{campaign.name}</CardTitle>
                         <CardDescription>
                           {new Date(campaign.created).toLocaleDateString()}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent>
+                      <CardContent className="flex-grow">
                         <p className="text-sm text-muted-foreground line-clamp-3">
                           {campaign.description || t("campaign.noDescription")}
                         </p>
