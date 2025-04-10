@@ -556,6 +556,96 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
           
           {/* World Building Tab */}
           <TabsContent value="world" className="space-y-6">
+            {/* World Building Foundations */}
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className="font-lora text-2xl text-primary">{t("location.worldFoundations")}</CardTitle>
+                <CardDescription>
+                  {t("location.worldBuildingCore")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-8">
+                {/* Central Concept */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-lora text-xl text-primary">{t("location.centralConcept")}</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {t("location.centralConceptDescription")}
+                  </p>
+                  <Textarea 
+                    placeholder="What's the central concept of your world?"
+                    className="min-h-[100px]"
+                  />
+                </div>
+                
+                {/* Geography */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-lora text-xl text-primary">{t("location.geography")}</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {t("location.geographyDescription")}
+                  </p>
+                  <Textarea 
+                    placeholder="Describe the key geographical regions of your world"
+                    className="min-h-[100px]"
+                  />
+                </div>
+                
+                {/* Factions */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-lora text-xl text-primary">{t("location.factions")}</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {t("location.factionsDescription")}
+                  </p>
+                  <Textarea 
+                    placeholder="Describe the major factions and their tensions"
+                    className="min-h-[100px]"
+                  />
+                </div>
+                
+                {/* History */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-lora text-xl text-primary">{t("location.history")}</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {t("location.historyDescription")}
+                  </p>
+                  <Textarea 
+                    placeholder="Describe a key historical event and its consequences"
+                    className="min-h-[100px]"
+                  />
+                </div>
+                
+                {/* Magic/Technology */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-lora text-xl text-primary">{t("location.magicTech")}</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {t("location.magicTechDescription")}
+                  </p>
+                  <Textarea 
+                    placeholder="Describe how magic, technology, or other systems work in your world"
+                    className="min-h-[100px]"
+                  />
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-end space-x-2">
+                <Button variant="outline">
+                  {t("location.edit")}
+                </Button>
+                <Button className="magic-button">
+                  {t("location.save")}
+                </Button>
+              </CardFooter>
+            </Card>
+            
+            {/* Locations Section */}
             <div className="flex justify-between items-center">
               <h2 className="font-lora text-2xl text-primary">{t("location.locations")}</h2>
               <Dialog open={locationDialogOpen} onOpenChange={setLocationDialogOpen}>

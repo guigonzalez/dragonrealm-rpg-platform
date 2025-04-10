@@ -213,7 +213,21 @@
     "locationDetails": "Location Details",
     "description": "Description",
     "notes": "Notes",
-    "worldBuilding": "World Building"
+    "worldBuilding": "World Building",
+    "worldBuildingCore": "World Foundations",
+    "centralConcept": "Central Concept",
+    "centralConceptDescription": "What's the vibe of your world? Magical post-apocalypse? A continent on the brink of religious war? A decaying empire ruled by bureaucratic dragons? Define ONE strong idea that guides everything else.",
+    "geography": "Functional Geography",
+    "geographyDescription": "Draw (or imagine) about 5-7 regions with different climates, dangers, or cultures. A desert with forbidden magic, a living forest that moves, a floating city. Just enough to create contrast and provide hooks.",
+    "factions": "Factions and Tensions",
+    "factionsDescription": "Create 3-5 power groups: kingdoms, guilds, religions, revolutions. What do they want? Who do they fight with? This already generates enough conflict for multiple campaigns.",
+    "history": "A Past with Consequences",
+    "historyDescription": "You don't need to write 2,000 years of history. But invent a landmark event from the past (like a war, a plague, a divine betrayal) and show how it still affects the present.",
+    "magicTech": "Magic, Technology or Mystery?",
+    "magicTechDescription": "What drives the world? Is magic common or rare? Is there technology? Are there active gods? Create ONE strange rule of the world, like \"death isn't permanent\", \"every child is born with a prophecy\", or \"the stars are falling\".",
+    "edit": "Edit",
+    "save": "Save",
+    "worldFoundations": "World Foundations"
   },
   "sessionNote": {
     "sessionNotes": "Session Notes",

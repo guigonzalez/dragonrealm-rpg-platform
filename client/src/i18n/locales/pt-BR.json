@@ -230,7 +230,21 @@
     "locationDetails": "Detalhes da Localização",
     "description": "Descrição",
     "notes": "Anotações",
-    "worldBuilding": "Construção de Mundo"
+    "worldBuilding": "Construção de Mundo",
+    "worldBuildingCore": "Fundamentos do Mundo",
+    "centralConcept": "Conceito Central",
+    "centralConceptDescription": "Qual a vibe do mundo? Pós-apocalíptico mágico? Um continente à beira de uma guerra religiosa? Um império decadente governado por dragões burocratas? Define UMA ideia forte que guia o resto.",
+    "geography": "Geografia Funcional",
+    "geographyDescription": "Desenha (ou imagina) umas 5 a 7 regiões com climas, perigos ou culturas diferentes. Um deserto com magia proibida, uma floresta viva que se move, uma cidade flutuante. Só o suficiente pra criar contraste e dar ganchos.",
+    "factions": "Facções e Tensões",
+    "factionsDescription": "Cria 3 a 5 grupos de poder: reinos, guildas, religiões, revoluções. O que eles querem? Com quem brigam? Isso já gera conflito o bastante pra várias campanhas.",
+    "history": "Um Passado com Consequências",
+    "historyDescription": "Não precisa escrever 2 mil anos de história. Mas inventa um evento marcante do passado (tipo uma guerra, uma praga, uma traição divina) e mostra como isso ainda afeta o presente.",
+    "magicTech": "Magia, Tecnologia ou Mistério?",
+    "magicTechDescription": "O que move o mundo? Magia é comum ou rara? Tem tecnologia? Tem deuses ativos? Cria UMA regra estranha do mundo, tipo \"a morte não é permanente\", \"toda criança nasce com uma profecia\", ou \"as estrelas estão caindo\".",
+    "edit": "Editar",
+    "save": "Salvar",
+    "worldFoundations": "Fundamentos do Mundo"
   },
   "sessionNote": {
     "sessionNotes": "Notas de Sessão",
