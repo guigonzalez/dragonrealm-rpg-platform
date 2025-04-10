@@ -170,10 +170,23 @@ export default function DashboardPage() {
                     <Card key={character.id} className="overflow-hidden">
                       <div className="h-2 bg-primary" />
                       <CardHeader>
-                        <CardTitle className="font-lora text-primary">{character.name}</CardTitle>
-                        <CardDescription>
-                          {character.race} • {character.class} • Level {character.level}
-                        </CardDescription>
+                        <div className="flex items-center gap-4">
+                          {character.imageUrl && (
+                            <div className="flex-shrink-0 h-14 w-14 rounded-full overflow-hidden bg-muted">
+                              <img 
+                                src={character.imageUrl} 
+                                alt={character.name} 
+                                className="h-full w-full object-cover"
+                              />
+                            </div>
+                          )}
+                          <div>
+                            <CardTitle className="font-lora text-primary">{character.name}</CardTitle>
+                            <CardDescription>
+                              {character.race} • {character.class} • Level {character.level}
+                            </CardDescription>
+                          </div>
+                        </div>
                       </CardHeader>
                       <CardContent>
                         <div className="grid grid-cols-3 gap-4 text-center mb-4">
