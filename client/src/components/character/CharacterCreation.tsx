@@ -3048,6 +3048,23 @@ export default function CharacterCreation({ readOnly = false, predefinedCharacte
                                     <h4 className="font-bold">{spell.name}</h4>
                                     <Badge variant="outline">Level {spell.level}</Badge>
                                   </div>
+                                  
+                                  {/* Novos campos */}
+                                  <div className="grid grid-cols-2 gap-x-4 mt-1">
+                                    {spell.castingTime && (
+                                      <p className="text-xs"><span className="font-semibold">Casting Time:</span> {spell.castingTime}</p>
+                                    )}
+                                    {spell.range && (
+                                      <p className="text-xs"><span className="font-semibold">Range:</span> {spell.range}</p>
+                                    )}
+                                    {spell.components && (
+                                      <p className="text-xs"><span className="font-semibold">Components:</span> {spell.components}</p>
+                                    )}
+                                    {spell.duration && (
+                                      <p className="text-xs"><span className="font-semibold">Duration:</span> {spell.duration}</p>
+                                    )}
+                                  </div>
+                                  
                                   <p className="text-sm mt-1">{spell.description}</p>
                                   {spell.damage && (
                                     <p className="text-sm mt-1"><span className="font-semibold">Damage:</span> {spell.damage}</p>
