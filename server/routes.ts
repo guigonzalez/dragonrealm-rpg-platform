@@ -702,6 +702,274 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Creature routes
+  app.get("/api/campaigns/:campaignId/creatures", requireAuth, async (req, res) => {
+    const campaignId = parseInt(req.params.campaignId);
+    const campaign = await storage.getCampaign(campaignId);
+    
+    if (!campaign) {
+      return res.status(404).json({ message: "Campaign not found" });
+    }
+    
+    if (campaign.userId !== req.user!.id) {
+      return res.status(403).json({ message: "Unauthorized access to campaign" });
+    }
+    
+    const creatures = await storage.getCreaturesByCampaignId(campaignId);
+    res.json(creatures);
+  });
+
+  app.post("/api/campaigns/:campaignId/creatures", requireAuth, async (req, res) => {
+    try {
+      const campaignId = parseInt(req.params.campaignId);
+      const campaign = await storage.getCampaign(campaignId);
+      
+      if (!campaign) {
+        return res.status(404).json({ message: "Campaign not found" });
+      }
+      
+      if (campaign.userId !== req.user!.id) {
+        return res.status(403).json({ message: "Unauthorized access to campaign" });
+      }
+      
+      const now = new Date().toISOString();
+      const creatureData = insertCreatureSchema.parse({
+        ...req.body,
+        campaignId,
+        created: now,
+        updated: now
+      });
+      
+      // Garantir que entityType está definido como 'creature'
+      creatureData.entityType = 'creature';
+      
+      const creature = await storage.createCreature(creatureData);
+      res.status(201).json(creature);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid creature data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create creature" });
+    }
+  });
+
+  // Endpoint alternativo para criação de criaturas
+  app.post("/api/creatures", requireAuth, async (req, res) => {
+    try {
+      const campaignId = parseInt(req.body.campaignId);
+      const campaign = await storage.getCampaign(campaignId);
+      
+      if (!campaign) {
+        return res.status(404).json({ message: "Campaign not found" });
+      }
+      
+      if (campaign.userId !== req.user!.id) {
+        return res.status(403).json({ message: "Unauthorized access to campaign" });
+      }
+      
+      const now = new Date().toISOString();
+      
+      // Processar imagem base64 se existir
+      let modifiedReqBody = { ...req.body };
+      
+      // Garantir que entityType está definido como 'creature'
+      modifiedReqBody.entityType = 'creature';
+      console.log(`Definindo entityType para: ${modifiedReqBody.entityType}`);
+      
+      if (req.body.imageUrl && req.body.imageUrl.startsWith('data:')) {
+        // Salvar imagem base64 como arquivo
+        const imagePath = saveBase64Image(req.body.imageUrl, 'creature');
+        if (imagePath) {
+          console.log(`Imagem salva em: ${imagePath}`);
+          
+          // Atualizar caminho da imagem
+          modifiedReqBody.imageUrl = imagePath;
+          
+          console.log(`Caminho da imagem após processamento: ${modifiedReqBody.imageUrl}`);
+        } else {
+          // Se não conseguir salvar, remover o campo para evitar salvar a string base64 no banco
+          console.log('Falha ao processar imagem base64, removendo imageUrl');
+          delete modifiedReqBody.imageUrl;
+        }
+      }
+      
+      // Processar atributos da criatura extraindo de memorableTrait ou notes
+      if (modifiedReqBody.memorableTrait && modifiedReqBody.memorableTrait.includes('FOR:')) {
+        // Extrai valores de atributos do memorableTrait (exemplo: "FOR:10 DES:14 CON:12 INT:18 SAB:15 CAR:13")
+        const attrStr = modifiedReqBody.memorableTrait;
+        const strMatch = attrStr.match(/FOR:(\d+)/);
+        const dexMatch = attrStr.match(/DES:(\d+)/);
+        const conMatch = attrStr.match(/CON:(\d+)/);
+        const intMatch = attrStr.match(/INT:(\d+)/);
+        const wisMatch = attrStr.match(/SAB:(\d+)/);
+        const chaMatch = attrStr.match(/CAR:(\d+)/);
+        
+        if (strMatch) modifiedReqBody.strength = strMatch[1];
+        if (dexMatch) modifiedReqBody.dexterity = dexMatch[1];
+        if (conMatch) modifiedReqBody.constitution = conMatch[1];
+        if (intMatch) modifiedReqBody.intelligence = intMatch[1];
+        if (wisMatch) modifiedReqBody.wisdom = wisMatch[1];
+        if (chaMatch) modifiedReqBody.charisma = chaMatch[1];
+      }
+      
+      const data = insertCreatureSchema.parse({
+        ...modifiedReqBody,
+        created: now,
+        updated: now
+      });
+      
+      const creature = await storage.createCreature(data);
+      res.status(201).json(creature);
+    } catch (error) {
+      console.error("Erro ao criar criatura:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid creature data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create creature" });
+    }
+  });
+
+  app.get("/api/creatures/:id", requireAuth, async (req, res) => {
+    try {
+      const creatureId = parseInt(req.params.id);
+      const creature = await storage.getCreature(creatureId);
+      
+      if (!creature) {
+        return res.status(404).json({ message: "Creature not found" });
+      }
+      
+      // Garantir que o usuário tem acesso à criatura via campanha
+      const campaign = await storage.getCampaign(creature.campaignId);
+      if (!campaign || campaign.userId !== req.user!.id) {
+        return res.status(403).json({ message: "Unauthorized access to creature" });
+      }
+      
+      res.json(creature);
+    } catch (error) {
+      console.error("Error fetching creature:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.put("/api/creatures/:id", requireAuth, async (req, res) => {
+    try {
+      const creatureId = parseInt(req.params.id);
+      const creature = await storage.getCreature(creatureId);
+      
+      if (!creature) {
+        return res.status(404).json({ message: "Creature not found" });
+      }
+      
+      // Garantir que o usuário tem acesso à criatura via campanha
+      const campaign = await storage.getCampaign(creature.campaignId);
+      if (!campaign || campaign.userId !== req.user!.id) {
+        return res.status(403).json({ message: "Unauthorized access to creature" });
+      }
+      
+      // Processar imagem base64 se existir
+      let modifiedReqBody = { ...req.body };
+      
+      if (req.body.imageUrl && req.body.imageUrl.startsWith('data:')) {
+        const imagePath = saveBase64Image(req.body.imageUrl, 'creature');
+        if (imagePath) {
+          modifiedReqBody.imageUrl = imagePath;
+        } else {
+          delete modifiedReqBody.imageUrl;
+        }
+      }
+      
+      const updatedCreature = await storage.updateCreature(creatureId, {
+        ...modifiedReqBody,
+        entityType: 'creature', // Garantir que entityType é mantido
+        updated: new Date().toISOString()
+      });
+      
+      res.json(updatedCreature);
+    } catch (error) {
+      console.error("Error updating creature:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid creature data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update creature" });
+    }
+  });
+
+  app.patch("/api/creatures/:id", requireAuth, async (req, res) => {
+    try {
+      const creatureId = parseInt(req.params.id);
+      const creature = await storage.getCreature(creatureId);
+      
+      if (!creature) {
+        return res.status(404).json({ message: "Creature not found" });
+      }
+      
+      // Garantir que o usuário tem acesso à criatura via campanha
+      const campaign = await storage.getCampaign(creature.campaignId);
+      if (!campaign || campaign.userId !== req.user!.id) {
+        return res.status(403).json({ message: "Unauthorized access to creature" });
+      }
+      
+      // Processar imagem base64 se existir
+      let modifiedReqBody = { ...req.body };
+      
+      if (req.body.imageUrl && req.body.imageUrl.startsWith('data:')) {
+        const imagePath = saveBase64Image(req.body.imageUrl, 'creature');
+        if (imagePath) {
+          modifiedReqBody.imageUrl = imagePath;
+        } else {
+          delete modifiedReqBody.imageUrl;
+        }
+      }
+      
+      const updatedCreature = await storage.updateCreature(creatureId, {
+        ...modifiedReqBody,
+        entityType: 'creature', // Garantir que entityType é mantido
+        updated: new Date().toISOString()
+      });
+      
+      res.json(updatedCreature);
+    } catch (error) {
+      console.error("Error updating creature:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid creature data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update creature" });
+    }
+  });
+
+  app.delete("/api/creatures/:id", requireAuth, async (req, res) => {
+    const creatureId = parseInt(req.params.id);
+    
+    try {
+      // Garantir que a criatura existe
+      const creature = await storage.getCreature(creatureId);
+      if (!creature) {
+        return res.status(404).json({ message: "Creature not found" });
+      }
+      
+      // Garantir que o usuário tem acesso à criatura via campanha
+      const campaign = await storage.getCampaign(creature.campaignId);
+      if (!campaign) {
+        return res.status(404).json({ message: "Campaign not found" });
+      }
+      
+      if (campaign.userId !== req.user!.id) {
+        return res.status(403).json({ message: "Unauthorized access to creature" });
+      }
+      
+      // Deletar a criatura
+      const deleted = await storage.deleteCreature(creatureId);
+      if (deleted) {
+        res.status(204).end();
+      } else {
+        res.status(500).json({ message: "Failed to delete creature" });
+      }
+    } catch (error) {
+      console.error("Error deleting creature:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   // Encounter routes
   app.get("/api/campaigns/:campaignId/encounters", requireAuth, async (req, res) => {
     const campaignId = parseInt(req.params.campaignId);
