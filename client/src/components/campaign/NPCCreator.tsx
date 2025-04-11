@@ -243,6 +243,14 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
   const { t } = useTranslation();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationOptions, setGenerationOptions] = useState({
+    tipo: 'npc' as 'npc' | 'creature',
+    campanha: '',
+    nivel: '',
+    terreno: '',
+    estilo: ''
+  });
   
   // Preparar valores padrões considerando possível edição
   const defaultValues = {
@@ -372,6 +380,73 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
       setIsSubmitting(false);
     },
   });
+
+  // Função para gerar NPCs e Criaturas usando IA
+  const generateNPC = async () => {
+    setIsGenerating(true);
+    try {
+      // Pegar valores atuais do formulário para contexto
+      const tipo = form.getValues("entityType") || "npc";
+      
+      // Configurar opções de geração
+      const options = {
+        tipo,
+        campanha: generationOptions.campanha,
+        nivel: generationOptions.nivel,
+        terreno: generationOptions.terreno,
+        estilo: generationOptions.estilo
+      };
+      
+      // Chamar a API para gerar o NPC
+      const response = await fetch("/api/generate-npc", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(options),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Erro ao gerar NPC: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log("NPC gerado:", data);
+      
+      // Preencher o formulário com os dados gerados
+      form.setValue("name", data.name || "");
+      form.setValue("role", data.role || "");
+      form.setValue("motivation", data.motivation || "");
+      form.setValue("relationships", data.relationships || "");
+      form.setValue("abilities", data.abilities || "");
+      form.setValue("threatLevel", data.threatLevel?.toLowerCase().includes("perigoso") ? "dangerous" : 
+                               data.threatLevel?.toLowerCase().includes("chefe") ? "boss" :
+                               data.threatLevel?.toLowerCase().includes("desafiador") ? "challenging" : "harmless");
+      form.setValue("healthPoints", data.healthPoints || "");
+      form.setValue("str", data.strength || "");
+      form.setValue("dex", data.dexterity || "");
+      form.setValue("con", data.constitution || "");
+      form.setValue("int", data.intelligence || "");
+      form.setValue("wis", data.wisdom || "");
+      form.setValue("cha", data.charisma || "");
+      form.setValue("specialAbilities", data.specialAbilities || "");
+      form.setValue("plotHooks", data.plotHooks || "");
+      
+      toast({
+        title: "NPC gerado com sucesso!",
+        description: "Os campos foram preenchidos automaticamente. Você pode editar conforme necessário.",
+      });
+    } catch (error) {
+      console.error("Erro ao gerar NPC:", error);
+      toast({
+        title: "Erro ao gerar NPC",
+        description: error instanceof Error ? error.message : "Erro desconhecido",
+        variant: "destructive"
+      });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   const onSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
@@ -575,6 +650,78 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
                     </FormItem>
                   )}
                 />
+                
+                {/* Gerador automático */}
+                <Card className="p-4 border border-primary/30 bg-primary/5">
+                  <h3 className="text-base font-semibold font-lora text-primary mb-2">
+                    Gerador de {form.getValues("entityType") === "creature" ? "Criaturas" : "NPCs"} por IA
+                  </h3>
+                  <p className="text-sm mb-4">
+                    Deixe a IA criar um {form.getValues("entityType") === "creature" ? "monstro" : "personagem"} completo para sua campanha.
+                  </p>
+                  
+                  <div className="space-y-3 mb-4">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <FormLabel className="text-xs">Tema da campanha</FormLabel>
+                        <Input 
+                          placeholder="Medieval, Piratas, Futuro, etc."
+                          className="text-sm" 
+                          value={generationOptions.campanha}
+                          onChange={(e) => setGenerationOptions({...generationOptions, campanha: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <FormLabel className="text-xs">Nível/Desafio</FormLabel>
+                        <Input 
+                          placeholder="1-5, 10-15, etc." 
+                          className="text-sm"
+                          value={generationOptions.nivel}
+                          onChange={(e) => setGenerationOptions({...generationOptions, nivel: e.target.value})}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <FormLabel className="text-xs">Ambiente/Terreno</FormLabel>
+                        <Input 
+                          placeholder="Floresta, Cidade, etc." 
+                          className="text-sm"
+                          value={generationOptions.terreno}
+                          onChange={(e) => setGenerationOptions({...generationOptions, terreno: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <FormLabel className="text-xs">Estilo</FormLabel>
+                        <Input 
+                          placeholder="Sombrio, Cômico, etc." 
+                          className="text-sm"
+                          value={generationOptions.estilo}
+                          onChange={(e) => setGenerationOptions({...generationOptions, estilo: e.target.value})}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    type="button"
+                    variant="outline" 
+                    className="w-full"
+                    onClick={generateNPC}
+                    disabled={isGenerating}
+                  >
+                    {isGenerating ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Gerando...
+                      </>
+                    ) : (
+                      <>
+                        Gerar {form.getValues("entityType") === "creature" ? "Criatura" : "NPC"} Automaticamente
+                      </>
+                    )}
+                  </Button>
+                </Card>
               </div>
             </div>
 
