@@ -233,13 +233,16 @@ const formSchema = insertNpcSchema.extend({
 });
 
 type NPCCreatorProps = {
-  campaignId: number;
-  onClose: () => void;
+  campaignId?: number;
+  campaign?: any;
+  onClose?: () => void;
   onSuccess?: (npc: any) => void;
   editingNpc?: any; // Se fornecido, estamos editando um NPC existente
 };
 
-export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc }: NPCCreatorProps) {
+export default function NPCCreator({ campaignId, campaign, onClose = () => {}, onSuccess, editingNpc }: NPCCreatorProps) {
+  // Se campaign está presente mas campaignId não, extrair o ID da campaign
+  const actualCampaignId = campaignId || (campaign ? campaign.id : undefined);
   const { t } = useTranslation();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -254,7 +257,7 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
   
   // Preparar valores padrões considerando possível edição
   const defaultValues = {
-    campaignId,
+    campaignId: actualCampaignId,
     entityType: "npc" as "npc" | "creature",  // tipo explícito para garantir tipagem correta
     name: "",
     role: "",
@@ -357,7 +360,7 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
       return await response.json();
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [`/api/campaigns/${campaignId}/npcs`] });
+      queryClient.invalidateQueries({ queryKey: [`/api/campaigns/${actualCampaignId}/npcs`] });
       toast({
         title: editingNpc 
           ? t("npc.updateSuccess.title") 
