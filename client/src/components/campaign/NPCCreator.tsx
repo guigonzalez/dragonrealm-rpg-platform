@@ -449,8 +449,8 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
       form.setValue("relationships", data.relationships || "");
       form.setValue("abilities", data.abilities || "");
       form.setValue("threatLevel", data.threatLevel?.toLowerCase().includes("perigoso") ? "dangerous" : 
-                               data.threatLevel?.toLowerCase().includes("chefe") ? "boss" :
-                               data.threatLevel?.toLowerCase().includes("desafiador") ? "challenging" : "harmless");
+                           data.threatLevel?.toLowerCase().includes("chefe") ? "boss" :
+                           data.threatLevel?.toLowerCase().includes("desafiador") ? "challenging" : "harmless");
       form.setValue("healthPoints", data.healthPoints ? String(data.healthPoints) : "");
       form.setValue("str", data.strength ? String(data.strength) : "");
       form.setValue("dex", data.dexterity ? String(data.dexterity) : "");
@@ -528,12 +528,24 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
       entityType: values.entityType || "npc",
       // Usamos o campo abilities existente para armazenar habilidades
       abilities: values.abilities || "",
+      // Campos específicos para os atributos
+      strength: values.str || null,
+      dexterity: values.dex || null,
+      constitution: values.con || null,
+      intelligence: values.int || null,
+      wisdom: values.wis || null,
+      charisma: values.cha || null,
+      healthPoints: values.healthPoints || null,
+      threatLevel: values.threatLevel || null,
+      specialAbilities: values.specialAbilities || null,
       // Campos de data
       updated: new Date().toISOString(),
       
       // Armazenando outros dados em campos existentes para manter a compatibilidade
       // Usamos o campo memorableTrait para armazenar atributos
       memorableTrait: attrString,
+      // E o campo threatOrUtility para armazenar o nível de ameaça
+      threatOrUtility: threatOrUtility,
     };
     
     // Se criando novo NPC, adiciona a data de criação
@@ -672,7 +684,7 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
                     </FormItem>
                   )}
                 />
-
+                
                 {/* 7. Atributos e Status */}
                 <div className="border border-primary/20 rounded-md p-4 bg-primary/5 space-y-3">
                   <h3 className="text-sm font-semibold text-primary">7. Atributos e Status</h3>
@@ -833,7 +845,7 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
                     />
                   </div>
                 </div>
-
+                
                 {/* 8. Habilidades Especiais */}
                 <FormField
                   control={form.control}
@@ -852,7 +864,7 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
                     </FormItem>
                   )}
                 />
-
+                
                 {/* 9. Ganchos de História */}
                 <FormField
                   control={form.control}
@@ -968,188 +980,6 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
 
             <Separator className="my-6" />
             
-            <h3 className="text-lg font-semibold font-lora text-primary mb-4">7. Status Básicos</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Atributos (opcional) */}
-              <div>
-                <FormLabel className="block mb-3">Atributos (opcional)</FormLabel>
-                <div className="grid grid-cols-3 gap-3">
-                  <FormField
-                    control={form.control}
-                    name="str"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <div className="flex flex-col">
-                            <FormLabel className="text-xs mb-1">FOR</FormLabel>
-                            <Input placeholder="-" {...field} />
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="dex"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <div className="flex flex-col">
-                            <FormLabel className="text-xs mb-1">DES</FormLabel>
-                            <Input placeholder="-" {...field} />
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="con"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <div className="flex flex-col">
-                            <FormLabel className="text-xs mb-1">CON</FormLabel>
-                            <Input placeholder="-" {...field} />
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="int"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <div className="flex flex-col">
-                            <FormLabel className="text-xs mb-1">INT</FormLabel>
-                            <Input placeholder="-" {...field} />
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="wis"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <div className="flex flex-col">
-                            <FormLabel className="text-xs mb-1">SAB</FormLabel>
-                            <Input placeholder="-" {...field} />
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="cha"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <div className="flex flex-col">
-                            <FormLabel className="text-xs mb-1">CAR</FormLabel>
-                            <Input placeholder="-" {...field} />
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-              
-              <div className="space-y-4">
-                {/* Vida / Resistência */}
-                <FormField
-                  control={form.control}
-                  name="healthPoints"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Vida / Resistência</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="Ex: baixa, média, alta, ou pontos específicos" 
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                {/* Nível de Ameaça */}
-                <FormField
-                  control={form.control}
-                  name="threatLevel"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nível de Ameaça</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          value={field.value}
-                          className="flex flex-col space-y-1"
-                        >
-                          {threatLevelOptions.map(option => (
-                            <div key={option.value} className="flex items-center space-x-2">
-                              <RadioGroupItem value={option.value} id={option.value} />
-                              <label htmlFor={option.value} className="cursor-pointer">{option.label}</label>
-                            </div>
-                          ))}
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-            
-            {/* Ataques ou Habilidades especiais */}
-            <FormField
-              control={form.control}
-              name="specialAbilities"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Ataques ou Habilidades especiais</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder='Ex: "Grito paralisante", "Magia de necrose", "Transforma-se em névoa"' 
-                      className="min-h-[80px]"
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Liste 1-3 habilidades que tornam este personagem único em combate ou interações.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            {/* Notas adicionais */}
-            <FormField
-              control={form.control}
-              name="plotHooks"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Notas adicionais / Ideias de história</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder="Informações adicionais, ganchos de história, ou ideias para usar esse personagem" 
-                      className="min-h-[80px]"
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <div className="flex justify-end space-x-2 pt-4">
               <Button 
                 type="button" 
