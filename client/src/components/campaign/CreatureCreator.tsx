@@ -53,22 +53,25 @@ const getThreatLevelOptions = () => {
 // Extend schema for validation
 const formSchema = insertNpcSchema.extend({
   name: z.string().min(1, "O nome é obrigatório"),
-  // Removido o campo role pois será definido pelos jogadores
-  motivation: z.string().optional(),
-  imageUrl: z.string().optional(),
-  relationships: z.string().optional(),
-  abilities: z.string().optional(),
-  // Campo threatLevel agora é obrigatório
-  threatLevel: z.string().min(1, "O nível de ameaça é obrigatório"),
-  healthPoints: z.string().optional(),
+  type: z.string().optional(), // Tipo e Inteligência
+  specialAbility: z.string().optional(), // Habilidade especial
+  healthPoints: z.string().optional(), // PV
+  armorClass: z.string().optional(), // CA
+  // Atributos
   str: z.string().optional(),
   dex: z.string().optional(),
   con: z.string().optional(),
   int: z.string().optional(),
   wis: z.string().optional(),
   cha: z.string().optional(),
-  specialAbilities: z.string().optional(),
-  plotHooks: z.string().optional(),
+  attacks: z.string().optional(), // Ataques ou poderes
+  resistances: z.string().optional(), // Resistências ou fraquezas
+  terrain: z.string().optional(), // Terreno e contexto de aparição
+  behavior: z.string().optional(), // Comportamento e motivação
+  
+  // Campos mantidos para compatibilidade com o esquema existente
+  imageUrl: z.string().optional(),
+  threatLevel: z.string().min(1, "O nível de ameaça é obrigatório"),
 });
 
 type CreatureCreatorProps = {
@@ -83,11 +86,18 @@ interface FormValues {
   name: string;
   campaignId: number;
   entityType: "npc" | "creature";
-  role?: string;
-  motivation?: string;
+  
+  // Novos campos do formulário
+  type?: string; // Tipo e Inteligência
+  specialAbility?: string; // Habilidade especial
+  armorClass?: string; // CA
+  attacks?: string; // Ataques ou poderes
+  resistances?: string; // Resistências ou fraquezas
+  terrain?: string; // Terreno e contexto de aparição
+  behavior?: string; // Comportamento e motivação
+  
+  // Campos existentes que continuamos usando
   imageUrl?: string;
-  relationships?: string;
-  abilities?: string;
   threatLevel?: string;
   healthPoints?: string;
   str?: string;
@@ -96,10 +106,18 @@ interface FormValues {
   int?: string;
   wis?: string;
   cha?: string;
+  
+  // Campos que serão mapeados para os novos
+  role?: string;
+  motivation?: string;
+  relationships?: string;
+  abilities?: string;
   specialAbilities?: string;
   plotHooks?: string;
+  
   created: string;
   updated: string;
+  
   // Campos legados para compatibilidade
   memorableTrait?: string;
   threatOrUtility?: string;
@@ -132,11 +150,18 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
       name: editingCreature?.name || "",
       campaignId: actualCampaignId,
       entityType: "creature", // Sempre criatura
-      role: editingCreature?.role || "",
-      motivation: editingCreature?.motivation || "",
+      
+      // Novos campos do formulário
+      type: editingCreature?.type || "",
+      specialAbility: editingCreature?.specialAbility || "",
+      armorClass: editingCreature?.armorClass || "",
+      attacks: editingCreature?.attacks || "",
+      resistances: editingCreature?.resistances || "",
+      terrain: editingCreature?.terrain || editingCreature?.location || "",
+      behavior: editingCreature?.behavior || editingCreature?.motivation || "",
+      
+      // Campos mantidos
       imageUrl: editingCreature?.imageUrl || "",
-      relationships: editingCreature?.relationships || "",
-      abilities: editingCreature?.abilities || "",
       threatLevel: editingCreature?.threatLevel || "",
       healthPoints: editingCreature?.healthPoints || "",
       str: editingCreature?.strength || "",
@@ -145,8 +170,15 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
       int: editingCreature?.intelligence || "",
       wis: editingCreature?.wisdom || "",
       cha: editingCreature?.charisma || "",
+      
+      // Campos legados que mapeamos para os novos
+      role: editingCreature?.role || "",
+      motivation: editingCreature?.motivation || "",
+      relationships: editingCreature?.relationships || "",
+      abilities: editingCreature?.abilities || "",
       specialAbilities: editingCreature?.specialAbilities || "",
       plotHooks: editingCreature?.plotHooks || "",
+      
       created: editingCreature?.created || new Date().toISOString(),
       updated: new Date().toISOString(),
     }
@@ -229,22 +261,32 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
       
       // Preencher o formulário com os dados gerados
       form.setValue("name", data.name || "");
-      form.setValue("role", data.role || "");
-      form.setValue("motivation", data.motivation || "");
-      form.setValue("relationships", data.relationships || "");
-      form.setValue("abilities", data.abilities || "");
+      
+      // Mapeamos os campos da API para os novos campos do formulário
+      form.setValue("type", data.race || "Monstro");
+      form.setValue("specialAbility", Array.isArray(data.specialAbilities) ? 
+                    data.specialAbilities.join('\n') : data.specialAbilities || "");
+      form.setValue("behavior", data.motivation || "");
+      form.setValue("terrain", data.location || "");
+      form.setValue("attacks", data.abilities || "");
+      form.setValue("resistances", ""); // A API não retorna este campo específico
+      
+      // Nível de ameaça
       form.setValue("threatLevel", data.threatLevel?.toLowerCase().includes("perigoso") ? "dangerous" : 
                          data.threatLevel?.toLowerCase().includes("chefe") ? "boss" :
                          data.threatLevel?.toLowerCase().includes("desafiador") ? "challenging" : "harmless");
+      
+      // Atributos de combate
       form.setValue("healthPoints", data.healthPoints ? String(data.healthPoints) : "");
+      form.setValue("armorClass", "14"); // Valor padrão, a API não retorna este campo
+      
+      // Atributos
       form.setValue("str", data.strength ? String(data.strength) : "");
       form.setValue("dex", data.dexterity ? String(data.dexterity) : "");
       form.setValue("con", data.constitution ? String(data.constitution) : "");
       form.setValue("int", data.intelligence ? String(data.intelligence) : "");
       form.setValue("wis", data.wisdom ? String(data.wisdom) : "");
       form.setValue("cha", data.charisma ? String(data.charisma) : "");
-      form.setValue("specialAbilities", Array.isArray(data.specialAbilities) ? data.specialAbilities.join('\n') : data.specialAbilities || "");
-      form.setValue("plotHooks", Array.isArray(data.plotHooks) ? data.plotHooks.join('\n') : data.plotHooks || "");
       
       toast({
         title: "Criatura gerada com sucesso!",
@@ -291,27 +333,25 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
       campaignId: actualCampaignId,
       name: values.name,
       
-      // Este campo pode conter informações sobre habilidades especiais
-      // e pontos de vida em formato legível
-      notes: `Vida/Resistência: ${values.healthPoints || '-'}\nGanchos: ${values.plotHooks || '-'}\nRelações: ${values.relationships || '-'}`,
+      // Este campo pode conter informações sobre atributos de combate e resistências
+      notes: `Tipo: ${values.type || '-'}\nCA: ${values.armorClass || '-'}\nPV: ${values.healthPoints || '-'}\nResistências: ${values.resistances || '-'}\nTerreno: ${values.terrain || '-'}`,
       
-      // Campos mantidos para compatibilidade, mesmo vazios
-      race: "",       // vazio para manter compatibilidade
-      appearance: values.specialAbilities || "", // usar campo appearance para habilidades especiais
-      personality: "", // vazio para manter compatibilidade
-      occupation: "",  // vazio para manter compatibilidade
-      location: "",    // vazio para manter compatibilidade
+      // Mapeamos os novos campos para campos existentes
+      race: values.type || "",  // Tipo e Inteligência no campo race
+      appearance: values.specialAbility || "", // Habilidade especial no campo appearance
+      personality: values.behavior || "", // Comportamento no campo personality
+      occupation: "", // Mantém vazio para compatibilidade
+      location: values.terrain || "", // Terreno no campo location
       
       // Campos adicionados ao esquema
       imageUrl: values.imageUrl || "",
-      // Removemos o campo role conforme solicitado
-      motivation: values.motivation || "",
+      motivation: values.behavior || "", // Comportamento e motivação no campo motivation
       
       // Força entityType como "creature"
       entityType: "creature",
       
-      // Usamos o campo abilities existente para armazenar habilidades
-      abilities: values.abilities || "",
+      // Mapeamos os novos campos para campos existentes
+      abilities: values.attacks || "", // Ataques ou poderes no campo abilities
       
       // Campos específicos para os atributos
       strength: values.str || null,
@@ -322,16 +362,18 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
       charisma: values.cha || null,
       healthPoints: values.healthPoints || null,
       threatLevel: values.threatLevel || null,
-      specialAbilities: values.specialAbilities || null,
+      specialAbilities: values.specialAbility || null, // Habilidade especial
       
       // Campos de data
       updated: new Date().toISOString(),
       
       // Armazenando outros dados em campos existentes para manter a compatibilidade
-      // Usamos o campo memorableTrait para armazenar atributos
-      memorableTrait: attrString,
-      // E o campo threatOrUtility para armazenar o nível de ameaça
-      threatOrUtility: threatOrUtility,
+      memorableTrait: attrString, // Atributos no campo memorableTrait
+      threatOrUtility: threatOrUtility, // Nível de ameaça no campo threatOrUtility
+      
+      // Campos que existem no backend mas não aparecem no formulário
+      relationships: values.terrain || "", // Usando terreno como relacionamentos (contextual)
+      plotHooks: "", // Removemos os plot hooks do formulário
     };
     
     // Se criando nova criatura, adiciona a data de criação
@@ -360,142 +402,110 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-6">
-                <h3 className="text-lg font-semibold">Informações Básicas</h3>
-                
-                {/* Nome */}
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nome</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Nome da criatura" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                {/* Removido campo de papel no jogo conforme solicitado */}
-                
-                {/* Motivação */}
-                <FormField
-                  control={form.control}
-                  name="motivation"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Motivação</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="O que motiva esta criatura?"
-                          className="min-h-[80px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                {/* Relacionamentos */}
-                <FormField
-                  control={form.control}
-                  name="relationships"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Relacionamentos</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Como esta criatura se relaciona com outros seres?"
-                          className="min-h-[80px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                {/* Ganchos de história */}
-                <FormField
-                  control={form.control}
-                  name="plotHooks"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Ganchos de história</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Como esta criatura pode se conectar às histórias dos personagens?"
-                          className="min-h-[80px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+            <div className="space-y-6">
+              <h3 className="text-xl font-semibold mb-4">Ficha de Criatura</h3>
               
-              <div className="space-y-6">
-                <h3 className="text-lg font-semibold">Características de Combate</h3>
+              {/* Nome da Criatura */}
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome da Criatura</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Ex: Gárgula Flamejante" {...field} />
+                    </FormControl>
+                    <FormDescription>Nome único e memorável da criatura</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Tipo e Inteligência */}
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tipo e Inteligência</FormLabel>
+                    <FormControl>
+                      <Input 
+                        placeholder="Ex: Monstro, Inteligente/Racional ou Besta, Instintiva" 
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormDescription>Descreve a natureza e nível de inteligência da criatura</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Habilidade Especial */}
+              <FormField
+                control={form.control}
+                name="specialAbility"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Habilidade Especial</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Ex: Explode ao morrer, causa medo ao rugir, se teleporta entre sombras"
+                        className="min-h-[80px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>Poderes únicos que definem a criatura</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <div className="bg-muted/50 p-4 rounded-lg">
+                <h4 className="text-lg font-semibold mb-4">Atributos de Combate</h4>
                 
-                {/* Nível de Ameaça */}
-                <FormField
-                  control={form.control}
-                  name="threatLevel"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nível de Ameaça</FormLabel>
-                      <Select 
-                        onValueChange={field.onChange} 
-                        defaultValue={field.value}
-                      >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  {/* PV */}
+                  <FormField
+                    control={form.control}
+                    name="healthPoints"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>PV (Pontos de Vida)</FormLabel>
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Escolha o nível de ameaça" />
-                          </SelectTrigger>
+                          <Input placeholder="Ex: 75" {...field} />
                         </FormControl>
-                        <SelectContent>
-                          {getThreatLevelOptions().map(option => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  {/* CA */}
+                  <FormField
+                    control={form.control}
+                    name="armorClass"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>CA (Classe de Armadura)</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Ex: 16" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 
-                {/* Pontos de Vida */}
-                <FormField
-                  control={form.control}
-                  name="healthPoints"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Pontos de Vida</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Ex: 45" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                {/* Atributos em 3 colunas */}
+                {/* Atributos - FOR/DES/CON/INT/SAB/CAR */}
                 <div>
                   <FormLabel>Atributos</FormLabel>
-                  <div className="grid grid-cols-3 gap-3 mt-2">
+                  <FormDescription className="mb-2">Preencha apenas os essenciais para a cena</FormDescription>
+                  <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
                     <FormField
                       control={form.control}
                       name="str"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-xs">FOR</FormLabel>
+                          <FormLabel className="text-sm">FOR</FormLabel>
                           <FormControl>
                             <Input placeholder="10" {...field} />
                           </FormControl>
@@ -508,7 +518,7 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
                       name="dex"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-xs">DES</FormLabel>
+                          <FormLabel className="text-sm">DES</FormLabel>
                           <FormControl>
                             <Input placeholder="10" {...field} />
                           </FormControl>
@@ -521,7 +531,7 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
                       name="con"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-xs">CON</FormLabel>
+                          <FormLabel className="text-sm">CON</FormLabel>
                           <FormControl>
                             <Input placeholder="10" {...field} />
                           </FormControl>
@@ -534,7 +544,7 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
                       name="int"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-xs">INT</FormLabel>
+                          <FormLabel className="text-sm">INT</FormLabel>
                           <FormControl>
                             <Input placeholder="10" {...field} />
                           </FormControl>
@@ -547,7 +557,7 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
                       name="wis"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-xs">SAB</FormLabel>
+                          <FormLabel className="text-sm">SAB</FormLabel>
                           <FormControl>
                             <Input placeholder="10" {...field} />
                           </FormControl>
@@ -560,7 +570,7 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
                       name="cha"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-xs">CAR</FormLabel>
+                          <FormLabel className="text-sm">CAR</FormLabel>
                           <FormControl>
                             <Input placeholder="10" {...field} />
                           </FormControl>
@@ -569,45 +579,116 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
                     />
                   </div>
                 </div>
-                
-                {/* Habilidades */}
-                <FormField
-                  control={form.control}
-                  name="abilities"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Habilidades</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Que habilidades esta criatura possui?"
-                          className="min-h-[80px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                {/* Habilidades Especiais */}
-                <FormField
-                  control={form.control}
-                  name="specialAbilities"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Habilidades Especiais</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Quais habilidades especiais ou únicas esta criatura possui?"
-                          className="min-h-[80px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
               </div>
+              
+              {/* Ataques ou poderes */}
+              <FormField
+                control={form.control}
+                name="attacks"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Ataques ou poderes</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Ex: Garras +5 (2d6+2), Bola de Fogo 3x/dia"
+                        className="min-h-[80px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>Ações ofensivas da criatura</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Resistências ou fraquezas */}
+              <FormField
+                control={form.control}
+                name="resistances"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Resistências ou fraquezas</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Ex: Imune a fogo, vulnerável a dano radiante"
+                        className="min-h-[80px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>Defesas e vulnerabilidades da criatura</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Terreno e contexto */}
+              <FormField
+                control={form.control}
+                name="terrain"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Terreno e contexto de aparição</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Ex: Cripta ancestral cheia de armadilhas, floresta densa e escura"
+                        className="min-h-[80px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>Ambiente natural e onde essa criatura costuma ser encontrada</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Comportamento e motivação */}
+              <FormField
+                control={form.control}
+                name="behavior"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Comportamento e motivação</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Ex: Protege um artefato, quer vingança contra elfos, odeia intrusos"
+                        className="min-h-[80px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>O que leva a criatura a agir e como ela se comporta</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Campo oculto de Nível de Ameaça (obrigatório) */}
+              <FormField
+                control={form.control}
+                name="threatLevel"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nível de Ameaça</FormLabel>
+                    <Select 
+                      onValueChange={field.onChange} 
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Escolha o nível de ameaça" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {getThreatLevelOptions().map(option => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             
             <Separator />
