@@ -13,7 +13,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Pen, Trash2, Plus, Skull, Eye, ArrowLeft } from "lucide-react";
 
 import CreatureCreator from "./CreatureCreator";
-import NPCViewer from "./NPCViewer";
+import CreatureViewer from "./CreatureViewer";
 
 const ROLE_COLORS = {
   ally: "bg-green-600 hover:bg-green-700",
@@ -137,7 +137,7 @@ export default function CreatureList({ campaignId }: CreatureListProps) {
           <div className="w-28"></div> {/* Espaçador para alinhar o título */}
         </div>
 
-        <NPCViewer npc={viewingCreature} onClose={handleCloseViewer} />
+        <CreatureViewer creature={viewingCreature} onClose={handleCloseViewer} />
       </div>
     );
   }

@@ -210,6 +210,9 @@ export type InsertCreature = z.infer<typeof insertCreatureSchema> & {
 };
 export type Creature = typeof creatures.$inferSelect & {
   entityType: 'creature';
+  // Campos adicionais para compatibilidade com a interface
+  relationships?: string;
+  plotHooks?: string;
 };
 
 export type InsertEncounter = z.infer<typeof insertEncounterSchema>;

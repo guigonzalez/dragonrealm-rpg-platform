@@ -15,7 +15,7 @@ export default function CreatureViewer({ creature, onClose = () => {} }: Creatur
   const { t } = useTranslation();
 
   // Função para extrair atributos do formato legado
-  const getAttributesFromString = (attrString?: string) => {
+  const getAttributesFromString = (attrString?: string | null) => {
     if (!attrString) return null;
     
     // Parse do formato "FOR:18 DES:10 CON:16 INT:12 SAB:14 CAR:10"
