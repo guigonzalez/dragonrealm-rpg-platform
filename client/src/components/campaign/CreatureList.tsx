@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Pen, Trash2, Plus, Skull, Eye, ArrowLeft } from "lucide-react";
 
-import NPCCreator from "./NPCCreator";
+import CreatureCreator from "./CreatureCreator";
 import NPCViewer from "./NPCViewer";
 
 const ROLE_COLORS = {
@@ -114,12 +114,11 @@ export default function CreatureList({ campaignId }: CreatureListProps) {
 
   if (showCreator) {
     return (
-      <NPCCreator
+      <CreatureCreator
         campaignId={campaignId}
         onClose={handleCloseCreator}
-        editingNpc={editingCreature as any}
+        editingCreature={editingCreature}
         onSuccess={() => setShowCreator(false)}
-        creatureMode={true}
       />
     );
   }
