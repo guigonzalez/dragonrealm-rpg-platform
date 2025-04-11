@@ -30,7 +30,8 @@
     "confirmDeleteCampaign": "Tem certeza que deseja excluir esta campanha e todos os dados relacionados? Esta ação não pode ser desfeita.",
     "deleteSuccess": "Excluído com sucesso",
     "deleteError": "Erro durante a exclusão",
-    "comingSoon": "Em breve"
+    "comingSoon": "Em breve",
+    "all": "Todos"
   },
   "auth": {
     "login": "Entrar",
