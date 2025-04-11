@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Pen, Trash2, Plus, Skull, Eye, ArrowLeft, Shield, Heart, Swords, Zap } from "lucide-react";
 
@@ -335,7 +336,10 @@ export default function CreatureList({ campaignId }: CreatureListProps) {
                       {creature.abilities && (
                         <div>
                           <h4 className="text-xs font-semibold text-primary mb-1">ATAQUES:</h4>
-                          <p className="text-xs">{creature.abilities}</p>
+                          <TruncatedText 
+                            text={creature.abilities}
+                            maxLength={60}
+                          />
                         </div>
                       )}
                       
@@ -343,7 +347,10 @@ export default function CreatureList({ campaignId }: CreatureListProps) {
                       {creature.specialAbilities && (
                         <div>
                           <h4 className="text-xs font-semibold text-primary mb-1">HABILIDADES ESPECIAIS:</h4>
-                          <p className="text-xs">{creature.specialAbilities}</p>
+                          <TruncatedText 
+                            text={creature.specialAbilities}
+                            maxLength={60}
+                          />
                         </div>
                       )}
                       
@@ -351,7 +358,10 @@ export default function CreatureList({ campaignId }: CreatureListProps) {
                       {creature.motivation && (
                         <div>
                           <h4 className="text-xs font-semibold text-primary mb-1">COMPORTAMENTO:</h4>
-                          <p className="text-xs">{creature.motivation}</p>
+                          <TruncatedText 
+                            text={creature.motivation}
+                            maxLength={60}
+                          />
                         </div>
                       )}
                       
@@ -359,7 +369,10 @@ export default function CreatureList({ campaignId }: CreatureListProps) {
                       {notesInfo.terrain && notesInfo.terrain !== '-' && (
                         <div>
                           <h4 className="text-xs font-semibold text-primary mb-1">TERRENO:</h4>
-                          <p className="text-xs">{notesInfo.terrain}</p>
+                          <TruncatedText 
+                            text={notesInfo.terrain}
+                            maxLength={60}
+                          />
                         </div>
                       )}
                     </div>
