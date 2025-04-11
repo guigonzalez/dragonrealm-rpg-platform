@@ -461,18 +461,8 @@ export class DatabaseStorage implements IStorage {
       // Usando Drizzle ORM em vez de SQL bruta
       const result = await db.select().from(npcs).where(eq(npcs.campaignId, campaignId)).orderBy(npcs.name);
       
-      // Mapeando os resultados para o formato esperado
-      return result.map(npc => ({
-        ...npc,
-        // Adicionando campos que podem não existir no banco
-        entityType: 'npc',
-        role: null,
-        motivation: null,
-        memorableTrait: null,
-        relationships: null,
-        threatOrUtility: null,
-        plotHooks: null
-      }));
+      // Retornando apenas os campos que existem no banco, sem adicionar campos extras
+      return result;
     } catch (error) {
       console.error("Erro ao buscar NPCs:", error);
       return [];
@@ -507,29 +497,8 @@ export class DatabaseStorage implements IStorage {
       
       const npcResult = result[0];
       
-      // Construir objeto NPC com os dados retornados
-      const npc = {
-        id: npcResult.id,
-        campaignId: npcResult.campaignId,
-        name: npcResult.name,
-        race: npcResult.race,
-        occupation: npcResult.occupation,
-        location: npcResult.location,
-        appearance: npcResult.appearance,
-        personality: npcResult.personality,
-        abilities: npcResult.abilities,
-        notes: npcResult.notes,
-        created: npcResult.created,
-        updated: npcResult.updated,
-        // Campos adicionais que não existem na tabela mas fazem parte do tipo
-        entityType: 'npc',
-        // role não existe na tabela
-        motivation: null,
-        memorableTrait: null,
-        relationships: null,
-        threatOrUtility: null,
-        plotHooks: null
-      };
+      // Retornar o resultado diretamente, sem adicionar campos extras
+      const npc = npcResult;
       
       return npc;
     } catch (error) {
@@ -540,157 +509,42 @@ export class DatabaseStorage implements IStorage {
 
   async updateNpc(id: number, npcData: Partial<Npc>): Promise<Npc | undefined> {
     try {
-      // Primeiro verificamos se o NPC existe
-      const checkResult = await db.execute(
-        `SELECT id, campaign_id, name, race, occupation, location, appearance, personality, abilities, notes, created, updated 
-         FROM npcs 
-         WHERE id = $1`,
-        [id]
-      );
+      // Usando Drizzle ORM para verificar se o NPC existe
+      const existingNpc = await db.select().from(npcs).where(eq(npcs.id, id)).limit(1);
       
-      if (!checkResult.rows || checkResult.rows.length === 0) {
+      if (!existingNpc || existingNpc.length === 0) {
         return undefined;
       }
       
-      // Vamos construir dinamicamente os campos para atualizar
-      const updateFields = [];
-      const params = [id]; // Primeiro parâmetro é sempre o ID
-      let paramIndex = 2; // Começamos do $2
+      // Filtrando apenas campos válidos que existem na tabela
+      const updateData: any = {};
       
-      // Nome
-      if (npcData.name !== undefined) {
-        updateFields.push(`name = $${paramIndex}`);
-        params.push(npcData.name);
-        paramIndex++;
+      if (npcData.name !== undefined) updateData.name = npcData.name;
+      if (npcData.race !== undefined) updateData.race = npcData.race;
+      if (npcData.occupation !== undefined) updateData.occupation = npcData.occupation;
+      if (npcData.location !== undefined) updateData.location = npcData.location;
+      if (npcData.appearance !== undefined) updateData.appearance = npcData.appearance;
+      if (npcData.personality !== undefined) updateData.personality = npcData.personality;
+      if (npcData.abilities !== undefined) updateData.abilities = npcData.abilities;
+      if (npcData.notes !== undefined) updateData.notes = npcData.notes;
+      if (npcData.updated !== undefined) updateData.updated = npcData.updated;
+      
+      // Se não há campos para atualizar, retornar o NPC existente
+      if (Object.keys(updateData).length === 0) {
+        return existingNpc[0];
       }
       
-      // Updated (data de atualização)
-      if (npcData.updated !== undefined) {
-        updateFields.push(`updated = $${paramIndex}`);
-        params.push(npcData.updated);
-        paramIndex++;
-      }
+      // Usar Drizzle ORM para atualizar
+      const result = await db.update(npcs)
+        .set(updateData)
+        .where(eq(npcs.id, id))
+        .returning();
       
-      // Role não existe na tabela, não atualizaremos esta coluna
-      
-      // Race (raça)
-      if (npcData.race !== undefined) {
-        updateFields.push(`race = $${paramIndex}`);
-        params.push(npcData.race);
-        paramIndex++;
-      }
-      
-      // Occupation (ocupação)
-      if (npcData.occupation !== undefined) {
-        updateFields.push(`occupation = $${paramIndex}`);
-        params.push(npcData.occupation);
-        paramIndex++;
-      }
-      
-      // Location (localização)
-      if (npcData.location !== undefined) {
-        updateFields.push(`location = $${paramIndex}`);
-        params.push(npcData.location);
-        paramIndex++;
-      }
-      
-      // Appearance (aparência)
-      if (npcData.appearance !== undefined) {
-        updateFields.push(`appearance = $${paramIndex}`);
-        params.push(npcData.appearance);
-        paramIndex++;
-      }
-      
-      // Personality (personalidade)
-      if (npcData.personality !== undefined) {
-        updateFields.push(`personality = $${paramIndex}`);
-        params.push(npcData.personality);
-        paramIndex++;
-      }
-      
-      // Notes (notas)
-      if (npcData.notes !== undefined) {
-        updateFields.push(`notes = $${paramIndex}`);
-        params.push(npcData.notes);
-        paramIndex++;
-      }
-      
-      // Abilities (habilidades)
-      if (npcData.abilities !== undefined) {
-        updateFields.push(`abilities = $${paramIndex}`);
-        params.push(npcData.abilities);
-        paramIndex++;
-      }
-      
-      console.log("Campos a atualizar:", updateFields);
-      
-      // Se não há campos para atualizar, retornamos o NPC existente
-      if (updateFields.length === 0) {
-        const row = checkResult.rows[0];
-        
-        return {
-          id: row.id,
-          campaignId: row.campaign_id,
-          name: row.name,
-          race: row.race,
-          occupation: row.occupation,
-          location: row.location,
-          appearance: row.appearance,
-          personality: row.personality,
-          abilities: row.abilities,
-          notes: row.notes,
-          created: row.created,
-          updated: row.updated,
-          // Campos adicionais
-          entityType: 'npc',
-          role: null,
-          motivation: null,
-          memorableTrait: null,
-          relationships: null,
-          threatOrUtility: null,
-          plotHooks: null
-        };
-      }
-      
-      // Construir e executar a query de UPDATE
-      const updateQuery = `
-        UPDATE npcs 
-        SET ${updateFields.join(', ')} 
-        WHERE id = $1 
-        RETURNING id, campaign_id, name, race, occupation, location, appearance, personality, abilities, notes, created, updated
-      `;
-      
-      const updateResult = await db.execute(updateQuery, params);
-      
-      if (!updateResult.rows || updateResult.rows.length === 0) {
+      if (!result || result.length === 0) {
         throw new Error("Falha ao atualizar NPC");
       }
       
-      const row = updateResult.rows[0];
-      
-      // Construir objeto NPC atualizado
-      return {
-        id: row.id,
-        campaignId: row.campaign_id,
-        name: row.name,
-        race: row.race,
-        occupation: row.occupation,
-        location: row.location,
-        appearance: row.appearance,
-        personality: row.personality,
-        abilities: row.abilities,
-        notes: row.notes,
-        created: row.created,
-        updated: row.updated,
-        // Campos adicionais
-        entityType: 'npc',
-        role: null,
-        motivation: null,
-        memorableTrait: null,
-        relationships: null,
-        threatOrUtility: null,
-        plotHooks: null
-      };
+      return result[0];
     } catch (error) {
       console.error("Erro ao atualizar NPC:", error);
       return undefined;
