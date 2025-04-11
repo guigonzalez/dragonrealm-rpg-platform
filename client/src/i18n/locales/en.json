@@ -221,6 +221,12 @@
     "relationships": "Relationships and Context",
     "threatOrUtility": "Threat or Utility",
     "plotHooks": "Extra Notes / Story Hooks",
+    "noNpcs": "No NPCs yet",
+    "noNpcsDesc": "Add some NPCs to your campaign to bring your world to life.",
+    "noCreatures": "No Creatures yet",
+    "noCreaturesDesc": "Add some creatures to your campaign to populate your world.",
+    "noEntities": "No Characters yet",
+    "noEntitiesDesc": "Add NPCs or creatures to your campaign to bring your world to life.",
     "createSuccess": {
       "title": "Character Created",
       "description": "The character was successfully created."

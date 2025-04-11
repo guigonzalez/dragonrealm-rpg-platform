@@ -231,6 +231,12 @@
     "relationships": "Relacionamentos e Contexto",
     "threatOrUtility": "Ameaça ou Utilidade",
     "plotHooks": "Notas Extras / Ganchos de História",
+    "noNpcs": "Nenhum NPC ainda",
+    "noNpcsDesc": "Adicione alguns NPCs à sua campanha para dar vida ao seu mundo.",
+    "noCreatures": "Nenhuma Criatura ainda",
+    "noCreaturesDesc": "Adicione algumas criaturas à sua campanha para povoar seu mundo.",
+    "noEntities": "Nenhum Personagem ainda",
+    "noEntitiesDesc": "Adicione NPCs ou criaturas à sua campanha para dar vida ao seu mundo.",
     "createSuccess": {
       "title": "Personagem Criado",
       "description": "O personagem foi criado com sucesso."
