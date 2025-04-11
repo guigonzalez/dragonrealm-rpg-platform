@@ -20,61 +20,23 @@ import {
   FormDescription
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, X, Upload } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 
-// Componente de upload de imagem removido conforme solicitação
-
-// Opções traduzidas diretamente do arquivo de tradução
-const getRoleOptions = (t: any) => [
-  { value: "ally", label: t("npc.roleOptions.ally") },
-  { value: "villain", label: t("npc.roleOptions.villain") },
-  { value: "obstacle", label: t("npc.roleOptions.obstacle") },
-  { value: "informant", label: t("npc.roleOptions.informant") },
-  { value: "curiosity", label: t("npc.roleOptions.curiosity") },
-  { value: "neutral", label: t("npc.roleOptions.neutral") },
-];
-
-const getThreatLevelOptions = () => {
-  const { t } = useTranslation();
-  return [
-    { value: "harmless", label: t("npc.threatLevelOptions.harmless") },
-    { value: "challenging", label: t("npc.threatLevelOptions.challenging") },
-    { value: "dangerous", label: t("npc.threatLevelOptions.dangerous") },
-    { value: "boss", label: t("npc.threatLevelOptions.boss") },
-  ];
-};
-
-// Extend schema for validation
+// Estendendo o schema para validação
 const formSchema = insertNpcSchema.extend({
   name: z.string().min(1, "O nome é obrigatório"),
-  entityType: z.enum(["npc", "creature"], { 
-    required_error: "Selecione o tipo: NPC ou Criatura",
-  }),
   role: z.string().optional(),
+  personality: z.string().optional(),
+  voice: z.string().optional(),
   motivation: z.string().optional(),
-  imageUrl: z.string().optional(),
+  location: z.string().optional(),
   relationships: z.string().optional(),
-  abilities: z.string().optional(),
-  threatLevel: z.string().optional(),
+  secrets: z.string().optional(),
   healthPoints: z.string().optional(),
-  str: z.string().optional(),
-  dex: z.string().optional(),
-  con: z.string().optional(),
-  int: z.string().optional(),
-  wis: z.string().optional(),
-  cha: z.string().optional(),
-  specialAbilities: z.string().optional(),
-  plotHooks: z.string().optional(),
+  armorClass: z.string().optional(),
+  keyAttribute: z.string().optional()
 });
 
 type NPCCreatorProps = {
@@ -83,10 +45,31 @@ type NPCCreatorProps = {
   onClose?: () => void;
   onSuccess?: (npc: any) => void;
   editingNpc?: any; // Se fornecido, estamos editando um NPC existente
-  creatureMode?: boolean; // Se true, estamos criando uma criatura, não um NPC
 };
 
-export default function NPCCreator({ campaignId, campaign, onClose = () => {}, onSuccess, editingNpc, creatureMode = false }: NPCCreatorProps) {
+interface FormValues {
+  name: string;
+  campaignId: number;
+  role?: string;
+  personality?: string;
+  voice?: string;
+  motivation?: string;
+  location?: string;
+  relationships?: string;
+  secrets?: string;
+  healthPoints?: string;
+  armorClass?: string;
+  keyAttribute?: string;
+  created: string;
+  updated: string;
+  // Campos legados para compatibilidade
+  memorableTrait?: string;
+  notes?: string;
+  appearance?: string;
+  entityType?: "npc";
+}
+
+export default function NPCCreator({ campaignId, campaign, onClose = () => {}, onSuccess, editingNpc }: NPCCreatorProps) {
   // Se campaign está presente mas campaignId não, extrair o ID da campaign
   const actualCampaignId = campaignId || (campaign ? campaign.id : undefined);
   const { t } = useTranslation();
@@ -94,7 +77,7 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationOptions, setGenerationOptions] = useState({
-    tipo: creatureMode ? 'creature' as 'npc' | 'creature' : 'npc' as 'npc' | 'creature',
+    tipo: 'npc' as 'npc',
     campanha: '',
     nivel: '',
     terreno: '',
@@ -102,66 +85,25 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
   });
   
   // Preparar valores padrões considerando possível edição
-  const defaultValues = {
-    campaignId: actualCampaignId,
-    entityType: creatureMode ? "creature" as "npc" | "creature" : "npc" as "npc" | "creature",  // tipo explícito para garantir tipagem correta
-    name: "",
-    role: "",
-    motivation: "",
-    imageUrl: "",
-    relationships: "",
-    abilities: "",
-    threatLevel: "",
-    healthPoints: "",
-    str: "",
-    dex: "",
-    con: "",
-    int: "",
-    wis: "",
-    cha: "",
-    specialAbilities: "",
-    plotHooks: "",
-    // Preenchemos os campos padrão restantes
-    created: new Date().toISOString(),
-    updated: new Date().toISOString(),
-  };
-
-  // Defina uma interface explícita para os valores do formulário para evitar problemas de tipagem
-  interface FormValues {
-    name: string;
-    campaignId: number;
-    entityType: "npc" | "creature";
-    role?: string;
-    motivation?: string;
-    imageUrl?: string;
-    relationships?: string;
-    abilities?: string;
-    threatLevel?: string;
-    healthPoints?: string;
-    str?: string;
-    dex?: string;
-    con?: string;
-    int?: string;
-    wis?: string;
-    cha?: string;
-    specialAbilities?: string;
-    plotHooks?: string;
-    created: string;
-    updated: string;
-    // Campos legados para compatibilidade
-    memorableTrait?: string;
-    threatOrUtility?: string;
-    race?: string;
-    occupation?: string;
-    location?: string;
-    appearance?: string;
-    personality?: string;
-    notes?: string;
-  }
-
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: defaultValues as FormValues,
+    defaultValues: {
+      name: editingNpc?.name || "",
+      campaignId: actualCampaignId,
+      role: editingNpc?.role || "",
+      personality: editingNpc?.personality || "",
+      voice: editingNpc?.memorableTrait || "",
+      motivation: editingNpc?.motivation || "",
+      location: editingNpc?.location || "",
+      relationships: editingNpc?.relationships || "",
+      secrets: editingNpc?.abilities || "",
+      healthPoints: editingNpc?.healthPoints || "",
+      armorClass: "",
+      keyAttribute: "",
+      // Campos legados mantidos para compatibilidade
+      created: new Date().toISOString(),
+      updated: new Date().toISOString(),
+    }
   });
 
   // Se estamos editando, preencha o formulário com dados existentes
@@ -169,69 +111,38 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
     if (editingNpc) {
       console.log("Editando NPC:", editingNpc);
       
-      // Extrair valores de atributos do memorableTrait ou usar os valores diretos do banco
-      const extractAttribute = (attr: string | null, defaultValue: string = "") => (attr || defaultValue);
-      
-      // Mapear campos de atributos - usar os valores dos campos próprios se existirem
-      const str = editingNpc.strength || extractAttribute(editingNpc.memorableTrait?.match(/FOR:(\d+)/)?.[1]);
-      const dex = editingNpc.dexterity || extractAttribute(editingNpc.memorableTrait?.match(/DES:(\d+)/)?.[1]);
-      const con = editingNpc.constitution || extractAttribute(editingNpc.memorableTrait?.match(/CON:(\d+)/)?.[1]);
-      const int = editingNpc.intelligence || extractAttribute(editingNpc.memorableTrait?.match(/INT:(\d+)/)?.[1]);
-      const wis = editingNpc.wisdom || extractAttribute(editingNpc.memorableTrait?.match(/SAB:(\d+)/)?.[1]);
-      const cha = editingNpc.charisma || extractAttribute(editingNpc.memorableTrait?.match(/CAR:(\d+)/)?.[1]);
-      
-      // Determinar o nível de ameaça
-      const threatLevel = editingNpc.threatLevel || 
-                          (editingNpc.threatOrUtility?.includes("potential_enemy") ? "dangerous" : 
-                          editingNpc.threatOrUtility?.includes("unique_abilities") ? "challenging" : "harmless");
-      
-      // Extrair pontos de vida
+      // Extrair pontos de vida e outros valores das notas
       const healthPoints = editingNpc.healthPoints || 
-                          (editingNpc.notes?.match(/Vida\/Resistência:\s*(\d+)/)?.[1] || "");
-
-      // Extrair ganchos de história - nota: campo plotHooks não existe no banco, só extrair das notes
-      const plotHooksRegex = /Ganchos:\s*([^\n]+)/;
-      const plotHooks = editingNpc.notes && plotHooksRegex.test(editingNpc.notes) 
-                          ? editingNpc.notes.match(plotHooksRegex)[1] 
-                          : "";
+                         (editingNpc.notes?.match(/Vida\/Resistência:\s*(\d+)/)?.[1] || "");
+      
+      // Extrair CA das notas
+      const acMatch = editingNpc.notes?.match(/CA:\s*(\d+)/);
+      const armorClass = acMatch ? acMatch[1] : "";
       
       // Extrair relacionamentos
       const relationsRegex = /Relações:\s*([^\n]+)/;
       const extractedRelations = (editingNpc.notes && relationsRegex.test(editingNpc.notes) 
                                 ? editingNpc.notes.match(relationsRegex)[1] 
                                 : "");
-      
-      // Adicionar habilidades especiais baseado no campo abilities ou specialAbilities
-      const specialAbilities = editingNpc.specialAbilities || editingNpc.abilities || "";
-      
-      // Combinar relacionamentos com informações de contexto
-      const relationships = [
-        editingNpc.relationships || extractedRelations || "",
-        editingNpc.location ? `Localização: ${editingNpc.location}` : "",
-      ].filter(Boolean).join("\n\n");
 
       form.reset({
-        ...editingNpc,
-        // Garantir valor correto para entityType
-        entityType: (editingNpc.entityType === "creature" ? "creature" : "npc") as "npc" | "creature",
-        // Mapear campos novos
-        threatLevel,
-        specialAbilities,
-        relationships,
-        healthPoints,
-        plotHooks,
-        // Valores de atributos
-        str,
-        dex,
-        con,
-        int,
-        wis,
-        cha,
-        // Garantir que imageUrl não seja undefined
-        imageUrl: editingNpc.imageUrl || "",
-      } as FormValues);
+        name: editingNpc.name || "",
+        campaignId: actualCampaignId,
+        role: editingNpc.role || "",
+        personality: editingNpc.personality || "",
+        voice: editingNpc.memorableTrait || "",
+        motivation: editingNpc.motivation || "",
+        location: editingNpc.location || "",
+        relationships: editingNpc.relationships || extractedRelations || "",
+        secrets: editingNpc.abilities || "",
+        healthPoints: healthPoints,
+        armorClass: armorClass,
+        keyAttribute: "",
+        created: editingNpc.created || new Date().toISOString(),
+        updated: new Date().toISOString(),
+      });
     }
-  }, [editingNpc, form]);
+  }, [editingNpc, form, actualCampaignId]);
 
   // Mutação para criar/editar NPC
   const mutation = useMutation({
@@ -269,16 +180,13 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
     },
   });
 
-  // Função para gerar NPCs e Criaturas usando IA
+  // Função para gerar NPCs usando IA
   const generateNPC = async () => {
     setIsGenerating(true);
     try {
-      // Pegar valores atuais do formulário para contexto
-      const tipo = form.getValues("entityType") || "npc";
-      
       // Configurar opções de geração
       const options = {
-        tipo,
+        tipo: 'npc' as 'npc',
         campanha: generationOptions.campanha,
         nivel: generationOptions.nivel,
         terreno: generationOptions.terreno,
@@ -304,21 +212,13 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
       // Preencher o formulário com os dados gerados
       form.setValue("name", data.name || "");
       form.setValue("role", data.role || "");
+      form.setValue("personality", data.personality || "");
+      form.setValue("voice", data.memorableTrait || "");
       form.setValue("motivation", data.motivation || "");
+      form.setValue("location", data.location || "");
       form.setValue("relationships", data.relationships || "");
-      form.setValue("abilities", data.abilities || "");
-      form.setValue("threatLevel", data.threatLevel?.toLowerCase().includes("perigoso") ? "dangerous" : 
-                           data.threatLevel?.toLowerCase().includes("chefe") ? "boss" :
-                           data.threatLevel?.toLowerCase().includes("desafiador") ? "challenging" : "harmless");
-      form.setValue("healthPoints", data.healthPoints ? String(data.healthPoints) : "");
-      form.setValue("str", data.strength ? String(data.strength) : "");
-      form.setValue("dex", data.dexterity ? String(data.dexterity) : "");
-      form.setValue("con", data.constitution ? String(data.constitution) : "");
-      form.setValue("int", data.intelligence ? String(data.intelligence) : "");
-      form.setValue("wis", data.wisdom ? String(data.wisdom) : "");
-      form.setValue("cha", data.charisma ? String(data.charisma) : "");
-      form.setValue("specialAbilities", data.specialAbilities || "");
-      form.setValue("plotHooks", data.plotHooks || "");
+      form.setValue("secrets", data.abilities || "");
+      form.setValue("healthPoints", data.healthPoints || "");
       
       toast({
         title: "NPC gerado com sucesso!",
@@ -339,73 +239,33 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
   const onSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
     
-    // Mapear valores novos para a estrutura de dados existente
-    let threatOrUtility = "";
-    switch(values.threatLevel) {
-      case "dangerous":
-        threatOrUtility = "potential_enemy";
-        break;
-      case "boss":
-        threatOrUtility = "potential_enemy,unique_abilities";
-        break;
-      case "challenging":
-        threatOrUtility = "unique_abilities";
-        break;
-      case "harmless":
-      default:
-        // deixar vazio para inofensivo
-        break;
-    }
-    
-    // Montando os atributos em um formato armazenável
-    const attrString = values.str || values.dex || values.con || values.int || values.wis || values.cha 
-      ? `FOR:${values.str || "-"} DES:${values.dex || "-"} CON:${values.con || "-"} INT:${values.int || "-"} SAB:${values.wis || "-"} CAR:${values.cha || "-"}` 
-      : "";
-    
-    // Preparando campos
+    // Preparando campos para notas
     let notesText = [];
     if (values.healthPoints) notesText.push(`Vida/Resistência: ${values.healthPoints}`);
-    if (values.plotHooks) notesText.push(`Ganchos: ${values.plotHooks}`);
-    if (values.relationships) notesText.push(`Relações: ${values.relationships}`);
-    if (values.role) notesText.push(`Papel: ${values.role}`);
+    if (values.armorClass) notesText.push(`CA: ${values.armorClass}`);
+    if (values.keyAttribute) notesText.push(`Atributo-chave: ${values.keyAttribute}`);
     
     // Use apenas campos que sabemos que existem na tabela ou que foram mapeados
     const submitData = {
       campaignId: values.campaignId,
       name: values.name,
-      // Campos opcionais que existem na tabela
-      race: "",  // vazio para manter compatibilidade
-      notes: notesText.join("\n"),
-      appearance: values.specialAbilities || "",
-      personality: "", // vazio para manter compatibilidade
-      occupation: "",  // vazio para manter compatibilidade
-      location: "",    // vazio para manter compatibilidade
-      // Campos adicionados ao esquema
-      imageUrl: values.imageUrl || "",
+      // Campos que existem na tabela
       role: values.role || "",
+      personality: values.personality || "",
+      location: values.location || "",
       motivation: values.motivation || "",
-      // Forçar entityType explicitamente como "npc" ou "creature" para evitar problemas
-      entityType: values.entityType === "creature" ? "creature" : "npc",
-      // Usamos o campo abilities existente para armazenar habilidades
-      abilities: values.abilities || "",
-      // Campos específicos para os atributos
-      strength: values.str || null,
-      dexterity: values.dex || null,
-      constitution: values.con || null,
-      intelligence: values.int || null,
-      wisdom: values.wis || null,
-      charisma: values.cha || null,
+      relationships: values.relationships || "",
+      abilities: values.secrets || "",
+      // Voz ou fala vai para memorableTrait
+      memorableTrait: values.voice || "",
+      // Campos adicionais para notas
+      notes: notesText.join("\n"),
+      // Forçar entityType como "npc"
+      entityType: "npc" as "npc",
+      // Campo healthPoints diretamente
       healthPoints: values.healthPoints || null,
-      threatLevel: values.threatLevel || null,
-      specialAbilities: values.specialAbilities || null,
       // Campos de data
       updated: new Date().toISOString(),
-      
-      // Armazenando outros dados em campos existentes para manter a compatibilidade
-      // Usamos o campo memorableTrait para armazenar atributos
-      memorableTrait: attrString,
-      // E o campo threatOrUtility para armazenar o nível de ameaça
-      threatOrUtility: threatOrUtility,
     };
     
     // Se criando novo NPC, adiciona a data de criação
@@ -436,88 +296,102 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-6">
-                {/* 1. Tipo: NPC ou Criatura */}
-                <FormField
-                  control={form.control}
-                  name="entityType"
-                  render={({ field }) => (
-                    <FormItem className="space-y-1">
-                      <FormLabel>1. Tipo</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex space-x-4"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="npc" id="npc" />
-                            <label htmlFor="npc" className="cursor-pointer">NPC</label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="creature" id="creature" />
-                            <label htmlFor="creature" className="cursor-pointer">Criatura</label>
-                          </div>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                {/* 3. Nome */}
+                {/* Nome do NPC */}
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>3. Nome</FormLabel>
+                      <FormLabel>Nome do NPC</FormLabel>
+                      <FormDescription>
+                        Ex: Velkan, o Taverneiro Ranzinza
+                      </FormDescription>
                       <FormControl>
-                        <Input placeholder="Nome do personagem ou criatura" {...field} />
+                        <Input placeholder="Nome do NPC" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                
-                {/* 4. Papel no jogo */}
+
+                {/* Papel na história */}
                 <FormField
                   control={form.control}
                   name="role"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>4. Papel no jogo</FormLabel>
-                      <Select 
-                        onValueChange={field.onChange} 
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Selecione o papel" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {getRoleOptions(t).map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <FormLabel>Papel na história</FormLabel>
+                      <FormDescription>
+                        Ex: Informante, vilão disfarçado, aliado relutante, figurante com potencial
+                      </FormDescription>
+                      <FormControl>
+                        <Input placeholder="Papel na história" {...field} />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                
-                {/* 5. Motivação */}
+
+                {/* Personalidade e trejeitos */}
+                <FormField
+                  control={form.control}
+                  name="personality"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Personalidade e trejeitos</FormLabel>
+                      <FormDescription>
+                        Ex: Sarcástico, fala cuspindo, coça a barba o tempo todo
+                      </FormDescription>
+                      <FormControl>
+                        <Textarea 
+                          placeholder="Descreva a personalidade e maneirismos característicos..." 
+                          className="min-h-[80px]" 
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Voz ou fala típica */}
+                <FormField
+                  control={form.control}
+                  name="voice"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Voz ou fala típica</FormLabel>
+                      <FormDescription>
+                        Ex: "Eu vi coisas que você nem sonha, moleque..."
+                      </FormDescription>
+                      <FormControl>
+                        <Textarea 
+                          placeholder="Uma frase ou modo de falar característico..." 
+                          className="min-h-[80px]" 
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="space-y-6">
+                {/* Objetivo ou motivação atual */}
                 <FormField
                   control={form.control}
                   name="motivation"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>5. Motivação</FormLabel>
+                      <FormLabel>Objetivo ou motivação atual</FormLabel>
+                      <FormDescription>
+                        Ex: Proteger a filha, enriquecer, derrubar o prefeito, sobreviver
+                      </FormDescription>
                       <FormControl>
-                        <Input 
-                          placeholder="O que ele/ela/isso quer? (Ex: proteger, destruir, manipular, escapar)" 
+                        <Textarea 
+                          placeholder="O que motiva este personagem..." 
+                          className="min-h-[80px]" 
                           {...field} 
                         />
                       </FormControl>
@@ -525,18 +399,43 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
                     </FormItem>
                   )}
                 />
-                
-                {/* 6. Relações e contexto */}
+
+                {/* Local e contexto */}
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Local e contexto</FormLabel>
+                      <FormDescription>
+                        Ex: Cidade portuária decadente, ruínas antigas, castelo nobre
+                      </FormDescription>
+                      <FormControl>
+                        <Textarea 
+                          placeholder="Onde este NPC está e qual seu contexto..." 
+                          className="min-h-[80px]" 
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Relações e lealdades */}
                 <FormField
                   control={form.control}
                   name="relationships"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>6. Relações e contexto</FormLabel>
+                      <FormLabel>Relações e lealdades</FormLabel>
+                      <FormDescription>
+                        Ex: Odeia a guarda local, é devoto da deusa da sorte, tem um pacto com demônios
+                      </FormDescription>
                       <FormControl>
                         <Textarea 
-                          placeholder="Com quem se conecta? Vive onde? Tem inimigos ou aliados relevantes?" 
-                          className="min-h-[100px]"
+                          placeholder="Com quem este NPC se relaciona..." 
+                          className="min-h-[80px]" 
                           {...field} 
                         />
                       </FormControl>
@@ -544,308 +443,176 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
                     </FormItem>
                   )}
                 />
+
+                {/* Informações úteis ou segredos */}
+                <FormField
+                  control={form.control}
+                  name="secrets"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Informações úteis ou segredos</FormLabel>
+                      <FormDescription>
+                        Ex: Sabe onde está o artefato, mas não entrega sem pagamento
+                      </FormDescription>
+                      <FormControl>
+                        <Textarea 
+                          placeholder="O que este NPC sabe que pode ser útil..." 
+                          className="min-h-[80px]" 
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            <Separator />
+
+            <div className="space-y-6">
+              <h3 className="text-lg font-semibold font-lora text-primary">
+                Informações Opcionais de Combate
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* PV */}
+                <FormField
+                  control={form.control}
+                  name="healthPoints"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Pontos de Vida (PV)</FormLabel>
+                      <FormDescription>Opcional</FormDescription>
+                      <FormControl>
+                        <Input placeholder="Ex: 25" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 
-                {/* 7. Atributos e Status */}
-                <div className="border border-primary/20 rounded-md p-4 bg-primary/5 space-y-3">
-                  <h3 className="text-sm font-semibold text-primary">7. Atributos e Status</h3>
-                  
-                  {/* Pontos de Vida */}
-                  <div className="mb-2">
-                    <FormField
-                      control={form.control}
-                      name="healthPoints"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Pontos de Vida</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="PV" 
-                              {...field} 
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+                {/* CA */}
+                <FormField
+                  control={form.control}
+                  name="armorClass"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Classe de Armadura (CA)</FormLabel>
+                      <FormDescription>Opcional</FormDescription>
+                      <FormControl>
+                        <Input placeholder="Ex: 14" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                {/* Atributo-chave */}
+                <FormField
+                  control={form.control}
+                  name="keyAttribute"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Atributo-chave (apenas um)</FormLabel>
+                      <FormDescription>Ex: Car +3 para blefar</FormDescription>
+                      <FormControl>
+                        <Input placeholder="Ex: Int +2 para saber de coisas" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            {/* Botões de IA e Envio */}
+            <div className="space-y-6">
+              <Separator />
+              
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold font-lora text-primary">
+                  Gerador de NPC com IA
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Preencha os campos abaixo para gerar um NPC baseado no contexto da sua campanha. Todos os campos são opcionais.
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-4">
+                    <Input
+                      placeholder="Tema da campanha (ex: D&D, Fantasia Medieval...)"
+                      value={generationOptions.campanha}
+                      onChange={(e) => setGenerationOptions({...generationOptions, campanha: e.target.value})}
+                    />
+                    <Input
+                      placeholder="Nível de desafio (ex: Fácil, Difícil...)"
+                      value={generationOptions.nivel}
+                      onChange={(e) => setGenerationOptions({...generationOptions, nivel: e.target.value})}
                     />
                   </div>
-                  
-                  {/* Nível de Ameaça */}
-                  <div className="mb-2">
-                    <FormField
-                      control={form.control}
-                      name="threatLevel"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Nível de Ameaça</FormLabel>
-                          <Select 
-                            onValueChange={field.onChange} 
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Selecione o nível de ameaça" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {getThreatLevelOptions().map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+                  <div className="space-y-4">
+                    <Input
+                      placeholder="Localização (ex: Floresta, Cidade...)"
+                      value={generationOptions.terreno}
+                      onChange={(e) => setGenerationOptions({...generationOptions, terreno: e.target.value})}
                     />
-                  </div>
-                  
-                  {/* Atributos - Grid de 3x2 */}
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-3">
-                    {/* Força */}
-                    <FormField
-                      control={form.control}
-                      name="str"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-xs font-medium">Força</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="FOR" 
-                              {...field} 
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    
-                    {/* Destreza */}
-                    <FormField
-                      control={form.control}
-                      name="dex"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-xs font-medium">Destreza</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="DES" 
-                              {...field} 
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    
-                    {/* Constituição */}
-                    <FormField
-                      control={form.control}
-                      name="con"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-xs font-medium">Constituição</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="CON" 
-                              {...field} 
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    
-                    {/* Inteligência */}
-                    <FormField
-                      control={form.control}
-                      name="int"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-xs font-medium">Inteligência</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="INT" 
-                              {...field} 
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    
-                    {/* Sabedoria */}
-                    <FormField
-                      control={form.control}
-                      name="wis"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-xs font-medium">Sabedoria</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="SAB" 
-                              {...field} 
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    
-                    {/* Carisma */}
-                    <FormField
-                      control={form.control}
-                      name="cha"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-xs font-medium">Carisma</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="CAR" 
-                              {...field} 
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
+                    <Input
+                      placeholder="Estilo (ex: Misterioso, Cômico...)"
+                      value={generationOptions.estilo}
+                      onChange={(e) => setGenerationOptions({...generationOptions, estilo: e.target.value})}
                     />
                   </div>
                 </div>
                 
-                {/* 8. Habilidades Especiais */}
-                <FormField
-                  control={form.control}
-                  name="specialAbilities"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>8. Habilidades Especiais</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Poderes, magias, capacidades únicas..." 
-                          className="min-h-[80px]"
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                {/* 9. Ganchos de História */}
-                <FormField
-                  control={form.control}
-                  name="plotHooks"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>9. Ganchos de História</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Ideias de como usar este personagem na história..." 
-                          className="min-h-[80px]"
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              
-              <div className="space-y-6">
-                {/* Campo de imagem removido conforme solicitação */}
-                
-                {/* Gerador automático */}
-                <Card className="p-4 border border-primary/30 bg-primary/5">
-                  <h3 className="text-base font-semibold font-lora text-primary mb-2">
-                    Gerador de {form.getValues("entityType") === "creature" ? "Criaturas" : "NPCs"} por IA
-                  </h3>
-                  <p className="text-sm mb-4">
-                    Deixe a IA criar um {form.getValues("entityType") === "creature" ? "monstro" : "personagem"} completo para sua campanha.
-                  </p>
-                  
-                  <div className="space-y-3 mb-4">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <FormLabel className="text-xs">Tema da campanha</FormLabel>
-                        <Input 
-                          placeholder="Medieval, Piratas, Futuro, etc."
-                          className="text-sm" 
-                          value={generationOptions.campanha}
-                          onChange={(e) => setGenerationOptions({...generationOptions, campanha: e.target.value})}
-                        />
-                      </div>
-                      <div>
-                        <FormLabel className="text-xs">Nível/Desafio</FormLabel>
-                        <Input 
-                          placeholder="1-5, 10-15, etc." 
-                          className="text-sm"
-                          value={generationOptions.nivel}
-                          onChange={(e) => setGenerationOptions({...generationOptions, nivel: e.target.value})}
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <FormLabel className="text-xs">Ambiente/Terreno</FormLabel>
-                        <Input 
-                          placeholder="Floresta, Cidade, etc." 
-                          className="text-sm"
-                          value={generationOptions.terreno}
-                          onChange={(e) => setGenerationOptions({...generationOptions, terreno: e.target.value})}
-                        />
-                      </div>
-                      <div>
-                        <FormLabel className="text-xs">Estilo</FormLabel>
-                        <Input 
-                          placeholder="Sombrio, Cômico, etc." 
-                          className="text-sm"
-                          value={generationOptions.estilo}
-                          onChange={(e) => setGenerationOptions({...generationOptions, estilo: e.target.value})}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  
+                <div className="flex justify-center">
                   <Button 
-                    type="button"
-                    variant="outline" 
-                    className="w-full"
-                    onClick={generateNPC}
+                    type="button" 
+                    onClick={generateNPC} 
                     disabled={isGenerating}
+                    className="magic-button w-full md:w-auto"
                   >
                     {isGenerating ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Gerando...
+                        Gerando NPC...
                       </>
                     ) : (
                       <>
-                        Gerar {form.getValues("entityType") === "creature" ? "Criatura" : "NPC"} Automaticamente
+                        Gerar NPC com IA
                       </>
                     )}
                   </Button>
-                </Card>
+                </div>
               </div>
-            </div>
-
-            <Separator className="my-6" />
-            
-            <div className="flex justify-end space-x-2 pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={onClose}
-                disabled={isSubmitting}
-              >
-                {t("common.cancel")}
-              </Button>
-              <Button 
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {t("common.saving")}
-                  </>
-                ) : (
-                  editingNpc ? t("common.save") : t("common.create")
-                )}
-              </Button>
+              
+              <Separator />
+              
+              <div className="flex justify-between">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={onClose}
+                >
+                  Cancelar
+                </Button>
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting || form.formState.isSubmitting}
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Salvando...
+                    </>
+                  ) : (
+                    <>
+                      Salvar NPC
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
           </form>
         </Form>
