@@ -506,15 +506,15 @@ export class DatabaseStorage implements IStorage {
       const name = insertNpc.name;
       const created = insertNpc.created;
       const updated = insertNpc.updated;
-      const role = insertNpc.role || null;
       const race = insertNpc.race || null;
       const occupation = insertNpc.occupation || null;
       const location = insertNpc.location || null;
       const appearance = insertNpc.appearance || null;
       const personality = insertNpc.personality || null;
+      const abilities = insertNpc.abilities || null;
       const notes = insertNpc.notes || null;
       
-      console.log("Inserindo NPC:", { name, campaignId, role, race, occupation, location, appearance, personality, notes });
+      console.log("Inserindo NPC:", { name, campaignId, race, occupation, location, appearance, personality, abilities, notes });
       
       // Query SQL direta usando apenas colunas que existem na tabela
       const result = await db.execute(
@@ -523,7 +523,7 @@ export class DatabaseStorage implements IStorage {
         ) VALUES (
           $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
         ) RETURNING id, campaign_id, name, race, occupation, location, appearance, personality, abilities, notes, created, updated`,
-        [campaignId, name, race, occupation, location, appearance, personality, insertNpc.abilities || null, notes, created, updated]
+        [campaignId, name, race, occupation, location, appearance, personality, abilities, notes, created, updated]
       );
       
       if (!result.rows || result.rows.length === 0) {
@@ -548,7 +548,7 @@ export class DatabaseStorage implements IStorage {
         updated: row.updated,
         // Campos adicionais que não existem na tabela mas fazem parte do tipo
         entityType: 'npc',
-        role: insertNpc.role || null,
+        // role não existe na tabela
         motivation: null,
         memorableTrait: null,
         relationships: null,
