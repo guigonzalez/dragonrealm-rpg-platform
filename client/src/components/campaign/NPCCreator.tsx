@@ -474,24 +474,32 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
       ? `FOR:${values.str || "-"} DES:${values.dex || "-"} CON:${values.con || "-"} INT:${values.int || "-"} SAB:${values.wis || "-"} CAR:${values.cha || "-"}` 
       : "";
     
+    // Preparando campos
+    let notesText = [];
+    if (values.healthPoints) notesText.push(`Vida/Resistência: ${values.healthPoints}`);
+    if (values.plotHooks) notesText.push(`Ganchos: ${values.plotHooks}`);
+    if (values.relationships) notesText.push(`Relações: ${values.relationships}`);
+    if (values.role) notesText.push(`Papel: ${values.role}`);
+    
     // Use apenas campos que sabemos que existem na tabela ou que foram mapeados
     const submitData = {
       campaignId: values.campaignId,
       name: values.name,
-      // Campos opcionais
-      role: values.role || "",
+      // Campos opcionais que existem na tabela
       race: "",  // vazio para manter compatibilidade
-      notes: values.healthPoints ? `Vida/Resistência: ${values.healthPoints}` : "",
+      notes: notesText.join("\n"),
       appearance: values.specialAbilities || "",
       personality: "", // vazio para manter compatibilidade
       occupation: "",  // vazio para manter compatibilidade
       location: "",    // vazio para manter compatibilidade
-      memorableTrait: attrString, // usamos para armazenar atributos
-      plotHooks: values.plotHooks || "",
+      // Usamos o campo abilities existente para armazenar habilidades
       abilities: values.abilities || "",
-      relationships: values.relationships || "",
       // Campos de data
       updated: new Date().toISOString(),
+      
+      // Armazenando outros dados em campos existentes para manter a compatibilidade
+      // Usamos o campo memorableTrait para armazenar atributos
+      memorableTrait: attrString,
     };
     
     // Se criando novo NPC, adiciona a data de criação

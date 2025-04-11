@@ -460,7 +460,7 @@ export class DatabaseStorage implements IStorage {
     try {
       // Usando uma query SQL direta para evitar problemas com colunas
       const result = await db.execute(
-        `SELECT id, campaign_id, name, role, race, occupation, location, appearance, personality, notes, created, updated
+        `SELECT id, campaign_id, name, race, occupation, location, appearance, personality, abilities, notes, created, updated
          FROM npcs 
          WHERE campaign_id = $1`, 
         [campaignId]
@@ -475,7 +475,6 @@ export class DatabaseStorage implements IStorage {
         id: row.id,
         campaignId: row.campaign_id,
         name: row.name,
-        role: row.role,
         race: row.race,
         occupation: row.occupation,
         location: row.location,
@@ -484,12 +483,13 @@ export class DatabaseStorage implements IStorage {
         notes: row.notes,
         created: row.created,
         updated: row.updated,
+        abilities: row.abilities,
         // Adicionando campos que podem não existir no banco
         entityType: 'npc',
+        role: null,
         motivation: null,
         memorableTrait: null,
         relationships: null,
-        abilities: null,
         threatOrUtility: null,
         plotHooks: null
       }));
@@ -552,7 +552,6 @@ export class DatabaseStorage implements IStorage {
         motivation: null,
         memorableTrait: null,
         relationships: null,
-        abilities: null,
         threatOrUtility: null,
         plotHooks: null
       };
@@ -670,7 +669,6 @@ export class DatabaseStorage implements IStorage {
           motivation: null,
           memorableTrait: null,
           relationships: null,
-          abilities: null,
           threatOrUtility: null,
           plotHooks: null
         };
@@ -711,7 +709,6 @@ export class DatabaseStorage implements IStorage {
         motivation: null,
         memorableTrait: null,
         relationships: null,
-        abilities: null,
         threatOrUtility: null,
         plotHooks: null
       };
