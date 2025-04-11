@@ -204,6 +204,8 @@
     "npcs": "NPCs",
     "npc": "NPC",
     "creature": "Creature",
+    "viewNpc": "View NPC Details",
+    "viewCreature": "View Creature Details",
     "createNpc": "Create Character",
     "editNpc": "Edit Character",
     "npcName": "Character Name",
@@ -229,6 +231,7 @@
     "noCreaturesDesc": "Add some creatures to your campaign to populate your world.",
     "noEntities": "No Characters yet",
     "noEntitiesDesc": "Add NPCs or creatures to your campaign to bring your world to life.",
+    "manageNpcs": "Manage NPCs",
     "createSuccess": {
       "title": "Character Created",
       "description": "The character was successfully created."
@@ -283,6 +286,40 @@
     "initiativeOrder": "Initiative Order",
     "addCreature": "Add Creature",
     "removeCreature": "Remove Creature"
+  },
+  "creature": {
+    "creatures": "Creatures",
+    "creature": "Creature",
+    "viewCreature": "View Creature Details",
+    "createCreature": "Create Creature",
+    "editCreature": "Edit Creature",
+    "manageCreatures": "Manage Creatures",
+    "noCreatures": "No Creatures yet",
+    "noCreaturesDesc": "Add some creatures to your campaign to populate your world.",
+    "createSuccess": {
+      "title": "Creature Created",
+      "description": "The creature was successfully created."
+    },
+    "updateSuccess": {
+      "title": "Creature Updated",
+      "description": "The creature was successfully updated."
+    },
+    "deleteSuccess": {
+      "title": "Creature Deleted",
+      "description": "The creature was successfully deleted."
+    },
+    "createError": {
+      "title": "Error Creating Creature",
+      "description": "An error occurred while creating the creature. Please try again."
+    },
+    "updateError": {
+      "title": "Error Updating Creature",
+      "description": "An error occurred while updating the creature. Please try again."
+    },
+    "deleteError": {
+      "title": "Error Deleting Creature",
+      "description": "An error occurred while deleting the creature. Please try again."
+    }
   },
   "location": {
     "locations": "Locations",

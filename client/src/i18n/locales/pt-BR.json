@@ -247,6 +247,7 @@
     "noCreaturesDesc": "Adicione algumas criaturas à sua campanha para povoar seu mundo.",
     "noEntities": "Nenhum Personagem ainda",
     "noEntitiesDesc": "Adicione NPCs ou criaturas à sua campanha para dar vida ao seu mundo.",
+    "manageNpcs": "Gerenciar NPCs",
     "createSuccess": {
       "title": "Personagem Criado",
       "description": "O personagem foi criado com sucesso."
@@ -308,6 +309,40 @@
     "initiativeOrder": "Ordem de Iniciativa",
     "addCreature": "Adicionar Criatura",
     "removeCreature": "Remover Criatura"
+  },
+  "creature": {
+    "creatures": "Criaturas",
+    "creature": "Criatura",
+    "viewCreature": "Ver Detalhes da Criatura",
+    "createCreature": "Criar Criatura",
+    "editCreature": "Editar Criatura",
+    "manageCreatures": "Gerenciar Criaturas",
+    "noCreatures": "Nenhuma Criatura ainda",
+    "noCreaturesDesc": "Adicione algumas criaturas à sua campanha para povoar seu mundo.",
+    "createSuccess": {
+      "title": "Criatura Criada",
+      "description": "A criatura foi criada com sucesso."
+    },
+    "updateSuccess": {
+      "title": "Criatura Atualizada",
+      "description": "A criatura foi atualizada com sucesso."
+    },
+    "deleteSuccess": {
+      "title": "Criatura Excluída",
+      "description": "A criatura foi excluída com sucesso."
+    },
+    "createError": {
+      "title": "Erro ao Criar Criatura",
+      "description": "Ocorreu um erro ao criar a criatura. Por favor, tente novamente."
+    },
+    "updateError": {
+      "title": "Erro ao Atualizar Criatura",
+      "description": "Ocorreu um erro ao atualizar a criatura. Por favor, tente novamente."
+    },
+    "deleteError": {
+      "title": "Erro ao Excluir Criatura",
+      "description": "Ocorreu um erro ao excluir a criatura. Por favor, tente novamente."
+    }
   },
   "location": {
     "locations": "Localizações",
