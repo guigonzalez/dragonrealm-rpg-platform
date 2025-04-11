@@ -33,7 +33,15 @@ import { Separator } from "@/components/ui/separator";
 import { Loader2, X, Upload } from "lucide-react";
 
 // Componente reutilizável para upload de imagem
-const ImageUpload = ({ imageUrl, onImageChange }: { imageUrl: string | null, onImageChange: (url: string) => void }) => {
+const ImageUpload = ({ 
+  imageUrl, 
+  entityType = "npc", 
+  onImageChange 
+}: { 
+  imageUrl: string | null | undefined, 
+  entityType?: "npc" | "creature", 
+  onImageChange: (url: string) => void 
+}) => {
   const [isUploading, setIsUploading] = useState(false);
   const { t } = useTranslation();
   const { toast } = useToast();
@@ -98,17 +106,18 @@ const ImageUpload = ({ imageUrl, onImageChange }: { imageUrl: string | null, onI
       };
       
       const base64String = await compressAndConvertToBase64(file);
+      console.log(`Upload de imagem para ${entityType} concluído`);
       onImageChange(base64String);
       
       toast({
         title: t("common.uploadSuccess"),
-        description: "Imagem carregada com sucesso",
+        description: t("common.uploadSuccess"),
       });
     } catch (error) {
       console.error("Erro ao fazer upload:", error);
       toast({
         title: t("common.uploadError"),
-        description: "Não foi possível carregar a imagem. Tente novamente.",
+        description: t("common.uploadError"),
         variant: "destructive"
       });
     } finally {
@@ -121,7 +130,7 @@ const ImageUpload = ({ imageUrl, onImageChange }: { imageUrl: string | null, onI
       {imageUrl ? (
         <div className="relative w-full max-w-xs">
           <img 
-            src={imageUrl && imageUrl.startsWith("data:") ? imageUrl : imageUrl} 
+            src={imageUrl} 
             alt="Character" 
             className="w-full h-48 object-cover rounded-md" 
           />
@@ -192,17 +201,17 @@ const ImageUpload = ({ imageUrl, onImageChange }: { imageUrl: string | null, onI
   );
 };
 
-// Definição das opções para os selects e radio buttons
-const roleOptions = [
-  { value: "ally", label: "Aliado" },
-  { value: "villain", label: "Vilão" },
-  { value: "obstacle", label: "Obstáculo" },
+// Opções traduzidas diretamente do arquivo de tradução
+const getRoleOptions = (t: any) => [
+  { value: "ally", label: t("npc.roleOptions.ally") },
+  { value: "villain", label: t("npc.roleOptions.villain") },
+  { value: "obstacle", label: t("npc.roleOptions.obstacle") },
   { value: "informant", label: "Informante" },
-  { value: "curiosity", label: "Curiosidade" },
-  { value: "neutral", label: "Neutro" },
+  { value: "curiosity", label: t("npc.roleOptions.curiosity") },
+  { value: "neutral", label: t("npc.roleOptions.neutral") },
 ];
 
-const threatLevelOptions = [
+const getThreatLevelOptions = () => [
   { value: "harmless", label: "Inofensivo" },
   { value: "challenging", label: "Desafiador" },
   { value: "dangerous", label: "Perigoso" },
@@ -539,7 +548,8 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
       imageUrl: values.imageUrl || "",
       role: values.role || "",
       motivation: values.motivation || "",
-      entityType: values.entityType || "npc",
+      // Forçar entityType explicitamente como "npc" ou "creature" para evitar problemas
+      entityType: values.entityType === "creature" ? "creature" : "npc",
       // Usamos o campo abilities existente para armazenar habilidades
       abilities: values.abilities || "",
       // Campos específicos para os atributos
@@ -650,7 +660,7 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {roleOptions.map(option => (
+                          {getRoleOptions(t).map((option) => (
                             <SelectItem key={option.value} value={option.value}>
                               {option.label}
                             </SelectItem>

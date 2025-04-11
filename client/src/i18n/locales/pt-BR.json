@@ -31,7 +31,11 @@
     "deleteSuccess": "Excluído com sucesso",
     "deleteError": "Erro durante a exclusão",
     "comingSoon": "Em breve",
-    "all": "Todos"
+    "all": "Todos",
+    "deleteWarning": "Tem certeza que deseja excluir {{item}}? Esta ação não pode ser desfeita.",
+    "uploadSuccess": "Upload realizado com sucesso",
+    "uploadError": "Erro ao fazer upload",
+    "uploading": "Enviando..."
   },
   "auth": {
     "login": "Entrar",
