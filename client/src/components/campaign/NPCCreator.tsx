@@ -672,6 +672,205 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
                     </FormItem>
                   )}
                 />
+
+                {/* 7. Atributos e Status */}
+                <div className="border border-primary/20 rounded-md p-4 bg-primary/5 space-y-3">
+                  <h3 className="text-sm font-semibold text-primary">7. Atributos e Status</h3>
+                  
+                  {/* Pontos de Vida */}
+                  <div className="mb-2">
+                    <FormField
+                      control={form.control}
+                      name="healthPoints"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Pontos de Vida</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="PV" 
+                              {...field} 
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  
+                  {/* Nível de Ameaça */}
+                  <div className="mb-2">
+                    <FormField
+                      control={form.control}
+                      name="threatLevel"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nível de Ameaça</FormLabel>
+                          <Select 
+                            onValueChange={field.onChange} 
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Selecione o nível de ameaça" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {threatLevelOptions.map(option => (
+                                <SelectItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  
+                  {/* Atributos - Grid de 3x2 */}
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-3">
+                    {/* Força */}
+                    <FormField
+                      control={form.control}
+                      name="str"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs font-medium">Força</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="FOR" 
+                              {...field} 
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    {/* Destreza */}
+                    <FormField
+                      control={form.control}
+                      name="dex"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs font-medium">Destreza</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="DES" 
+                              {...field} 
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    {/* Constituição */}
+                    <FormField
+                      control={form.control}
+                      name="con"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs font-medium">Constituição</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="CON" 
+                              {...field} 
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    {/* Inteligência */}
+                    <FormField
+                      control={form.control}
+                      name="int"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs font-medium">Inteligência</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="INT" 
+                              {...field} 
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    {/* Sabedoria */}
+                    <FormField
+                      control={form.control}
+                      name="wis"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs font-medium">Sabedoria</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="SAB" 
+                              {...field} 
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    {/* Carisma */}
+                    <FormField
+                      control={form.control}
+                      name="cha"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs font-medium">Carisma</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="CAR" 
+                              {...field} 
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
+                {/* 8. Habilidades Especiais */}
+                <FormField
+                  control={form.control}
+                  name="specialAbilities"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>8. Habilidades Especiais</FormLabel>
+                      <FormControl>
+                        <Textarea 
+                          placeholder="Poderes, magias, capacidades únicas..." 
+                          className="min-h-[80px]"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* 9. Ganchos de História */}
+                <FormField
+                  control={form.control}
+                  name="plotHooks"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>9. Ganchos de História</FormLabel>
+                      <FormControl>
+                        <Textarea 
+                          placeholder="Ideias de como usar este personagem na história..." 
+                          className="min-h-[80px]"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
               
               <div className="space-y-6">
