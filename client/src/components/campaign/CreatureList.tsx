@@ -9,8 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Pen, Trash2, Plus, Skull, Eye, ArrowLeft } from "lucide-react";
+import { Pen, Trash2, Plus, Skull, Eye, ArrowLeft, Shield, Heart, Swords, Zap } from "lucide-react";
 
 import CreatureCreator from "./CreatureCreator";
 import CreatureViewer from "./CreatureViewer";
@@ -173,93 +174,235 @@ export default function CreatureList({ campaignId }: CreatureListProps) {
       ) : (
         <ScrollArea className="h-[calc(100vh-300px)] pr-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {creatures.map((creature) => (
-              <Card key={creature.id} className="overflow-hidden flex flex-col">
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-center gap-2">
-                      <div className="bg-primary/10 p-2 rounded-full">
-                        <Skull className="h-5 w-5 text-primary" />
+            {creatures.map((creature) => {
+              // Extrair tipo, CA, resistências do campo notes
+              const extractInfo = (notes?: string | null) => {
+                if (!notes) return { type: "", armorClass: "", resistances: "", terrain: "" };
+                
+                const typeMatch = notes.match(/Tipo: ([^\\n]+)/);
+                const acMatch = notes.match(/CA: ([^\\n]+)/);
+                const resistMatch = notes.match(/Resistências: ([^\\n]+)/);
+                const terrainMatch = notes.match(/Terreno: ([^\\n]+)/);
+                
+                return {
+                  type: typeMatch ? typeMatch[1] : "",
+                  armorClass: acMatch ? acMatch[1] : "",
+                  resistances: resistMatch ? resistMatch[1] : "",
+                  terrain: terrainMatch ? terrainMatch[1] : ""
+                };
+              };
+
+              // Verifica o nível de ameaça e aplica cor correspondente
+              const getThreatBadge = (threatLevel?: string | null) => {
+                if (!threatLevel) return null;
+                
+                let color = "bg-gray-500";
+                let label = "Desconhecido";
+                
+                switch(threatLevel) {
+                  case "harmless":
+                    color = "bg-green-500";
+                    label = "Inofensivo";
+                    break;
+                  case "challenging":
+                    color = "bg-amber-500";
+                    label = "Desafiador";
+                    break;
+                  case "dangerous":
+                    color = "bg-orange-500";
+                    label = "Perigoso";
+                    break;
+                  case "boss":
+                    color = "bg-red-500";
+                    label = "Chefe";
+                    break;
+                }
+                
+                return (
+                  <Badge className={`${color} hover:${color}/90`}>
+                    {label}
+                  </Badge>
+                );
+              };
+              
+              // Extrai atributos do memorableTrait
+              const extractAttributes = (trait?: string | null) => {
+                if (!trait) return null;
+                const match = trait.match(/FOR:(\S+).*DES:(\S+).*CON:(\S+).*INT:(\S+).*SAB:(\S+).*CAR:(\S+)/);
+                return match ? {
+                  str: match[1],
+                  dex: match[2],
+                  con: match[3],
+                  int: match[4],
+                  wis: match[5],
+                  cha: match[6],
+                } : null;
+              };
+              
+              const notesInfo = extractInfo(creature.notes);
+              const attributes = extractAttributes(creature.memorableTrait);
+              
+              return (
+                <Card key={creature.id} className="overflow-hidden flex flex-col border-2 border-muted">
+                  <CardHeader className="p-3 bg-muted/30">
+                    <div className="flex justify-between items-start">
+                      <div className="flex items-center gap-2">
+                        <div className="bg-primary/10 p-2 rounded-full">
+                          <Skull className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <CardTitle className="font-lora text-lg">{creature.name}</CardTitle>
+                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                            <span>{notesInfo.type || t("creature.creature")}</span>
+                            {getThreatBadge(creature.threatLevel)}
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <CardTitle className="font-lora">{creature.name}</CardTitle>
-                        <CardDescription>
-                          {t("creature.creature")}
-                        </CardDescription>
+                      <div className="flex items-center gap-1">
+                        <Button size="icon" variant="outline" className="h-7 w-7 p-0" onClick={() => handleEdit(creature)}>
+                          <Pen className="h-3 w-3" />
+                        </Button>
+                        <Button size="icon" variant="outline" className="h-7 w-7 p-0" onClick={() => handleView(creature)}>
+                          <Eye className="h-3 w-3" />
+                        </Button>
                       </div>
                     </div>
-                    {creature.role && (
-                      <Badge
-                        variant="default"
-                        className={
-                          ROLE_COLORS[creature.role as keyof typeof ROLE_COLORS] || "bg-slate-600 hover:bg-slate-700"
-                        }
-                      >
-                        {creature.role === "Neutro" ? "Neutro" : t(`creature.roleOptions.${creature.role}`) || creature.role}
-                      </Badge>
+                  </CardHeader>
+
+                  <CardContent className="p-3 flex-grow">
+                    {/* Stats de Combate */}
+                    <div className="flex justify-between items-center mb-2 bg-muted/20 p-2 rounded-md">
+                      {/* PV - Pontos de Vida */}
+                      <div className="flex items-center gap-1" title="Pontos de Vida">
+                        <Heart className="h-4 w-4 text-red-500" />
+                        <span className="font-medium">{creature.healthPoints || '--'}</span>
+                      </div>
+                      
+                      {/* CA - Classe de Armadura */}
+                      <div className="flex items-center gap-1" title="Classe de Armadura">
+                        <Shield className="h-4 w-4 text-blue-500" />
+                        <span className="font-medium">{notesInfo.armorClass || '--'}</span>
+                      </div>
+                      
+                      {/* Ataques */}
+                      <div className="flex items-center gap-1" title="Ataques">
+                        <Swords className="h-4 w-4 text-orange-500" />
+                        <span className="font-medium">{creature.abilities ? '✓' : '–'}</span>
+                      </div>
+                      
+                      {/* Habilidades Especiais */}
+                      <div className="flex items-center gap-1" title="Habilidades Especiais">
+                        <Zap className="h-4 w-4 text-amber-500" />
+                        <span className="font-medium">{creature.specialAbilities ? '✓' : '–'}</span>
+                      </div>
+                    </div>
+                    
+                    {/* Atributos em grid */}
+                    {attributes && (
+                      <div className="grid grid-cols-6 gap-1 mb-2 text-xs">
+                        <div className="flex flex-col items-center bg-muted/10 p-1 rounded">
+                          <span className="font-semibold">FOR</span>
+                          <span>{attributes.str}</span>
+                        </div>
+                        <div className="flex flex-col items-center bg-muted/10 p-1 rounded">
+                          <span className="font-semibold">DES</span>
+                          <span>{attributes.dex}</span>
+                        </div>
+                        <div className="flex flex-col items-center bg-muted/10 p-1 rounded">
+                          <span className="font-semibold">CON</span>
+                          <span>{attributes.con}</span>
+                        </div>
+                        <div className="flex flex-col items-center bg-muted/10 p-1 rounded">
+                          <span className="font-semibold">INT</span>
+                          <span>{attributes.int}</span>
+                        </div>
+                        <div className="flex flex-col items-center bg-muted/10 p-1 rounded">
+                          <span className="font-semibold">SAB</span>
+                          <span>{attributes.wis}</span>
+                        </div>
+                        <div className="flex flex-col items-center bg-muted/10 p-1 rounded">
+                          <span className="font-semibold">CAR</span>
+                          <span>{attributes.cha}</span>
+                        </div>
+                      </div>
                     )}
-                  </div>
-                </CardHeader>
-
-                <CardContent className="pt-2 flex-grow">
-                  {creature.motivation && (
-                    <div className="mb-2">
-                      <strong className="text-xs text-muted-foreground">{t("creature.motivation")}:</strong>
-                      <p className="text-sm">{creature.motivation}</p>
+                    
+                    <Separator className="my-2" />
+                    
+                    {/* Habilidades e Resumo */}
+                    <div className="space-y-2">
+                      {/* Habilidades (Ataques) */}
+                      {creature.abilities && (
+                        <div>
+                          <h4 className="text-xs font-semibold text-primary mb-1">ATAQUES:</h4>
+                          <p className="text-xs">{creature.abilities}</p>
+                        </div>
+                      )}
+                      
+                      {/* Habilidades Especiais */}
+                      {creature.specialAbilities && (
+                        <div>
+                          <h4 className="text-xs font-semibold text-primary mb-1">HABILIDADES ESPECIAIS:</h4>
+                          <p className="text-xs">{creature.specialAbilities}</p>
+                        </div>
+                      )}
+                      
+                      {/* Comportamento/Motivação */}
+                      {creature.motivation && (
+                        <div>
+                          <h4 className="text-xs font-semibold text-primary mb-1">COMPORTAMENTO:</h4>
+                          <p className="text-xs">{creature.motivation}</p>
+                        </div>
+                      )}
+                      
+                      {/* Terreno */}
+                      {notesInfo.terrain && notesInfo.terrain !== '-' && (
+                        <div>
+                          <h4 className="text-xs font-semibold text-primary mb-1">TERRENO:</h4>
+                          <p className="text-xs">{notesInfo.terrain}</p>
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </CardContent>
 
-                  {creature.memorableTrait && (
-                    <div className="mb-2">
-                      <strong className="text-xs text-muted-foreground">{t("creature.memorableTrait")}:</strong>
-                      <p className="text-sm">{creature.memorableTrait}</p>
-                    </div>
-                  )}
-
-                  {creature.abilities && (
-                    <div className="mb-2">
-                      <strong className="text-xs text-muted-foreground">{t("creature.abilities")}:</strong>
-                      <p className="text-sm">{creature.abilities}</p>
-                    </div>
-                  )}
-                </CardContent>
-
-                <CardFooter className="flex justify-end gap-2 pt-2">
-                  <Button variant="secondary" size="sm" onClick={() => handleView(creature)}>
-                    <Eye className="h-4 w-4 mr-1" /> {t("common.view")}
-                  </Button>
-                  
-                  <Button variant="outline" size="sm" onClick={() => handleEdit(creature)}>
-                    <Pen className="h-4 w-4 mr-1" /> {t("common.edit")}
-                  </Button>
-
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="destructive" size="sm">
-                        <Trash2 className="h-4 w-4 mr-1" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>{t("common.confirmDelete")}</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          {t("common.deleteWarning", { item: creature.name })}
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => handleDelete(creature)}
-                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                        >
-                          {t("common.delete")}
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </CardFooter>
-              </Card>
-            ))}
+                  <CardFooter className="p-3 flex justify-end gap-1 pt-2 border-t bg-muted/10">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-xs h-8"
+                      onClick={() => handleView(creature)}
+                    >
+                      Ver Detalhes
+                    </Button>
+                    
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="destructive" size="sm" className="h-8 w-8 p-0">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{t("common.confirmDelete")}</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {t("common.deleteWarning", { item: creature.name })}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDelete(creature)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            {t("common.delete")}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </CardFooter>
+                </Card>
+              );
+            })}
           </div>
         </ScrollArea>
       )}
