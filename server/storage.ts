@@ -471,8 +471,16 @@ export class DatabaseStorage implements IStorage {
       // Usando Drizzle ORM em vez de SQL bruta
       const result = await db.select().from(npcs).where(eq(npcs.campaignId, campaignId)).orderBy(npcs.name);
       
-      // Retornando apenas os campos que existem no banco, sem adicionar campos extras
-      return result;
+      // Converter todos os campos snake_case para camelCase
+      return result.map(npcResult => ({
+        ...npcResult,
+        // Converter snake_case para camelCase para novos campos
+        imageUrl: npcResult.image_url,
+        memorableTrait: npcResult.memorable_trait,
+        entityType: npcResult.entity_type || 'npc',
+        role: npcResult.role || null,
+        motivation: npcResult.motivation || null
+      }));
     } catch (error) {
       console.error("Erro ao buscar NPCs:", error);
       return [];
@@ -513,8 +521,15 @@ export class DatabaseStorage implements IStorage {
       
       const npcResult = result[0];
       
-      // Retornar o resultado diretamente, sem adicionar campos extras
-      const npc = npcResult;
+      // Converter snake_case para camelCase
+      const npc = {
+        ...npcResult,
+        imageUrl: npcResult.image_url,
+        memorableTrait: npcResult.memorable_trait,
+        entityType: npcResult.entity_type || 'npc',
+        role: npcResult.role || null,
+        motivation: npcResult.motivation || null
+      };
       
       return npc;
     } catch (error) {
@@ -567,7 +582,17 @@ export class DatabaseStorage implements IStorage {
         throw new Error("Falha ao atualizar NPC");
       }
       
-      return result[0];
+      const npcResult = result[0];
+      
+      // Converter snake_case para camelCase
+      return {
+        ...npcResult,
+        imageUrl: npcResult.image_url,
+        memorableTrait: npcResult.memorable_trait,
+        entityType: npcResult.entity_type || 'npc',
+        role: npcResult.role || null,
+        motivation: npcResult.motivation || null
+      };
     } catch (error) {
       console.error("Erro ao atualizar NPC:", error);
       return undefined;
