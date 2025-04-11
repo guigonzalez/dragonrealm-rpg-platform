@@ -33,20 +33,20 @@ import { Loader2, X } from "lucide-react";
 
 // Opções traduzidas diretamente do arquivo de tradução
 const getRoleOptions = (t: any) => [
-  { value: "ally", label: t("npc.roleOptions.ally") },
-  { value: "villain", label: t("npc.roleOptions.villain") },
-  { value: "obstacle", label: t("npc.roleOptions.obstacle") },
-  { value: "curiosity", label: t("npc.roleOptions.curiosity") },
-  { value: "neutral", label: t("npc.roleOptions.neutral") },
+  { value: "ally", label: t("creature.roleOptions.ally") },
+  { value: "villain", label: t("creature.roleOptions.villain") },
+  { value: "obstacle", label: t("creature.roleOptions.obstacle") },
+  { value: "curiosity", label: t("creature.roleOptions.curiosity") },
+  { value: "neutral", label: t("creature.roleOptions.neutral") },
 ];
 
 const getThreatLevelOptions = () => {
   const { t } = useTranslation();
   return [
-    { value: "harmless", label: t("npc.threatLevelOptions.harmless") },
-    { value: "challenging", label: t("npc.threatLevelOptions.challenging") },
-    { value: "dangerous", label: t("npc.threatLevelOptions.dangerous") },
-    { value: "boss", label: t("npc.threatLevelOptions.boss") },
+    { value: "harmless", label: t("creature.threatLevelOptions.harmless") },
+    { value: "challenging", label: t("creature.threatLevelOptions.challenging") },
+    { value: "dangerous", label: t("creature.threatLevelOptions.dangerous") },
+    { value: "boss", label: t("creature.threatLevelOptions.boss") },
   ];
 };
 

@@ -319,6 +319,9 @@
     "manageCreatures": "Gerenciar Criaturas",
     "noCreatures": "Nenhuma Criatura ainda",
     "noCreaturesDesc": "Adicione algumas criaturas à sua campanha para povoar seu mundo.",
+    "motivation": "Motivação",
+    "memorableTrait": "Traço Memorável",
+    "abilities": "Habilidades",
     "createSuccess": {
       "title": "Criatura Criada",
       "description": "A criatura foi criada com sucesso."
@@ -342,6 +345,19 @@
     "deleteError": {
       "title": "Erro ao Excluir Criatura",
       "description": "Ocorreu um erro ao excluir a criatura. Por favor, tente novamente."
+    },
+    "roleOptions": {
+      "ally": "Aliado",
+      "villain": "Vilão",
+      "obstacle": "Obstáculo",
+      "curiosity": "Curiosidade",
+      "neutral": "Neutro"
+    },
+    "threatLevelOptions": {
+      "harmless": "Inofensivo",
+      "challenging": "Desafiador",
+      "dangerous": "Perigoso",
+      "boss": "Boss"
     }
   },
   "location": {
