@@ -481,11 +481,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         modifiedReqBody.specialAbilities = modifiedReqBody.appearance;
       }
       
+      console.log('Objeto para validação Zod:', {
+        ...modifiedReqBody,
+        created: now,
+        updated: now
+      });
+      
       const npcData = insertNpcSchema.parse({
         ...modifiedReqBody,
         created: now,
         updated: now
       });
+      
+      console.log('Objeto após validação Zod:', npcData);
       
       const npc = await storage.createNpc(npcData);
       res.status(201).json(npc);
