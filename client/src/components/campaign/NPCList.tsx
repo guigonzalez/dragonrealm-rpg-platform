@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { type Npc } from "@shared/schema";
+import { type Npc, type Creature } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 
 import { Button } from "@/components/ui/button";
@@ -34,11 +34,17 @@ export default function NPCList({ campaignId }: NPCListProps) {
   const [showCreator, setShowCreator] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
   const [editingNpc, setEditingNpc] = useState<Npc | null>(null);
-  const [viewingNpc, setViewingNpc] = useState<Npc | null>(null);
+  const [viewingNpc, setViewingNpc] = useState<Npc | Creature | null>(null);
 
   // Fetch NPCs
-  const { data: npcs = [], isLoading, isError } = useQuery<Npc[]>({
+  const { data: npcs = [], isLoading: npcsLoading, isError: npcsError } = useQuery<Npc[]>({
     queryKey: [`/api/campaigns/${campaignId}/npcs`],
+    staleTime: 10000,
+  });
+  
+  // Fetch Creatures
+  const { data: creatures = [], isLoading: creaturesLoading, isError: creaturesError } = useQuery<Creature[]>({
+    queryKey: [`/api/campaigns/${campaignId}/creatures`],
     staleTime: 10000,
   });
 
