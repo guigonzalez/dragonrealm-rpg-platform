@@ -567,7 +567,7 @@ export class DatabaseStorage implements IStorage {
     try {
       // Primeiro verificamos se o NPC existe
       const checkResult = await db.execute(
-        `SELECT id, campaign_id, name, role, race, occupation, location, appearance, personality, notes, created, updated 
+        `SELECT id, campaign_id, name, race, occupation, location, appearance, personality, abilities, notes, created, updated 
          FROM npcs 
          WHERE id = $1`,
         [id]
@@ -645,6 +645,13 @@ export class DatabaseStorage implements IStorage {
         paramIndex++;
       }
       
+      // Abilities (habilidades)
+      if (npcData.abilities !== undefined) {
+        updateFields.push(`abilities = $${paramIndex}`);
+        params.push(npcData.abilities);
+        paramIndex++;
+      }
+      
       console.log("Campos a atualizar:", updateFields);
       
       // Se não há campos para atualizar, retornamos o NPC existente
@@ -655,17 +662,18 @@ export class DatabaseStorage implements IStorage {
           id: row.id,
           campaignId: row.campaign_id,
           name: row.name,
-          role: row.role,
           race: row.race,
           occupation: row.occupation,
           location: row.location,
           appearance: row.appearance,
           personality: row.personality,
+          abilities: row.abilities,
           notes: row.notes,
           created: row.created,
           updated: row.updated,
           // Campos adicionais
           entityType: 'npc',
+          role: row.role || null,
           motivation: null,
           memorableTrait: null,
           relationships: null,
@@ -679,7 +687,7 @@ export class DatabaseStorage implements IStorage {
         UPDATE npcs 
         SET ${updateFields.join(', ')} 
         WHERE id = $1 
-        RETURNING id, campaign_id, name, role, race, occupation, location, appearance, personality, notes, created, updated
+        RETURNING id, campaign_id, name, race, occupation, location, appearance, personality, abilities, notes, created, updated
       `;
       
       const updateResult = await db.execute(updateQuery, params);
@@ -695,17 +703,18 @@ export class DatabaseStorage implements IStorage {
         id: row.id,
         campaignId: row.campaign_id,
         name: row.name,
-        role: row.role,
         race: row.race,
         occupation: row.occupation,
         location: row.location,
         appearance: row.appearance,
         personality: row.personality,
+        abilities: row.abilities,
         notes: row.notes,
         created: row.created,
         updated: row.updated,
         // Campos adicionais
         entityType: 'npc',
+        role: row.role || null,
         motivation: null,
         memorableTrait: null,
         relationships: null,
