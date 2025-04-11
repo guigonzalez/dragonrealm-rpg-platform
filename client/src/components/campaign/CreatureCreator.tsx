@@ -240,8 +240,8 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
       form.setValue("int", data.intelligence ? String(data.intelligence) : "");
       form.setValue("wis", data.wisdom ? String(data.wisdom) : "");
       form.setValue("cha", data.charisma ? String(data.charisma) : "");
-      form.setValue("specialAbilities", data.specialAbilities || "");
-      form.setValue("plotHooks", data.plotHooks || "");
+      form.setValue("specialAbilities", Array.isArray(data.specialAbilities) ? data.specialAbilities.join('\n') : data.specialAbilities || "");
+      form.setValue("plotHooks", Array.isArray(data.plotHooks) ? data.plotHooks.join('\n') : data.plotHooks || "");
       
       toast({
         title: "Criatura gerada com sucesso!",
