@@ -80,6 +80,16 @@ export const npcs = pgTable("npcs", {
   entityType: text("entity_type"),
   role: text("role"),
   motivation: text("motivation"),
+  // Atributos de Criatura/NPC
+  strength: text("strength"),
+  dexterity: text("dexterity"),
+  constitution: text("constitution"),
+  intelligence: text("intelligence"),
+  wisdom: text("wisdom"),
+  charisma: text("charisma"),
+  healthPoints: text("health_points"),
+  threatLevel: text("threat_level"),
+  specialAbilities: text("special_abilities"),
   created: text("created").notNull(),
   updated: text("updated").notNull(),
 });
