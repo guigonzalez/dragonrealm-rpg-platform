@@ -80,7 +80,7 @@ export const npcs = pgTable("npcs", {
   entityType: text("entity_type"),
   role: text("role"),
   motivation: text("motivation"),
-  relationships: text("relationships"),
+  // O campo relationships foi removido pois não existe no banco de dados
   plotHooks: text("plot_hooks"),
   // Atributos de Criatura/NPC
   strength: text("strength"),

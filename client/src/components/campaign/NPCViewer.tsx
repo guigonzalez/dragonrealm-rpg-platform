@@ -189,14 +189,9 @@ export default function NPCViewer({ npc, onClose }: NPCViewerProps) {
             )}
 
             {/* Campos opcionais que podem não estar no banco de dados ainda */}
-            {('relationships' in npc) && npc.relationships && (
-              <div>
-                <h3 className="text-sm font-semibold text-primary mb-1">{t("npc.relationships")}</h3>
-                <p className="whitespace-pre-line">{npc.relationships}</p>
-              </div>
-            )}
+            {/* Campo relationships removido pois não existe no banco de dados */}
 
-            {('plotHooks' in npc) && npc.plotHooks && (
+            {npc.plotHooks && (
               <div>
                 <h3 className="text-sm font-semibold text-primary mb-1">{t("npc.plotHooks", "Ganchos de História")}</h3>
                 <p className="whitespace-pre-line">{npc.plotHooks}</p>
