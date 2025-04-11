@@ -206,17 +206,20 @@ const getRoleOptions = (t: any) => [
   { value: "ally", label: t("npc.roleOptions.ally") },
   { value: "villain", label: t("npc.roleOptions.villain") },
   { value: "obstacle", label: t("npc.roleOptions.obstacle") },
-  { value: "informant", label: "Informante" },
+  { value: "informant", label: t("npc.roleOptions.informant") },
   { value: "curiosity", label: t("npc.roleOptions.curiosity") },
   { value: "neutral", label: t("npc.roleOptions.neutral") },
 ];
 
-const getThreatLevelOptions = () => [
-  { value: "harmless", label: "Inofensivo" },
-  { value: "challenging", label: "Desafiador" },
-  { value: "dangerous", label: "Perigoso" },
-  { value: "boss", label: "Boss" },
-];
+const getThreatLevelOptions = () => {
+  const { t } = useTranslation();
+  return [
+    { value: "harmless", label: t("npc.threatLevelOptions.harmless") },
+    { value: "challenging", label: t("npc.threatLevelOptions.challenging") },
+    { value: "dangerous", label: t("npc.threatLevelOptions.dangerous") },
+    { value: "boss", label: t("npc.threatLevelOptions.boss") },
+  ];
+};
 
 // Extend schema for validation
 const formSchema = insertNpcSchema.extend({

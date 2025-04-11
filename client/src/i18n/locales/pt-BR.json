@@ -270,8 +270,15 @@
       "ally": "Aliado",
       "villain": "Vilão",
       "obstacle": "Obstáculo",
+      "informant": "Informante",
       "curiosity": "Curiosidade",
       "neutral": "Neutro"
+    },
+    "threatLevelOptions": {
+      "harmless": "Inofensivo",
+      "challenging": "Desafiador",
+      "dangerous": "Perigoso",
+      "boss": "Boss"
     },
     "utilityOptions": {
       "unique_abilities": "Tem habilidades únicas",
