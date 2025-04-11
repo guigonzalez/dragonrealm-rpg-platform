@@ -62,6 +62,7 @@ import {
   Image
 } from "lucide-react";
 import CampaignImageUpload from "./CampaignImageUpload";
+import NPCList from "./NPCList";
 
 interface CampaignManagerProps {
   campaign?: Campaign;
@@ -1231,19 +1232,19 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
           
           {/* NPCs & Criaturas */}
           <TabsContent value="npcs" className="space-y-6">
-            <Card className="bg-muted/40">
-              <CardContent className="flex flex-col items-center justify-center p-12 text-center">
-                <Users className="h-12 w-12 text-primary/40 mb-4" />
-                <h3 className="font-lora text-xl font-semibold mb-2">{t("campaign.npcsCreatures")}</h3>
-                <p className="text-muted-foreground mb-6">
-                  {t("common.comingSoon")}
-                </p>
-                <Button className="magic-button" disabled>
-                  <Plus className="mr-2 h-4 w-4" />
-                  {t("campaign.addNpc")}
-                </Button>
-              </CardContent>
-            </Card>
+            {campaign ? (
+              <NPCList campaignId={campaign.id} />
+            ) : (
+              <Card className="bg-muted/40">
+                <CardContent className="flex flex-col items-center justify-center p-12 text-center">
+                  <Users className="h-12 w-12 text-primary/40 mb-4" />
+                  <h3 className="font-lora text-xl font-semibold mb-2">{t("campaign.npcsCreatures")}</h3>
+                  <p className="text-muted-foreground mb-6">
+                    {t("campaign.saveCampaignFirst")}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
           
           {/* Encontros */}

@@ -134,6 +134,7 @@
     "npcsCreatures": "NPCs & Criaturas",
     "addNpc": "Adicionar NPC",
     "addEncounter": "Adicionar Encontro",
+    "saveCampaignFirst": "Salve a campanha primeiro antes de adicionar NPCs e criaturas.",
     "buttons": {
       "manage": "Gerenciar",
       "npcs": "NPCs",

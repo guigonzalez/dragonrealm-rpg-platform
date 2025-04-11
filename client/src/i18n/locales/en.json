@@ -132,6 +132,11 @@
     "campaignUpdated": "Campaign Updated",
     "campaignUpdatedDescription": "Your campaign has been updated successfully.",
     "updateFailed": "Update Failed",
+    "details": "Details",
+    "npcsCreatures": "NPCs & Creatures",
+    "addNpc": "Add NPC",
+    "addEncounter": "Add Encounter",
+    "saveCampaignFirst": "Save the campaign first before adding NPCs and creatures.",
     "buttons": {
       "manage": "Manage",
       "npcs": "NPCs",
