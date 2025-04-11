@@ -445,11 +445,21 @@ export class DatabaseStorage implements IStorage {
   // NPC methods
   async getNpc(id: number): Promise<Npc | undefined> {
     try {
-      const [npc] = await db.select().from(npcs).where(eq(npcs.id, id));
-      if (!npc) return undefined;
+      const [npcResult] = await db.select().from(npcs).where(eq(npcs.id, id));
+      if (!npcResult) return undefined;
       
-      // Adicionando o entityType padrão se não existir no banco de dados
-      return { ...npc, entityType: npc.entityType || 'npc' };
+      // Convertendo snake_case para camelCase para os novos campos
+      const npc = {
+        ...npcResult,
+        // Ajustando para campos do schema
+        imageUrl: npcResult.image_url,
+        memorableTrait: npcResult.memorable_trait,
+        entityType: npcResult.entity_type || 'npc',
+        role: npcResult.role || null,
+        motivation: npcResult.motivation || null
+      };
+      
+      return npc;
     } catch (error) {
       console.error("Erro ao buscar NPC:", error);
       return undefined;
@@ -482,6 +492,12 @@ export class DatabaseStorage implements IStorage {
         personality: insertNpc.personality || null,
         abilities: insertNpc.abilities || null,
         notes: insertNpc.notes || null,
+        // Novos campos adicionados ao schema
+        image_url: insertNpc.imageUrl || null,
+        memorable_trait: insertNpc.memorableTrait || null,
+        entity_type: insertNpc.entityType || 'npc',
+        role: insertNpc.role || null,
+        motivation: insertNpc.motivation || null,
         created: insertNpc.created,
         updated: insertNpc.updated
       };
@@ -528,6 +544,13 @@ export class DatabaseStorage implements IStorage {
       if (npcData.abilities !== undefined) updateData.abilities = npcData.abilities;
       if (npcData.notes !== undefined) updateData.notes = npcData.notes;
       if (npcData.updated !== undefined) updateData.updated = npcData.updated;
+      
+      // Novos campos adicionados ao schema
+      if (npcData.imageUrl !== undefined) updateData.image_url = npcData.imageUrl;
+      if (npcData.memorableTrait !== undefined) updateData.memorable_trait = npcData.memorableTrait;
+      if (npcData.entityType !== undefined) updateData.entity_type = npcData.entityType;
+      if (npcData.role !== undefined) updateData.role = npcData.role;
+      if (npcData.motivation !== undefined) updateData.motivation = npcData.motivation;
       
       // Se não há campos para atualizar, retornar o NPC existente
       if (Object.keys(updateData).length === 0) {
