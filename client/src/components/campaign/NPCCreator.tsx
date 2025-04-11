@@ -121,7 +121,7 @@ const ImageUpload = ({ imageUrl, onImageChange }: { imageUrl: string | null, onI
       {imageUrl ? (
         <div className="relative w-full max-w-xs">
           <img 
-            src={imageUrl} 
+            src={imageUrl && imageUrl.startsWith("data:") ? imageUrl : imageUrl} 
             alt="Character" 
             className="w-full h-48 object-cover rounded-md" 
           />
