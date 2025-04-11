@@ -419,10 +419,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const imagePath = saveBase64Image(req.body.imageUrl, req.body.entityType || 'npc');
         if (imagePath) {
           console.log(`Imagem salva em: ${imagePath}`);
-          // Atualizar a URL da imagem para o caminho do arquivo salvo
+          
+          // Atualizar diretamente o campo image_url para garantir compatibilidade com o banco
           modifiedReqBody.imageUrl = imagePath;
+          
           // Adicione log para confirmar o caminho da imagem após processamento
           console.log(`Caminho da imagem após processamento: ${modifiedReqBody.imageUrl}`);
+          console.log("Objeto NPC após processamento de imagem:", JSON.stringify(modifiedReqBody, null, 2));
         } else {
           // Se não conseguir salvar, remover o campo para evitar salvar a string base64 no banco
           console.log('Falha ao processar imagem base64, removendo imageUrl');
@@ -567,6 +570,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.log(`Imagem atualizada e salva em: ${imagePath}`);
           // Atualizar a URL da imagem para o caminho do arquivo salvo
           modifiedReqBody.imageUrl = imagePath;
+          console.log(`Caminho da imagem após processamento (PATCH): ${modifiedReqBody.imageUrl}`);
         } else {
           // Se não conseguir salvar, remover o campo para evitar salvar a string base64 no banco
           console.log('Falha ao processar imagem base64, removendo imageUrl');

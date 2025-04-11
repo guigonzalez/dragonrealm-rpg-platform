@@ -509,6 +509,9 @@ export class DatabaseStorage implements IStorage {
 
   async createNpc(insertNpc: InsertNpc): Promise<Npc> {
     try {
+      // Adicione log completo para depuração
+      console.log("Inserindo NPC na DatabaseStorage:", JSON.stringify(insertNpc, null, 2));
+      
       // Simplificando a inserção usando Drizzle ORM
       const data = {
         campaignId: insertNpc.campaignId,
@@ -520,7 +523,7 @@ export class DatabaseStorage implements IStorage {
         personality: insertNpc.personality || null,
         abilities: insertNpc.abilities || null,
         notes: insertNpc.notes || null,
-        // Novos campos adicionados ao schema
+        // Novos campos adicionados ao schema - mantenha imageUrl como snake_case no banco de dados
         image_url: insertNpc.imageUrl || null, // Mapeia de imageUrl (camelCase) para image_url (snake_case)
         memorable_trait: insertNpc.memorableTrait || null,
         entity_type: insertNpc.entityType || 'npc',
@@ -551,7 +554,12 @@ export class DatabaseStorage implements IStorage {
       
       const npcResult = result[0];
       
-      // Converter snake_case para camelCase
+      // Converter snake_case para camelCase e registrar para depuração
+      console.log("NPC retornado do banco:", JSON.stringify(npcResult, null, 2));
+      
+      // Verificando explicitamente o campo image_url
+      console.log(`Campo image_url do banco: "${npcResult.image_url}"`);
+      
       const npc = {
         ...npcResult,
         imageUrl: npcResult.image_url,
@@ -570,6 +578,9 @@ export class DatabaseStorage implements IStorage {
         threatLevel: npcResult.threat_level || null,
         specialAbilities: npcResult.special_abilities || null
       };
+      
+      // Verificando o objeto convertido
+      console.log("NPC convertido com imageUrl:", npc.imageUrl);
       
       return npc;
     } catch (error) {
