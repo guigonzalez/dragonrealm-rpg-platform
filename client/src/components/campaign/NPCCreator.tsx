@@ -422,13 +422,13 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
       form.setValue("threatLevel", data.threatLevel?.toLowerCase().includes("perigoso") ? "dangerous" : 
                                data.threatLevel?.toLowerCase().includes("chefe") ? "boss" :
                                data.threatLevel?.toLowerCase().includes("desafiador") ? "challenging" : "harmless");
-      form.setValue("healthPoints", data.healthPoints || "");
-      form.setValue("str", data.strength || "");
-      form.setValue("dex", data.dexterity || "");
-      form.setValue("con", data.constitution || "");
-      form.setValue("int", data.intelligence || "");
-      form.setValue("wis", data.wisdom || "");
-      form.setValue("cha", data.charisma || "");
+      form.setValue("healthPoints", data.healthPoints ? String(data.healthPoints) : "");
+      form.setValue("str", data.strength ? String(data.strength) : "");
+      form.setValue("dex", data.dexterity ? String(data.dexterity) : "");
+      form.setValue("con", data.constitution ? String(data.constitution) : "");
+      form.setValue("int", data.intelligence ? String(data.intelligence) : "");
+      form.setValue("wis", data.wisdom ? String(data.wisdom) : "");
+      form.setValue("cha", data.charisma ? String(data.charisma) : "");
       form.setValue("specialAbilities", data.specialAbilities || "");
       form.setValue("plotHooks", data.plotHooks || "");
       
