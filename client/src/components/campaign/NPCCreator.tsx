@@ -321,12 +321,30 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
   // Se estamos editando, preencha o formulário com dados existentes
   useEffect(() => {
     if (editingNpc) {
-      // Mapeamento de campos antigos para novos se necessário
-      const threatLevel = editingNpc.threatOrUtility?.includes("potential_enemy") ? "dangerous" : 
-                          editingNpc.threatOrUtility?.includes("unique_abilities") ? "challenging" : "harmless";
+      console.log("Editando NPC:", editingNpc);
       
-      // Adicionar habilidades especiais baseado no campo abilities ou notes
-      const specialAbilities = editingNpc.abilities || "";
+      // Extrair valores de atributos do memorableTrait ou usar os valores diretos do banco
+      const extractAttribute = (attr: string | null, defaultValue: string = "") => (attr || defaultValue);
+      
+      // Mapear campos de atributos - usar os valores dos campos próprios se existirem
+      const str = editingNpc.strength || extractAttribute(editingNpc.memorableTrait?.match(/FOR:(\d+)/)?.[1]);
+      const dex = editingNpc.dexterity || extractAttribute(editingNpc.memorableTrait?.match(/DES:(\d+)/)?.[1]);
+      const con = editingNpc.constitution || extractAttribute(editingNpc.memorableTrait?.match(/CON:(\d+)/)?.[1]);
+      const int = editingNpc.intelligence || extractAttribute(editingNpc.memorableTrait?.match(/INT:(\d+)/)?.[1]);
+      const wis = editingNpc.wisdom || extractAttribute(editingNpc.memorableTrait?.match(/SAB:(\d+)/)?.[1]);
+      const cha = editingNpc.charisma || extractAttribute(editingNpc.memorableTrait?.match(/CAR:(\d+)/)?.[1]);
+      
+      // Determinar o nível de ameaça
+      const threatLevel = editingNpc.threatLevel || 
+                          (editingNpc.threatOrUtility?.includes("potential_enemy") ? "dangerous" : 
+                          editingNpc.threatOrUtility?.includes("unique_abilities") ? "challenging" : "harmless");
+      
+      // Extrair pontos de vida
+      const healthPoints = editingNpc.healthPoints || 
+                          (editingNpc.notes?.match(/Vida\/Resistência:\s*(\d+)/)?.[1] || "");
+      
+      // Adicionar habilidades especiais baseado no campo abilities ou specialAbilities
+      const specialAbilities = editingNpc.specialAbilities || editingNpc.abilities || "";
       
       // Combinar relacionamentos com informações de contexto
       const relationships = [
@@ -342,6 +360,14 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
         threatLevel,
         specialAbilities,
         relationships,
+        healthPoints,
+        // Valores de atributos
+        str,
+        dex,
+        con,
+        int,
+        wis,
+        cha,
         // Garantir que imageUrl não seja undefined
         imageUrl: editingNpc.imageUrl || "",
       } as FormValues);
