@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { type Npc } from "@shared/schema";
+import { type Npc, type Creature } from "@shared/schema";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { X, User2, Skull } from "lucide-react";
 
 interface NPCViewerProps {
-  npc: Npc;
+  npc: Npc | Creature;
   onClose: () => void;
 }
 

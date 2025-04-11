@@ -205,7 +205,9 @@ export type Npc = typeof npcs.$inferSelect & {
   specialAbilities?: string | null;
 };
 
-export type InsertCreature = z.infer<typeof insertCreatureSchema>;
+export type InsertCreature = z.infer<typeof insertCreatureSchema> & {
+  entityType?: 'creature';
+};
 export type Creature = typeof creatures.$inferSelect & {
   entityType: 'creature';
 };
