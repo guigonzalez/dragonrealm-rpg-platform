@@ -83,9 +83,10 @@ type NPCCreatorProps = {
   onClose?: () => void;
   onSuccess?: (npc: any) => void;
   editingNpc?: any; // Se fornecido, estamos editando um NPC existente
+  creatureMode?: boolean; // Se true, estamos criando uma criatura, não um NPC
 };
 
-export default function NPCCreator({ campaignId, campaign, onClose = () => {}, onSuccess, editingNpc }: NPCCreatorProps) {
+export default function NPCCreator({ campaignId, campaign, onClose = () => {}, onSuccess, editingNpc, creatureMode = false }: NPCCreatorProps) {
   // Se campaign está presente mas campaignId não, extrair o ID da campaign
   const actualCampaignId = campaignId || (campaign ? campaign.id : undefined);
   const { t } = useTranslation();
@@ -93,7 +94,7 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationOptions, setGenerationOptions] = useState({
-    tipo: 'npc' as 'npc' | 'creature',
+    tipo: creatureMode ? 'creature' as 'npc' | 'creature' : 'npc' as 'npc' | 'creature',
     campanha: '',
     nivel: '',
     terreno: '',
@@ -103,7 +104,7 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
   // Preparar valores padrões considerando possível edição
   const defaultValues = {
     campaignId: actualCampaignId,
-    entityType: "npc" as "npc" | "creature",  // tipo explícito para garantir tipagem correta
+    entityType: creatureMode ? "creature" as "npc" | "creature" : "npc" as "npc" | "creature",  // tipo explícito para garantir tipagem correta
     name: "",
     role: "",
     motivation: "",

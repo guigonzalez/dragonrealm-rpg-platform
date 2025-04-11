@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { type Npc } from "@shared/schema";
+import { type Creature } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Pen, Trash2, Plus, User2, Eye, ArrowLeft } from "lucide-react";
+import { Pen, Trash2, Plus, Skull, Eye, ArrowLeft } from "lucide-react";
 
 import NPCCreator from "./NPCCreator";
 import NPCViewer from "./NPCViewer";
@@ -23,73 +23,73 @@ const ROLE_COLORS = {
   neutral: "bg-slate-600 hover:bg-slate-700",
 };
 
-interface NPCListProps {
+interface CreatureListProps {
   campaignId: number;
 }
 
-export default function NPCList({ campaignId }: NPCListProps) {
+export default function CreatureList({ campaignId }: CreatureListProps) {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [showCreator, setShowCreator] = useState(false);
-  const [editingNpc, setEditingNpc] = useState<Npc | null>(null);
-  const [viewingNpc, setViewingNpc] = useState<Npc | null>(null);
+  const [editingCreature, setEditingCreature] = useState<Creature | null>(null);
+  const [viewingCreature, setViewingCreature] = useState<Creature | null>(null);
 
-  // Fetch NPCs
-  const { data: npcs = [], isLoading, isError } = useQuery<Npc[]>({
-    queryKey: [`/api/campaigns/${campaignId}/npcs`],
+  // Fetch Creatures
+  const { data: creatures = [], isLoading, isError } = useQuery<Creature[]>({
+    queryKey: [`/api/campaigns/${campaignId}/creatures`],
     staleTime: 10000,
   });
-
-  // Mutação para excluir NPCs
-  const deleteNpcMutation = useMutation({
-    mutationFn: async (npcId: number) => {
-      await apiRequest("DELETE", `/api/npcs/${npcId}`);
+  
+  // Mutação para excluir Criaturas
+  const deleteCreatureMutation = useMutation({
+    mutationFn: async (creatureId: number) => {
+      await apiRequest("DELETE", `/api/creatures/${creatureId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`/api/campaigns/${campaignId}/npcs`] });
+      queryClient.invalidateQueries({ queryKey: [`/api/campaigns/${campaignId}/creatures`] });
       toast({
-        title: t("npc.deleteSuccess.title"),
-        description: t("npc.deleteSuccess.description"),
+        title: t("creature.deleteSuccess.title"),
+        description: t("creature.deleteSuccess.description"),
       });
     },
     onError: (error: Error) => {
       toast({
-        title: t("npc.deleteError.title"),
+        title: t("creature.deleteError.title"),
         description: error.message,
         variant: "destructive",
       });
     },
   });
-  
+
   // Handlers
   const handleStartCreate = () => {
-    setEditingNpc(null);
+    setEditingCreature(null);
     setShowCreator(true);
   };
 
   const handleCloseCreator = () => {
     setShowCreator(false);
-    setEditingNpc(null);
+    setEditingCreature(null);
   };
 
-  // Exclusão de um NPC
-  const handleDelete = (npc: Npc) => {
-    deleteNpcMutation.mutate(npc.id);
+  // Exclusão de uma criatura
+  const handleDelete = (creature: Creature) => {
+    deleteCreatureMutation.mutate(creature.id);
   };
 
-  // Visualização de um NPC
-  const handleView = (npc: Npc) => {
-    setViewingNpc(npc);
+  // Visualização de uma criatura
+  const handleView = (creature: Creature) => {
+    setViewingCreature(creature);
   };
   
-  // Edição de um NPC
-  const handleEdit = (npc: Npc) => {
-    setEditingNpc(npc);
+  // Edição de uma criatura
+  const handleEdit = (creature: Creature) => {
+    setEditingCreature(creature);
     setShowCreator(true);
   };
 
   const handleCloseViewer = () => {
-    setViewingNpc(null);
+    setViewingCreature(null);
   };
 
   if (isLoading) {
@@ -117,13 +117,14 @@ export default function NPCList({ campaignId }: NPCListProps) {
       <NPCCreator
         campaignId={campaignId}
         onClose={handleCloseCreator}
-        editingNpc={editingNpc}
+        editingNpc={editingCreature as any}
         onSuccess={() => setShowCreator(false)}
+        creatureMode={true}
       />
     );
   }
 
-  if (viewingNpc) {
+  if (viewingCreature) {
     return (
       <div className="space-y-4">
         <div className="flex justify-between items-center">
@@ -132,12 +133,12 @@ export default function NPCList({ campaignId }: NPCListProps) {
             {t("common.back")}
           </Button>
           <h2 className="text-2xl font-bold font-lora text-primary">
-            {t("npc.viewNpc")}
+            {t("creature.viewCreature")}
           </h2>
           <div className="w-28"></div> {/* Espaçador para alinhar o título */}
         </div>
 
-        <NPCViewer npc={viewingNpc} onClose={handleCloseViewer} />
+        <NPCViewer npc={viewingCreature} onClose={handleCloseViewer} />
       </div>
     );
   }
@@ -146,24 +147,24 @@ export default function NPCList({ campaignId }: NPCListProps) {
     <div className="w-full">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold font-lora text-primary">
-          {t("npc.npcs")}
+          {t("creature.creatures")}
         </h2>
         <Button onClick={handleStartCreate}>
           <Plus className="mr-2 h-4 w-4" /> {t("common.create")}
         </Button>
       </div>
 
-      {npcs.length === 0 ? (
+      {creatures.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-8 text-center">
             <div className="mb-3 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <User2 className="h-6 w-6 text-primary" />
+              <Skull className="h-6 w-6 text-primary" />
             </div>
             <h3 className="font-semibold mb-1">
-              {t("npc.noNpcs")}
+              {t("creature.noCreatures")}
             </h3>
             <p className="text-muted-foreground text-sm max-w-md mb-4">
-              {t("npc.noNpcsDesc")}
+              {t("creature.noCreaturesDesc")}
             </p>
             <Button onClick={handleStartCreate} size="sm">
               <Plus className="mr-2 h-4 w-4" /> {t("common.create")}
@@ -173,63 +174,63 @@ export default function NPCList({ campaignId }: NPCListProps) {
       ) : (
         <ScrollArea className="h-[calc(100vh-300px)] pr-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {npcs.map((npc) => (
-              <Card key={npc.id} className="overflow-hidden flex flex-col">
+            {creatures.map((creature) => (
+              <Card key={creature.id} className="overflow-hidden flex flex-col">
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-start">
                     <div className="flex items-center gap-2">
                       <div className="bg-primary/10 p-2 rounded-full">
-                        <User2 className="h-5 w-5 text-primary" />
+                        <Skull className="h-5 w-5 text-primary" />
                       </div>
                       <div>
-                        <CardTitle className="font-lora">{npc.name}</CardTitle>
+                        <CardTitle className="font-lora">{creature.name}</CardTitle>
                         <CardDescription>
-                          {t("npc.npc")}
+                          {t("creature.creature")}
                         </CardDescription>
                       </div>
                     </div>
-                    {npc.role && (
+                    {creature.role && (
                       <Badge
                         variant="default"
                         className={
-                          ROLE_COLORS[npc.role as keyof typeof ROLE_COLORS] || "bg-slate-600 hover:bg-slate-700"
+                          ROLE_COLORS[creature.role as keyof typeof ROLE_COLORS] || "bg-slate-600 hover:bg-slate-700"
                         }
                       >
-                        {npc.role === "Neutro" ? "Neutro" : t(`npc.roleOptions.${npc.role}`) || npc.role}
+                        {creature.role === "Neutro" ? "Neutro" : t(`creature.roleOptions.${creature.role}`) || creature.role}
                       </Badge>
                     )}
                   </div>
                 </CardHeader>
 
                 <CardContent className="pt-2 flex-grow">
-                  {npc.motivation && (
+                  {creature.motivation && (
                     <div className="mb-2">
-                      <strong className="text-xs text-muted-foreground">{t("npc.motivation")}:</strong>
-                      <p className="text-sm">{npc.motivation}</p>
+                      <strong className="text-xs text-muted-foreground">{t("creature.motivation")}:</strong>
+                      <p className="text-sm">{creature.motivation}</p>
                     </div>
                   )}
 
-                  {npc.memorableTrait && (
+                  {creature.memorableTrait && (
                     <div className="mb-2">
-                      <strong className="text-xs text-muted-foreground">{t("npc.memorableTrait")}:</strong>
-                      <p className="text-sm">{npc.memorableTrait}</p>
+                      <strong className="text-xs text-muted-foreground">{t("creature.memorableTrait")}:</strong>
+                      <p className="text-sm">{creature.memorableTrait}</p>
                     </div>
                   )}
 
-                  {npc.abilities && (
+                  {creature.abilities && (
                     <div className="mb-2">
-                      <strong className="text-xs text-muted-foreground">{t("npc.abilities")}:</strong>
-                      <p className="text-sm">{npc.abilities}</p>
+                      <strong className="text-xs text-muted-foreground">{t("creature.abilities")}:</strong>
+                      <p className="text-sm">{creature.abilities}</p>
                     </div>
                   )}
                 </CardContent>
 
                 <CardFooter className="flex justify-end gap-2 pt-2">
-                  <Button variant="secondary" size="sm" onClick={() => handleView(npc)}>
+                  <Button variant="secondary" size="sm" onClick={() => handleView(creature)}>
                     <Eye className="h-4 w-4 mr-1" /> {t("common.view")}
                   </Button>
                   
-                  <Button variant="outline" size="sm" onClick={() => handleEdit(npc)}>
+                  <Button variant="outline" size="sm" onClick={() => handleEdit(creature)}>
                     <Pen className="h-4 w-4 mr-1" /> {t("common.edit")}
                   </Button>
 
@@ -243,13 +244,13 @@ export default function NPCList({ campaignId }: NPCListProps) {
                       <AlertDialogHeader>
                         <AlertDialogTitle>{t("common.confirmDelete")}</AlertDialogTitle>
                         <AlertDialogDescription>
-                          {t("common.deleteWarning", { item: npc.name })}
+                          {t("common.deleteWarning", { item: creature.name })}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={() => handleDelete(npc)}
+                          onClick={() => handleDelete(creature)}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
                           {t("common.delete")}
