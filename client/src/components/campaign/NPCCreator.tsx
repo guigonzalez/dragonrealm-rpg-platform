@@ -751,7 +751,7 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {threatLevelOptions.map(option => (
+                              {getThreatLevelOptions().map((option) => (
                                 <SelectItem key={option.value} value={option.value}>
                                   {option.label}
                                 </SelectItem>
