@@ -10,7 +10,15 @@ import { useToast } from "@/hooks/use-toast";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  FormDescription
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
@@ -21,26 +29,187 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2, X } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Loader2, X, Upload } from "lucide-react";
 
+// Componente reutilizável para upload de imagem
+const ImageUpload = ({ imageUrl, onImageChange }: { imageUrl: string | null, onImageChange: (url: string) => void }) => {
+  const [isUploading, setIsUploading] = useState(false);
+  const { t } = useTranslation();
+  const { toast } = useToast();
+
+  const handleUpload = async (file: File) => {
+    setIsUploading(true);
+    
+    try {
+      // Função de compressão e conversão para base64
+      const compressAndConvertToBase64 = (file: File) => {
+        return new Promise<string>((resolve) => {
+          // Criar um elemento de imagem para redimensionar
+          const img = document.createElement("img");
+          img.onload = () => {
+            // Criar um canvas para redimensionar
+            const canvas = document.createElement("canvas");
+            
+            // Definir tamanho máximo (800px de largura ou altura, mantendo a proporção)
+            const MAX_SIZE = 800;
+            let width = img.width;
+            let height = img.height;
+            
+            // Redimensionar mantendo a proporção se necessário
+            if (width > MAX_SIZE || height > MAX_SIZE) {
+              if (width > height) {
+                height = Math.round(height * MAX_SIZE / width);
+                width = MAX_SIZE;
+              } else {
+                width = Math.round(width * MAX_SIZE / height);
+                height = MAX_SIZE;
+              }
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Desenhar no canvas
+            const ctx = canvas.getContext("2d");
+            if (ctx) {
+              ctx.drawImage(img, 0, 0, width, height);
+              
+              // Converter para base64 com qualidade reduzida (0.7)
+              const base64String = canvas.toDataURL("image/jpeg", 0.7);
+              resolve(base64String);
+            } else {
+              // Fallback caso não consiga obter o contexto do canvas
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                resolve(e.target?.result as string);
+              };
+              reader.readAsDataURL(file);
+            }
+          };
+          
+          // Carregar a imagem
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            img.src = e.target?.result as string;
+          };
+          reader.readAsDataURL(file);
+        });
+      };
+      
+      const base64String = await compressAndConvertToBase64(file);
+      onImageChange(base64String);
+      
+      toast({
+        title: t("common.uploadSuccess"),
+        description: "Imagem carregada com sucesso",
+      });
+    } catch (error) {
+      console.error("Erro ao fazer upload:", error);
+      toast({
+        title: t("common.uploadError"),
+        description: "Não foi possível carregar a imagem. Tente novamente.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center">
+      {imageUrl ? (
+        <div className="relative w-full max-w-xs">
+          <img 
+            src={imageUrl} 
+            alt="Character" 
+            className="w-full h-48 object-cover rounded-md" 
+          />
+          <div className="flex gap-2 mt-2 justify-center">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                document.getElementById('npc-image-upload')?.click();
+              }}
+            >
+              {t("campaign.changeCampaignImage")}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="text-destructive"
+              onClick={() => onImageChange("")}
+            >
+              {t("common.removeImage")}
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className="border-2 border-dashed border-primary/20 rounded-md p-6 w-full max-w-xs text-center hover:border-primary/40 transition-colors">
+          <div className="space-y-2">
+            <div className="flex justify-center">
+              <Upload className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <p className="text-sm font-medium">Envie uma imagem para seu personagem</p>
+            <Button 
+              type="button" 
+              variant="outline" 
+              size="sm" 
+              className="mt-2"
+              disabled={isUploading}
+              onClick={() => {
+                document.getElementById('npc-image-upload')?.click();
+              }}
+            >
+              {isUploading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {t("common.uploading")}
+                </>
+              ) : (
+                "Escolher imagem"
+              )}
+            </Button>
+          </div>
+        </div>
+      )}
+      <Input
+        id="npc-image-upload"
+        type="file"
+        accept="image/png,image/jpeg,image/gif"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) {
+            handleUpload(file);
+          }
+        }}
+      />
+    </div>
+  );
+};
+
+// Definição das opções para os selects e radio buttons
 const roleOptions = [
   { value: "ally", label: "Aliado" },
   { value: "villain", label: "Vilão" },
   { value: "obstacle", label: "Obstáculo" },
+  { value: "informant", label: "Informante" },
   { value: "curiosity", label: "Curiosidade" },
   { value: "neutral", label: "Neutro" },
 ];
 
-const utilityOptions = [
-  { id: "unique_abilities", label: "Tem habilidades únicas" },
-  { id: "potential_enemy", label: "Pode virar inimigo" },
-  { id: "potential_ally", label: "Pode ser aliado poderoso" },
-  { id: "important_info", label: "Tem informação importante" },
-  { id: "contractor", label: "Serve como contratante" },
+const threatLevelOptions = [
+  { value: "harmless", label: "Inofensivo" },
+  { value: "challenging", label: "Desafiador" },
+  { value: "dangerous", label: "Perigoso" },
+  { value: "boss", label: "Boss" },
 ];
 
-// Extend the schema for validation
+// Extend schema for validation
 const formSchema = insertNpcSchema.extend({
   name: z.string().min(1, "O nome é obrigatório"),
   entityType: z.enum(["npc", "creature"], { 
@@ -48,12 +217,19 @@ const formSchema = insertNpcSchema.extend({
   }),
   role: z.string().optional(),
   motivation: z.string().optional(),
-  memorableTrait: z.string().optional(),
+  imageUrl: z.string().optional(),
   relationships: z.string().optional(),
   abilities: z.string().optional(),
-  threatOrUtility: z.string().optional(),
+  threatLevel: z.string().optional(),
+  healthPoints: z.string().optional(),
+  str: z.string().optional(),
+  dex: z.string().optional(),
+  con: z.string().optional(),
+  int: z.string().optional(),
+  wis: z.string().optional(),
+  cha: z.string().optional(),
+  specialAbilities: z.string().optional(),
   plotHooks: z.string().optional(),
-  // threatOrUtilityOptions será um array de strings convertido para string no envio
 });
 
 type NPCCreatorProps = {
@@ -75,12 +251,19 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
     name: "",
     role: "",
     motivation: "",
-    memorableTrait: "",
+    imageUrl: "",
     relationships: "",
     abilities: "",
-    threatOrUtility: "",
+    threatLevel: "",
+    healthPoints: "",
+    str: "",
+    dex: "",
+    con: "",
+    int: "",
+    wis: "",
+    cha: "",
+    specialAbilities: "",
     plotHooks: "",
-    threatOrUtilityOptions: [] as string[],
     // Preenchemos os campos padrão restantes
     created: new Date().toISOString(),
     updated: new Date().toISOString(),
@@ -93,15 +276,24 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
     entityType: "npc" | "creature";
     role?: string;
     motivation?: string;
-    memorableTrait?: string;
+    imageUrl?: string;
     relationships?: string;
     abilities?: string;
-    threatOrUtility?: string;
+    threatLevel?: string;
+    healthPoints?: string;
+    str?: string;
+    dex?: string;
+    con?: string;
+    int?: string;
+    wis?: string;
+    cha?: string;
+    specialAbilities?: string;
     plotHooks?: string;
     created: string;
     updated: string;
-    threatOrUtilityOptions: string[];
-    // Outros campos opcionais
+    // Campos legados para compatibilidade
+    memorableTrait?: string;
+    threatOrUtility?: string;
     race?: string;
     occupation?: string;
     location?: string;
@@ -118,19 +310,29 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
   // Se estamos editando, preencha o formulário com dados existentes
   useEffect(() => {
     if (editingNpc) {
-      const threatUtilityArray = editingNpc.threatOrUtility 
-        ? editingNpc.threatOrUtility.split(",") 
-        : [];
+      // Mapeamento de campos antigos para novos se necessário
+      const threatLevel = editingNpc.threatOrUtility?.includes("potential_enemy") ? "dangerous" : 
+                          editingNpc.threatOrUtility?.includes("unique_abilities") ? "challenging" : "harmless";
       
-      // Garanta que entityType seja um valor válido
-      const entityType = editingNpc.entityType === "creature" 
-        ? "creature" as const 
-        : "npc" as const;
-        
+      // Adicionar habilidades especiais baseado no campo abilities ou notes
+      const specialAbilities = editingNpc.abilities || "";
+      
+      // Combinar relacionamentos com informações de contexto
+      const relationships = [
+        editingNpc.relationships || "",
+        editingNpc.location ? `Localização: ${editingNpc.location}` : "",
+      ].filter(Boolean).join("\n\n");
+
       form.reset({
         ...editingNpc,
-        entityType,
-        threatOrUtilityOptions: threatUtilityArray,
+        // Garantir valor correto para entityType
+        entityType: (editingNpc.entityType === "creature" ? "creature" : "npc") as const,
+        // Mapear campos novos
+        threatLevel,
+        specialAbilities,
+        relationships,
+        // Garantir que imageUrl não seja undefined
+        imageUrl: editingNpc.imageUrl || "",
       } as FormValues);
     }
   }, [editingNpc, form]);
@@ -174,8 +376,23 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
   const onSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
     
-    // Converte array de opções para string
-    const threatOrUtility = values.threatOrUtilityOptions?.join(",") || "";
+    // Mapear valores novos para a estrutura de dados existente
+    let threatOrUtility = "";
+    switch(values.threatLevel) {
+      case "dangerous":
+        threatOrUtility = "potential_enemy";
+        break;
+      case "boss":
+        threatOrUtility = "potential_enemy,unique_abilities";
+        break;
+      case "challenging":
+        threatOrUtility = "unique_abilities";
+        break;
+      case "harmless":
+      default:
+        // deixar vazio para inofensivo
+        break;
+    }
     
     const submitData: Partial<InsertNpc> = {
       campaignId: values.campaignId,
@@ -183,18 +400,21 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
       entityType: values.entityType,
       role: values.role || "",
       motivation: values.motivation || "",
-      memorableTrait: values.memorableTrait || "",
+      imageUrl: values.imageUrl || "",
       relationships: values.relationships || "",
       abilities: values.abilities || "",
+      // Mapear novos campos para os existentes para compatibilidade
       threatOrUtility,
+      // Criar um formato para os atributos
+      memorableTrait: values.str && values.dex ? 
+        `FOR:${values.str || "-"} DES:${values.dex || "-"} CON:${values.con || "-"} INT:${values.int || "-"} SAB:${values.wis || "-"} CAR:${values.cha || "-"}` : "",
+      // Usar para anotações gerais
+      notes: values.healthPoints ? `Vida/Resistência: ${values.healthPoints}` : "",
+      // Usar para habilidades especiais
+      appearance: values.specialAbilities || "",
+      // Usar o campo plotHooks diretamente
       plotHooks: values.plotHooks || "",
-      race: values.race || "",
-      occupation: values.occupation || "",
-      location: values.location || "",
-      appearance: values.appearance || "",
-      personality: values.personality || "",
-      notes: values.notes || "",
-      // Atualizamos a data
+      // Atualizar a data
       updated: new Date().toISOString(),
     };
     
@@ -220,198 +440,315 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Tipo: NPC ou Criatura */}
-            <FormField
-              control={form.control}
-              name="entityType"
-              render={({ field }) => (
-                <FormItem className="space-y-1">
-                  <FormLabel>Tipo:</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex space-x-4"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="npc" id="npc" />
-                        <label htmlFor="npc" className="cursor-pointer">NPC</label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="creature" id="creature" />
-                        <label htmlFor="creature" className="cursor-pointer">Criatura</label>
-                      </div>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Nome */}
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome:</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nome do NPC ou criatura" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Papel na história */}
-            <FormField
-              control={form.control}
-              name="role"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Papel na história:</FormLabel>
-                  <Select 
-                    onValueChange={field.onChange} 
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o papel" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {roleOptions.map(option => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Motivação */}
-            <FormField
-              control={form.control}
-              name="motivation"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Motivação ou objetivo principal:</FormLabel>
-                  <FormControl>
-                    <Input 
-                      placeholder="Ex: proteger o templo, vingar a irmã, coletar artefatos mágicos" 
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Traço memorável */}
-            <FormField
-              control={form.control}
-              name="memorableTrait"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Traço memorável:</FormLabel>
-                  <FormControl>
-                    <Input 
-                      placeholder="Ex: aparência, fala, comportamento, mania" 
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Relacionamentos */}
-            <FormField
-              control={form.control}
-              name="relationships"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Relacionamentos e contexto:</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder="Com quem ele se conecta? Onde vive? Tem aliados ou rivais?" 
-                      className="min-h-[80px]"
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Ameaça ou utilidade */}
-            <FormField
-              control={form.control}
-              name="threatOrUtilityOptions"
-              render={() => (
-                <FormItem>
-                  <FormLabel>Ameaça ou utilidade:</FormLabel>
-                  <div className="space-y-2">
-                    {utilityOptions.map((option) => (
-                      <div key={option.id} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={option.id}
-                          checked={form.watch("threatOrUtilityOptions")?.includes(option.id)}
-                          onCheckedChange={(checked) => {
-                            const current = form.watch("threatOrUtilityOptions") || [];
-                            const updated = checked
-                              ? [...current, option.id]
-                              : current.filter(value => value !== option.id);
-                            form.setValue("threatOrUtilityOptions", updated);
-                          }}
-                        />
-                        <label
-                          htmlFor={option.id}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-6">
+                {/* 1. Tipo: NPC ou Criatura */}
+                <FormField
+                  control={form.control}
+                  name="entityType"
+                  render={({ field }) => (
+                    <FormItem className="space-y-1">
+                      <FormLabel>1. Tipo</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex space-x-4"
                         >
-                          {option.label}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="npc" id="npc" />
+                            <label htmlFor="npc" className="cursor-pointer">NPC</label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="creature" id="creature" />
+                            <label htmlFor="creature" className="cursor-pointer">Criatura</label>
+                          </div>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                {/* 3. Nome */}
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>3. Nome</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Nome do personagem ou criatura" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                {/* 4. Papel no jogo */}
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>4. Papel no jogo</FormLabel>
+                      <Select 
+                        onValueChange={field.onChange} 
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione o papel" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {roleOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                {/* 5. Motivação */}
+                <FormField
+                  control={form.control}
+                  name="motivation"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>5. Motivação</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="O que ele/ela/isso quer? (Ex: proteger, destruir, manipular, escapar)" 
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                {/* 6. Relações e contexto */}
+                <FormField
+                  control={form.control}
+                  name="relationships"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>6. Relações e contexto</FormLabel>
+                      <FormControl>
+                        <Textarea 
+                          placeholder="Com quem se conecta? Vive onde? Tem inimigos ou aliados relevantes?" 
+                          className="min-h-[100px]"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              
+              <div className="space-y-6">
+                {/* 2. Imagem Upload */}
+                <FormField
+                  control={form.control}
+                  name="imageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>2. Imagem</FormLabel>
+                      <FormControl>
+                        <ImageUpload 
+                          imageUrl={field.value || null} 
+                          onImageChange={(url) => field.onChange(url)} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
 
-            {/* Habilidades */}
+            <Separator className="my-6" />
+            
+            <h3 className="text-lg font-semibold font-lora text-primary mb-4">7. Status Básicos</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Atributos (opcional) */}
+              <div>
+                <FormLabel className="block mb-3">Atributos (opcional)</FormLabel>
+                <div className="grid grid-cols-3 gap-3">
+                  <FormField
+                    control={form.control}
+                    name="str"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="flex flex-col">
+                            <FormLabel className="text-xs mb-1">FOR</FormLabel>
+                            <Input placeholder="-" {...field} />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="dex"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="flex flex-col">
+                            <FormLabel className="text-xs mb-1">DES</FormLabel>
+                            <Input placeholder="-" {...field} />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="con"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="flex flex-col">
+                            <FormLabel className="text-xs mb-1">CON</FormLabel>
+                            <Input placeholder="-" {...field} />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="int"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="flex flex-col">
+                            <FormLabel className="text-xs mb-1">INT</FormLabel>
+                            <Input placeholder="-" {...field} />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="wis"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="flex flex-col">
+                            <FormLabel className="text-xs mb-1">SAB</FormLabel>
+                            <Input placeholder="-" {...field} />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="cha"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="flex flex-col">
+                            <FormLabel className="text-xs mb-1">CAR</FormLabel>
+                            <Input placeholder="-" {...field} />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                {/* Vida / Resistência */}
+                <FormField
+                  control={form.control}
+                  name="healthPoints"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Vida / Resistência</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="Ex: baixa, média, alta, ou pontos específicos" 
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                {/* Nível de Ameaça */}
+                <FormField
+                  control={form.control}
+                  name="threatLevel"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nível de Ameaça</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          className="flex flex-col space-y-1"
+                        >
+                          {threatLevelOptions.map(option => (
+                            <div key={option.value} className="flex items-center space-x-2">
+                              <RadioGroupItem value={option.value} id={option.value} />
+                              <label htmlFor={option.value} className="cursor-pointer">{option.label}</label>
+                            </div>
+                          ))}
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+            
+            {/* Ataques ou Habilidades especiais */}
             <FormField
               control={form.control}
-              name="abilities"
+              name="specialAbilities"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Habilidades únicas:</FormLabel>
+                  <FormLabel>Ataques ou Habilidades especiais</FormLabel>
                   <FormControl>
                     <Textarea 
-                      placeholder="Quais habilidades especiais esse NPC ou criatura possui?" 
+                      placeholder='Ex: "Grito paralisante", "Magia de necrose", "Transforma-se em névoa"' 
                       className="min-h-[80px]"
                       {...field} 
                     />
                   </FormControl>
+                  <FormDescription>
+                    Liste 1-3 habilidades que tornam este personagem único em combate ou interações.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            {/* Notas extras */}
+            
+            {/* Notas adicionais */}
             <FormField
               control={form.control}
               name="plotHooks"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Notas extras / Ganchos de história:</FormLabel>
+                  <FormLabel>Notas adicionais / Ideias de história</FormLabel>
                   <FormControl>
                     <Textarea 
-                      placeholder="Anotações adicionais, ideias para enredos futuros, etc." 
-                      className="min-h-[100px]"
+                      placeholder="Informações adicionais, ganchos de história, ou ideias para usar esse personagem" 
+                      className="min-h-[80px]"
                       {...field} 
                     />
                   </FormControl>
