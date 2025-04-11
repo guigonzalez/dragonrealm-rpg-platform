@@ -428,6 +428,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
       
+      // Processar atributos e estatísticas da criatura/NPC extraindo de memorableTrait ou notes
+      if (modifiedReqBody.memorableTrait && modifiedReqBody.memorableTrait.includes('FOR:')) {
+        // Extrai valores de atributos do memorableTrait (exemplo: "FOR:10 DES:14 CON:12 INT:18 SAB:15 CAR:13")
+        const attrStr = modifiedReqBody.memorableTrait;
+        const strMatch = attrStr.match(/FOR:(\d+)/);
+        const dexMatch = attrStr.match(/DES:(\d+)/);
+        const conMatch = attrStr.match(/CON:(\d+)/);
+        const intMatch = attrStr.match(/INT:(\d+)/);
+        const wisMatch = attrStr.match(/SAB:(\d+)/);
+        const chaMatch = attrStr.match(/CAR:(\d+)/);
+        
+        if (strMatch) modifiedReqBody.strength = strMatch[1];
+        if (dexMatch) modifiedReqBody.dexterity = dexMatch[1];
+        if (conMatch) modifiedReqBody.constitution = conMatch[1];
+        if (intMatch) modifiedReqBody.intelligence = intMatch[1];
+        if (wisMatch) modifiedReqBody.wisdom = wisMatch[1];
+        if (chaMatch) modifiedReqBody.charisma = chaMatch[1];
+      }
+      
+      // Extrair pontos de vida das notas se disponível
+      if (modifiedReqBody.notes && modifiedReqBody.notes.includes('Vida/Resistência:')) {
+        const hpMatch = modifiedReqBody.notes.match(/Vida\/Resistência:\s*(\d+)/);
+        if (hpMatch) {
+          modifiedReqBody.healthPoints = hpMatch[1];
+        }
+      }
+      
+      // Definir ameaça com base na entidade
+      if (modifiedReqBody.entityType === 'creature' && !modifiedReqBody.threatLevel) {
+        modifiedReqBody.threatLevel = 'Desafiador';
+      } else if (!modifiedReqBody.threatLevel) {
+        modifiedReqBody.threatLevel = modifiedReqBody.role === 'Vilão' ? 'Perigoso' : 'Inofensivo';
+      }
+      
+      // Extrair habilidades especiais do campo appearance se disponível
+      if (modifiedReqBody.appearance && !modifiedReqBody.specialAbilities) {
+        modifiedReqBody.specialAbilities = modifiedReqBody.appearance;
+      }
+      
       const npcData = insertNpcSchema.parse({
         ...modifiedReqBody,
         created: now,
@@ -531,6 +570,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.log('Falha ao processar imagem base64, removendo imageUrl');
           delete modifiedReqBody.imageUrl;
         }
+      }
+      
+      // Processar atributos e estatísticas da criatura/NPC extraindo de memorableTrait ou notes
+      if (modifiedReqBody.memorableTrait && modifiedReqBody.memorableTrait.includes('FOR:')) {
+        // Extrai valores de atributos do memorableTrait (exemplo: "FOR:10 DES:14 CON:12 INT:18 SAB:15 CAR:13")
+        const attrStr = modifiedReqBody.memorableTrait;
+        const strMatch = attrStr.match(/FOR:(\d+)/);
+        const dexMatch = attrStr.match(/DES:(\d+)/);
+        const conMatch = attrStr.match(/CON:(\d+)/);
+        const intMatch = attrStr.match(/INT:(\d+)/);
+        const wisMatch = attrStr.match(/SAB:(\d+)/);
+        const chaMatch = attrStr.match(/CAR:(\d+)/);
+        
+        if (strMatch) modifiedReqBody.strength = strMatch[1];
+        if (dexMatch) modifiedReqBody.dexterity = dexMatch[1];
+        if (conMatch) modifiedReqBody.constitution = conMatch[1];
+        if (intMatch) modifiedReqBody.intelligence = intMatch[1];
+        if (wisMatch) modifiedReqBody.wisdom = wisMatch[1];
+        if (chaMatch) modifiedReqBody.charisma = chaMatch[1];
+      }
+      
+      // Extrair pontos de vida das notas se disponível
+      if (modifiedReqBody.notes && modifiedReqBody.notes.includes('Vida/Resistência:')) {
+        const hpMatch = modifiedReqBody.notes.match(/Vida\/Resistência:\s*(\d+)/);
+        if (hpMatch) {
+          modifiedReqBody.healthPoints = hpMatch[1];
+        }
+      }
+      
+      // Definir ameaça com base na entidade
+      if (modifiedReqBody.entityType === 'creature' && !modifiedReqBody.threatLevel) {
+        modifiedReqBody.threatLevel = 'Desafiador';
+      } else if (!modifiedReqBody.threatLevel && modifiedReqBody.role) {
+        modifiedReqBody.threatLevel = modifiedReqBody.role === 'Vilão' ? 'Perigoso' : 'Inofensivo';
+      }
+      
+      // Extrair habilidades especiais do campo appearance se disponível
+      if (modifiedReqBody.appearance && !modifiedReqBody.specialAbilities) {
+        modifiedReqBody.specialAbilities = modifiedReqBody.appearance;
       }
       
       const updatedNpc = await storage.updateNpc(npcId, {
