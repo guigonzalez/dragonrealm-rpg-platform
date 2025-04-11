@@ -528,7 +528,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { tipo = 'npc', campanha, nivel, terreno, estilo } = req.body;
       
       // Importar dinamicamente para evitar erros se a API_KEY não existir
-      const { generateNPC, generateImage } = await import('./openai');
+      const { generateNPC } = await import('./openai');
       
       // Gerar o NPC com as opções fornecidas
       const generatedNPC = await generateNPC({ 
@@ -538,30 +538,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         terreno,
         estilo 
       });
-      
-      // Gerar e salvar imagem para o NPC se estiver configurado
-      if (generatedNPC && process.env.OPENAI_API_KEY) {
-        try {
-          // Criar um prompt de imagem baseado nas características do NPC
-          let imagePrompt = "";
-          if (tipo === 'npc') {
-            imagePrompt = `${generatedNPC.race} ${generatedNPC.occupation}, ${generatedNPC.appearance}, ${generatedNPC.memorableTrait}, fantasy portrait, detailed, D&D style`;
-          } else {
-            imagePrompt = `${generatedNPC.race} creature, ${generatedNPC.appearance}, ${generatedNPC.memorableTrait}, fantasy monster, detailed, D&D style`;
-          }
-          
-          // Gerar URL da imagem via OpenAI
-          const imageUrl = await generateImage(imagePrompt);
-          
-          // Se a imagem foi gerada, associar ao NPC
-          if (imageUrl) {
-            generatedNPC.imageUrl = imageUrl;
-          }
-        } catch (imageError) {
-          console.error("Erro ao gerar imagem para o NPC:", imageError);
-          // Continuar mesmo sem a imagem
-        }
-      }
       
       res.json(generatedNPC);
     } catch (error) {
@@ -944,6 +920,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Rota para gerar automaticamente um NPC ou criatura com a OpenAI
+  app.post("/api/generate-npc", requireAuth, async (req, res) => {
+    try {
+      const { tipo = 'npc', campanha, nivel, terreno, estilo } = req.body;
+      
+      // Importar dinamicamente para evitar erros se a API_KEY não existir
+      const { generateNPC } = await import('./openai');
+      
+      // Gerar o NPC com as opções fornecidas
+      const generatedNPC = await generateNPC({ 
+        tipo: tipo as 'npc' | 'creature',
+        campanha,
+        nivel,
+        terreno,
+        estilo 
+      });
+      
+      res.json(generatedNPC);
+    } catch (error) {
+      console.error("Erro ao gerar NPC:", error);
+      res.status(500).json({ 
+        message: "Falha ao gerar NPC", 
+        error: error instanceof Error ? error.message : String(error) 
+      });
+    }
+  });
 
   app.post("/api/campaigns/:campaignId/session-notes", requireAuth, async (req, res) => {
     try {
