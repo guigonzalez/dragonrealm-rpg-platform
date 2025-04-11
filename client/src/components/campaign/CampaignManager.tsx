@@ -63,6 +63,7 @@ import {
 } from "lucide-react";
 import CampaignImageUpload from "./CampaignImageUpload";
 import NPCList from "./NPCList";
+import CreatureList from "./CreatureList";
 
 interface CampaignManagerProps {
   campaign?: Campaign;
@@ -1233,7 +1234,31 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
           {/* NPCs & Criaturas */}
           <TabsContent value="npcs" className="space-y-6">
             {campaign ? (
-              <NPCList campaignId={campaign.id} />
+              <div className="grid grid-cols-1 gap-6">
+                <Card className="border-t-4 border-t-primary">
+                  <CardHeader>
+                    <CardTitle className="font-lora text-2xl">{t("npc.npcs")}</CardTitle>
+                    <CardDescription>
+                      {t("npc.manageNpcs")}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <NPCList campaignId={campaign.id} />
+                  </CardContent>
+                </Card>
+                
+                <Card className="border-t-4 border-t-primary">
+                  <CardHeader>
+                    <CardTitle className="font-lora text-2xl">{t("creature.creatures")}</CardTitle>
+                    <CardDescription>
+                      {t("creature.manageCreatures")}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <CreatureList campaignId={campaign.id} />
+                  </CardContent>
+                </Card>
+              </div>
             ) : (
               <Card className="bg-muted/40">
                 <CardContent className="flex flex-col items-center justify-center p-12 text-center">
