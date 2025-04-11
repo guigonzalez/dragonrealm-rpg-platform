@@ -210,10 +210,11 @@
   "npc": {
     "npcs": "NPCs",
     "npc": "NPC",
-    "createNpc": "Criar NPC",
-    "editNpc": "Editar NPC",
-    "npcName": "Nome do NPC",
-    "npcDetails": "Detalhes do NPC",
+    "creature": "Criatura",
+    "createNpc": "Criar Personagem",
+    "editNpc": "Editar Personagem",
+    "npcName": "Nome do Personagem",
+    "npcDetails": "Detalhes do Personagem",
     "basicInfo": "Informações Básicas",
     "appearance": "Aparência",
     "personality": "Personalidade",
@@ -221,7 +222,52 @@
     "campaignRole": "Papel na Campanha",
     "location": "Localização",
     "occupation": "Ocupação",
-    "notes": "Anotações"
+    "notes": "Anotações",
+    "entityType": "Tipo",
+    "role": "Papel na História",
+    "motivation": "Motivação ou Objetivo Principal",
+    "memorableTrait": "Traço Memorável",
+    "relationships": "Relacionamentos e Contexto",
+    "threatOrUtility": "Ameaça ou Utilidade",
+    "plotHooks": "Notas Extras / Ganchos de História",
+    "createSuccess": {
+      "title": "Personagem Criado",
+      "description": "O personagem foi criado com sucesso."
+    },
+    "createError": {
+      "title": "Erro ao Criar Personagem",
+      "description": "Ocorreu um erro ao criar o personagem. Por favor, tente novamente."
+    },
+    "updateSuccess": {
+      "title": "Personagem Atualizado",
+      "description": "O personagem foi atualizado com sucesso."
+    },
+    "updateError": {
+      "title": "Erro ao Atualizar Personagem",
+      "description": "Ocorreu um erro ao atualizar o personagem. Por favor, tente novamente."
+    },
+    "deleteSuccess": {
+      "title": "Personagem Excluído",
+      "description": "O personagem foi excluído com sucesso."
+    },
+    "deleteError": {
+      "title": "Erro ao Excluir Personagem",
+      "description": "Ocorreu um erro ao excluir o personagem. Por favor, tente novamente."
+    },
+    "roleOptions": {
+      "ally": "Aliado",
+      "villain": "Vilão",
+      "obstacle": "Obstáculo",
+      "curiosity": "Curiosidade",
+      "neutral": "Neutro"
+    },
+    "utilityOptions": {
+      "unique_abilities": "Tem habilidades únicas",
+      "potential_enemy": "Pode virar inimigo",
+      "potential_ally": "Pode ser aliado poderoso",
+      "important_info": "Tem informação importante",
+      "contractor": "Serve como contratante"
+    }
   },
   "encounter": {
     "encounters": "Encontros",

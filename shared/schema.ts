@@ -67,14 +67,24 @@ export const campaigns = pgTable("campaigns", {
 export const npcs = pgTable("npcs", {
   id: serial("id").primaryKey(),
   campaignId: integer("campaign_id").notNull().references(() => campaigns.id),
+  entityType: text("entity_type").default('npc'), // 'npc' ou 'creature'
   name: text("name").notNull(),
+  role: text("role"), // Aliado, Vilão, Obstáculo, Curiosidade
+  motivation: text("motivation"), // Motivação ou objetivo principal
+  memorableTrait: text("memorable_trait"), // Traço memorável
+  relationships: text("relationships"), // Relacionamentos e contexto
+  abilities: text("abilities"), // Habilidades únicas
+  threatOrUtility: text("threat_or_utility"), // Ameaça ou utilidade (pode ser inimigo, pode ser aliado, etc.)
+  plotHooks: text("plot_hooks"), // Ganchos de história
+  
+  // Campos originais mantidos para compatibilidade
   race: text("race"),
   occupation: text("occupation"),
   location: text("location"),
   appearance: text("appearance"),
   personality: text("personality"),
-  abilities: text("abilities"),
   notes: text("notes"),
+  
   created: text("created").notNull(),
   updated: text("updated").notNull(),
 });

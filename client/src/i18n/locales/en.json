@@ -196,10 +196,11 @@
   "npc": {
     "npcs": "NPCs",
     "npc": "NPC",
-    "createNpc": "Create NPC",
-    "editNpc": "Edit NPC",
-    "npcName": "NPC Name",
-    "npcDetails": "NPC Details",
+    "creature": "Creature",
+    "createNpc": "Create Character",
+    "editNpc": "Edit Character",
+    "npcName": "Character Name",
+    "npcDetails": "Character Details",
     "basicInfo": "Basic Info",
     "appearance": "Appearance",
     "personality": "Personality",
@@ -207,7 +208,52 @@
     "campaignRole": "Campaign Role",
     "location": "Location",
     "occupation": "Occupation",
-    "notes": "Notes"
+    "notes": "Notes",
+    "entityType": "Type",
+    "role": "Role in the Story",
+    "motivation": "Motivation or Main Goal",
+    "memorableTrait": "Memorable Trait",
+    "relationships": "Relationships and Context",
+    "threatOrUtility": "Threat or Utility",
+    "plotHooks": "Extra Notes / Story Hooks",
+    "createSuccess": {
+      "title": "Character Created",
+      "description": "The character was successfully created."
+    },
+    "createError": {
+      "title": "Error Creating Character",
+      "description": "An error occurred while creating the character. Please try again."
+    },
+    "updateSuccess": {
+      "title": "Character Updated",
+      "description": "The character was successfully updated."
+    },
+    "updateError": {
+      "title": "Error Updating Character",
+      "description": "An error occurred while updating the character. Please try again."
+    },
+    "deleteSuccess": {
+      "title": "Character Deleted",
+      "description": "The character was successfully deleted."
+    },
+    "deleteError": {
+      "title": "Error Deleting Character",
+      "description": "An error occurred while deleting the character. Please try again."
+    },
+    "roleOptions": {
+      "ally": "Ally",
+      "villain": "Villain",
+      "obstacle": "Obstacle",
+      "curiosity": "Curiosity",
+      "neutral": "Neutral"
+    },
+    "utilityOptions": {
+      "unique_abilities": "Has unique abilities",
+      "potential_enemy": "Could become an enemy",
+      "potential_ally": "Could be a powerful ally",
+      "important_info": "Has important information",
+      "contractor": "Serves as a contractor"
+    }
   },
   "encounter": {
     "encounters": "Encounters",
