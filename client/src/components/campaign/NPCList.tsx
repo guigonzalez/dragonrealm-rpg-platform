@@ -24,6 +24,9 @@ const ROLE_COLORS = {
   neutral: "bg-slate-600 hover:bg-slate-700",
 };
 
+// Tipo combinado para entidades (NPCs e Criaturas)
+type Entity = (Npc | Creature) & { entityType: "npc" | "creature" };
+
 interface NPCListProps {
   campaignId: number;
 }
@@ -34,7 +37,7 @@ export default function NPCList({ campaignId }: NPCListProps) {
   const [showCreator, setShowCreator] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
   const [editingNpc, setEditingNpc] = useState<Npc | null>(null);
-  const [viewingNpc, setViewingNpc] = useState<Npc | Creature | null>(null);
+  const [viewingNpc, setViewingNpc] = useState<Entity | null>(null);
 
   // Fetch NPCs
   const { data: npcs = [], isLoading: npcsLoading, isError: npcsError } = useQuery<Npc[]>({
@@ -48,8 +51,8 @@ export default function NPCList({ campaignId }: NPCListProps) {
     staleTime: 10000,
   });
 
-  // Delete Mutation
-  const deleteMutation = useMutation({
+  // Mutação para excluir NPCs
+  const deleteNpcMutation = useMutation({
     mutationFn: async (npcId: number) => {
       await apiRequest("DELETE", `/api/npcs/${npcId}`);
     },
@@ -68,23 +71,45 @@ export default function NPCList({ campaignId }: NPCListProps) {
       });
     },
   });
-
-  // Filter NPCs based on tab
-  const filteredNpcs = npcs.filter((npc) => {
-    if (activeTab === "all") return true;
-    if (activeTab === "npcs") return npc.entityType === "npc" || !npc.entityType;
-    if (activeTab === "creatures") return npc.entityType === "creature";
-    return true;
+  
+  // Mutação para excluir Criaturas
+  const deleteCreatureMutation = useMutation({
+    mutationFn: async (creatureId: number) => {
+      await apiRequest("DELETE", `/api/creatures/${creatureId}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/campaigns/${campaignId}/creatures`] });
+      toast({
+        title: t("npc.deleteSuccess.title"),
+        description: t("npc.deleteSuccess.description"),
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: t("npc.deleteError.title"),
+        description: error.message,
+        variant: "destructive",
+      });
+    },
   });
 
-  // Handle create/edit
+  // Combinar NPCs e criaturas em uma única lista com tipo seguro
+  const allEntities: Entity[] = [
+    ...npcs.map(npc => ({ ...npc, entityType: (npc.entityType || "npc") as "npc" })),
+    ...creatures.map(creature => ({ ...creature, entityType: "creature" as const }))
+  ];
+  
+  // Filtrar com base na tab ativa
+  const filteredEntities = allEntities.filter((entity) => {
+    if (activeTab === "all") return true;
+    if (activeTab === "npcs") return entity.entityType === "npc";
+    if (activeTab === "creatures") return entity.entityType === "creature";
+    return true;
+  });
+  
+  // Handlers
   const handleStartCreate = () => {
     setEditingNpc(null);
-    setShowCreator(true);
-  };
-
-  const handleEdit = (npc: Npc) => {
-    setEditingNpc(npc);
     setShowCreator(true);
   };
 
@@ -93,18 +118,41 @@ export default function NPCList({ campaignId }: NPCListProps) {
     setEditingNpc(null);
   };
 
-  const handleDelete = (npcId: number) => {
-    deleteMutation.mutate(npcId);
+  // Exclusão de uma entidade - diferencia entre NPC e Criatura
+  const handleDelete = (entity: Entity) => {
+    if (entity.entityType === "creature") {
+      // Rota para excluir criaturas
+      deleteCreatureMutation.mutate(entity.id);
+    } else {
+      // Rota para excluir NPCs
+      deleteNpcMutation.mutate(entity.id);
+    }
   };
 
-  const handleView = (npc: Npc) => {
-    setViewingNpc(npc);
+  // Visualização de uma entidade
+  const handleView = (entity: Entity) => {
+    setViewingNpc(entity);
+  };
+  
+  // Edição de uma entidade (NPC ou Criatura)
+  const handleEdit = (entity: Entity) => {
+    // Se é uma criatura, convertemos para o tipo Npc para a edição
+    if (entity.entityType === "creature") {
+      // As criaturas têm os mesmos campos que NPCs, podemos fazer a conversão segura
+      setEditingNpc(entity as unknown as Npc);
+    } else {
+      // Se for um NPC, usamos diretamente
+      setEditingNpc(entity as Npc);
+    }
+    setShowCreator(true);
   };
 
   const handleCloseViewer = () => {
     setViewingNpc(null);
   };
 
+  // Verifica se está carregando NPCs ou criaturas
+  const isLoading = npcsLoading || creaturesLoading;
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[200px]">
@@ -113,6 +161,8 @@ export default function NPCList({ campaignId }: NPCListProps) {
     );
   }
 
+  // Verifica se houve erro ao carregar NPCs ou criaturas
+  const isError = npcsError || creaturesError;
   if (isError) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[200px] text-center p-6">
@@ -174,7 +224,7 @@ export default function NPCList({ campaignId }: NPCListProps) {
         </TabsList>
 
         <TabsContent value={activeTab} className="mt-0">
-          {filteredNpcs.length === 0 ? (
+          {filteredEntities.length === 0 ? (
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-8 text-center">
                 <div className="mb-3 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -206,67 +256,67 @@ export default function NPCList({ campaignId }: NPCListProps) {
           ) : (
             <ScrollArea className="h-[calc(100vh-300px)] pr-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredNpcs.map((npc) => (
-                  <Card key={npc.id} className="overflow-hidden flex flex-col">
+                {filteredEntities.map((entity) => (
+                  <Card key={entity.id} className="overflow-hidden flex flex-col">
                     <CardHeader className="pb-2">
                       <div className="flex justify-between items-start">
                         <div className="flex items-center gap-2">
                           <div className="bg-primary/10 p-2 rounded-full">
-                            {npc.entityType === "creature" ? (
+                            {entity.entityType === "creature" ? (
                               <Skull className="h-5 w-5 text-primary" />
                             ) : (
                               <User2 className="h-5 w-5 text-primary" />
                             )}
                           </div>
                           <div>
-                            <CardTitle className="font-lora">{npc.name}</CardTitle>
+                            <CardTitle className="font-lora">{entity.name}</CardTitle>
                             <CardDescription>
-                              {npc.entityType === "creature" ? t("npc.creature") : t("npc.npc")}
+                              {entity.entityType === "creature" ? t("npc.creature") : t("npc.npc")}
                             </CardDescription>
                           </div>
                         </div>
-                        {npc.role && (
+                        {entity.role && (
                           <Badge
                             variant="default"
                             className={
-                              ROLE_COLORS[npc.role as keyof typeof ROLE_COLORS] || "bg-slate-600 hover:bg-slate-700"
+                              ROLE_COLORS[entity.role as keyof typeof ROLE_COLORS] || "bg-slate-600 hover:bg-slate-700"
                             }
                           >
-                            {npc.role === "Neutro" ? "Neutro" : t(`npc.roleOptions.${npc.role}`) || npc.role}
+                            {entity.role === "Neutro" ? "Neutro" : t(`npc.roleOptions.${entity.role}`) || entity.role}
                           </Badge>
                         )}
                       </div>
                     </CardHeader>
 
                     <CardContent className="pt-2 flex-grow">
-                      {npc.motivation && (
+                      {entity.motivation && (
                         <div className="mb-2">
                           <strong className="text-xs text-muted-foreground">{t("npc.motivation")}:</strong>
-                          <p className="text-sm">{npc.motivation}</p>
+                          <p className="text-sm">{entity.motivation}</p>
                         </div>
                       )}
 
-                      {npc.memorableTrait && (
+                      {entity.memorableTrait && (
                         <div className="mb-2">
                           <strong className="text-xs text-muted-foreground">{t("npc.memorableTrait")}:</strong>
-                          <p className="text-sm">{npc.memorableTrait}</p>
+                          <p className="text-sm">{entity.memorableTrait}</p>
                         </div>
                       )}
 
-                      {npc.abilities && (
+                      {entity.abilities && (
                         <div className="mb-2">
                           <strong className="text-xs text-muted-foreground">{t("npc.abilities")}:</strong>
-                          <p className="text-sm">{npc.abilities}</p>
+                          <p className="text-sm">{entity.abilities}</p>
                         </div>
                       )}
                     </CardContent>
 
                     <CardFooter className="flex justify-end gap-2 pt-2">
-                      <Button variant="secondary" size="sm" onClick={() => handleView(npc)}>
+                      <Button variant="secondary" size="sm" onClick={() => handleView(entity)}>
                         <Eye className="h-4 w-4 mr-1" /> {t("common.view")}
                       </Button>
                       
-                      <Button variant="outline" size="sm" onClick={() => handleEdit(npc)}>
+                      <Button variant="outline" size="sm" onClick={() => handleEdit(entity)}>
                         <Pen className="h-4 w-4 mr-1" /> {t("common.edit")}
                       </Button>
 
@@ -280,13 +330,13 @@ export default function NPCList({ campaignId }: NPCListProps) {
                           <AlertDialogHeader>
                             <AlertDialogTitle>{t("common.confirmDelete")}</AlertDialogTitle>
                             <AlertDialogDescription>
-                              {t("common.deleteWarning", { item: npc.name })}
+                              {t("common.deleteWarning", { item: entity.name })}
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
                             <AlertDialogAction
-                              onClick={() => handleDelete(npc.id)}
+                              onClick={() => handleDelete(entity)}
                               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                             >
                               {t("common.delete")}
