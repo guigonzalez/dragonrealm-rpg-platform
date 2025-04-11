@@ -215,7 +215,9 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
         campanha: generationOptions.campanha,
         nivel: generationOptions.nivel,
         terreno: generationOptions.terreno,
-        estilo: generationOptions.estilo
+        estilo: generationOptions.estilo,
+        // Passar o ID da campanha para permitir que a API busque informações contextuais
+        campaignId: actualCampaignId
       };
       
       // Fazer requisição para a API de geração
