@@ -24,20 +24,7 @@ const ROLE_COLORS = {
 
 export default function NPCViewer({ npc, onClose }: NPCViewerProps) {
   const { t } = useTranslation();
-  const [imageError, setImageError] = useState(false);
-
-  // Função para processar o caminho da imagem
-  const getImagePath = () => {
-    if (!npc.imageUrl) return undefined;
-    
-    if (npc.imageUrl.startsWith("data:")) {
-      return npc.imageUrl;
-    } else if (npc.imageUrl.startsWith("/")) {
-      return npc.imageUrl;
-    } else {
-      return `/${npc.imageUrl}`;
-    }
-  };
+  // Removido código de manipulação de imagem conforme solicitação
 
   return (
     <Card className="w-full max-w-4xl mx-auto overflow-hidden">

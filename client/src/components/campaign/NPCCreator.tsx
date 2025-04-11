@@ -912,23 +912,7 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
               </div>
               
               <div className="space-y-6">
-                {/* 2. Imagem Upload */}
-                <FormField
-                  control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>2. Imagem</FormLabel>
-                      <FormControl>
-                        <ImageUpload 
-                          imageUrl={field.value || null} 
-                          onImageChange={(url) => field.onChange(url)} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Campo de imagem removido conforme solicitação */}
                 
                 {/* Gerador automático */}
                 <Card className="p-4 border border-primary/30 bg-primary/5">
