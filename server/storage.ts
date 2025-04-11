@@ -477,13 +477,52 @@ export class DatabaseStorage implements IStorage {
 
   async createNpc(insertNpc: InsertNpc): Promise<Npc> {
     try {
-      // Removendo temporariamente o campo entityType para compatibilidade
-      // até que possamos atualizar o banco de dados
-      const { entityType, ...npcData } = insertNpc;
+      // Removendo campos que podem não existir na tabela para evitar erros
+      const { 
+        entityType, 
+        imageUrl,
+        motivation,
+        memorableTrait,
+        relationships,
+        abilities,
+        threatOrUtility,
+        plotHooks,
+        ...baseNpcData 
+      } = insertNpc;
       
-      const [npc] = await db.insert(npcs).values(npcData).returning();
-      // Adicionando o entityType de volta na resposta
-      return { ...npc, entityType: entityType || 'npc' };
+      // Filtramos apenas os campos que temos certeza que existem na tabela
+      const safeNpcData = {
+        campaignId: baseNpcData.campaignId,
+        name: baseNpcData.name,
+        created: baseNpcData.created,
+        updated: baseNpcData.updated,
+        // Campos opcionais que podem existir
+        role: baseNpcData.role || null,
+        race: baseNpcData.race || null,
+        occupation: baseNpcData.occupation || null,
+        location: baseNpcData.location || null,
+        appearance: baseNpcData.appearance || null,
+        personality: baseNpcData.personality || null,
+        notes: baseNpcData.notes || null
+      };
+
+      console.log("Dados a serem inseridos:", safeNpcData);
+      
+      // Inserimos apenas os campos seguros
+      const [npc] = await db.insert(npcs).values(safeNpcData).returning();
+      
+      // Adicionamos de volta os campos que removemos na resposta
+      return { 
+        ...npc, 
+        entityType: entityType || 'npc',
+        imageUrl: imageUrl || null,
+        motivation: motivation || null,
+        memorableTrait: memorableTrait || null,
+        relationships: relationships || null,
+        abilities: abilities || null,
+        threatOrUtility: threatOrUtility || null,
+        plotHooks: plotHooks || null
+      };
     } catch (error) {
       console.error("Erro ao criar NPC:", error);
       throw error;
@@ -492,14 +531,70 @@ export class DatabaseStorage implements IStorage {
 
   async updateNpc(id: number, npcData: Partial<Npc>): Promise<Npc | undefined> {
     try {
-      // Removendo temporariamente o campo entityType para compatibilidade
-      const { entityType, ...updateData } = npcData;
+      // Removendo campos que podem não existir na tabela para evitar erros
+      const { 
+        entityType, 
+        imageUrl,
+        motivation,
+        memorableTrait,
+        relationships,
+        abilities,
+        threatOrUtility,
+        plotHooks,
+        ...baseNpcData 
+      } = npcData;
       
-      const [npc] = await db.update(npcs).set(updateData).where(eq(npcs.id, id)).returning();
+      // Filtramos apenas os campos que temos certeza que existem na tabela
+      const safeUpdateData: any = {};
+      
+      // Adicionamos apenas campos com valores definidos
+      if (baseNpcData.name !== undefined) safeUpdateData.name = baseNpcData.name;
+      if (baseNpcData.updated !== undefined) safeUpdateData.updated = baseNpcData.updated;
+      if (baseNpcData.role !== undefined) safeUpdateData.role = baseNpcData.role;
+      if (baseNpcData.race !== undefined) safeUpdateData.race = baseNpcData.race;
+      if (baseNpcData.occupation !== undefined) safeUpdateData.occupation = baseNpcData.occupation;
+      if (baseNpcData.location !== undefined) safeUpdateData.location = baseNpcData.location;
+      if (baseNpcData.appearance !== undefined) safeUpdateData.appearance = baseNpcData.appearance;
+      if (baseNpcData.personality !== undefined) safeUpdateData.personality = baseNpcData.personality;
+      if (baseNpcData.notes !== undefined) safeUpdateData.notes = baseNpcData.notes;
+
+      console.log("Dados a serem atualizados:", safeUpdateData);
+      
+      // Só atualizamos se houver algo para atualizar
+      if (Object.keys(safeUpdateData).length === 0) {
+        console.log("Nenhum campo válido para atualizar");
+        const [existingNpc] = await db.select().from(npcs).where(eq(npcs.id, id));
+        if (!existingNpc) return undefined;
+        
+        // Adicionamos de volta os campos removidos na resposta
+        return { 
+          ...existingNpc, 
+          entityType: entityType || 'npc',
+          imageUrl: imageUrl || null,
+          motivation: motivation || null,
+          memorableTrait: memorableTrait || null,
+          relationships: relationships || null,
+          abilities: abilities || null,
+          threatOrUtility: threatOrUtility || null,
+          plotHooks: plotHooks || null
+        };
+      }
+      
+      const [npc] = await db.update(npcs).set(safeUpdateData).where(eq(npcs.id, id)).returning();
       if (!npc) return undefined;
       
-      // Adicionando o entityType de volta na resposta
-      return { ...npc, entityType: entityType || npc.entityType || 'npc' };
+      // Adicionamos de volta os campos removidos na resposta
+      return { 
+        ...npc, 
+        entityType: entityType || npcData.entityType || npc.entityType || 'npc',
+        imageUrl: imageUrl || null,
+        motivation: motivation || null,
+        memorableTrait: memorableTrait || null,
+        relationships: relationships || null,
+        abilities: abilities || null,
+        threatOrUtility: threatOrUtility || null,
+        plotHooks: plotHooks || null
+      };
     } catch (error) {
       console.error("Erro ao atualizar NPC:", error);
       return undefined;

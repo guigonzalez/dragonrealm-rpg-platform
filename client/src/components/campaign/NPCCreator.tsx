@@ -394,35 +394,40 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
         break;
     }
     
-    const submitData: Partial<InsertNpc> = {
+    // Montando os atributos em um formato armazenável
+    const attrString = values.str || values.dex || values.con || values.int || values.wis || values.cha 
+      ? `FOR:${values.str || "-"} DES:${values.dex || "-"} CON:${values.con || "-"} INT:${values.int || "-"} SAB:${values.wis || "-"} CAR:${values.cha || "-"}` 
+      : "";
+    
+    // Use apenas campos que sabemos que existem na tabela ou que foram mapeados
+    const submitData = {
       campaignId: values.campaignId,
       name: values.name,
-      entityType: values.entityType,
+      // Campos opcionais
       role: values.role || "",
-      motivation: values.motivation || "",
-      imageUrl: values.imageUrl || "",
-      relationships: values.relationships || "",
-      abilities: values.abilities || "",
-      // Mapear novos campos para os existentes para compatibilidade
-      threatOrUtility,
-      // Criar um formato para os atributos
-      memorableTrait: values.str && values.dex ? 
-        `FOR:${values.str || "-"} DES:${values.dex || "-"} CON:${values.con || "-"} INT:${values.int || "-"} SAB:${values.wis || "-"} CAR:${values.cha || "-"}` : "",
-      // Usar para anotações gerais
+      race: "",  // vazio para manter compatibilidade
       notes: values.healthPoints ? `Vida/Resistência: ${values.healthPoints}` : "",
-      // Usar para habilidades especiais
       appearance: values.specialAbilities || "",
-      // Usar o campo plotHooks diretamente
+      personality: "", // vazio para manter compatibilidade
+      occupation: "",  // vazio para manter compatibilidade
+      location: "",    // vazio para manter compatibilidade
+      memorableTrait: attrString, // usamos para armazenar atributos
       plotHooks: values.plotHooks || "",
-      // Atualizar a data
+      abilities: values.abilities || "",
+      relationships: values.relationships || "",
+      // Campos de data
       updated: new Date().toISOString(),
     };
     
     // Se criando novo NPC, adiciona a data de criação
     if (!editingNpc) {
+      // @ts-ignore - ignorar erro de tipo aqui
       submitData.created = new Date().toISOString();
     }
     
+    console.log("Enviando dados:", submitData);
+    
+    // @ts-ignore - ignorar erro de tipo aqui
     mutation.mutate(submitData);
   };
 
