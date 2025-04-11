@@ -481,26 +481,54 @@ export class DatabaseStorage implements IStorage {
       // Usando Drizzle ORM em vez de SQL bruta
       const result = await db.select().from(npcs).where(eq(npcs.campaignId, campaignId)).orderBy(npcs.name);
       
+      // Adicionar log para depuração
+      console.log(`Recuperados ${result.length} NPCs do banco de dados para campanha ${campaignId}`);
+      if (result.length > 0) {
+        console.log("Primeiro NPC recuperado:", JSON.stringify(result[0], null, 2));
+      }
+      
       // Converter todos os campos snake_case para camelCase
-      return result.map(npcResult => ({
-        ...npcResult,
-        // Converter snake_case para camelCase para novos campos
-        imageUrl: npcResult.image_url,
-        memorableTrait: npcResult.memorable_trait,
-        entityType: npcResult.entity_type || 'npc',
-        role: npcResult.role || null,
-        motivation: npcResult.motivation || null,
-        // Novos campos para atributos de criatura
-        strength: npcResult.strength || null,
-        dexterity: npcResult.dexterity || null, 
-        constitution: npcResult.constitution || null,
-        intelligence: npcResult.intelligence || null,
-        wisdom: npcResult.wisdom || null,
-        charisma: npcResult.charisma || null,
-        healthPoints: npcResult.health_points || null,
-        threatLevel: npcResult.threat_level || null,
-        specialAbilities: npcResult.special_abilities || null
-      }));
+      const mappedResults = result.map(npcResult => {
+        // Verificar dados brutos
+        console.log(`Processando NPC ${npcResult.id} - ${npcResult.name}`);
+        console.log(`Campo image_url bruto: "${npcResult.image_url}"`);
+        
+        const npc: Npc = {
+          id: npcResult.id,
+          campaignId: npcResult.campaignId,
+          name: npcResult.name,
+          race: npcResult.race,
+          occupation: npcResult.occupation,
+          location: npcResult.location,
+          appearance: npcResult.appearance,
+          personality: npcResult.personality,
+          abilities: npcResult.abilities,
+          notes: npcResult.notes,
+          imageUrl: npcResult.image_url,  // Mapeamento explícito de snake_case para camelCase
+          memorableTrait: npcResult.memorable_trait,
+          entityType: npcResult.entity_type || 'npc',
+          role: npcResult.role || null,
+          motivation: npcResult.motivation || null,
+          strength: npcResult.strength || null,
+          dexterity: npcResult.dexterity || null, 
+          constitution: npcResult.constitution || null,
+          intelligence: npcResult.intelligence || null,
+          wisdom: npcResult.wisdom || null,
+          charisma: npcResult.charisma || null,
+          healthPoints: npcResult.health_points || null,
+          threatLevel: npcResult.threat_level || null,
+          specialAbilities: npcResult.special_abilities || null,
+          created: npcResult.created,
+          updated: npcResult.updated
+        };
+        
+        // Verificar após o mapeamento
+        console.log(`Campo imageUrl após mapeamento: "${npc.imageUrl}"`);
+        
+        return npc;
+      });
+      
+      return mappedResults;
     } catch (error) {
       console.error("Erro ao buscar NPCs:", error);
       return [];

@@ -595,6 +595,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
       
+      console.log("Dados que serão enviados para updateNpc:", JSON.stringify({
+        ...modifiedReqBody,
+        updated: new Date().toISOString()
+      }, null, 2));
+      
       // Processar atributos e estatísticas da criatura/NPC extraindo de memorableTrait ou notes
       if (modifiedReqBody.memorableTrait && modifiedReqBody.memorableTrait.includes('FOR:')) {
         // Extrai valores de atributos do memorableTrait (exemplo: "FOR:10 DES:14 CON:12 INT:18 SAB:15 CAR:13")
