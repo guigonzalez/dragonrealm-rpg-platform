@@ -458,32 +458,12 @@ export class DatabaseStorage implements IStorage {
 
   async getNpcsByCampaignId(campaignId: number): Promise<Npc[]> {
     try {
-      // Usando uma query SQL direta para evitar problemas com colunas
-      const result = await db.execute(
-        `SELECT id, campaign_id, name, race, occupation, location, appearance, personality, abilities, notes, created, updated
-         FROM npcs 
-         WHERE campaign_id = $1`, 
-        [campaignId]
-      );
-      
-      if (!result.rows || result.rows.length === 0) {
-        return [];
-      }
+      // Usando Drizzle ORM em vez de SQL bruta
+      const result = await db.select().from(npcs).where(eq(npcs.campaignId, campaignId)).orderBy(npcs.name);
       
       // Mapeando os resultados para o formato esperado
-      return result.rows.map(row => ({
-        id: row.id,
-        campaignId: row.campaign_id,
-        name: row.name,
-        race: row.race,
-        occupation: row.occupation,
-        location: row.location,
-        appearance: row.appearance,
-        personality: row.personality,
-        notes: row.notes,
-        created: row.created,
-        updated: row.updated,
-        abilities: row.abilities,
+      return result.map(npc => ({
+        ...npc,
         // Adicionando campos que podem não existir no banco
         entityType: 'npc',
         role: null,
@@ -501,51 +481,46 @@ export class DatabaseStorage implements IStorage {
 
   async createNpc(insertNpc: InsertNpc): Promise<Npc> {
     try {
-      // Vamos montar uma query SQL diretamente
-      const campaignId = insertNpc.campaignId;
-      const name = insertNpc.name;
-      const created = insertNpc.created;
-      const updated = insertNpc.updated;
-      const race = insertNpc.race || null;
-      const occupation = insertNpc.occupation || null;
-      const location = insertNpc.location || null;
-      const appearance = insertNpc.appearance || null;
-      const personality = insertNpc.personality || null;
-      const abilities = insertNpc.abilities || null;
-      const notes = insertNpc.notes || null;
+      // Simplificando a inserção usando Drizzle ORM
+      const data = {
+        campaignId: insertNpc.campaignId,
+        name: insertNpc.name,
+        race: insertNpc.race || null,
+        occupation: insertNpc.occupation || null,
+        location: insertNpc.location || null,
+        appearance: insertNpc.appearance || null,
+        personality: insertNpc.personality || null,
+        abilities: insertNpc.abilities || null,
+        notes: insertNpc.notes || null,
+        created: insertNpc.created,
+        updated: insertNpc.updated
+      };
       
-      console.log("Inserindo NPC:", { name, campaignId, race, occupation, location, appearance, personality, abilities, notes });
+      console.log("Inserindo NPC:", data);
       
-      // Query SQL direta usando apenas colunas que existem na tabela
-      const result = await db.execute(
-        `INSERT INTO npcs (
-          campaign_id, name, race, occupation, location, appearance, personality, abilities, notes, created, updated
-        ) VALUES (
-          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
-        ) RETURNING id, campaign_id, name, race, occupation, location, appearance, personality, abilities, notes, created, updated`,
-        [campaignId, name, race, occupation, location, appearance, personality, abilities, notes, created, updated]
-      );
+      // Usando Drizzle ORM em vez de SQL bruta
+      const result = await db.insert(npcs).values(data).returning();
       
-      if (!result.rows || result.rows.length === 0) {
+      if (!result || result.length === 0) {
         throw new Error("Falha ao inserir NPC");
       }
       
-      const row = result.rows[0];
+      const npcResult = result[0];
       
       // Construir objeto NPC com os dados retornados
       const npc = {
-        id: row.id,
-        campaignId: row.campaign_id,
-        name: row.name,
-        race: row.race,
-        occupation: row.occupation,
-        location: row.location,
-        appearance: row.appearance,
-        personality: row.personality,
-        abilities: row.abilities,
-        notes: row.notes,
-        created: row.created,
-        updated: row.updated,
+        id: npcResult.id,
+        campaignId: npcResult.campaignId,
+        name: npcResult.name,
+        race: npcResult.race,
+        occupation: npcResult.occupation,
+        location: npcResult.location,
+        appearance: npcResult.appearance,
+        personality: npcResult.personality,
+        abilities: npcResult.abilities,
+        notes: npcResult.notes,
+        created: npcResult.created,
+        updated: npcResult.updated,
         // Campos adicionais que não existem na tabela mas fazem parte do tipo
         entityType: 'npc',
         // role não existe na tabela
