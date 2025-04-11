@@ -522,7 +522,6 @@ export class DatabaseStorage implements IStorage {
           healthPoints: row.health_points,
           threatLevel: row.threat_level,
           specialAbilities: row.special_abilities,
-          plotHooks: row.plot_hooks,
           created: row.created,
           updated: row.updated
         };
