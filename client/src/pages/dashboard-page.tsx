@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Character, Campaign } from "@shared/schema";
-import { Plus, BookOpen, Swords, Scroll, Loader2, Trash2, Edit } from "lucide-react";
+import { Plus, BookOpen, Swords, Scroll, Loader2, Trash2, Edit, Users } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
@@ -370,6 +370,19 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
               )}
+            </TabsContent>
+
+            <TabsContent value="gamesessions" className="mt-6">
+              <Card className="bg-muted/40">
+                <CardContent className="flex flex-col items-center justify-center p-12 text-center">
+                  <Users className="h-12 w-12 text-primary/40 mb-4" />
+                  <h3 className="font-lora text-xl font-semibold mb-2">{t("dashboard.gamesessions.comingSoon")}</h3>
+                  <p className="text-muted-foreground mb-6 max-w-lg mx-auto">{t("dashboard.gamesessions.comingSoonDescription")}</p>
+                  <Button className="magic-button" disabled>
+                    {t("dashboard.gamesessions.title")}
+                  </Button>
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>
