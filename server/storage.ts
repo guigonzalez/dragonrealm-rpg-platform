@@ -494,6 +494,7 @@ export class DatabaseStorage implements IStorage {
       return result.rows.map(row => {
         console.log(`Processando NPC ${row.id} - ${row.name}`);
         console.log(`Campo image_url do banco: "${row.image_url}"`);
+        console.log(`Campo entity_type do banco: "${row.entity_type}"`);
         
         // Mapeamento explícito de snake_case para camelCase
         const npc: Npc = {
@@ -527,6 +528,7 @@ export class DatabaseStorage implements IStorage {
         };
         
         console.log(`Campo imageUrl após mapeamento: "${npc.imageUrl}"`);
+        console.log(`Campo entityType após mapeamento: "${npc.entityType}"`);
         
         return npc;
       });
@@ -540,6 +542,7 @@ export class DatabaseStorage implements IStorage {
     try {
       // Adicione log completo para depuração
       console.log("Inserindo NPC na DatabaseStorage:", JSON.stringify(insertNpc, null, 2));
+      console.log("EntityType recebido:", insertNpc.entityType);
       
       // Simplificando a inserção usando Drizzle ORM
       const data = {
@@ -555,7 +558,7 @@ export class DatabaseStorage implements IStorage {
         // Novos campos adicionados ao schema - mantenha imageUrl como snake_case no banco de dados
         image_url: insertNpc.imageUrl || null, // Mapeia de imageUrl (camelCase) para image_url (snake_case)
         memorable_trait: insertNpc.memorableTrait || null,
-        entity_type: insertNpc.entityType || 'npc',
+        entity_type: insertNpc.entityType === 'creature' ? 'creature' : 'npc', // Garantir que o valor seja preservado
         role: insertNpc.role || null,
         motivation: insertNpc.motivation || null,
         // Novos campos para atributos de criatura
@@ -585,6 +588,7 @@ export class DatabaseStorage implements IStorage {
       
       // Converter snake_case para camelCase e registrar para depuração
       console.log("NPC retornado do banco:", JSON.stringify(npcResult, null, 2));
+      console.log("Campo entity_type no resultado:", npcResult.entity_type);
       
       const npc: Npc = {
         id: npcResult.id,
@@ -593,7 +597,7 @@ export class DatabaseStorage implements IStorage {
         race: npcResult.race,
         imageUrl: npcResult.image_url, // Mapeamento explícito de snake_case para camelCase
         memorableTrait: npcResult.memorable_trait,
-        entityType: npcResult.entity_type || 'npc',
+        entityType: npcResult.entity_type === 'creature' ? 'creature' : 'npc', // Garantir o valor correto
         role: npcResult.role || null,
         motivation: npcResult.motivation || null,
         occupation: npcResult.occupation || null,
@@ -617,9 +621,14 @@ export class DatabaseStorage implements IStorage {
       
       // Verificando o objeto convertido
       console.log("Campo imageUrl após conversão:", npc.imageUrl);
+      console.log("Campo entityType após conversão:", npc.entityType);
       
-      // Verificando o objeto convertido
-      console.log("NPC convertido com imageUrl:", npc.imageUrl);
+      // Verificando o objeto completo convertido
+      console.log("NPC convertido:", JSON.stringify({
+        id: npc.id,
+        name: npc.name,
+        entityType: npc.entityType
+      }, null, 2));
       
       return npc;
     } catch (error) {
@@ -693,7 +702,7 @@ export class DatabaseStorage implements IStorage {
         race: npcResult.race,
         imageUrl: npcResult.image_url, // Mapeamento explícito de snake_case para camelCase
         memorableTrait: npcResult.memorable_trait,
-        entityType: npcResult.entity_type || 'npc',
+        entityType: npcResult.entity_type === 'creature' ? 'creature' : 'npc',
         role: npcResult.role || null,
         motivation: npcResult.motivation || null,
         occupation: npcResult.occupation || null,
