@@ -355,12 +355,11 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
       const healthPoints = editingNpc.healthPoints || 
                           (editingNpc.notes?.match(/Vida\/Resistência:\s*(\d+)/)?.[1] || "");
 
-      // Extrair ganchos de história
+      // Extrair ganchos de história - nota: campo plotHooks não existe no banco, só extrair das notes
       const plotHooksRegex = /Ganchos:\s*([^\n]+)/;
-      const plotHooks = editingNpc.plotHooks || 
-                        (editingNpc.notes && plotHooksRegex.test(editingNpc.notes) 
+      const plotHooks = editingNpc.notes && plotHooksRegex.test(editingNpc.notes) 
                           ? editingNpc.notes.match(plotHooksRegex)[1] 
-                          : "");
+                          : "";
       
       // Extrair relacionamentos
       const relationsRegex = /Relações:\s*([^\n]+)/;
