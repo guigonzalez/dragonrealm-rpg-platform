@@ -53,12 +53,13 @@ const getThreatLevelOptions = () => {
 // Extend schema for validation
 const formSchema = insertNpcSchema.extend({
   name: z.string().min(1, "O nome é obrigatório"),
-  role: z.string().optional(),
+  // Removido o campo role pois será definido pelos jogadores
   motivation: z.string().optional(),
   imageUrl: z.string().optional(),
   relationships: z.string().optional(),
   abilities: z.string().optional(),
-  threatLevel: z.string().optional(),
+  // Campo threatLevel agora é obrigatório
+  threatLevel: z.string().min(1, "O nível de ameaça é obrigatório"),
   healthPoints: z.string().optional(),
   str: z.string().optional(),
   dex: z.string().optional(),
@@ -292,7 +293,7 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
       
       // Este campo pode conter informações sobre habilidades especiais
       // e pontos de vida em formato legível
-      notes: `Vida/Resistência: ${values.healthPoints || '-'}\nGanchos: ${values.plotHooks || '-'}\nRelações: ${values.relationships || '-'}\nPapel: ${values.role || '-'}`,
+      notes: `Vida/Resistência: ${values.healthPoints || '-'}\nGanchos: ${values.plotHooks || '-'}\nRelações: ${values.relationships || '-'}`,
       
       // Campos mantidos para compatibilidade, mesmo vazios
       race: "",       // vazio para manter compatibilidade
@@ -303,7 +304,7 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
       
       // Campos adicionados ao esquema
       imageUrl: values.imageUrl || "",
-      role: values.role || "",
+      // Removemos o campo role conforme solicitado
       motivation: values.motivation || "",
       
       // Força entityType como "creature"
@@ -378,34 +379,7 @@ export default function CreatureCreator({ campaignId, campaign, onClose = () => 
                   )}
                 />
                 
-                {/* Papel no jogo */}
-                <FormField
-                  control={form.control}
-                  name="role"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Papel no jogo</FormLabel>
-                      <Select 
-                        onValueChange={field.onChange} 
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Escolha um papel" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {getRoleOptions(t).map(option => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Removido campo de papel no jogo conforme solicitado */}
                 
                 {/* Motivação */}
                 <FormField
