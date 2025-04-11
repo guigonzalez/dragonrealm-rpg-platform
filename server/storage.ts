@@ -37,6 +37,13 @@ export interface IStorage {
   createNpc(npc: InsertNpc): Promise<Npc>;
   updateNpc(id: number, npc: Partial<Npc>): Promise<Npc | undefined>;
   deleteNpc(id: number): Promise<boolean>;
+  
+  // Creature operations
+  getCreature(id: number): Promise<Creature | undefined>;
+  getCreaturesByCampaignId(campaignId: number): Promise<Creature[]>;
+  createCreature(creature: InsertCreature): Promise<Creature>;
+  updateCreature(id: number, creature: Partial<Creature>): Promise<Creature | undefined>;
+  deleteCreature(id: number): Promise<boolean>;
 
   // Encounter operations
   getEncounter(id: number): Promise<Encounter | undefined>;
@@ -67,6 +74,7 @@ export class MemStorage implements IStorage {
   private characters: Map<number, Character>;
   private campaigns: Map<number, Campaign>;
   private npcs: Map<number, Npc>;
+  private creatures: Map<number, Creature>;
   private encounters: Map<number, Encounter>;
   private locations: Map<number, CampaignLocation>;
   private sessionNotes: Map<number, SessionNote>;
@@ -76,6 +84,7 @@ export class MemStorage implements IStorage {
   private characterIdCounter: number;
   private campaignIdCounter: number;
   private npcIdCounter: number;
+  private creatureIdCounter: number;
   private encounterIdCounter: number;
   private locationIdCounter: number;
   private sessionNoteIdCounter: number;

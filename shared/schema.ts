@@ -77,11 +77,26 @@ export const npcs = pgTable("npcs", {
   notes: text("notes"),
   imageUrl: text("image_url"),
   memorableTrait: text("memorable_trait"),
-  entityType: text("entity_type"),
   role: text("role"),
   motivation: text("motivation"),
-  // Os campos relationships e plot_hooks foram removidos pois não existem no banco de dados
-  // Atributos de Criatura/NPC
+  created: text("created").notNull(),
+  updated: text("updated").notNull(),
+});
+
+// Nova tabela separada para criaturas
+export const creatures = pgTable("creatures", {
+  id: serial("id").primaryKey(),
+  campaignId: integer("campaign_id").notNull().references(() => campaigns.id),
+  name: text("name").notNull(),
+  race: text("race"),
+  appearance: text("appearance"),
+  abilities: text("abilities"),
+  notes: text("notes"),
+  imageUrl: text("image_url"),
+  memorableTrait: text("memorable_trait"),
+  role: text("role"),
+  motivation: text("motivation"),
+  // Atributos específicos de criaturas
   strength: text("strength"),
   dexterity: text("dexterity"),
   constitution: text("constitution"),
@@ -149,6 +164,10 @@ export const insertNpcSchema = createInsertSchema(npcs).omit({
   id: true,
 });
 
+export const insertCreatureSchema = createInsertSchema(creatures).omit({
+  id: true,
+});
+
 export const insertEncounterSchema = createInsertSchema(encounters).omit({
   id: true,
 });
@@ -173,6 +192,9 @@ export type Campaign = typeof campaigns.$inferSelect;
 
 export type InsertNpc = z.infer<typeof insertNpcSchema>;
 export type Npc = typeof npcs.$inferSelect;
+
+export type InsertCreature = z.infer<typeof insertCreatureSchema>;
+export type Creature = typeof creatures.$inferSelect;
 
 export type InsertEncounter = z.infer<typeof insertEncounterSchema>;
 export type Encounter = typeof encounters.$inferSelect;
