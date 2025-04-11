@@ -337,7 +337,68 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Endpoint alternativo para criação de NPCs
+  app.post("/api/npcs", requireAuth, async (req, res) => {
+    try {
+      const campaignId = parseInt(req.body.campaignId);
+      const campaign = await storage.getCampaign(campaignId);
+      
+      if (!campaign) {
+        return res.status(404).json({ message: "Campaign not found" });
+      }
+      
+      if (campaign.userId !== req.user!.id) {
+        return res.status(403).json({ message: "Unauthorized access to campaign" });
+      }
+      
+      const now = new Date().toISOString();
+      const npcData = insertNpcSchema.parse({
+        ...req.body,
+        created: now,
+        updated: now
+      });
+      
+      const npc = await storage.createNpc(npcData);
+      res.status(201).json(npc);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid NPC data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create NPC" });
+    }
+  });
+
   app.put("/api/npcs/:id", requireAuth, async (req, res) => {
+    try {
+      const npcId = parseInt(req.params.id);
+      const npc = await storage.getNpc(npcId);
+      
+      if (!npc) {
+        return res.status(404).json({ message: "NPC not found" });
+      }
+      
+      const campaign = await storage.getCampaign(npc.campaignId);
+      
+      if (campaign?.userId !== req.user!.id) {
+        return res.status(403).json({ message: "Unauthorized access to NPC" });
+      }
+      
+      const updatedNpc = await storage.updateNpc(npcId, {
+        ...req.body,
+        updated: new Date().toISOString()
+      });
+      
+      res.json(updatedNpc);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid NPC data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update NPC" });
+    }
+  });
+  
+  // Adicionando rota PATCH para compatibilidade com o cliente
+  app.patch("/api/npcs/:id", requireAuth, async (req, res) => {
     try {
       const npcId = parseInt(req.params.id);
       const npc = await storage.getNpc(npcId);

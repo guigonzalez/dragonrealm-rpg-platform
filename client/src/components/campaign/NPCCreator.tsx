@@ -47,7 +47,13 @@ const formSchema = insertNpcSchema.extend({
     required_error: "Selecione o tipo: NPC ou Criatura",
   }),
   role: z.string().optional(),
-  // threatOrUtility será um array de strings convertido para string no envio
+  motivation: z.string().optional(),
+  memorableTrait: z.string().optional(),
+  relationships: z.string().optional(),
+  abilities: z.string().optional(),
+  threatOrUtility: z.string().optional(),
+  plotHooks: z.string().optional(),
+  // threatOrUtilityOptions será um array de strings convertido para string no envio
 });
 
 type NPCCreatorProps = {
@@ -63,9 +69,9 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Preparar valores padrões considerando possível edição
-  const defaultValues: Partial<InsertNpc & { threatOrUtilityOptions?: string[] }> = {
+  const defaultValues = {
     campaignId,
-    entityType: "npc",
+    entityType: "npc" as const,  // use const assertion para garantir o tipo correto
     name: "",
     role: "",
     motivation: "",
@@ -74,15 +80,39 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
     abilities: "",
     threatOrUtility: "",
     plotHooks: "",
-    threatOrUtilityOptions: [],
+    threatOrUtilityOptions: [] as string[],
     // Preenchemos os campos padrão restantes
     created: new Date().toISOString(),
     updated: new Date().toISOString(),
   };
 
-  const form = useForm<z.infer<typeof formSchema> & { threatOrUtilityOptions: string[] }>({
+  // Defina uma interface explícita para os valores do formulário para evitar problemas de tipagem
+  interface FormValues {
+    name: string;
+    campaignId: number;
+    entityType: "npc" | "creature";
+    role?: string;
+    motivation?: string;
+    memorableTrait?: string;
+    relationships?: string;
+    abilities?: string;
+    threatOrUtility?: string;
+    plotHooks?: string;
+    created: string;
+    updated: string;
+    threatOrUtilityOptions: string[];
+    // Outros campos opcionais
+    race?: string;
+    occupation?: string;
+    location?: string;
+    appearance?: string;
+    personality?: string;
+    notes?: string;
+  }
+
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    defaultValues: defaultValues as FormValues,
   });
 
   // Se estamos editando, preencha o formulário com dados existentes
@@ -91,11 +121,17 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
       const threatUtilityArray = editingNpc.threatOrUtility 
         ? editingNpc.threatOrUtility.split(",") 
         : [];
+      
+      // Garanta que entityType seja um valor válido
+      const entityType = editingNpc.entityType === "creature" 
+        ? "creature" as const 
+        : "npc" as const;
         
       form.reset({
         ...editingNpc,
+        entityType,
         threatOrUtilityOptions: threatUtilityArray,
-      });
+      } as FormValues);
     }
   }, [editingNpc, form]);
 
@@ -135,22 +171,39 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema> & { threatOrUtilityOptions: string[] }) => {
+  const onSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
     
     // Converte array de opções para string
     const threatOrUtility = values.threatOrUtilityOptions?.join(",") || "";
     
-    const submitData = {
-      ...values,
+    const submitData: Partial<InsertNpc> = {
+      campaignId: values.campaignId,
+      name: values.name,
+      entityType: values.entityType,
+      role: values.role || "",
+      motivation: values.motivation || "",
+      memorableTrait: values.memorableTrait || "",
+      relationships: values.relationships || "",
+      abilities: values.abilities || "",
       threatOrUtility,
-      // Removemos o campo extra que só existe no formulário
-      threatOrUtilityOptions: undefined,
+      plotHooks: values.plotHooks || "",
+      race: values.race || "",
+      occupation: values.occupation || "",
+      location: values.location || "",
+      appearance: values.appearance || "",
+      personality: values.personality || "",
+      notes: values.notes || "",
       // Atualizamos a data
       updated: new Date().toISOString(),
     };
     
-    mutation.mutate(submitData as InsertNpc);
+    // Se criando novo NPC, adiciona a data de criação
+    if (!editingNpc) {
+      submitData.created = new Date().toISOString();
+    }
+    
+    mutation.mutate(submitData);
   };
 
   return (
