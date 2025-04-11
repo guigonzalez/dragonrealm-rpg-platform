@@ -87,7 +87,14 @@
     },
     "tabs": {
       "characters": "Personagens",
-      "campaigns": "Campanhas"
+      "campaigns": "Campanhas",
+      "gamesessions": "Mesas de Jogo"
+    },
+    "gamesessions": {
+      "title": "Mesas de Jogo",
+      "subtitle": "Encontre jogos públicos para participar como jogador",
+      "comingSoon": "Em Breve",
+      "comingSoonDescription": "Esta funcionalidade está em desenvolvimento. Em breve você poderá descobrir jogos públicos e participar como jogador."
     }
   },
   "campaign": {

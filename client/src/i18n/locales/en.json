@@ -89,7 +89,14 @@
     },
     "tabs": {
       "characters": "Characters",
-      "campaigns": "Campaigns"
+      "campaigns": "Campaigns",
+      "gamesessions": "Game Sessions"
+    },
+    "gamesessions": {
+      "title": "Game Sessions",
+      "subtitle": "Find public games to join as a player",
+      "comingSoon": "Coming Soon",
+      "comingSoonDescription": "This feature is under development. Soon you'll be able to discover public games and join as a player."
     }
   },
   "campaign": {

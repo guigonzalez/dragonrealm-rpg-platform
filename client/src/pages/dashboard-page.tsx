@@ -154,9 +154,10 @@ export default function DashboardPage() {
           </div>
           
           <Tabs defaultValue="characters" value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full md:w-[400px] grid-cols-2">
+            <TabsList className="grid w-full md:w-[600px] grid-cols-3">
               <TabsTrigger value="characters" className="font-lora">{t("dashboard.tabs.characters")}</TabsTrigger>
               <TabsTrigger value="campaigns" className="font-lora">{t("dashboard.tabs.campaigns")}</TabsTrigger>
+              <TabsTrigger value="gamesessions" className="font-lora">{t("dashboard.tabs.gamesessions")}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="characters" className="mt-6">
