@@ -521,7 +521,7 @@ export class DatabaseStorage implements IStorage {
         abilities: insertNpc.abilities || null,
         notes: insertNpc.notes || null,
         // Novos campos adicionados ao schema
-        image_url: insertNpc.imageUrl || null,
+        image_url: insertNpc.imageUrl || null, // Mapeia de imageUrl (camelCase) para image_url (snake_case)
         memorable_trait: insertNpc.memorableTrait || null,
         entity_type: insertNpc.entityType || 'npc',
         role: insertNpc.role || null,

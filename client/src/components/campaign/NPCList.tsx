@@ -176,7 +176,13 @@ export default function NPCList({ campaignId }: NPCListProps) {
                     {npc.imageUrl ? (
                       <div className="w-full h-48 overflow-hidden">
                         <img 
-                          src={npc.imageUrl && npc.imageUrl.startsWith("data:") ? npc.imageUrl : npc.imageUrl} 
+                          src={
+                            npc.imageUrl && npc.imageUrl.startsWith("data:") 
+                              ? npc.imageUrl 
+                              : npc.imageUrl && npc.imageUrl.startsWith("/") 
+                                ? `${npc.imageUrl}` 
+                                : npc.imageUrl
+                          } 
                           alt={npc.name} 
                           className="w-full h-full object-cover object-center" 
                         />
