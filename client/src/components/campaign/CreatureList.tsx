@@ -180,16 +180,22 @@ export default function CreatureList({ campaignId }: CreatureListProps) {
               const extractInfo = (notes?: string | null) => {
                 if (!notes) return { type: "", armorClass: "", resistances: "", terrain: "" };
                 
-                const typeMatch = notes.match(/Tipo: ([^\\n]+)/);
-                const acMatch = notes.match(/CA: ([^\\n]+)/);
-                const resistMatch = notes.match(/Resistências: ([^\\n]+)/);
-                const terrainMatch = notes.match(/Terreno: ([^\\n]+)/);
+                const typeMatch = notes.match(/Tipo: ([^\n]+)/);
+                const acMatch = notes.match(/CA: ([^\n]+)/);
+                const resistMatch = notes.match(/Resistências: ([^\n]+)/);
+                
+                // Captura o terreno até o final da linha ou do texto
+                let terrain = "";
+                const terrainMatch = notes.match(/Terreno: ([^\n]+)/);
+                if (terrainMatch) {
+                  terrain = terrainMatch[1].trim();
+                }
                 
                 return {
-                  type: typeMatch ? typeMatch[1] : "",
-                  armorClass: acMatch ? acMatch[1] : "",
-                  resistances: resistMatch ? resistMatch[1] : "",
-                  terrain: terrainMatch ? terrainMatch[1] : ""
+                  type: typeMatch ? typeMatch[1].trim() : "",
+                  armorClass: acMatch ? acMatch[1].trim() : "",
+                  resistances: resistMatch ? resistMatch[1].trim() : "",
+                  terrain: terrain
                 };
               };
 
@@ -254,9 +260,13 @@ export default function CreatureList({ campaignId }: CreatureListProps) {
                         <div>
                           <CardTitle className="font-lora text-lg">{creature.name}</CardTitle>
                           <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                            <span>{notesInfo.type || t("creature.creature")}</span>
-                            {getThreatBadge(creature.threatLevel)}
+                            <span>{notesInfo.type || "Criatura"}</span>
                           </div>
+                          {creature.threatLevel && (
+                            <div className="mt-1">
+                              {getThreatBadge(creature.threatLevel)}
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className="flex items-center gap-1">
