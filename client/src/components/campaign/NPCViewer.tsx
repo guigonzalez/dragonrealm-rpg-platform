@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type Npc } from "@shared/schema";
 
@@ -145,28 +144,14 @@ export default function NPCViewer({ npc, onClose }: NPCViewerProps) {
           </div>
 
           <div className="space-y-4">
-            {/* Imagem */}
-            {npc.imageUrl && !imageError ? (
-              <div className="rounded-md overflow-hidden border">
-                <img 
-                  src={getImagePath()} 
-                  alt={npc.name} 
-                  className="w-full h-auto object-cover"
-                  onError={(e) => {
-                    console.error("Erro ao carregar imagem:", npc.imageUrl);
-                    setImageError(true);
-                  }}
-                />
-              </div>
-            ) : (
-              <div className="w-full aspect-square bg-slate-100 dark:bg-slate-800 rounded-md flex items-center justify-center">
-                {npc.entityType === "creature" ? (
-                  <Skull className="h-20 w-20 text-slate-400" />
-                ) : (
-                  <User2 className="h-20 w-20 text-slate-400" />
-                )}
-              </div>
-            )}
+            {/* Ícone de identificação da entidade */}
+            <div className="w-full aspect-square bg-slate-100 dark:bg-slate-800 rounded-md flex items-center justify-center">
+              {npc.entityType === "creature" ? (
+                <Skull className="h-20 w-20 text-slate-400" />
+              ) : (
+                <User2 className="h-20 w-20 text-slate-400" />
+              )}
+            </div>
 
             {npc.memorableTrait && (
               <div>
