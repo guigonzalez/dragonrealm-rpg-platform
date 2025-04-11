@@ -7,6 +7,7 @@ import { insertCharacterSchema, insertCampaignSchema, insertNpcSchema, insertEnc
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import crypto from "crypto";
 
 // Configurar o armazenamento do Multer
 const storage_config = multer.diskStorage({
@@ -36,10 +37,68 @@ const upload = multer({
   fileFilter
 });
 
+// Função para salvar imagem de base64 para arquivo
+function saveBase64Image(base64Data: string, entityType: string = 'npc'): string | null {
+  try {
+    // Verificar se a string base64 é válida
+    if (!base64Data || !base64Data.includes('base64')) {
+      console.log('Dados base64 inválidos');
+      return null;
+    }
+
+    // Criar diretório assets se não existir
+    const assetsDir = 'public/assets';
+    if (!fs.existsSync(assetsDir)) {
+      fs.mkdirSync(assetsDir, { recursive: true });
+    }
+
+    // Extrair os dados da string base64
+    const matches = base64Data.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) {
+      console.log('Formato base64 inválido');
+      return null;
+    }
+
+    // Determinar o tipo de arquivo e extensão
+    const mimeType = matches[1];
+    const base64 = matches[2];
+    let extension = '.jpg'; // default
+    
+    if (mimeType.includes('jpeg')) {
+      extension = '.jpg';
+    } else if (mimeType.includes('png')) {
+      extension = '.png';
+    } else if (mimeType.includes('gif')) {
+      extension = '.gif';
+    } else if (mimeType.includes('webp')) {
+      extension = '.webp';
+    }
+
+    // Gerar um nome de arquivo único
+    const hash = crypto.createHash('md5').update(base64.substring(0, 100) + Date.now()).digest('hex');
+    const filename = `${entityType}-${hash}${extension}`;
+    const filepath = `${assetsDir}/${filename}`;
+
+    // Salvar o arquivo
+    const buffer = Buffer.from(base64, 'base64');
+    fs.writeFileSync(filepath, buffer);
+
+    // Retornar o caminho público para o arquivo
+    return `/assets/${filename}`;
+  } catch (error) {
+    console.error('Erro ao salvar imagem:', error);
+    return null;
+  }
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Certifique-se de que o diretório de uploads existe
+  // Certifique-se de que os diretórios necessários existem
   if (!fs.existsSync("public/uploads")) {
     fs.mkdirSync("public/uploads", { recursive: true });
+  }
+  
+  if (!fs.existsSync("public/assets")) {
+    fs.mkdirSync("public/assets", { recursive: true });
   }
   
   // Servir arquivos estáticos da pasta public
@@ -352,8 +411,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       const now = new Date().toISOString();
+      
+      // Processar imagem base64 se existir
+      let modifiedReqBody = { ...req.body };
+      if (req.body.imageUrl && req.body.imageUrl.startsWith('data:')) {
+        // Salvar imagem base64 como arquivo
+        const imagePath = saveBase64Image(req.body.imageUrl, req.body.entityType || 'npc');
+        if (imagePath) {
+          console.log(`Imagem salva em: ${imagePath}`);
+          // Atualizar a URL da imagem para o caminho do arquivo salvo
+          modifiedReqBody.imageUrl = imagePath;
+        } else {
+          // Se não conseguir salvar, remover o campo para evitar salvar a string base64 no banco
+          console.log('Falha ao processar imagem base64, removendo imageUrl');
+          delete modifiedReqBody.imageUrl;
+        }
+      }
+      
       const npcData = insertNpcSchema.parse({
-        ...req.body,
+        ...modifiedReqBody,
         created: now,
         updated: now
       });
@@ -361,6 +437,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const npc = await storage.createNpc(npcData);
       res.status(201).json(npc);
     } catch (error) {
+      console.error("Erro ao criar NPC:", error);
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid NPC data", errors: error.errors });
       }
@@ -440,13 +517,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Unauthorized access to NPC" });
       }
       
+      // Processar imagem base64 se existir
+      let modifiedReqBody = { ...req.body };
+      if (req.body.imageUrl && req.body.imageUrl.startsWith('data:')) {
+        // Salvar imagem base64 como arquivo
+        const imagePath = saveBase64Image(req.body.imageUrl, req.body.entityType || 'npc');
+        if (imagePath) {
+          console.log(`Imagem atualizada e salva em: ${imagePath}`);
+          // Atualizar a URL da imagem para o caminho do arquivo salvo
+          modifiedReqBody.imageUrl = imagePath;
+        } else {
+          // Se não conseguir salvar, remover o campo para evitar salvar a string base64 no banco
+          console.log('Falha ao processar imagem base64, removendo imageUrl');
+          delete modifiedReqBody.imageUrl;
+        }
+      }
+      
       const updatedNpc = await storage.updateNpc(npcId, {
-        ...req.body,
+        ...modifiedReqBody,
         updated: new Date().toISOString()
       });
       
       res.json(updatedNpc);
     } catch (error) {
+      console.error("Erro ao atualizar NPC:", error);
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid NPC data", errors: error.errors });
       }
