@@ -54,16 +54,35 @@ export default function CreatureViewer({ creature, onClose = () => {} }: Creatur
   
   // Extrair informações do campo notes se disponível
   const getNotesInfo = () => {
-    if (!creature.notes) return { healthPoints: null, plotHooks: null, relationships: null };
+    if (!creature.notes) return { 
+      healthPoints: null, 
+      plotHooks: null, 
+      relationships: null,
+      type: null,
+      armorClass: null,
+      resistances: null,
+      terrain: null
+    };
     
-    const healthMatch = creature.notes.match(/Vida\/Resistência: ([^\\n]+)/);
-    const plotHooksMatch = creature.notes.match(/Ganchos: ([^\\n]+)/);
-    const relationshipsMatch = creature.notes.match(/Relações: ([^\\n]+)/);
+    // Novos padrões para Tipo, CA, Resistências e Terreno
+    const typeMatch = creature.notes.match(/Tipo: ([^\n]+)/);
+    const acMatch = creature.notes.match(/CA: ([^\n]+)/);
+    const resistMatch = creature.notes.match(/Resistências: ([^\n]+)/);
+    const terrainMatch = creature.notes.match(/Terreno: ([^\n]+)/);
+    
+    // Padrões legados
+    const healthMatch = creature.notes.match(/Vida\/Resistência: ([^\n]+)/);
+    const plotHooksMatch = creature.notes.match(/Ganchos: ([^\n]+)/);
+    const relationshipsMatch = creature.notes.match(/Relações: ([^\n]+)/);
     
     return {
       healthPoints: healthMatch ? healthMatch[1] : null,
       plotHooks: plotHooksMatch ? plotHooksMatch[1] : null,
-      relationships: relationshipsMatch ? relationshipsMatch[1] : null
+      relationships: relationshipsMatch ? relationshipsMatch[1] : null,
+      type: typeMatch ? typeMatch[1].trim() : null,
+      armorClass: acMatch ? acMatch[1].trim() : null,
+      resistances: resistMatch ? resistMatch[1].trim() : null,
+      terrain: terrainMatch ? terrainMatch[1].trim() : null
     };
   };
   
@@ -102,6 +121,16 @@ export default function CreatureViewer({ creature, onClose = () => {} }: Creatur
             {t("creature.basicInfo")}
           </h3>
           
+          {/* Tipo */}
+          {(creature.race || notesInfo.type) && (
+            <div>
+              <h4 className="text-sm font-medium mb-1">Tipo</h4>
+              <p className="text-muted-foreground">
+                {creature.race || notesInfo.type}
+              </p>
+            </div>
+          )}
+          
           {/* Motivation */}
           {creature.motivation && (
             <div>
@@ -116,6 +145,16 @@ export default function CreatureViewer({ creature, onClose = () => {} }: Creatur
               <h4 className="text-sm font-medium mb-1">{t("creature.relationships")}</h4>
               <p className="text-muted-foreground">
                 {creature.relationships || notesInfo.relationships}
+              </p>
+            </div>
+          )}
+          
+          {/* Terreno */}
+          {(creature.location || notesInfo.terrain) && (
+            <div>
+              <h4 className="text-sm font-medium mb-1">Terreno</h4>
+              <p className="text-muted-foreground">
+                {creature.location || notesInfo.terrain}
               </p>
             </div>
           )}
@@ -199,10 +238,10 @@ export default function CreatureViewer({ creature, onClose = () => {} }: Creatur
           )}
           
           {/* Special Abilities */}
-          {creature.specialAbilities && (
+          {(creature.specialAbilities || creature.appearance) && (
             <div>
               <h4 className="text-sm font-medium mb-1">{t("creature.specialAbilities")}</h4>
-              <p className="text-muted-foreground">{creature.specialAbilities}</p>
+              <p className="text-muted-foreground">{creature.specialAbilities || creature.appearance}</p>
             </div>
           )}
         </div>
