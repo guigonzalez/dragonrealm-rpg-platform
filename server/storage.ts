@@ -458,16 +458,40 @@ export class DatabaseStorage implements IStorage {
 
   async getNpcsByCampaignId(campaignId: number): Promise<Npc[]> {
     try {
-      // Usando uma query mais específica para evitar o uso da coluna entity_type
-      // até que possamos atualizar o banco de dados adequadamente
-      const result = await db.query.npcs.findMany({
-        where: eq(npcs.campaignId, campaignId)
-      });
+      // Usando uma query SQL direta para evitar problemas com colunas
+      const result = await db.execute(
+        `SELECT id, campaign_id, name, role, race, occupation, location, appearance, personality, notes, created, updated
+         FROM npcs 
+         WHERE campaign_id = $1`, 
+        [campaignId]
+      );
       
-      // Adicionando o entityType padrão se não existir no banco de dados
-      return result.map(npc => ({
-        ...npc,
-        entityType: npc.entityType || 'npc'
+      if (!result.rows || result.rows.length === 0) {
+        return [];
+      }
+      
+      // Mapeando os resultados para o formato esperado
+      return result.rows.map(row => ({
+        id: row.id,
+        campaignId: row.campaign_id,
+        name: row.name,
+        role: row.role,
+        race: row.race,
+        occupation: row.occupation,
+        location: row.location,
+        appearance: row.appearance,
+        personality: row.personality,
+        notes: row.notes,
+        created: row.created,
+        updated: row.updated,
+        // Adicionando campos que podem não existir no banco
+        entityType: 'npc',
+        motivation: null,
+        memorableTrait: null,
+        relationships: null,
+        abilities: null,
+        threatOrUtility: null,
+        plotHooks: null
       }));
     } catch (error) {
       console.error("Erro ao buscar NPCs:", error);
@@ -477,52 +501,62 @@ export class DatabaseStorage implements IStorage {
 
   async createNpc(insertNpc: InsertNpc): Promise<Npc> {
     try {
-      // Removendo campos que podem não existir na tabela para evitar erros
-      const { 
-        entityType, 
-        imageUrl,
-        motivation,
-        memorableTrait,
-        relationships,
-        abilities,
-        threatOrUtility,
-        plotHooks,
-        ...baseNpcData 
-      } = insertNpc;
+      // Vamos montar uma query SQL diretamente
+      const campaignId = insertNpc.campaignId;
+      const name = insertNpc.name;
+      const created = insertNpc.created;
+      const updated = insertNpc.updated;
+      const role = insertNpc.role || null;
+      const race = insertNpc.race || null;
+      const occupation = insertNpc.occupation || null;
+      const location = insertNpc.location || null;
+      const appearance = insertNpc.appearance || null;
+      const personality = insertNpc.personality || null;
+      const notes = insertNpc.notes || null;
       
-      // Filtramos apenas os campos que temos certeza que existem na tabela
-      const safeNpcData = {
-        campaignId: baseNpcData.campaignId,
-        name: baseNpcData.name,
-        created: baseNpcData.created,
-        updated: baseNpcData.updated,
-        // Campos opcionais que podem existir
-        role: baseNpcData.role || null,
-        race: baseNpcData.race || null,
-        occupation: baseNpcData.occupation || null,
-        location: baseNpcData.location || null,
-        appearance: baseNpcData.appearance || null,
-        personality: baseNpcData.personality || null,
-        notes: baseNpcData.notes || null
+      console.log("Inserindo NPC:", { name, campaignId, role, race, occupation, location, appearance, personality, notes });
+      
+      // Query SQL direta sem usar a coluna entity_type
+      const result = await db.execute(
+        `INSERT INTO npcs (
+          campaign_id, name, role, race, occupation, location, appearance, personality, notes, created, updated
+        ) VALUES (
+          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+        ) RETURNING id, campaign_id, name, role, race, occupation, location, appearance, personality, notes, created, updated`,
+        [campaignId, name, role, race, occupation, location, appearance, personality, notes, created, updated]
+      );
+      
+      if (!result.rows || result.rows.length === 0) {
+        throw new Error("Falha ao inserir NPC");
+      }
+      
+      const row = result.rows[0];
+      
+      // Construir objeto NPC com os dados retornados
+      const npc = {
+        id: row.id,
+        campaignId: row.campaign_id,
+        name: row.name,
+        role: row.role,
+        race: row.race,
+        occupation: row.occupation,
+        location: row.location,
+        appearance: row.appearance,
+        personality: row.personality,
+        notes: row.notes,
+        created: row.created,
+        updated: row.updated,
+        // Campos adicionais que não existem na tabela mas fazem parte do tipo
+        entityType: 'npc',
+        motivation: null,
+        memorableTrait: null,
+        relationships: null,
+        abilities: null,
+        threatOrUtility: null,
+        plotHooks: null
       };
-
-      console.log("Dados a serem inseridos:", safeNpcData);
       
-      // Inserimos apenas os campos seguros
-      const [npc] = await db.insert(npcs).values(safeNpcData).returning();
-      
-      // Adicionamos de volta os campos que removemos na resposta
-      return { 
-        ...npc, 
-        entityType: entityType || 'npc',
-        imageUrl: imageUrl || null,
-        motivation: motivation || null,
-        memorableTrait: memorableTrait || null,
-        relationships: relationships || null,
-        abilities: abilities || null,
-        threatOrUtility: threatOrUtility || null,
-        plotHooks: plotHooks || null
-      };
+      return npc;
     } catch (error) {
       console.error("Erro ao criar NPC:", error);
       throw error;
@@ -531,69 +565,154 @@ export class DatabaseStorage implements IStorage {
 
   async updateNpc(id: number, npcData: Partial<Npc>): Promise<Npc | undefined> {
     try {
-      // Removendo campos que podem não existir na tabela para evitar erros
-      const { 
-        entityType, 
-        imageUrl,
-        motivation,
-        memorableTrait,
-        relationships,
-        abilities,
-        threatOrUtility,
-        plotHooks,
-        ...baseNpcData 
-      } = npcData;
+      // Primeiro verificamos se o NPC existe
+      const checkResult = await db.execute(
+        `SELECT id, campaign_id, name, role, race, occupation, location, appearance, personality, notes, created, updated 
+         FROM npcs 
+         WHERE id = $1`,
+        [id]
+      );
       
-      // Filtramos apenas os campos que temos certeza que existem na tabela
-      const safeUpdateData: any = {};
+      if (!checkResult.rows || checkResult.rows.length === 0) {
+        return undefined;
+      }
       
-      // Adicionamos apenas campos com valores definidos
-      if (baseNpcData.name !== undefined) safeUpdateData.name = baseNpcData.name;
-      if (baseNpcData.updated !== undefined) safeUpdateData.updated = baseNpcData.updated;
-      if (baseNpcData.role !== undefined) safeUpdateData.role = baseNpcData.role;
-      if (baseNpcData.race !== undefined) safeUpdateData.race = baseNpcData.race;
-      if (baseNpcData.occupation !== undefined) safeUpdateData.occupation = baseNpcData.occupation;
-      if (baseNpcData.location !== undefined) safeUpdateData.location = baseNpcData.location;
-      if (baseNpcData.appearance !== undefined) safeUpdateData.appearance = baseNpcData.appearance;
-      if (baseNpcData.personality !== undefined) safeUpdateData.personality = baseNpcData.personality;
-      if (baseNpcData.notes !== undefined) safeUpdateData.notes = baseNpcData.notes;
-
-      console.log("Dados a serem atualizados:", safeUpdateData);
+      // Vamos construir dinamicamente os campos para atualizar
+      const updateFields = [];
+      const params = [id]; // Primeiro parâmetro é sempre o ID
+      let paramIndex = 2; // Começamos do $2
       
-      // Só atualizamos se houver algo para atualizar
-      if (Object.keys(safeUpdateData).length === 0) {
-        console.log("Nenhum campo válido para atualizar");
-        const [existingNpc] = await db.select().from(npcs).where(eq(npcs.id, id));
-        if (!existingNpc) return undefined;
+      // Nome
+      if (npcData.name !== undefined) {
+        updateFields.push(`name = $${paramIndex}`);
+        params.push(npcData.name);
+        paramIndex++;
+      }
+      
+      // Updated (data de atualização)
+      if (npcData.updated !== undefined) {
+        updateFields.push(`updated = $${paramIndex}`);
+        params.push(npcData.updated);
+        paramIndex++;
+      }
+      
+      // Role (papel)
+      if (npcData.role !== undefined) {
+        updateFields.push(`role = $${paramIndex}`);
+        params.push(npcData.role);
+        paramIndex++;
+      }
+      
+      // Race (raça)
+      if (npcData.race !== undefined) {
+        updateFields.push(`race = $${paramIndex}`);
+        params.push(npcData.race);
+        paramIndex++;
+      }
+      
+      // Occupation (ocupação)
+      if (npcData.occupation !== undefined) {
+        updateFields.push(`occupation = $${paramIndex}`);
+        params.push(npcData.occupation);
+        paramIndex++;
+      }
+      
+      // Location (localização)
+      if (npcData.location !== undefined) {
+        updateFields.push(`location = $${paramIndex}`);
+        params.push(npcData.location);
+        paramIndex++;
+      }
+      
+      // Appearance (aparência)
+      if (npcData.appearance !== undefined) {
+        updateFields.push(`appearance = $${paramIndex}`);
+        params.push(npcData.appearance);
+        paramIndex++;
+      }
+      
+      // Personality (personalidade)
+      if (npcData.personality !== undefined) {
+        updateFields.push(`personality = $${paramIndex}`);
+        params.push(npcData.personality);
+        paramIndex++;
+      }
+      
+      // Notes (notas)
+      if (npcData.notes !== undefined) {
+        updateFields.push(`notes = $${paramIndex}`);
+        params.push(npcData.notes);
+        paramIndex++;
+      }
+      
+      console.log("Campos a atualizar:", updateFields);
+      
+      // Se não há campos para atualizar, retornamos o NPC existente
+      if (updateFields.length === 0) {
+        const row = checkResult.rows[0];
         
-        // Adicionamos de volta os campos removidos na resposta
-        return { 
-          ...existingNpc, 
-          entityType: entityType || 'npc',
-          imageUrl: imageUrl || null,
-          motivation: motivation || null,
-          memorableTrait: memorableTrait || null,
-          relationships: relationships || null,
-          abilities: abilities || null,
-          threatOrUtility: threatOrUtility || null,
-          plotHooks: plotHooks || null
+        return {
+          id: row.id,
+          campaignId: row.campaign_id,
+          name: row.name,
+          role: row.role,
+          race: row.race,
+          occupation: row.occupation,
+          location: row.location,
+          appearance: row.appearance,
+          personality: row.personality,
+          notes: row.notes,
+          created: row.created,
+          updated: row.updated,
+          // Campos adicionais
+          entityType: 'npc',
+          motivation: null,
+          memorableTrait: null,
+          relationships: null,
+          abilities: null,
+          threatOrUtility: null,
+          plotHooks: null
         };
       }
       
-      const [npc] = await db.update(npcs).set(safeUpdateData).where(eq(npcs.id, id)).returning();
-      if (!npc) return undefined;
+      // Construir e executar a query de UPDATE
+      const updateQuery = `
+        UPDATE npcs 
+        SET ${updateFields.join(', ')} 
+        WHERE id = $1 
+        RETURNING id, campaign_id, name, role, race, occupation, location, appearance, personality, notes, created, updated
+      `;
       
-      // Adicionamos de volta os campos removidos na resposta
-      return { 
-        ...npc, 
-        entityType: entityType || npcData.entityType || npc.entityType || 'npc',
-        imageUrl: imageUrl || null,
-        motivation: motivation || null,
-        memorableTrait: memorableTrait || null,
-        relationships: relationships || null,
-        abilities: abilities || null,
-        threatOrUtility: threatOrUtility || null,
-        plotHooks: plotHooks || null
+      const updateResult = await db.execute(updateQuery, params);
+      
+      if (!updateResult.rows || updateResult.rows.length === 0) {
+        throw new Error("Falha ao atualizar NPC");
+      }
+      
+      const row = updateResult.rows[0];
+      
+      // Construir objeto NPC atualizado
+      return {
+        id: row.id,
+        campaignId: row.campaign_id,
+        name: row.name,
+        role: row.role,
+        race: row.race,
+        occupation: row.occupation,
+        location: row.location,
+        appearance: row.appearance,
+        personality: row.personality,
+        notes: row.notes,
+        created: row.created,
+        updated: row.updated,
+        // Campos adicionais
+        entityType: 'npc',
+        motivation: null,
+        memorableTrait: null,
+        relationships: null,
+        abilities: null,
+        threatOrUtility: null,
+        plotHooks: null
       };
     } catch (error) {
       console.error("Erro ao atualizar NPC:", error);
