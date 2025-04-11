@@ -495,6 +495,11 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
       personality: "", // vazio para manter compatibilidade
       occupation: "",  // vazio para manter compatibilidade
       location: "",    // vazio para manter compatibilidade
+      // Campos adicionados ao esquema
+      imageUrl: values.imageUrl || "",
+      role: values.role || "",
+      motivation: values.motivation || "",
+      entityType: values.entityType || "npc",
       // Usamos o campo abilities existente para armazenar habilidades
       abilities: values.abilities || "",
       // Campos de data
