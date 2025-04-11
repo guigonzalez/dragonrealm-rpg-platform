@@ -75,6 +75,11 @@ export const npcs = pgTable("npcs", {
   personality: text("personality"),
   abilities: text("abilities"),
   notes: text("notes"),
+  imageUrl: text("image_url"),
+  memorableTrait: text("memorable_trait"),
+  entityType: text("entity_type"),
+  role: text("role"),
+  motivation: text("motivation"),
   created: text("created").notNull(),
   updated: text("updated").notNull(),
 });
