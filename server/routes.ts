@@ -421,6 +421,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.log(`Imagem salva em: ${imagePath}`);
           // Atualizar a URL da imagem para o caminho do arquivo salvo
           modifiedReqBody.imageUrl = imagePath;
+          // Adicione log para confirmar o caminho da imagem após processamento
+          console.log(`Caminho da imagem após processamento: ${modifiedReqBody.imageUrl}`);
         } else {
           // Se não conseguir salvar, remover o campo para evitar salvar a string base64 no banco
           console.log('Falha ao processar imagem base64, removendo imageUrl');
