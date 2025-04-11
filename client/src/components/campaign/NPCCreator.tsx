@@ -342,13 +342,26 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
       // Extrair pontos de vida
       const healthPoints = editingNpc.healthPoints || 
                           (editingNpc.notes?.match(/Vida\/Resistência:\s*(\d+)/)?.[1] || "");
+
+      // Extrair ganchos de história
+      const plotHooksRegex = /Ganchos:\s*([^\n]+)/;
+      const plotHooks = editingNpc.plotHooks || 
+                        (editingNpc.notes && plotHooksRegex.test(editingNpc.notes) 
+                          ? editingNpc.notes.match(plotHooksRegex)[1] 
+                          : "");
+      
+      // Extrair relacionamentos
+      const relationsRegex = /Relações:\s*([^\n]+)/;
+      const extractedRelations = (editingNpc.notes && relationsRegex.test(editingNpc.notes) 
+                                ? editingNpc.notes.match(relationsRegex)[1] 
+                                : "");
       
       // Adicionar habilidades especiais baseado no campo abilities ou specialAbilities
       const specialAbilities = editingNpc.specialAbilities || editingNpc.abilities || "";
       
       // Combinar relacionamentos com informações de contexto
       const relationships = [
-        editingNpc.relationships || "",
+        editingNpc.relationships || extractedRelations || "",
         editingNpc.location ? `Localização: ${editingNpc.location}` : "",
       ].filter(Boolean).join("\n\n");
 
@@ -361,6 +374,7 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
         specialAbilities,
         relationships,
         healthPoints,
+        plotHooks,
         // Valores de atributos
         str,
         dex,
