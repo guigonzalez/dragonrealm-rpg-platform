@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Pen, Trash2, Plus, UserIcon, Swords } from "lucide-react";
+import { Pen, Trash2, Plus, UserIcon, Swords, User2, Skull } from "lucide-react";
 
 import NPCCreator from "./NPCCreator";
 
@@ -172,8 +172,25 @@ export default function NPCList({ campaignId }: NPCListProps) {
             <ScrollArea className="h-[calc(100vh-300px)] pr-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredNpcs.map((npc) => (
-                  <Card key={npc.id} className="overflow-hidden">
-                    <CardHeader className="pb-2">
+                  <Card key={npc.id} className="overflow-hidden flex flex-col">
+                    {npc.imageUrl ? (
+                      <div className="w-full h-48 overflow-hidden">
+                        <img 
+                          src={npc.imageUrl} 
+                          alt={npc.name} 
+                          className="w-full h-full object-cover object-center" 
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-full h-36 flex items-center justify-center bg-slate-100 dark:bg-slate-800">
+                        {npc.entityType === "creature" ? (
+                          <Skull className="h-16 w-16 text-slate-400" />
+                        ) : (
+                          <User2 className="h-16 w-16 text-slate-400" />
+                        )}
+                      </div>
+                    )}
+                    <CardHeader className={`pb-2 ${npc.imageUrl ? 'pt-3' : ''}`}>
                       <div className="flex justify-between items-start">
                         <div>
                           <CardTitle className="font-lora">{npc.name}</CardTitle>
@@ -194,7 +211,7 @@ export default function NPCList({ campaignId }: NPCListProps) {
                       </div>
                     </CardHeader>
 
-                    <CardContent className="pt-2">
+                    <CardContent className="pt-2 flex-grow">
                       {npc.motivation && (
                         <div className="mb-2">
                           <strong className="text-xs text-muted-foreground">{t("npc.motivation")}:</strong>
