@@ -423,9 +423,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Processar imagem base64 se existir
       let modifiedReqBody = { ...req.body };
+      
+      // Garantir que entityType está definido
+      if (!modifiedReqBody.entityType) {
+        modifiedReqBody.entityType = 'npc'; // Default para 'npc' se não estiver definido
+        console.log(`Definindo entityType para: ${modifiedReqBody.entityType}`);
+      }
+      
       if (req.body.imageUrl && req.body.imageUrl.startsWith('data:')) {
         // Salvar imagem base64 como arquivo
-        const imagePath = saveBase64Image(req.body.imageUrl, req.body.entityType || 'npc');
+        const imagePath = saveBase64Image(req.body.imageUrl, modifiedReqBody.entityType);
         if (imagePath) {
           console.log(`Imagem salva em: ${imagePath}`);
           
@@ -441,6 +448,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           delete modifiedReqBody.imageUrl;
         }
       }
+      console.log(`entityType para criação: ${modifiedReqBody.entityType}`);
       
       // Processar atributos e estatísticas da criatura/NPC extraindo de memorableTrait ou notes
       if (modifiedReqBody.memorableTrait && modifiedReqBody.memorableTrait.includes('FOR:')) {
@@ -487,6 +495,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         updated: now
       });
       
+      // Garantir que entityType está definido
+      if (!modifiedReqBody.entityType) {
+        modifiedReqBody.entityType = 'npc'; // Default para 'npc' se não estiver definido
+      }
+      
+      console.log('entityType antes da validação:', modifiedReqBody.entityType);
+      
       const npcData = insertNpcSchema.parse({
         ...modifiedReqBody,
         created: now,
@@ -494,6 +509,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
       
       console.log('Objeto após validação Zod:', npcData);
+      console.log('entityType após validação:', npcData.entityType);
       
       const npc = await storage.createNpc(npcData);
       res.status(201).json(npc);
@@ -580,9 +596,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Processar imagem base64 se existir
       let modifiedReqBody = { ...req.body };
+      
+      // Garantir que entityType está definido
+      if (!modifiedReqBody.entityType) {
+        // Manter o tipo existente ou definir como 'npc' se não houver
+        modifiedReqBody.entityType = npc.entityType || 'npc';
+        console.log(`Definindo entityType para: ${modifiedReqBody.entityType}`);
+      }
+      
       if (req.body.imageUrl && req.body.imageUrl.startsWith('data:')) {
         // Salvar imagem base64 como arquivo
-        const imagePath = saveBase64Image(req.body.imageUrl, req.body.entityType || 'npc');
+        const imagePath = saveBase64Image(req.body.imageUrl, modifiedReqBody.entityType);
         if (imagePath) {
           console.log(`Imagem atualizada e salva em: ${imagePath}`);
           // Atualizar a URL da imagem para o caminho do arquivo salvo
@@ -599,6 +623,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ...modifiedReqBody,
         updated: new Date().toISOString()
       }, null, 2));
+      console.log(`entityType para atualização: ${modifiedReqBody.entityType}`);
       
       // Processar atributos e estatísticas da criatura/NPC extraindo de memorableTrait ou notes
       if (modifiedReqBody.memorableTrait && modifiedReqBody.memorableTrait.includes('FOR:')) {
