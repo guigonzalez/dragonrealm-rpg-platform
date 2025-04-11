@@ -322,6 +322,16 @@
     "motivation": "Motivação",
     "memorableTrait": "Traço Memorável",
     "abilities": "Habilidades",
+    "specialAbilities": "Habilidades Especiais",
+    "basicInfo": "Informações Básicas",
+    "combatInfo": "Informações de Combate",
+    "additionalInfo": "Informações Adicionais",
+    "notes": "Notas",
+    "healthPoints": "Pontos de Vida",
+    "attributes": "Atributos",
+    "threatLevel": "Nível de Ameaça",
+    "relationships": "Relacionamentos",
+    "plotHooks": "Ganchos de História",
     "createSuccess": {
       "title": "Criatura Criada",
       "description": "A criatura foi criada com sucesso."
