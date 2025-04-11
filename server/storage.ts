@@ -596,12 +596,7 @@ export class DatabaseStorage implements IStorage {
         paramIndex++;
       }
       
-      // Role (papel)
-      if (npcData.role !== undefined) {
-        updateFields.push(`role = $${paramIndex}`);
-        params.push(npcData.role);
-        paramIndex++;
-      }
+      // Role não existe na tabela, não atualizaremos esta coluna
       
       // Race (raça)
       if (npcData.race !== undefined) {
@@ -673,7 +668,7 @@ export class DatabaseStorage implements IStorage {
           updated: row.updated,
           // Campos adicionais
           entityType: 'npc',
-          role: row.role || null,
+          role: null,
           motivation: null,
           memorableTrait: null,
           relationships: null,
@@ -714,7 +709,7 @@ export class DatabaseStorage implements IStorage {
         updated: row.updated,
         // Campos adicionais
         entityType: 'npc',
-        role: row.role || null,
+        role: null,
         motivation: null,
         memorableTrait: null,
         relationships: null,
