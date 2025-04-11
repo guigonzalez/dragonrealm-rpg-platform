@@ -51,6 +51,8 @@ function saveBase64Image(base64Data: string, entityType: string = 'npc'): string
     if (!fs.existsSync(assetsDir)) {
       fs.mkdirSync(assetsDir, { recursive: true });
     }
+    
+    console.log(`Diretório de assets: ${path.resolve(assetsDir)}`);
 
     // Extrair os dados da string base64
     const matches = base64Data.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
@@ -78,13 +80,20 @@ function saveBase64Image(base64Data: string, entityType: string = 'npc'): string
     const hash = crypto.createHash('md5').update(base64.substring(0, 100) + Date.now()).digest('hex');
     const filename = `${entityType}-${hash}${extension}`;
     const filepath = `${assetsDir}/${filename}`;
+    
+    console.log(`Criando arquivo em: ${filepath}`);
 
     // Salvar o arquivo
     const buffer = Buffer.from(base64, 'base64');
     fs.writeFileSync(filepath, buffer);
+    
+    // Confirmar caminho após gravação
+    console.log(`Arquivo salvo com sucesso: ${fs.existsSync(filepath)}`);
 
     // Retornar o caminho público para o arquivo
-    return `/assets/${filename}`;
+    const publicPath = `/assets/${filename}`;
+    console.log(`Caminho público retornado: ${publicPath}`);
+    return publicPath;
   } catch (error) {
     console.error('Erro ao salvar imagem:', error);
     return null;

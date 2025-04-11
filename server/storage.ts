@@ -557,17 +557,22 @@ export class DatabaseStorage implements IStorage {
       // Converter snake_case para camelCase e registrar para depuração
       console.log("NPC retornado do banco:", JSON.stringify(npcResult, null, 2));
       
-      // Verificando explicitamente o campo image_url
-      console.log(`Campo image_url do banco: "${npcResult.image_url}"`);
-      
-      const npc = {
-        ...npcResult,
-        imageUrl: npcResult.image_url,
+      const npc: Npc = {
+        id: npcResult.id,
+        campaignId: npcResult.campaignId,
+        name: npcResult.name,
+        race: npcResult.race,
+        imageUrl: npcResult.image_url, // Mapeamento explícito de snake_case para camelCase
         memorableTrait: npcResult.memorable_trait,
         entityType: npcResult.entity_type || 'npc',
         role: npcResult.role || null,
         motivation: npcResult.motivation || null,
-        // Novos campos para atributos de criatura
+        occupation: npcResult.occupation || null,
+        location: npcResult.location || null,
+        appearance: npcResult.appearance || null,
+        personality: npcResult.personality || null,
+        abilities: npcResult.abilities || null,
+        notes: npcResult.notes || null,
         strength: npcResult.strength || null,
         dexterity: npcResult.dexterity || null, 
         constitution: npcResult.constitution || null,
@@ -576,8 +581,13 @@ export class DatabaseStorage implements IStorage {
         charisma: npcResult.charisma || null,
         healthPoints: npcResult.health_points || null,
         threatLevel: npcResult.threat_level || null,
-        specialAbilities: npcResult.special_abilities || null
+        specialAbilities: npcResult.special_abilities || null,
+        created: npcResult.created,
+        updated: npcResult.updated
       };
+      
+      // Verificando o objeto convertido
+      console.log("Campo imageUrl após conversão:", npc.imageUrl);
       
       // Verificando o objeto convertido
       console.log("NPC convertido com imageUrl:", npc.imageUrl);
@@ -647,14 +657,22 @@ export class DatabaseStorage implements IStorage {
       const npcResult = result[0];
       
       // Converter snake_case para camelCase
-      return {
-        ...npcResult,
-        imageUrl: npcResult.image_url,
+      const npc: Npc = {
+        id: npcResult.id,
+        campaignId: npcResult.campaignId,
+        name: npcResult.name,
+        race: npcResult.race,
+        imageUrl: npcResult.image_url, // Mapeamento explícito de snake_case para camelCase
         memorableTrait: npcResult.memorable_trait,
         entityType: npcResult.entity_type || 'npc',
         role: npcResult.role || null,
         motivation: npcResult.motivation || null,
-        // Novos campos para atributos de criatura
+        occupation: npcResult.occupation || null,
+        location: npcResult.location || null,
+        appearance: npcResult.appearance || null,
+        personality: npcResult.personality || null,
+        abilities: npcResult.abilities || null,
+        notes: npcResult.notes || null,
         strength: npcResult.strength || null,
         dexterity: npcResult.dexterity || null, 
         constitution: npcResult.constitution || null,
@@ -663,8 +681,13 @@ export class DatabaseStorage implements IStorage {
         charisma: npcResult.charisma || null,
         healthPoints: npcResult.health_points || null,
         threatLevel: npcResult.threat_level || null,
-        specialAbilities: npcResult.special_abilities || null
+        specialAbilities: npcResult.special_abilities || null,
+        created: npcResult.created,
+        updated: npcResult.updated
       };
+      
+      console.log("Campo imageUrl no updateNpc:", npc.imageUrl);
+      return npc;
     } catch (error) {
       console.error("Erro ao atualizar NPC:", error);
       return undefined;
