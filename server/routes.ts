@@ -522,32 +522,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Rota para gerar automaticamente um NPC ou criatura com a OpenAI
-  app.post("/api/generate-npc", requireAuth, async (req, res) => {
-    try {
-      const { tipo = 'npc', campanha, nivel, terreno, estilo } = req.body;
-      
-      // Importar dinamicamente para evitar erros se a API_KEY não existir
-      const { generateNPC } = await import('./openai');
-      
-      // Gerar o NPC com as opções fornecidas
-      const generatedNPC = await generateNPC({ 
-        tipo: tipo as 'npc' | 'creature',
-        campanha,
-        nivel,
-        terreno,
-        estilo 
-      });
-      
-      res.json(generatedNPC);
-    } catch (error) {
-      console.error("Erro ao gerar NPC:", error);
-      res.status(500).json({ 
-        message: "Falha ao gerar NPC", 
-        error: error instanceof Error ? error.message : String(error) 
-      });
-    }
-  });
 
   app.put("/api/npcs/:id", requireAuth, async (req, res) => {
     try {
@@ -1190,18 +1164,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Rota para gerar automaticamente um NPC ou criatura com a OpenAI
   app.post("/api/generate-npc", requireAuth, async (req, res) => {
     try {
-      const { tipo = 'npc', campanha, nivel, terreno, estilo } = req.body;
+      const { tipo = 'npc', campanha, nivel, terreno, estilo, campaignId } = req.body;
       
       // Importar dinamicamente para evitar erros se a API_KEY não existir
       const { generateNPC } = await import('./openai');
       
-      // Gerar o NPC com as opções fornecidas
+      // Se tiver um campaignId, buscar informações da campanha para contextualizar a geração
+      let campaignInfo = '';
+      if (campaignId) {
+        try {
+          const campaign = await storage.getCampaign(parseInt(String(campaignId)));
+          if (campaign) {
+            campaignInfo = `
+              Nome da Campanha: ${campaign.name}
+              Descrição: ${campaign.description || 'Não disponível'}
+              Ambiente: ${campaign.setting || 'Não especificado'}
+              Estilo: ${campaign.gameSystem || 'D&D 5e'}
+            `;
+            
+            // Buscar NPCs existentes para contexto adicional
+            const npcs = await storage.getNpcsByCampaignId(parseInt(String(campaignId)));
+            if (npcs && npcs.length > 0) {
+              campaignInfo += '\nPersonagens importantes na campanha:\n';
+              
+              // Limitar a 3 NPCs para evitar contexto muito grande
+              const limitedNpcs = npcs.slice(0, 3);
+              for (const npc of limitedNpcs) {
+                campaignInfo += `- ${npc.name}: ${npc.role || 'Papel desconhecido'}\n`;
+              }
+            }
+            
+            // Buscar localizações para contexto adicional
+            const locations = await storage.getLocationsByCampaignId(parseInt(String(campaignId)));
+            if (locations && locations.length > 0) {
+              campaignInfo += '\nLocais importantes na campanha:\n';
+              
+              // Limitar a 3 locais para evitar contexto muito grande
+              const limitedLocations = locations.slice(0, 3);
+              for (const location of limitedLocations) {
+                campaignInfo += `- ${location.name}: ${location.description ? location.description.substring(0, 100) + '...' : 'Sem descrição'}\n`;
+              }
+            }
+          }
+        } catch (err) {
+          console.warn('Erro ao buscar informações da campanha para contexto:', err);
+          // Continue mesmo se não conseguir buscar informações da campanha
+        }
+      }
+      
+      console.log('Informações da campanha para contexto:', campaignInfo || 'Nenhuma');
+      
+      // Gerar o NPC com as opções fornecidas e contexto da campanha
       const generatedNPC = await generateNPC({ 
         tipo: tipo as 'npc' | 'creature',
-        campanha,
+        campanha: campanha || '',
         nivel,
         terreno,
-        estilo 
+        estilo,
+        // Adicionar informações da campanha como contexto para a geração
+        campaignContext: campaignInfo || undefined
       });
       
       res.json(generatedNPC);

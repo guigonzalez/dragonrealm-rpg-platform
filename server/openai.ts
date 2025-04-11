@@ -9,6 +9,7 @@ export type NPCGenerationOptions = {
   nivel?: string;
   terreno?: string;
   estilo?: string;
+  campaignContext?: string; // Adiciona contexto da campanha
 };
 
 export interface GeneratedNPC {
@@ -71,6 +72,11 @@ export async function generateNPC(options: NPCGenerationOptions): Promise<Genera
     // Adicionar preferência de estilo se fornecido
     if (options.estilo) {
       prompt += ` O estilo geral deve ser: ${options.estilo}.`;
+    }
+    
+    // Adicionar contexto da campanha se fornecido
+    if (options.campaignContext) {
+      prompt += `\n\nInformações detalhadas da campanha para usar como referência:\n${options.campaignContext}\n\nAo criar ${isCreature ? 'a criatura' : 'o NPC'}, use essas informações para incorporar personagens, locais e temas existentes na campanha.`;
     }
     
     // Solicitar formato específico com todos os campos
