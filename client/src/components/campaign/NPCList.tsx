@@ -180,11 +180,27 @@ export default function NPCList({ campaignId }: NPCListProps) {
                             npc.imageUrl && npc.imageUrl.startsWith("data:") 
                               ? npc.imageUrl 
                               : npc.imageUrl && npc.imageUrl.startsWith("/") 
-                                ? `${npc.imageUrl}` 
-                                : npc.imageUrl
+                                ? npc.imageUrl 
+                                : `/${npc.imageUrl}`
                           } 
                           alt={npc.name} 
                           className="w-full h-full object-cover object-center" 
+                          onError={(e) => {
+                            console.error("Erro ao carregar imagem:", npc.imageUrl);
+                            e.currentTarget.src = ""; // Limpa a src para evitar loops
+                            e.currentTarget.alt = "Imagem indisponível";
+                            e.currentTarget.style.display = "none"; // Esconde o elemento
+                            // Se houver erro, mostra o ícone padrão
+                            const parentDiv = e.currentTarget.parentElement;
+                            if (parentDiv) {
+                              parentDiv.classList.add("flex", "items-center", "justify-center", "bg-slate-100", "dark:bg-slate-800");
+                              const iconElement = document.createElement("div");
+                              iconElement.innerHTML = npc.entityType === "creature" 
+                                ? '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-16 w-16 text-slate-400"><path d="M9.5 9h5L12 4Z"/><path d="m7.5 15.5 9-9"/><path d="M16 11.5V15l3 2.5"/><path d="M11.5 16H7l-2.5 3"/><path d="M14.5 11.5H17"/><path d="M6.5 16v2.5"/></svg>'
+                                : '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-16 w-16 text-slate-400"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>';
+                              parentDiv.appendChild(iconElement);
+                            }
+                          }}
                         />
                       </div>
                     ) : (
@@ -211,7 +227,7 @@ export default function NPCList({ campaignId }: NPCListProps) {
                               ROLE_COLORS[npc.role as keyof typeof ROLE_COLORS] || "bg-slate-600 hover:bg-slate-700"
                             }
                           >
-                            {t(`npc.roleOptions.${npc.role}`) || npc.role}
+                            {npc.role === "Neutro" ? "Neutro" : t(`npc.roleOptions.${npc.role}`) || npc.role}
                           </Badge>
                         )}
                       </div>
