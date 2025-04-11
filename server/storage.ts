@@ -478,57 +478,59 @@ export class DatabaseStorage implements IStorage {
 
   async getNpcsByCampaignId(campaignId: number): Promise<Npc[]> {
     try {
-      // Usando Drizzle ORM em vez de SQL bruta
-      const result = await db.select().from(npcs).where(eq(npcs.campaignId, campaignId)).orderBy(npcs.name);
+      // Vamos usar SQL nativo para garantir que todos os campos snake_case são acessados corretamente
+      const result = await pool.query(
+        `SELECT * FROM npcs WHERE campaign_id = $1 ORDER BY name`, 
+        [campaignId]
+      );
       
       // Adicionar log para depuração
-      console.log(`Recuperados ${result.length} NPCs do banco de dados para campanha ${campaignId}`);
-      if (result.length > 0) {
-        console.log("Primeiro NPC recuperado:", JSON.stringify(result[0], null, 2));
+      console.log(`Recuperados ${result.rows.length} NPCs do banco de dados para campanha ${campaignId}`);
+      if (result.rows.length > 0) {
+        console.log("Primeiro NPC recuperado:", JSON.stringify(result.rows[0], null, 2));
       }
       
-      // Converter todos os campos snake_case para camelCase
-      const mappedResults = result.map(npcResult => {
-        // Verificar dados brutos
-        console.log(`Processando NPC ${npcResult.id} - ${npcResult.name}`);
-        console.log(`Campo image_url bruto: "${npcResult.image_url}"`);
+      // Mapear os resultados da SQL diretamente para o formato que o frontend espera
+      return result.rows.map(row => {
+        console.log(`Processando NPC ${row.id} - ${row.name}`);
+        console.log(`Campo image_url do banco: "${row.image_url}"`);
         
+        // Mapeamento explícito de snake_case para camelCase
         const npc: Npc = {
-          id: npcResult.id,
-          campaignId: npcResult.campaignId,
-          name: npcResult.name,
-          race: npcResult.race,
-          occupation: npcResult.occupation,
-          location: npcResult.location,
-          appearance: npcResult.appearance,
-          personality: npcResult.personality,
-          abilities: npcResult.abilities,
-          notes: npcResult.notes,
-          imageUrl: npcResult.image_url,  // Mapeamento explícito de snake_case para camelCase
-          memorableTrait: npcResult.memorable_trait,
-          entityType: npcResult.entity_type || 'npc',
-          role: npcResult.role || null,
-          motivation: npcResult.motivation || null,
-          strength: npcResult.strength || null,
-          dexterity: npcResult.dexterity || null, 
-          constitution: npcResult.constitution || null,
-          intelligence: npcResult.intelligence || null,
-          wisdom: npcResult.wisdom || null,
-          charisma: npcResult.charisma || null,
-          healthPoints: npcResult.health_points || null,
-          threatLevel: npcResult.threat_level || null,
-          specialAbilities: npcResult.special_abilities || null,
-          created: npcResult.created,
-          updated: npcResult.updated
+          id: row.id,
+          campaignId: row.campaign_id,
+          name: row.name,
+          race: row.race,
+          occupation: row.occupation,
+          location: row.location,
+          appearance: row.appearance,
+          personality: row.personality,
+          abilities: row.abilities,
+          notes: row.notes,
+          // Campos que estavam apresentando problemas 
+          imageUrl: row.image_url, 
+          memorableTrait: row.memorable_trait,
+          entityType: row.entity_type || 'npc',
+          role: row.role,
+          motivation: row.motivation,
+          strength: row.strength,
+          dexterity: row.dexterity, 
+          constitution: row.constitution,
+          intelligence: row.intelligence,
+          wisdom: row.wisdom,
+          charisma: row.charisma,
+          healthPoints: row.health_points,
+          threatLevel: row.threat_level,
+          specialAbilities: row.special_abilities,
+          plotHooks: row.plot_hooks,
+          created: row.created,
+          updated: row.updated
         };
         
-        // Verificar após o mapeamento
         console.log(`Campo imageUrl após mapeamento: "${npc.imageUrl}"`);
         
         return npc;
       });
-      
-      return mappedResults;
     } catch (error) {
       console.error("Erro ao buscar NPCs:", error);
       return [];
