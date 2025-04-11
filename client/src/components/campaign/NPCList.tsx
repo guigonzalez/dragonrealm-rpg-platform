@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Pen, Trash2, Plus, UserIcon, Swords, User2, Skull, Eye } from "lucide-react";
+import { Pen, Trash2, Plus, UserIcon, Swords, User2, Skull, Eye, ArrowLeft } from "lucide-react";
 
 import NPCCreator from "./NPCCreator";
 import NPCViewer from "./NPCViewer";
@@ -34,6 +34,7 @@ export default function NPCList({ campaignId }: NPCListProps) {
   const [showCreator, setShowCreator] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
   const [editingNpc, setEditingNpc] = useState<Npc | null>(null);
+  const [viewingNpc, setViewingNpc] = useState<Npc | null>(null);
 
   // Fetch NPCs
   const { data: npcs = [], isLoading, isError } = useQuery<Npc[]>({
@@ -90,6 +91,14 @@ export default function NPCList({ campaignId }: NPCListProps) {
     deleteMutation.mutate(npcId);
   };
 
+  const handleView = (npc: Npc) => {
+    setViewingNpc(npc);
+  };
+
+  const handleCloseViewer = () => {
+    setViewingNpc(null);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[200px]">
@@ -118,6 +127,25 @@ export default function NPCList({ campaignId }: NPCListProps) {
         editingNpc={editingNpc}
         onSuccess={() => setShowCreator(false)}
       />
+    );
+  }
+
+  if (viewingNpc) {
+    return (
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <Button variant="ghost" onClick={handleCloseViewer} className="gap-1">
+            <ArrowLeft className="h-4 w-4" />
+            {t("common.back")}
+          </Button>
+          <h2 className="text-2xl font-bold font-lora text-primary">
+            {viewingNpc.entityType === "creature" ? t("npc.viewCreature") : t("npc.viewNpc")}
+          </h2>
+          <div className="w-28"></div> {/* Espaçador para alinhar o título */}
+        </div>
+
+        <NPCViewer npc={viewingNpc} onClose={handleCloseViewer} />
+      </div>
     );
   }
 
@@ -228,6 +256,10 @@ export default function NPCList({ campaignId }: NPCListProps) {
                     </CardContent>
 
                     <CardFooter className="flex justify-end gap-2 pt-2">
+                      <Button variant="secondary" size="sm" onClick={() => handleView(npc)}>
+                        <Eye className="h-4 w-4 mr-1" /> {t("common.view")}
+                      </Button>
+                      
                       <Button variant="outline" size="sm" onClick={() => handleEdit(npc)}>
                         <Pen className="h-4 w-4 mr-1" /> {t("common.edit")}
                       </Button>

@@ -33,6 +33,8 @@
     "comingSoon": "Em breve",
     "all": "Todos",
     "deleteWarning": "Tem certeza que deseja excluir {{item}}? Esta ação não pode ser desfeita.",
+    "view": "Visualizar",
+    "back": "Voltar",
     "uploadSuccess": "Upload realizado com sucesso",
     "uploadError": "Erro ao fazer upload",
     "uploading": "Enviando..."
@@ -217,6 +219,8 @@
     "npcs": "NPCs",
     "npc": "NPC",
     "creature": "Criatura",
+    "viewNpc": "Ver Detalhes do NPC",
+    "viewCreature": "Ver Detalhes da Criatura",
     "createNpc": "Criar Personagem",
     "editNpc": "Editar Personagem",
     "npcName": "Nome do Personagem",
