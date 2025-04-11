@@ -178,6 +178,11 @@ export default function DashboardPage() {
                                 src={character.imageUrl} 
                                 alt={character.name} 
                                 className="h-full w-full object-cover"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.src = "https://placehold.co/56x56?text=Character";
+                                  target.className = "h-full w-full object-contain";
+                                }}
                               />
                             </div>
                           )}
