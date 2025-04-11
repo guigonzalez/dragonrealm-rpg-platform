@@ -80,6 +80,8 @@ export const npcs = pgTable("npcs", {
   entityType: text("entity_type"),
   role: text("role"),
   motivation: text("motivation"),
+  relationships: text("relationships"),
+  plotHooks: text("plot_hooks"),
   // Atributos de Criatura/NPC
   strength: text("strength"),
   dexterity: text("dexterity"),
