@@ -35,6 +35,34 @@ export interface GeneratedNPC {
   specialAbilities: string;
   plotHooks: string;
   entityType: 'npc' | 'creature';
+  imageUrl?: string; // URL da imagem gerada
+}
+
+// Função para gerar imagens usando DALL-E
+export async function generateImage(prompt: string): Promise<string | null> {
+  try {
+    console.log("Gerando imagem com DALL-E:", prompt);
+    
+    const response = await openai.images.generate({
+      model: "dall-e-3",
+      prompt: prompt,
+      n: 1,
+      size: "1024x1024",
+      quality: "standard",
+      response_format: "url",
+    });
+
+    console.log("Resposta do DALL-E recebida");
+    
+    if (response.data && response.data.length > 0 && response.data[0].url) {
+      return response.data[0].url;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error("Erro ao gerar imagem com DALL-E:", error);
+    return null;
+  }
 }
 
 export async function generateNPC(options: NPCGenerationOptions): Promise<GeneratedNPC> {
@@ -120,10 +148,28 @@ export async function generateNPC(options: NPCGenerationOptions): Promise<Genera
     
     const data = JSON.parse(content);
     
-    // Retorna o NPC gerado com o tipo selecionado
+    // Gerar uma imagem com DALL-E baseada nas características do NPC
+    let imageUrl = null;
+    try {
+      // Criando um prompt para a imagem com base nas características do NPC/Criatura
+      const imagePrompt = isCreature
+        ? `Uma ilustração fantástica e detalhada para D&D de uma criatura chamada "${data.name}". ${data.appearance}. ${data.memorableTrait}. Estilo de arte de fantasia medieval.`
+        : `Um retrato de fantasia detalhado para D&D de ${data.race ? 'um(a) ' + data.race : 'um personagem'} chamado(a) "${data.name}". ${data.appearance}. ${data.memorableTrait}. Estilo de arte de fantasia medieval.`;
+      
+      console.log("Prompt para geração de imagem:", imagePrompt);
+      
+      // Gerar a imagem
+      imageUrl = await generateImage(imagePrompt);
+      console.log("URL da imagem gerada:", imageUrl);
+    } catch (imageError) {
+      console.error("Erro ao gerar imagem, continuando sem imagem:", imageError);
+    }
+    
+    // Retorna o NPC gerado com o tipo selecionado e imagem (se existir)
     return {
       ...data,
-      entityType: options.tipo
+      entityType: options.tipo,
+      imageUrl: imageUrl || undefined
     };
   } catch (error) {
     console.error("Erro ao gerar NPC:", error);
