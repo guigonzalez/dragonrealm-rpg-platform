@@ -1,4 +1,4 @@
-import { users, type User, type InsertUser, characters, type Character, type InsertCharacter, campaigns, type Campaign, type InsertCampaign, npcs, type Npc, type InsertNpc, encounters, type Encounter, type InsertEncounter, campaignLocations, type CampaignLocation, type InsertCampaignLocation, sessionNotes, type SessionNote, type InsertSessionNote } from "@shared/schema";
+import { users, type User, type InsertUser, characters, type Character, type InsertCharacter, campaigns, type Campaign, type InsertCampaign, npcs, type Npc, type InsertNpc, creatures, type Creature, type InsertCreature, encounters, type Encounter, type InsertEncounter, campaignLocations, type CampaignLocation, type InsertCampaignLocation, sessionNotes, type SessionNote, type InsertSessionNote } from "@shared/schema";
 import session from "express-session";
 import createMemoryStore from "memorystore";
 import connectPg from "connect-pg-simple";
@@ -94,6 +94,7 @@ export class MemStorage implements IStorage {
     this.characters = new Map();
     this.campaigns = new Map();
     this.npcs = new Map();
+    this.creatures = new Map();
     this.encounters = new Map();
     this.locations = new Map();
     this.sessionNotes = new Map();
@@ -102,6 +103,7 @@ export class MemStorage implements IStorage {
     this.characterIdCounter = 1;
     this.campaignIdCounter = 1;
     this.npcIdCounter = 1;
+    this.creatureIdCounter = 1;
     this.encounterIdCounter = 1;
     this.locationIdCounter = 1;
     this.sessionNoteIdCounter = 1;
@@ -235,6 +237,37 @@ export class MemStorage implements IStorage {
 
   async deleteNpc(id: number): Promise<boolean> {
     return this.npcs.delete(id);
+  }
+
+  // Creature methods
+  async getCreature(id: number): Promise<Creature | undefined> {
+    return this.creatures.get(id);
+  }
+
+  async getCreaturesByCampaignId(campaignId: number): Promise<Creature[]> {
+    return Array.from(this.creatures.values()).filter(
+      (creature) => creature.campaignId === campaignId,
+    );
+  }
+
+  async createCreature(insertCreature: InsertCreature): Promise<Creature> {
+    const id = this.creatureIdCounter++;
+    const creature: Creature = { ...insertCreature, id };
+    this.creatures.set(id, creature);
+    return creature;
+  }
+
+  async updateCreature(id: number, creatureData: Partial<Creature>): Promise<Creature | undefined> {
+    const creature = await this.getCreature(id);
+    if (!creature) return undefined;
+    
+    const updatedCreature = { ...creature, ...creatureData };
+    this.creatures.set(id, updatedCreature);
+    return updatedCreature;
+  }
+
+  async deleteCreature(id: number): Promise<boolean> {
+    return this.creatures.delete(id);
   }
 
   // Encounter methods
@@ -744,6 +777,113 @@ export class DatabaseStorage implements IStorage {
   async deleteNpc(id: number): Promise<boolean> {
     const result = await db.delete(npcs).where(eq(npcs.id, id));
     return result.rowCount ? result.rowCount > 0 : false;
+  }
+
+  // Creature methods
+  async getCreature(id: number): Promise<Creature | undefined> {
+    try {
+      const [creatureResult] = await db.select().from(creatures).where(eq(creatures.id, id));
+      if (!creatureResult) return undefined;
+      
+      // Convertendo snake_case para camelCase para os campos
+      const creature = {
+        ...creatureResult,
+        // Ajustando para campos do schema
+        entityType: 'creature'
+      };
+      
+      return creature;
+    } catch (error) {
+      console.error("Erro ao buscar Criatura:", error);
+      return undefined;
+    }
+  }
+
+  async getCreaturesByCampaignId(campaignId: number): Promise<Creature[]> {
+    try {
+      // Usando ORM para buscar criaturas
+      const creatureResults = await db.select().from(creatures)
+        .where(eq(creatures.campaignId, campaignId))
+        .orderBy(creatures.name);
+      
+      console.log(`Recuperadas ${creatureResults.length} Criaturas do banco de dados para campanha ${campaignId}`);
+      
+      // Mapear os resultados para o formato esperado pelo frontend
+      return creatureResults.map(row => ({
+        ...row,
+        entityType: 'creature'
+      }));
+    } catch (error) {
+      console.error("Erro ao buscar Criaturas:", error);
+      return [];
+    }
+  }
+
+  async createCreature(insertCreature: InsertCreature): Promise<Creature> {
+    try {
+      console.log("Inserindo Criatura na DatabaseStorage:", JSON.stringify(insertCreature, null, 2));
+      
+      // Preparando dados para inserção
+      const data = {
+        ...insertCreature
+      };
+      
+      // Inserindo usando ORM
+      const [creatureResult] = await db.insert(creatures).values(data).returning();
+      
+      if (!creatureResult) {
+        throw new Error("Falha ao inserir Criatura");
+      }
+      
+      // Convertendo para o formato esperado
+      const creature: Creature = {
+        ...creatureResult,
+        entityType: 'creature'
+      };
+      
+      return creature;
+    } catch (error) {
+      console.error("Erro ao criar Criatura:", error);
+      throw error;
+    }
+  }
+
+  async updateCreature(id: number, creatureData: Partial<Creature>): Promise<Creature | undefined> {
+    try {
+      // Verificando se a criatura existe
+      const existingCreature = await this.getCreature(id);
+      if (!existingCreature) {
+        return undefined;
+      }
+      
+      // Atualizando a criatura
+      const [updatedCreature] = await db.update(creatures)
+        .set(creatureData)
+        .where(eq(creatures.id, id))
+        .returning();
+      
+      if (!updatedCreature) {
+        return undefined;
+      }
+      
+      return {
+        ...updatedCreature,
+        entityType: 'creature'
+      };
+    } catch (error) {
+      console.error("Erro ao atualizar Criatura:", error);
+      return undefined;
+    }
+  }
+
+  async deleteCreature(id: number): Promise<boolean> {
+    try {
+      const result = await db.delete(creatures).where(eq(creatures.id, id));
+      return result.rowCount ? result.rowCount > 0 : false;
+    } catch (error) {
+      console.error("Erro ao deletar Criatura:", error);
+      return false;
+    }
   }
 
   // Encounter methods

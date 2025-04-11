@@ -191,10 +191,24 @@ export type InsertCampaign = z.infer<typeof insertCampaignSchema>;
 export type Campaign = typeof campaigns.$inferSelect;
 
 export type InsertNpc = z.infer<typeof insertNpcSchema>;
-export type Npc = typeof npcs.$inferSelect;
+export type Npc = typeof npcs.$inferSelect & {
+  entityType?: 'npc';
+  // Campos adicionais que podem ser utilizados com NPCs (para manter compatibilidade)
+  strength?: string | null;
+  dexterity?: string | null;
+  constitution?: string | null;
+  intelligence?: string | null;
+  wisdom?: string | null;
+  charisma?: string | null;
+  healthPoints?: string | null;
+  threatLevel?: string | null;
+  specialAbilities?: string | null;
+};
 
 export type InsertCreature = z.infer<typeof insertCreatureSchema>;
-export type Creature = typeof creatures.$inferSelect;
+export type Creature = typeof creatures.$inferSelect & {
+  entityType: 'creature';
+};
 
 export type InsertEncounter = z.infer<typeof insertEncounterSchema>;
 export type Encounter = typeof encounters.$inferSelect;
