@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Skull } from "lucide-react";
 
 type CreatureViewerProps = {
-  creature: Creature;
+  creature: Creature & {
+    location?: string; // Adicionado para compatibilidade
+  };
   onClose?: () => void;
 };
 
@@ -150,11 +152,11 @@ export default function CreatureViewer({ creature, onClose = () => {} }: Creatur
           )}
           
           {/* Terreno */}
-          {(creature.location || notesInfo.terrain) && (
+          {notesInfo.terrain && (
             <div>
               <h4 className="text-sm font-medium mb-1">Terreno</h4>
               <p className="text-muted-foreground">
-                {creature.location || notesInfo.terrain}
+                {notesInfo.terrain}
               </p>
             </div>
           )}
