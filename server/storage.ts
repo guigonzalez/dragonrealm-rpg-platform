@@ -456,7 +456,17 @@ export class DatabaseStorage implements IStorage {
         memorableTrait: npcResult.memorable_trait,
         entityType: npcResult.entity_type || 'npc',
         role: npcResult.role || null,
-        motivation: npcResult.motivation || null
+        motivation: npcResult.motivation || null,
+        // Novos campos para atributos de criatura
+        strength: npcResult.strength || null,
+        dexterity: npcResult.dexterity || null, 
+        constitution: npcResult.constitution || null,
+        intelligence: npcResult.intelligence || null,
+        wisdom: npcResult.wisdom || null,
+        charisma: npcResult.charisma || null,
+        healthPoints: npcResult.health_points || null,
+        threatLevel: npcResult.threat_level || null,
+        specialAbilities: npcResult.special_abilities || null
       };
       
       return npc;
@@ -479,7 +489,17 @@ export class DatabaseStorage implements IStorage {
         memorableTrait: npcResult.memorable_trait,
         entityType: npcResult.entity_type || 'npc',
         role: npcResult.role || null,
-        motivation: npcResult.motivation || null
+        motivation: npcResult.motivation || null,
+        // Novos campos para atributos de criatura
+        strength: npcResult.strength || null,
+        dexterity: npcResult.dexterity || null, 
+        constitution: npcResult.constitution || null,
+        intelligence: npcResult.intelligence || null,
+        wisdom: npcResult.wisdom || null,
+        charisma: npcResult.charisma || null,
+        healthPoints: npcResult.health_points || null,
+        threatLevel: npcResult.threat_level || null,
+        specialAbilities: npcResult.special_abilities || null
       }));
     } catch (error) {
       console.error("Erro ao buscar NPCs:", error);
@@ -506,6 +526,16 @@ export class DatabaseStorage implements IStorage {
         entity_type: insertNpc.entityType || 'npc',
         role: insertNpc.role || null,
         motivation: insertNpc.motivation || null,
+        // Novos campos para atributos de criatura
+        strength: insertNpc.strength || null,
+        dexterity: insertNpc.dexterity || null,
+        constitution: insertNpc.constitution || null,
+        intelligence: insertNpc.intelligence || null,
+        wisdom: insertNpc.wisdom || null,
+        charisma: insertNpc.charisma || null,
+        health_points: insertNpc.healthPoints || null,
+        threat_level: insertNpc.threatLevel || null,
+        special_abilities: insertNpc.specialAbilities || null,
         created: insertNpc.created,
         updated: insertNpc.updated
       };
@@ -528,7 +558,17 @@ export class DatabaseStorage implements IStorage {
         memorableTrait: npcResult.memorable_trait,
         entityType: npcResult.entity_type || 'npc',
         role: npcResult.role || null,
-        motivation: npcResult.motivation || null
+        motivation: npcResult.motivation || null,
+        // Novos campos para atributos de criatura
+        strength: npcResult.strength || null,
+        dexterity: npcResult.dexterity || null, 
+        constitution: npcResult.constitution || null,
+        intelligence: npcResult.intelligence || null,
+        wisdom: npcResult.wisdom || null,
+        charisma: npcResult.charisma || null,
+        healthPoints: npcResult.health_points || null,
+        threatLevel: npcResult.threat_level || null,
+        specialAbilities: npcResult.special_abilities || null
       };
       
       return npc;
@@ -567,6 +607,17 @@ export class DatabaseStorage implements IStorage {
       if (npcData.role !== undefined) updateData.role = npcData.role;
       if (npcData.motivation !== undefined) updateData.motivation = npcData.motivation;
       
+      // Novos campos para atributos de criatura
+      if (npcData.strength !== undefined) updateData.strength = npcData.strength;
+      if (npcData.dexterity !== undefined) updateData.dexterity = npcData.dexterity;
+      if (npcData.constitution !== undefined) updateData.constitution = npcData.constitution;
+      if (npcData.intelligence !== undefined) updateData.intelligence = npcData.intelligence;
+      if (npcData.wisdom !== undefined) updateData.wisdom = npcData.wisdom;
+      if (npcData.charisma !== undefined) updateData.charisma = npcData.charisma;
+      if (npcData.healthPoints !== undefined) updateData.health_points = npcData.healthPoints;
+      if (npcData.threatLevel !== undefined) updateData.threat_level = npcData.threatLevel;
+      if (npcData.specialAbilities !== undefined) updateData.special_abilities = npcData.specialAbilities;
+      
       // Se não há campos para atualizar, retornar o NPC existente
       if (Object.keys(updateData).length === 0) {
         return existingNpc[0];
@@ -591,7 +642,17 @@ export class DatabaseStorage implements IStorage {
         memorableTrait: npcResult.memorable_trait,
         entityType: npcResult.entity_type || 'npc',
         role: npcResult.role || null,
-        motivation: npcResult.motivation || null
+        motivation: npcResult.motivation || null,
+        // Novos campos para atributos de criatura
+        strength: npcResult.strength || null,
+        dexterity: npcResult.dexterity || null, 
+        constitution: npcResult.constitution || null,
+        intelligence: npcResult.intelligence || null,
+        wisdom: npcResult.wisdom || null,
+        charisma: npcResult.charisma || null,
+        healthPoints: npcResult.health_points || null,
+        threatLevel: npcResult.threat_level || null,
+        specialAbilities: npcResult.special_abilities || null
       };
     } catch (error) {
       console.error("Erro ao atualizar NPC:", error);
