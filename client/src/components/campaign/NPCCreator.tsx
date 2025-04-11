@@ -255,7 +255,7 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
   // Preparar valores padrões considerando possível edição
   const defaultValues = {
     campaignId,
-    entityType: "npc" as const,  // use const assertion para garantir o tipo correto
+    entityType: "npc" as "npc" | "creature",  // tipo explícito para garantir tipagem correta
     name: "",
     role: "",
     motivation: "",
@@ -334,7 +334,7 @@ export default function NPCCreator({ campaignId, onClose, onSuccess, editingNpc 
       form.reset({
         ...editingNpc,
         // Garantir valor correto para entityType
-        entityType: (editingNpc.entityType === "creature" ? "creature" : "npc") as const,
+        entityType: (editingNpc.entityType === "creature" ? "creature" : "npc") as "npc" | "creature",
         // Mapear campos novos
         threatLevel,
         specialAbilities,
