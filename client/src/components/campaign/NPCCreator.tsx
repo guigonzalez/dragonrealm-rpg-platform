@@ -32,7 +32,8 @@ const formSchema = insertNpcSchema.extend({
   voice: z.string().optional(),
   motivation: z.string().optional(),
   location: z.string().optional(),
-  relationships: z.string().optional(),
+  // Campo virtual que será armazenado nas notas, não existe na tabela
+  relationships: z.string().optional(), 
   secrets: z.string().optional(),
   // Aceita string ou número e converte para string
   healthPoints: z.union([z.string(), z.number()])
@@ -249,6 +250,8 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
     if (values.healthPoints) notesText.push(`Vida/Resistência: ${values.healthPoints}`);
     if (values.armorClass) notesText.push(`CA: ${values.armorClass}`);
     if (values.keyAttribute) notesText.push(`Atributo-chave: ${values.keyAttribute}`);
+    // Adicionar relacionamentos às notas
+    if (values.relationships) notesText.push(`Relações: ${values.relationships}`);
     
     // Use apenas campos que sabemos que existem na tabela ou que foram mapeados
     const submitData = {
@@ -259,11 +262,10 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
       personality: values.personality || "",
       location: values.location || "",
       motivation: values.motivation || "",
-      relationships: values.relationships || "",
       abilities: values.secrets || "",
       // Voz ou fala vai para memorableTrait
       memorableTrait: values.voice || "",
-      // Campos adicionais para notas
+      // Campos adicionais para notas - o relationships já está incluído em notesText, não enviar separadamente
       notes: notesText.join("\n"),
       // Forçar entityType como "npc"
       entityType: "npc" as "npc",
