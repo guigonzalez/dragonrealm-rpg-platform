@@ -482,6 +482,21 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
     try {
       setIsGeneratingMap(true);
       
+      // Verificar se existem dados suficientes para um mapa significativo
+      if (!centralConcept) {
+        toast({
+          title: t("location.insufficientInfo"),
+          description: t("location.addCentralConcept"),
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      toast({
+        title: t("location.generatingMap"),
+        description: t("location.generatingMapWait"),
+      });
+      
       // Chamar a API para gerar o mapa baseado no contexto da campanha
       const response = await apiRequest('POST', '/api/generate-world-map', {
         campaignId: campaign.id,
@@ -498,8 +513,8 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
       setMapImageUrl(data.mapImageUrl);
       
       toast({
-        title: "Mapa gerado com sucesso!",
-        description: "Um novo mapa do mundo foi criado com base nos dados da sua campanha.",
+        title: t("location.mapGeneratedSuccess"),
+        description: t("location.mapGeneratedDescription"),
       });
       
       // Salvar a atualização no banco de dados
@@ -511,8 +526,8 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
     } catch (error) {
       console.error('Erro ao gerar mapa:', error);
       toast({
-        title: "Falha ao gerar o mapa",
-        description: error instanceof Error ? error.message : "Erro desconhecido",
+        title: t("location.mapGenerationFailed"),
+        description: error instanceof Error ? error.message : t("location.unknownError"),
         variant: "destructive"
       });
     } finally {
@@ -791,12 +806,12 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                                 {isGeneratingMap ? (
                                   <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Gerando Mapa...
+                                    {t("location.generatingMap")}
                                   </>
                                 ) : (
                                   <>
                                     <Sparkles className="mr-2 h-4 w-4" />
-                                    Gerar Mapa com IA
+                                    {t("location.generateMapWithAI")}
                                   </>
                                 )}
                               </Button>
