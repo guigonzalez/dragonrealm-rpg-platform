@@ -231,7 +231,9 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
       
       toast({
         title: "NPC gerado com sucesso!",
-        description: "Os campos foram preenchidos automaticamente. Você pode editar conforme necessário.",
+        description: actualCampaignId 
+          ? "O NPC foi gerado utilizando o contexto da sua campanha. Os campos foram preenchidos automaticamente." 
+          : "Os campos foram preenchidos automaticamente. Você pode editar conforme necessário.",
       });
     } catch (error) {
       console.error("Erro ao gerar NPC:", error);
@@ -564,8 +566,24 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
                   Gerador de NPC com IA
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Preencha os campos abaixo para gerar um NPC baseado no contexto da sua campanha. Todos os campos são opcionais.
+                  Preencha os campos abaixo para personalizar a geração. Todos os campos são opcionais.
                 </p>
+                {actualCampaignId && (
+                  <div className="flex items-start gap-2 p-3 rounded-md bg-primary/10 mb-4">
+                    <div className="h-5 w-5 text-primary shrink-0 mt-0.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                        <path d="m9 12 2 2 4-4"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium">Usando dados da campanha para gerar o NPC</p>
+                      <p className="text-xs text-muted-foreground">
+                        A IA usará a construção de mundo, NPCs existentes e localizações da sua campanha para criar um NPC contextualizado.
+                      </p>
+                    </div>
+                  </div>
+                )}
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-4">
