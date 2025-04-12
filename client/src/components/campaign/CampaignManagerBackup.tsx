@@ -109,14 +109,6 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
   const [noteDialogOpen, setNoteDialogOpen] = useState(false);
   const [showLocationForm, setShowLocationForm] = useState(false);
   
-  // Estados para o gerador de localizações por IA
-  const [aiLocationDialogOpen, setAiLocationDialogOpen] = useState(false);
-  const [locationTypeAI, setLocationTypeAI] = useState<string>("city");
-  const [worldNameAI, setWorldNameAI] = useState<string>("");
-  const [importanceAI, setImportanceAI] = useState<string>("principal");
-  const [locationDetailsAI, setLocationDetailsAI] = useState<string>("");
-  const [isGeneratingLocation, setIsGeneratingLocation] = useState(false);
-  
   // State para armazenar a URL da imagem do mapa do mundo
   const [mapImageUrl, setMapImageUrl] = useState<string>(campaign?.mapImageUrl || "");
   

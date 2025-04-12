@@ -100,6 +100,45 @@ function saveBase64Image(base64Data: string, entityType: string = 'npc'): string
   }
 }
 
+// Função auxiliar para obter texto formatado dos NPCs importantes de uma campanha
+async function getImportantCharactersText(campaignId: number): Promise<string> {
+  try {
+    const npcs = await storage.getNpcsByCampaignId(campaignId);
+    if (!npcs || npcs.length === 0) return "- Nenhum personagem importante definido";
+    
+    return npcs.map(npc => {
+      let roleText = '';
+      if (npc.role === 'Aliado' || npc.role === 'Aliada') {
+        roleText = 'Aliado(a)';
+      } else if (npc.role === 'Vilão' || npc.role === 'Vilã') {
+        roleText = 'Vilão(ã)';
+      } else if (npc.role === 'Neutro' || npc.role === 'Neutra') {
+        roleText = 'Neutro(a)';
+      } else {
+        roleText = npc.role || 'Desconhecido';
+      }
+      
+      return `- ${npc.name}: ${roleText}`;
+    }).join('\n');
+  } catch (error) {
+    console.error("Erro ao obter NPCs:", error);
+    return "- Erro ao carregar personagens";
+  }
+}
+
+// Função auxiliar para obter texto formatado das localizações importantes de uma campanha
+async function getImportantLocationsText(campaignId: number): Promise<string> {
+  try {
+    const locations = await storage.getLocationsByCampaignId(campaignId);
+    if (!locations || locations.length === 0) return "- Nenhuma localização definida";
+    
+    return locations.map(location => `- ${location.name}: ${location.description || 'Sem descrição'}`).join('\n');
+  } catch (error) {
+    console.error("Erro ao obter localizações:", error);
+    return "- Erro ao carregar localizações";
+  }
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Certifique-se de que os diretórios necessários existem
   if (!fs.existsSync("public/uploads")) {
@@ -1358,6 +1397,69 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Rota para servir arquivos estáticos da pasta uploads
   app.use('/uploads', express.static('public/uploads'));
+  
+  // Rota para gerar automaticamente uma localização com a OpenAI
+  app.post("/api/generate-location", requireAuth, async (req, res) => {
+    try {
+      const { 
+        tipoLocalizacao, 
+        nomeMundo, 
+        importanciaNaHistoria, 
+        detalhes, 
+        campaignId 
+      } = req.body;
+      
+      // Importar dinamicamente para evitar erros se a API_KEY não existir
+      const { generateLocation } = await import('./openai');
+      
+      // Se tiver um campaignId, buscar informações da campanha para contextualizar a geração
+      let campaignInfo = '';
+      if (campaignId) {
+        try {
+          const campaign = await storage.getCampaign(parseInt(String(campaignId)));
+          if (campaign) {
+            campaignInfo = `
+              Nome da Campanha: ${campaign.name}
+              Descrição: ${campaign.description || 'Não disponível'}
+              Conceito Central do Mundo: ${campaign.centralConcept || 'Não especificado'}
+              Geografia: ${campaign.geography || 'Não especificado'}
+              Facções: ${campaign.factions || 'Não especificado'}
+              História: ${campaign.history || 'Não especificado'}
+              Magia e Tecnologia: ${campaign.magicTech || 'Não especificado'}
+              Personagens importantes na campanha:
+              ${await getImportantCharactersText(campaign.id)}
+              Locais importantes na campanha:
+              ${await getImportantLocationsText(campaign.id)}
+              Ao criar a localização, use essas informações para integrar com o contexto existente do mundo.
+            `;
+          }
+        } catch (error) {
+          console.error("Erro ao buscar informações da campanha:", error);
+          // Continue mesmo se não conseguir buscar informações da campanha
+        }
+      }
+      
+      console.log('Informações da campanha para contexto de localização:', campaignInfo || 'Nenhuma');
+      
+      // Gerar a localização com as opções fornecidas e contexto da campanha
+      const generatedLocation = await generateLocation({ 
+        tipo: 'location',
+        tipoLocalizacao,
+        nomeMundo,
+        importanciaNaHistoria,
+        detalhes,
+        campaignContext: campaignInfo || undefined
+      });
+      
+      res.json(generatedLocation);
+    } catch (error) {
+      console.error("Erro ao gerar localização:", error);
+      res.status(500).json({ 
+        message: "Falha ao gerar localização",
+        error: error instanceof Error ? error.message : String(error) 
+      });
+    }
+  });
   
   const httpServer = createServer(app);
   return httpServer;
