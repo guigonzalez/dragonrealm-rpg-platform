@@ -47,7 +47,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { 
   MapPin, 
-  Plus, 
+  Plus,
+  Sparkles,
+  Loader2,
   Edit, 
   Trash2, 
   Save, 
@@ -473,6 +475,51 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
     }
   };
   
+  // Função para gerar o mapa do mundo baseado nos dados da campanha
+  const generateWorldMap = async () => {
+    if (!campaign) return;
+    
+    try {
+      setIsGeneratingMap(true);
+      
+      // Chamar a API para gerar o mapa baseado no contexto da campanha
+      const response = await apiRequest('POST', '/api/generate-world-map', {
+        campaignId: campaign.id,
+        style: 'fantasy map with parchment style'
+      });
+      
+      if (!response.ok) {
+        throw new Error('Falha ao gerar o mapa do mundo');
+      }
+      
+      const data = await response.json();
+      
+      // Atualizar a URL do mapa com o caminho retornado pela API
+      setMapImageUrl(data.mapImageUrl);
+      
+      toast({
+        title: "Mapa gerado com sucesso!",
+        description: "Um novo mapa do mundo foi criado com base nos dados da sua campanha.",
+      });
+      
+      // Salvar a atualização no banco de dados
+      updateCampaignMutation.mutate({
+        ...campaign,
+        mapImageUrl: data.mapImageUrl
+      });
+      
+    } catch (error) {
+      console.error('Erro ao gerar mapa:', error);
+      toast({
+        title: "Falha ao gerar o mapa",
+        description: error instanceof Error ? error.message : "Erro desconhecido",
+        variant: "destructive"
+      });
+    } finally {
+      setIsGeneratingMap(false);
+    }
+  };
+  
   // Delete location handler
   const handleDeleteLocation = (locationId: number) => {
     if (confirm("Are you sure you want to delete this location? This action cannot be undone.")) {
@@ -720,17 +767,40 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                               <Upload className="h-8 w-8 text-muted-foreground" />
                             </div>
                             <p className="text-sm font-medium">{t("location.uploadMapDescription")}</p>
-                            <Button 
-                              type="button" 
-                              variant="outline" 
-                              size="sm" 
-                              className="mt-2"
-                              onClick={() => {
-                                document.getElementById('map-upload')?.click();
-                              }}
-                            >
-                              {t("location.uploadMap")}
-                            </Button>
+                            <div className="flex flex-col md:flex-row gap-2 justify-center">
+                              <Button 
+                                type="button" 
+                                variant="outline" 
+                                size="sm" 
+                                className="mt-2"
+                                onClick={() => {
+                                  document.getElementById('map-upload')?.click();
+                                }}
+                              >
+                                {t("location.uploadMap")}
+                              </Button>
+                              
+                              <Button 
+                                type="button" 
+                                variant="outline" 
+                                size="sm" 
+                                className="mt-2"
+                                onClick={generateWorldMap}
+                                disabled={isGeneratingMap || !centralConcept}
+                              >
+                                {isGeneratingMap ? (
+                                  <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Gerando Mapa...
+                                  </>
+                                ) : (
+                                  <>
+                                    <Sparkles className="mr-2 h-4 w-4" />
+                                    Gerar Mapa com IA
+                                  </>
+                                )}
+                              </Button>
+                            </div>
                             <Input
                               id="map-upload"
                               type="file"
