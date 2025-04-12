@@ -1236,7 +1236,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
             )}
           </TabsContent>
           
-          {/* NPCs & Criaturas */}
+          {/* NPCs */}
           <TabsContent value="npcs" className="space-y-6">
             {campaign ? (
               <div className="grid grid-cols-1 gap-6">
@@ -1251,7 +1251,24 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
                     <NPCList campaignId={campaign.id} />
                   </CardContent>
                 </Card>
-                
+              </div>
+            ) : (
+              <Card className="bg-muted/40">
+                <CardContent className="flex flex-col items-center justify-center p-12 text-center">
+                  <Users className="h-12 w-12 text-primary/40 mb-4" />
+                  <h3 className="font-lora text-xl font-semibold mb-2">{t("npc.npcs")}</h3>
+                  <p className="text-muted-foreground mb-6">
+                    {t("campaign.saveCampaignFirst")}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+          
+          {/* Criaturas */}
+          <TabsContent value="creatures" className="space-y-6">
+            {campaign ? (
+              <div className="grid grid-cols-1 gap-6">
                 <Card className="border-t-4 border-t-primary">
                   <CardHeader>
                     <CardTitle className="font-lora text-2xl">{t("creature.creatures")}</CardTitle>
@@ -1267,8 +1284,8 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
             ) : (
               <Card className="bg-muted/40">
                 <CardContent className="flex flex-col items-center justify-center p-12 text-center">
-                  <Users className="h-12 w-12 text-primary/40 mb-4" />
-                  <h3 className="font-lora text-xl font-semibold mb-2">{t("campaign.npcsCreatures")}</h3>
+                  <Skull className="h-12 w-12 text-primary/40 mb-4" />
+                  <h3 className="font-lora text-xl font-semibold mb-2">{t("creature.creatures")}</h3>
                   <p className="text-muted-foreground mb-6">
                     {t("campaign.saveCampaignFirst")}
                   </p>
