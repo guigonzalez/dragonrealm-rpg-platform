@@ -182,15 +182,13 @@ export default function NPCList({ campaignId }: NPCListProps) {
             {npcs.map((npc) => (
               <Card 
                 key={npc.id} 
-                className="overflow-hidden flex flex-col hover:shadow-md transition-shadow duration-200 border-l-4" 
-                style={{ borderLeftColor: npc.role && ROLE_COLORS[npc.role as keyof typeof ROLE_COLORS] ? 
-                  (ROLE_COLORS[npc.role as keyof typeof ROLE_COLORS].split(' ')[0]) : 'rgb(71, 85, 105)' }}
+                className="overflow-hidden flex flex-col hover:shadow-md transition-shadow duration-200 rounded-lg border border-amber-100 dark:border-amber-900/30 bg-amber-50/50 dark:bg-amber-950/10"
               >
-                <CardHeader className="pb-2 bg-slate-50 dark:bg-slate-900/60">
+                <CardHeader className="pb-2 bg-amber-50/80 dark:bg-amber-950/30 border-b border-amber-100 dark:border-amber-900/30">
                   <div className="flex justify-between items-start">
                     <div className="flex items-center gap-2">
-                      <div className="bg-primary/10 p-2 rounded-full">
-                        <User2 className="h-5 w-5 text-primary" />
+                      <div className="bg-amber-100 dark:bg-amber-800/30 p-2 rounded-full">
+                        <User2 className="h-5 w-5 text-amber-700 dark:text-amber-400" />
                       </div>
                       <div>
                         <CardTitle className="font-lora">{npc.name}</CardTitle>
@@ -270,7 +268,7 @@ export default function NPCList({ campaignId }: NPCListProps) {
                   {/* Informações do personagem */}
                   {npc.motivation && (
                     <div className="flex items-start gap-1">
-                      <Brain className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                      <Brain className="h-4 w-4 text-amber-700 dark:text-amber-500 shrink-0 mt-0.5" />
                       <TruncatedText
                         text={npc.motivation}
                         className="text-sm"
@@ -281,7 +279,7 @@ export default function NPCList({ campaignId }: NPCListProps) {
 
                   {npc.abilities && (
                     <div className="flex items-start gap-1">
-                      <Sword className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                      <Sword className="h-4 w-4 text-amber-700 dark:text-amber-500 shrink-0 mt-0.5" />
                       <TruncatedText
                         text={npc.abilities}
                         className="text-sm"
@@ -292,7 +290,7 @@ export default function NPCList({ campaignId }: NPCListProps) {
 
                   {npc.memorableTrait && (
                     <div className="flex items-start gap-1">
-                      <Map className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                      <Map className="h-4 w-4 text-amber-700 dark:text-amber-500 shrink-0 mt-0.5" />
                       <TruncatedText
                         text={npc.memorableTrait}
                         className="text-sm"
@@ -303,7 +301,7 @@ export default function NPCList({ campaignId }: NPCListProps) {
                   
                   {npc.notes && (
                     <div className="flex items-start gap-1">
-                      <FileText className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                      <FileText className="h-4 w-4 text-amber-700 dark:text-amber-500 shrink-0 mt-0.5" />
                       <TruncatedText
                         text={npc.notes}
                         className="text-sm"
@@ -313,18 +311,30 @@ export default function NPCList({ campaignId }: NPCListProps) {
                   )}
                 </CardContent>
 
-                <CardFooter className="flex justify-end gap-2 pt-2 bg-slate-50/50 dark:bg-slate-900/30">
-                  <Button variant="ghost" size="sm" onClick={() => handleView(npc)} className="text-primary">
-                    <Eye className="h-4 w-4 mr-1" /> {t("common.view")}
-                  </Button>
-                  
-                  <Button variant="outline" size="sm" onClick={() => handleEdit(npc)}>
-                    <Pen className="h-4 w-4 mr-1" />
-                  </Button>
+                <CardFooter className="flex justify-end gap-2 pt-2 bg-amber-50/80 dark:bg-amber-950/30 border-t border-amber-100 dark:border-amber-900/30">
+                  <div className="flex items-center gap-2 ml-auto">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleEdit(npc)} 
+                      className="h-9 w-9 p-0 rounded-md bg-amber-50 hover:bg-amber-100 border-amber-100 dark:bg-amber-950/20"
+                    >
+                      <Pen className="h-4 w-4 text-amber-700" />
+                    </Button>
+                    
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleView(npc)} 
+                      className="h-9 w-9 p-0 rounded-md bg-green-50 hover:bg-green-100 border-green-100 dark:bg-green-950/20"
+                    >
+                      <Eye className="h-4 w-4 text-green-700" />
+                    </Button>
+                  </div>
 
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button variant="destructive" size="sm" className="w-9 px-0">
+                      <Button variant="destructive" size="sm" className="w-9 px-0 hidden">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </AlertDialogTrigger>
