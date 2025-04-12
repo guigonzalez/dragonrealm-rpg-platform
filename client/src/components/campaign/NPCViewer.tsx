@@ -10,7 +10,7 @@ import {
   X, User2, Skull, MapPin, Brain, 
   Sword, Shield, Flag, Scroll, Heart, 
   Footprints, Dices, FlaskConical, 
-  BookOpen
+  BookOpen, Eye
 } from "lucide-react";
 
 interface NPCViewerProps {
@@ -83,12 +83,30 @@ export default function NPCViewer({ npc, onClose }: NPCViewerProps) {
             
             <div className="grid grid-cols-2 gap-2">
               {/* Estatísticas de combate destacadas */}
-              {npc.healthPoints && (
-                <div className="bg-red-50 dark:bg-red-950/20 p-2 rounded-md flex items-center col-span-2">
-                  <Shield className="h-5 w-5 text-red-600 dark:text-red-400 mr-2" />
+              {/* CA a partir das notas */}
+              {npc.notes && npc.notes.includes("CA:") && (
+                <div className="bg-blue-50 dark:bg-blue-950/20 p-2 rounded-md flex items-center col-span-1">
+                  <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2" />
+                  <div>
+                    <div className="text-xs text-muted-foreground">{t("character.armorClass")}</div>
+                    <div className="font-semibold text-blue-600 dark:text-blue-400">
+                      {npc.notes.split("CA:")[1].split("\n")[0].trim()}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* HP do campo de notas ou do campo específico */}
+              {(npc.healthPoints || (npc.notes && npc.notes.includes("Vida/Resistência:"))) && (
+                <div className="bg-red-50 dark:bg-red-950/20 p-2 rounded-md flex items-center col-span-1">
+                  <Heart className="h-5 w-5 text-red-600 dark:text-red-400 mr-2" />
                   <div>
                     <div className="text-xs text-muted-foreground">{t("character.hitPoints")}</div>
-                    <div className="font-semibold text-red-600 dark:text-red-400">{npc.healthPoints} HP</div>
+                    <div className="font-semibold text-red-600 dark:text-red-400">
+                      {npc.healthPoints ? 
+                        `${npc.healthPoints} HP` : 
+                        npc.notes!.split("Vida/Resistência:")[1].split("\n")[0].trim()}
+                    </div>
                   </div>
                 </div>
               )}
@@ -148,7 +166,8 @@ export default function NPCViewer({ npc, onClose }: NPCViewerProps) {
                 </div>
               )}
               
-              {npc.location && (
+              {/* Verificando se é um NPC antes de exibir campos específicos de NPC */}
+              {npc.entityType === "npc" && "location" in npc && npc.location && (
                 <div className="flex items-center gap-2 text-sm">
                   <MapPin className="h-4 w-4 text-primary flex-shrink-0" />
                   <span className="font-medium">{t("npc.location")}:</span>
@@ -156,7 +175,7 @@ export default function NPCViewer({ npc, onClose }: NPCViewerProps) {
                 </div>
               )}
               
-              {npc.occupation && (
+              {npc.entityType === "npc" && "occupation" in npc && npc.occupation && (
                 <div className="flex items-center gap-2 text-sm">
                   <BookOpen className="h-4 w-4 text-primary flex-shrink-0" />
                   <span className="font-medium">{t("npc.occupation")}:</span>
@@ -212,7 +231,7 @@ export default function NPCViewer({ npc, onClose }: NPCViewerProps) {
                   </div>
                 )}
                 
-                {npc.personality && (
+                {npc.entityType === "npc" && "personality" in npc && npc.personality && (
                   <div>
                     <h3 className="text-sm font-semibold text-primary mb-1 flex items-center">
                       <Brain className="h-4 w-4 mr-1" /> {t("npc.personality")}

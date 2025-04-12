@@ -274,6 +274,7 @@
     },
     "roleOptions": {
       "ally": "Aliado",
+      "Aliada": "Aliada",
       "villain": "Vilão",
       "obstacle": "Obstáculo",
       "informant": "Informante",
@@ -325,6 +326,7 @@
     "specialAbilities": "Habilidades Especiais",
     "basicInfo": "Informações Básicas",
     "combatInfo": "Informações de Combate",
+    "fullNotes": "Notas Completas",
     "additionalInfo": "Informações Adicionais",
     "notes": "Notas",
     "healthPoints": "Pontos de Vida",
@@ -358,6 +360,7 @@
     },
     "roleOptions": {
       "ally": "Aliado",
+      "Aliada": "Aliada",
       "villain": "Vilão",
       "obstacle": "Obstáculo",
       "curiosity": "Curiosidade",
