@@ -485,7 +485,11 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
                       <FormLabel>Pontos de Vida (PV)</FormLabel>
                       <FormDescription>Opcional</FormDescription>
                       <FormControl>
-                        <Input placeholder="Ex: 25" {...field} />
+                        <Input 
+                          placeholder="Ex: 25" 
+                          {...field} 
+                          onChange={(e) => field.onChange(String(e.target.value))}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -501,7 +505,11 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
                       <FormLabel>Classe de Armadura (CA)</FormLabel>
                       <FormDescription>Opcional</FormDescription>
                       <FormControl>
-                        <Input placeholder="Ex: 14" {...field} />
+                        <Input 
+                          placeholder="Ex: 14" 
+                          {...field}
+                          onChange={(e) => field.onChange(String(e.target.value))} 
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
