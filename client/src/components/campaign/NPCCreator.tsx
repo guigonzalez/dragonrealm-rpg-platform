@@ -34,7 +34,11 @@ const formSchema = insertNpcSchema.extend({
   location: z.string().optional(),
   relationships: z.string().optional(),
   secrets: z.string().optional(),
-  healthPoints: z.string().optional(),
+  // Aceita string ou número e converte para string
+  healthPoints: z.union([z.string(), z.number()])
+    .transform(val => val === null || val === undefined ? null : String(val))
+    .optional()
+    .nullable(),
   armorClass: z.string().optional(),
   keyAttribute: z.string().optional()
 });
@@ -488,8 +492,14 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
                       <FormControl>
                         <Input 
                           placeholder="Ex: 25" 
+                          type="text"
                           {...field} 
-                          onChange={(e) => field.onChange(String(e.target.value))}
+                          value={field.value || ""}
+                          onChange={(e) => {
+                            // Garantir que estamos usando strings aqui
+                            const value = e.target.value;
+                            field.onChange(value === "" ? null : String(value));
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -508,8 +518,13 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
                       <FormControl>
                         <Input 
                           placeholder="Ex: 14" 
+                          type="text"
                           {...field}
-                          onChange={(e) => field.onChange(String(e.target.value))} 
+                          value={field.value || ""}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            field.onChange(value === "" ? null : String(value));
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
