@@ -110,6 +110,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
   
   // State para armazenar a URL da imagem do mapa do mundo
   const [mapImageUrl, setMapImageUrl] = useState<string>(campaign?.mapImageUrl || "");
+  const [isGeneratingMap, setIsGeneratingMap] = useState<boolean>(false);
   
   // States para armazenar os textos do mundo
   const [centralConcept, setCentralConcept] = useState<string>(campaign?.centralConcept || "");
