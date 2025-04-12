@@ -60,8 +60,7 @@ import {
   Swords,
   Upload,
   Image,
-  Skull,
-  Sparkles
+  Skull
 } from "lucide-react";
 import CampaignImageUpload from "./CampaignImageUpload";
 import NPCList from "./NPCList";
@@ -108,14 +107,6 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
   const [noteDialogOpen, setNoteDialogOpen] = useState(false);
   const [showLocationForm, setShowLocationForm] = useState(false);
-  
-  // Estados para o gerador de localizações por IA
-  const [aiLocationDialogOpen, setAiLocationDialogOpen] = useState(false);
-  const [locationTypeAI, setLocationTypeAI] = useState<string>("city");
-  const [worldNameAI, setWorldNameAI] = useState<string>("");
-  const [importanceAI, setImportanceAI] = useState<string>("principal");
-  const [locationDetailsAI, setLocationDetailsAI] = useState<string>("");
-  const [isGeneratingLocation, setIsGeneratingLocation] = useState(false);
   
   // State para armazenar a URL da imagem do mapa do mundo
   const [mapImageUrl, setMapImageUrl] = useState<string>(campaign?.mapImageUrl || "");
@@ -980,23 +971,13 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
             </Card>
             
             {/* Locations Section */}
-            <div className="mb-6">
-              <div className="flex justify-between items-center">
-                <h2 className="font-lora text-2xl text-primary">{t("location.locations")}</h2>
-                <div className="flex space-x-2">
-                  <Button 
-                    className="magic-sparkle-button" 
-                    variant="outline"
-                    onClick={() => setLocationDialogOpen(true)}
-                  >
-                    <Sparkles className="h-4 w-4 mr-2" />
-                    {t("location.generateWithAI")}
-                  </Button>
-                  <Button 
-                    className="magic-button" 
-                    onClick={() => {
-                      setEditingLocationId(null);
-                      locationForm.reset({
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="font-lora text-2xl text-primary">{t("location.locations")}</h2>
+              <Button 
+                className="magic-button" 
+                onClick={() => {
+                  setEditingLocationId(null);
+                  locationForm.reset({
                     name: "",
                     description: "",
                     imageUrl: "",
