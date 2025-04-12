@@ -1,4 +1,7 @@
 import OpenAI from "openai";
+import fs from "fs";
+import path from "path";
+import { randomUUID } from "crypto";
 
 // A versão mais recente do modelo OpenAI é "gpt-4o", lançado em 13 de maio de 2024
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -36,6 +39,122 @@ export interface GeneratedNPC {
   specialAbilities: string;
   plotHooks: string;
   entityType: 'npc' | 'creature';
+}
+
+export interface MapGenerationOptions {
+  campaignName: string;
+  centralConcept?: string;
+  geography?: string;
+  factions?: string;
+  history?: string;
+  magicTech?: string;
+  locations?: { name: string; description: string }[];
+  style?: string; // e.g., "medieval fantasy", "sci-fi", etc.
+}
+
+export async function generateWorldMap(options: MapGenerationOptions): Promise<string> {
+  try {
+    console.log("Gerando mapa do mundo com as opções:", options);
+
+    let prompt = `Crie um mapa de fantasia detalhado para a campanha "${options.campaignName}" de RPG.`;
+    
+    // Adicionar informações sobre a geografia e conceito central
+    if (options.centralConcept) {
+      prompt += `\n\nConceito central da campanha: ${options.centralConcept}`;
+    }
+    
+    if (options.geography) {
+      prompt += `\n\nGeografia do mundo: ${options.geography}`;
+    }
+    
+    // Adicionar informações sobre facções e história
+    if (options.factions) {
+      prompt += `\n\nFacções importantes: ${options.factions}`;
+    }
+    
+    if (options.history) {
+      prompt += `\n\nHistória do mundo: ${options.history}`;
+    }
+    
+    // Adicionar informações sobre magia/tecnologia
+    if (options.magicTech) {
+      prompt += `\n\nMagia e tecnologia: ${options.magicTech}`;
+    }
+    
+    // Incluir locais específicos se fornecidos
+    if (options.locations && options.locations.length > 0) {
+      prompt += "\n\nLocais importantes que devem estar no mapa:";
+      options.locations.forEach(location => {
+        prompt += `\n- ${location.name}: ${location.description}`;
+      });
+    }
+    
+    // Especificar estilo, se fornecido
+    if (options.style) {
+      prompt += `\n\nO estilo do mapa deve ser: ${options.style}`;
+    } else {
+      prompt += "\n\nO estilo do mapa deve ser fantasia medieval clássica, com uma aparência antiga de pergaminho.";
+    }
+    
+    // Instruções específicas para geração de imagem de mapa
+    prompt += `\n\nCrie um mapa detalhado com:
+1. Um título ornamentado no topo
+2. Principais características geográficas (montanhas, rios, florestas, mares)
+3. Marcações para cidades e locais importantes
+4. Uma rosa dos ventos
+5. Fronteiras entre reinos ou facções se aplicável
+6. Estilo artístico de mapa de RPG/fantasia em vista de cima
+
+O mapa deve parecer uma ilustração feita à mão em pergaminho antigo com detalhes em cores suaves.`;
+    
+    console.log("Prompt para geração de mapa:", prompt);
+    
+    // Gerar o mapa usando a API de geração de imagens da OpenAI
+    const response = await openai.images.generate({
+      model: "dall-e-3",
+      prompt: prompt,
+      size: "1024x1024",
+      quality: "standard",
+      n: 1,
+    });
+    
+    const imageUrl = response.data[0].url;
+    if (!imageUrl) {
+      throw new Error("URL de imagem vazia da OpenAI");
+    }
+    
+    console.log("Imagem do mapa gerada:", imageUrl);
+    
+    // Criar diretório public/maps se não existir
+    const publicDir = path.join(process.cwd(), 'public');
+    const mapsDir = path.join(publicDir, 'maps');
+    
+    if (!fs.existsSync(publicDir)) {
+      fs.mkdirSync(publicDir);
+    }
+    
+    if (!fs.existsSync(mapsDir)) {
+      fs.mkdirSync(mapsDir);
+    }
+    
+    // Baixar e salvar a imagem
+    const imageResponse = await fetch(imageUrl);
+    if (!imageResponse.ok) {
+      throw new Error(`Falha ao baixar imagem: ${imageResponse.statusText}`);
+    }
+    
+    const imageBuffer = await imageResponse.arrayBuffer();
+    const fileName = `map-${randomUUID()}.png`;
+    const filePath = path.join(mapsDir, fileName);
+    
+    fs.writeFileSync(filePath, Buffer.from(imageBuffer));
+    
+    // Retornar o caminho relativo para a imagem
+    return `/maps/${fileName}`;
+  } catch (error) {
+    console.error("Erro ao gerar mapa do mundo:", error);
+    throw new Error("Falha ao gerar mapa do mundo com OpenAI");
+  }
 }
 
 export async function generateNPC(options: NPCGenerationOptions): Promise<GeneratedNPC> {

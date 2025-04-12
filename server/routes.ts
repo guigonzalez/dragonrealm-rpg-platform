@@ -1184,6 +1184,67 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Rota para gerar automaticamente um NPC ou criatura com a OpenAI
+  // Rota para gerar o mapa do mundo baseado nos dados da campanha
+  app.post("/api/generate-world-map", requireAuth, async (req, res) => {
+    try {
+      const { campaignId, style } = req.body;
+      
+      if (!campaignId) {
+        return res.status(400).json({ message: "Campaign ID is required" });
+      }
+      
+      // Verificar se a campanha existe e se pertence ao usuário
+      const campaign = await storage.getCampaign(parseInt(String(campaignId)));
+      if (!campaign) {
+        return res.status(404).json({ message: "Campaign not found" });
+      }
+      
+      if (campaign.userId !== req.user!.id) {
+        return res.status(403).json({ message: "Unauthorized access to campaign" });
+      }
+      
+      // Importar dinamicamente para evitar erros se a API_KEY não existir
+      const { generateWorldMap } = await import('./openai');
+      
+      // Coletar dados dos locais da campanha para enriquecer o mapa
+      const locations = await storage.getLocationsByCampaignId(parseInt(String(campaignId)));
+      
+      // Preparar as opções para geração do mapa
+      const mapOptions = {
+        campaignName: campaign.name,
+        centralConcept: campaign.centralConcept || undefined,
+        geography: campaign.geography || undefined,
+        factions: campaign.factions || undefined,
+        history: campaign.history || undefined,
+        magicTech: campaign.magicTech || undefined,
+        style: style || undefined,
+        locations: locations.map(location => ({
+          name: location.name,
+          description: location.description || ""
+        }))
+      };
+      
+      // Gerar o mapa
+      const mapImageUrl = await generateWorldMap(mapOptions);
+      
+      // Atualizar a URL do mapa na campanha
+      await storage.updateCampaign(campaign.id, {
+        ...campaign,
+        mapImageUrl
+      });
+      
+      // Retornar a URL da imagem gerada
+      res.json({ mapImageUrl });
+      
+    } catch (error) {
+      console.error("Erro ao gerar mapa do mundo:", error);
+      res.status(500).json({ 
+        message: "Erro ao gerar mapa do mundo", 
+        error: error instanceof Error ? error.message : "Erro desconhecido" 
+      });
+    }
+  });
+
   app.post("/api/generate-npc", requireAuth, async (req, res) => {
     try {
       const { tipo = 'npc', campanha, nivel, terreno, estilo, campaignId } = req.body;
