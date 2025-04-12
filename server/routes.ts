@@ -424,6 +424,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Processar imagem base64 se existir
       let modifiedReqBody = { ...req.body };
       
+      // Remover campos que não existem na tabela para evitar erros
+      if (modifiedReqBody.relationships) {
+        // Se houver relationships, adicionar às notas
+        modifiedReqBody.notes = modifiedReqBody.notes 
+          ? `${modifiedReqBody.notes}\nRelações: ${modifiedReqBody.relationships}`
+          : `Relações: ${modifiedReqBody.relationships}`;
+        
+        // Remover o campo relationships
+        delete modifiedReqBody.relationships;
+      }
+      
       // Garantir que entityType está definido
       if (!modifiedReqBody.entityType) {
         modifiedReqBody.entityType = 'npc'; // Default para 'npc' se não estiver definido
@@ -570,6 +581,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Processar imagem base64 se existir
       let modifiedReqBody = { ...req.body };
+      
+      // Remover campos que não existem na tabela para evitar erros
+      if (modifiedReqBody.relationships) {
+        // Se houver relationships, adicionar às notas
+        modifiedReqBody.notes = modifiedReqBody.notes 
+          ? `${modifiedReqBody.notes}\nRelações: ${modifiedReqBody.relationships}`
+          : `Relações: ${modifiedReqBody.relationships}`;
+        
+        // Remover o campo relationships
+        delete modifiedReqBody.relationships;
+      }
       
       // Garantir que entityType está definido
       if (!modifiedReqBody.entityType) {

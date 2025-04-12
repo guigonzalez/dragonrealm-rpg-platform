@@ -126,9 +126,19 @@ export async function generateNPC(options: NPCGenerationOptions): Promise<Genera
     
     const data = JSON.parse(content);
     
-    // Retorna o NPC gerado com o tipo selecionado
+    // Mover o campo relationships para o campo notes para evitar erro de coluna inexistente no banco
+    const processedData = { ...data };
+    
+    // Se houver o campo relationships, concatená-lo ao campo notes
+    if (processedData.relationships) {
+      processedData.notes = `${processedData.notes || ''}\nRelações: ${processedData.relationships}`;
+      // Remover o campo relationships para evitar erro de coluna inexistente
+      delete processedData.relationships;
+    }
+    
+    // Retorna o NPC gerado com o tipo selecionado e campos ajustados
     return {
-      ...data,
+      ...processedData,
       entityType: options.tipo
     };
   } catch (error) {
