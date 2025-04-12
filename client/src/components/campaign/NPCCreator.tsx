@@ -226,8 +226,33 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
       form.setValue("location", data.location || "");
       form.setValue("relationships", data.relationships || "");
       form.setValue("secrets", data.abilities || "");
-      // Garantir que healthPoints seja uma string
+      
+      // Valores de combate
       form.setValue("healthPoints", data.healthPoints ? String(data.healthPoints) : "");
+      
+      // Adicionar CA (Classe de Armadura) - calculada com base na destreza
+      const dexMod = data.dexterity ? Math.floor((Number(data.dexterity) - 10) / 2) : 0;
+      const baseAC = 10 + dexMod;
+      form.setValue("armorClass", String(baseAC));
+      
+      // Determinar atributo-chave com base no valor mais alto
+      const attributes = [
+        { name: "For", value: Number(data.strength) || 0 },
+        { name: "Des", value: Number(data.dexterity) || 0 },
+        { name: "Con", value: Number(data.constitution) || 0 },
+        { name: "Int", value: Number(data.intelligence) || 0 },
+        { name: "Sab", value: Number(data.wisdom) || 0 },
+        { name: "Car", value: Number(data.charisma) || 0 }
+      ];
+      
+      // Ordenar atributos do maior para o menor
+      attributes.sort((a, b) => b.value - a.value);
+      // Selecionar o atributo com maior valor e calcular o modificador
+      const highestAttr = attributes[0];
+      const mod = Math.floor((highestAttr.value - 10) / 2);
+      if (highestAttr.value > 0) {
+        form.setValue("keyAttribute", `${highestAttr.name} ${mod >= 0 ? '+' : ''}${mod}`);
+      }
       
       toast({
         title: "NPC gerado com sucesso!",
