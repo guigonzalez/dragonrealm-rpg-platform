@@ -12,6 +12,15 @@ export type NPCGenerationOptions = {
   campaignContext?: string; // Adiciona contexto da campanha
 };
 
+export type LocationGenerationOptions = {
+  tipo: 'location';
+  campaignContext?: string; // Contexto da campanha
+  tipoLocalizacao?: string; // Urbana, floresta, caverna, dungeon, etc.
+  nomeMundo?: string; // Nome do mundo/continente
+  importanciaNaHistoria?: string; // Principal, secundária, casual
+  detalhes?: string; // Detalhes adicionais especificados pelo usuário
+};
+
 export interface GeneratedNPC {
   name: string;
   role: string;
@@ -36,6 +45,96 @@ export interface GeneratedNPC {
   specialAbilities: string;
   plotHooks: string;
   entityType: 'npc' | 'creature';
+}
+
+export interface GeneratedLocation {
+  name: string;
+  description: string;
+  history: string;
+  notableFeatures: string;
+  secrets: string;
+  inhabitants: string;
+  hooks: string;
+  atmosphere: string;
+  threats: string;
+  treasures: string;
+  notes: string;
+  imageDescription: string;
+}
+
+export async function generateLocation(options: LocationGenerationOptions): Promise<GeneratedLocation> {
+  try {
+    console.log("Gerando localização com as opções:", options);
+    
+    // Construa o prompt base
+    let prompt = `Gere uma localização detalhada para uma campanha de Dungeons & Dragons 5e em português.`;
+    
+    // Adicionar tipo de localização se fornecido
+    if (options.tipoLocalizacao) {
+      prompt += ` O tipo da localização é: ${options.tipoLocalizacao}.`;
+    }
+    
+    // Adicionar nome do mundo/continente se fornecido
+    if (options.nomeMundo) {
+      prompt += ` Esta localização faz parte do mundo/continente chamado ${options.nomeMundo}.`;
+    }
+    
+    // Adicionar importância na história
+    if (options.importanciaNaHistoria) {
+      prompt += ` Esta localização tem importância ${options.importanciaNaHistoria} na narrativa da campanha.`;
+    }
+    
+    // Adicionar detalhes específicos
+    if (options.detalhes) {
+      prompt += ` Detalhes adicionais sobre esta localização: ${options.detalhes}.`;
+    }
+    
+    // Adicionar contexto da campanha se fornecido
+    if (options.campaignContext) {
+      prompt += `\n\nInformações detalhadas da campanha para usar como referência:\n${options.campaignContext}\n\nAo criar esta localização, use essas informações para incorporar personagens, locais existentes e temas da campanha.`;
+    }
+    
+    // Solicitar formato específico com todos os campos
+    prompt += `\n\nRetorne APENAS no formato JSON com estas propriedades:
+    {
+      "name": "Nome da localização",
+      "description": "Descrição detalhada do local e aparência",
+      "history": "História e origem da localização",
+      "notableFeatures": "Características notáveis e elementos visualmente distintivos",
+      "secrets": "Segredos ou mistérios escondidos nesta localização",
+      "inhabitants": "Criaturas, NPCs ou grupos que habitam ou frequentam o local",
+      "hooks": "Ganchos de história ou missões relacionadas a esta localização",
+      "atmosphere": "Ambiente, clima e sensação geral do local",
+      "threats": "Perigos ou ameaças presentes nesta localização",
+      "treasures": "Tesouros, recursos ou itens valiosos que podem ser encontrados",
+      "notes": "Informações adicionais relevantes para o Mestre",
+      "imageDescription": "Descrição detalhada para geração de imagem deste local"
+    }`;
+    
+    console.log("Prompt para geração de localização:", prompt);
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o", // Modelo mais recente
+      messages: [{ role: "user", content: prompt }],
+      response_format: { type: "json_object" },
+      max_tokens: 1500,
+      temperature: 0.7,
+    });
+
+    console.log("Resposta da OpenAI para localização recebida");
+    
+    // Recuperar e analisar a resposta
+    const content = response.choices[0].message.content;
+    if (!content) {
+      throw new Error("Resposta vazia da OpenAI");
+    }
+    
+    const data = JSON.parse(content) as GeneratedLocation;
+    return data;
+  } catch (error) {
+    console.error("Erro ao gerar localização:", error);
+    throw new Error("Falha ao gerar localização com OpenAI");
+  }
 }
 
 export async function generateNPC(options: NPCGenerationOptions): Promise<GeneratedNPC> {
