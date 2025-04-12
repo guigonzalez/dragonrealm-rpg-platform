@@ -218,7 +218,8 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
       form.setValue("location", data.location || "");
       form.setValue("relationships", data.relationships || "");
       form.setValue("secrets", data.abilities || "");
-      form.setValue("healthPoints", data.healthPoints || "");
+      // Garantir que healthPoints seja uma string
+      form.setValue("healthPoints", data.healthPoints ? String(data.healthPoints) : "");
       
       toast({
         title: "NPC gerado com sucesso!",
@@ -262,8 +263,8 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
       notes: notesText.join("\n"),
       // Forçar entityType como "npc"
       entityType: "npc" as "npc",
-      // Campo healthPoints diretamente
-      healthPoints: values.healthPoints || null,
+      // Campo healthPoints como string
+      healthPoints: values.healthPoints ? String(values.healthPoints) : null,
       // Campos de data
       updated: new Date().toISOString(),
     };
