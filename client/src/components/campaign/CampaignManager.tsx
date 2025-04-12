@@ -59,7 +59,8 @@ import {
   Users, 
   Swords,
   Upload,
-  Image
+  Image,
+  Skull
 } from "lucide-react";
 import CampaignImageUpload from "./CampaignImageUpload";
 import NPCList from "./NPCList";
@@ -507,7 +508,7 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
       
       <div className="mb-6 tabs-fix">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-6">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-6">
             <TabsTrigger value="details" className="font-lora">
               <Info className="h-4 w-4 mr-2" />
               {t("campaign.details")}
@@ -518,7 +519,11 @@ export default function CampaignManager({ campaign }: CampaignManagerProps) {
             </TabsTrigger>
             <TabsTrigger value="npcs" className="font-lora">
               <Users className="h-4 w-4 mr-2" />
-              {t("campaign.npcsCreatures")}
+              {t("npc.npcs")}
+            </TabsTrigger>
+            <TabsTrigger value="creatures" className="font-lora">
+              <Skull className="h-4 w-4 mr-2" />
+              {t("creature.creatures")}
             </TabsTrigger>
             <TabsTrigger value="encounters" className="font-lora">
               <Swords className="h-4 w-4 mr-2" />
