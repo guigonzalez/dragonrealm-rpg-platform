@@ -86,7 +86,8 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
     campanha: '',
     nivel: '',
     terreno: '',
-    estilo: ''
+    estilo: '',
+    usingCampaignContext: true
   });
   
   // Preparar valores padrões considerando possível edição
@@ -195,7 +196,9 @@ export default function NPCCreator({ campaignId, campaign, onClose = () => {}, o
         campanha: generationOptions.campanha,
         nivel: generationOptions.nivel,
         terreno: generationOptions.terreno,
-        estilo: generationOptions.estilo
+        estilo: generationOptions.estilo,
+        // Usar campaignId para permitir que o servidor busque informações da campanha como contexto
+        campaignId: actualCampaignId
       };
       
       // Chamar a API para gerar o NPC
