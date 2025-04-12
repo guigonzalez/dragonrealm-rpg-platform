@@ -10,10 +10,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Pen, Trash2, Plus, User2, Eye, ArrowLeft } from "lucide-react";
+import { Pen, Trash2, Plus, User2, Eye, ArrowLeft, MapPin, Shield, Map, Sword, Brain, FileText } from "lucide-react";
 
 import NPCCreator from "./NPCCreator";
 import NPCViewer from "./NPCViewer";
+import { TruncatedText } from "@/components/ui/truncated-text";
 
 const ROLE_COLORS = {
   ally: "bg-green-600 hover:bg-green-700",
@@ -21,6 +22,11 @@ const ROLE_COLORS = {
   obstacle: "bg-amber-600 hover:bg-amber-700",
   curiosity: "bg-blue-600 hover:bg-blue-700",
   neutral: "bg-slate-600 hover:bg-slate-700",
+  Aliada: "bg-green-600 hover:bg-green-700",
+  Vilão: "bg-red-600 hover:bg-red-700",
+  Obstáculo: "bg-amber-600 hover:bg-amber-700",
+  Neutro: "bg-slate-600 hover:bg-slate-700",
+  Informante: "bg-blue-600 hover:bg-blue-700",
 };
 
 interface NPCListProps {
@@ -174,8 +180,13 @@ export default function NPCList({ campaignId }: NPCListProps) {
         <ScrollArea className="h-[calc(100vh-300px)] pr-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {npcs.map((npc) => (
-              <Card key={npc.id} className="overflow-hidden flex flex-col">
-                <CardHeader className="pb-2">
+              <Card 
+                key={npc.id} 
+                className="overflow-hidden flex flex-col hover:shadow-md transition-shadow duration-200 border-l-4" 
+                style={{ borderLeftColor: npc.role && ROLE_COLORS[npc.role as keyof typeof ROLE_COLORS] ? 
+                  (ROLE_COLORS[npc.role as keyof typeof ROLE_COLORS].split(' ')[0]) : 'rgb(71, 85, 105)' }}
+              >
+                <CardHeader className="pb-2 bg-slate-50 dark:bg-slate-900/60">
                   <div className="flex justify-between items-start">
                     <div className="flex items-center gap-2">
                       <div className="bg-primary/10 p-2 rounded-full">
@@ -183,9 +194,17 @@ export default function NPCList({ campaignId }: NPCListProps) {
                       </div>
                       <div>
                         <CardTitle className="font-lora">{npc.name}</CardTitle>
-                        <CardDescription>
-                          {t("npc.npc")}
-                        </CardDescription>
+                        <div className="flex items-center gap-2">
+                          <CardDescription>
+                            {t("npc.npc")}
+                          </CardDescription>
+                          {npc.location && (
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                              <MapPin className="h-3 w-3" />
+                              <span>{npc.location}</span>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                     {npc.role && (
@@ -201,42 +220,91 @@ export default function NPCList({ campaignId }: NPCListProps) {
                   </div>
                 </CardHeader>
 
-                <CardContent className="pt-2 flex-grow">
+                <CardContent className="pt-3 pb-3 flex-grow grid grid-cols-1 gap-2">
+                  {/* Atributos principais */}
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {npc.healthPoints && (
+                      <div className="bg-red-50 dark:bg-red-950/20 px-2 py-1 rounded-md flex items-center">
+                        <Shield className="h-3.5 w-3.5 text-red-600 dark:text-red-400 mr-1" />
+                        <span className="text-xs font-semibold text-red-600 dark:text-red-400">HP: {npc.healthPoints}</span>
+                      </div>
+                    )}
+                    {npc.strength && (
+                      <div className="bg-amber-50 dark:bg-amber-950/20 px-2 py-1 rounded-md">
+                        <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">FOR: {npc.strength}</span>
+                      </div>
+                    )}
+                    {npc.dexterity && (
+                      <div className="bg-green-50 dark:bg-green-950/20 px-2 py-1 rounded-md">
+                        <span className="text-xs font-semibold text-green-600 dark:text-green-400">DES: {npc.dexterity}</span>
+                      </div>
+                    )}
+                    {npc.intelligence && (
+                      <div className="bg-blue-50 dark:bg-blue-950/20 px-2 py-1 rounded-md">
+                        <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">INT: {npc.intelligence}</span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Informações do personagem */}
                   {npc.motivation && (
-                    <div className="mb-2">
-                      <strong className="text-xs text-muted-foreground">{t("npc.motivation")}:</strong>
-                      <p className="text-sm">{npc.motivation}</p>
-                    </div>
-                  )}
-
-                  {npc.memorableTrait && (
-                    <div className="mb-2">
-                      <strong className="text-xs text-muted-foreground">{t("npc.memorableTrait")}:</strong>
-                      <p className="text-sm">{npc.memorableTrait}</p>
+                    <div className="flex items-start gap-1">
+                      <Brain className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                      <TruncatedText
+                        text={npc.motivation}
+                        className="text-sm"
+                        maxLength={55}
+                      />
                     </div>
                   )}
 
                   {npc.abilities && (
-                    <div className="mb-2">
-                      <strong className="text-xs text-muted-foreground">{t("npc.abilities")}:</strong>
-                      <p className="text-sm">{npc.abilities}</p>
+                    <div className="flex items-start gap-1">
+                      <Sword className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                      <TruncatedText
+                        text={npc.abilities}
+                        className="text-sm"
+                        maxLength={55}
+                      />
+                    </div>
+                  )}
+
+                  {npc.memorableTrait && (
+                    <div className="flex items-start gap-1">
+                      <Map className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                      <TruncatedText
+                        text={npc.memorableTrait}
+                        className="text-sm"
+                        maxLength={55}
+                      />
+                    </div>
+                  )}
+                  
+                  {npc.notes && (
+                    <div className="flex items-start gap-1">
+                      <FileText className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                      <TruncatedText
+                        text={npc.notes}
+                        className="text-sm"
+                        maxLength={55}
+                      />
                     </div>
                   )}
                 </CardContent>
 
-                <CardFooter className="flex justify-end gap-2 pt-2">
-                  <Button variant="secondary" size="sm" onClick={() => handleView(npc)}>
+                <CardFooter className="flex justify-end gap-2 pt-2 bg-slate-50/50 dark:bg-slate-900/30">
+                  <Button variant="ghost" size="sm" onClick={() => handleView(npc)} className="text-primary">
                     <Eye className="h-4 w-4 mr-1" /> {t("common.view")}
                   </Button>
                   
                   <Button variant="outline" size="sm" onClick={() => handleEdit(npc)}>
-                    <Pen className="h-4 w-4 mr-1" /> {t("common.edit")}
+                    <Pen className="h-4 w-4 mr-1" />
                   </Button>
 
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button variant="destructive" size="sm">
-                        <Trash2 className="h-4 w-4 mr-1" />
+                      <Button variant="destructive" size="sm" className="w-9 px-0">
+                        <Trash2 className="h-4 w-4" />
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
