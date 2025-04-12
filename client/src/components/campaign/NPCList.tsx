@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Pen, Trash2, Plus, User2, Eye, ArrowLeft, MapPin, Shield, Map, Sword, Brain, FileText } from "lucide-react";
+import { Pen, Trash2, Plus, User2, Eye, ArrowLeft, MapPin, Shield, Map, Sword, Brain, FileText, Heart } from "lucide-react";
 
 import NPCCreator from "./NPCCreator";
 import NPCViewer from "./NPCViewer";
@@ -223,22 +223,43 @@ export default function NPCList({ campaignId }: NPCListProps) {
                 <CardContent className="pt-3 pb-3 flex-grow grid grid-cols-1 gap-2">
                   {/* Atributos principais */}
                   <div className="flex flex-wrap gap-2 mb-2">
-                    {npc.healthPoints && (
-                      <div className="bg-red-50 dark:bg-red-950/20 px-2 py-1 rounded-md flex items-center">
-                        <Shield className="h-3.5 w-3.5 text-red-600 dark:text-red-400 mr-1" />
-                        <span className="text-xs font-semibold text-red-600 dark:text-red-400">HP: {npc.healthPoints}</span>
+                    {/* CA a partir das notas */}
+                    {npc.notes && npc.notes.includes("CA:") && (
+                      <div className="bg-blue-50 dark:bg-blue-950/20 px-2 py-1 rounded-md flex items-center">
+                        <Shield className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400 mr-1" />
+                        <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
+                          CA: {npc.notes.split("CA:")[1].split("\n")[0].trim()}
+                        </span>
                       </div>
                     )}
+                    
+                    {/* HP do campo específico ou das notas */}
+                    {(npc.healthPoints || (npc.notes && npc.notes.includes("Vida/Resistência:"))) && (
+                      <div className="bg-red-50 dark:bg-red-950/20 px-2 py-1 rounded-md flex items-center">
+                        <Heart className="h-3.5 w-3.5 text-red-600 dark:text-red-400 mr-1" />
+                        <span className="text-xs font-semibold text-red-600 dark:text-red-400">
+                          HP: {npc.healthPoints || 
+                              (npc.notes && npc.notes.includes("Vida/Resistência:") ? 
+                               npc.notes.split("Vida/Resistência:")[1].split("\n")[0].trim() : "")}
+                        </span>
+                      </div>
+                    )}
+                    
+                    {/* Atributos de força */}
                     {npc.strength && (
                       <div className="bg-amber-50 dark:bg-amber-950/20 px-2 py-1 rounded-md">
                         <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">FOR: {npc.strength}</span>
                       </div>
                     )}
+                    
+                    {/* Atributos de destreza */}
                     {npc.dexterity && (
                       <div className="bg-green-50 dark:bg-green-950/20 px-2 py-1 rounded-md">
                         <span className="text-xs font-semibold text-green-600 dark:text-green-400">DES: {npc.dexterity}</span>
                       </div>
                     )}
+                    
+                    {/* Atributos de inteligência */}
                     {npc.intelligence && (
                       <div className="bg-blue-50 dark:bg-blue-950/20 px-2 py-1 rounded-md">
                         <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">INT: {npc.intelligence}</span>
